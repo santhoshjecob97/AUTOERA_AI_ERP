@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team & Leadership - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .leadership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .leader-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 4px solid var(--autoera-blue);
+            transition: transform 0.3s ease;
+        }
+        
+        .leader-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .leader-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--autoera-blue), var(--innovation-orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1rem auto;
+        }
+        
+        .leader-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .leader-role {
+            color: var(--innovation-orange);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .leader-experience {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .leader-highlights {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .leader-highlights ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .leader-highlights li {
+            padding: 0.3rem 0;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .leader-highlights li:before {
+            content: "✓";
+            color: var(--success-green);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .team-stats {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--innovation-orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--autoera-blue);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-description {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        .expertise-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .expertise-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--innovation-orange);
+        }
+        
+        .expertise-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .expertise-title {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .expertise-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .advisory-board {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .advisor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .advisor-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .advisor-name {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .advisor-title {
+            color: var(--innovation-orange);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .advisor-company {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        .culture-values {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .value-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .value-title {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .value-description {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">🚀 Autoera AI Solutions</div>
+            <div class="slide-number">09</div>
+        </div>
+        
+        <div class="slide-content">
+            <h2 class="slide-title">World-Class Team with Deep Automotive & AI Expertise</h2>
+            
+            <!-- Leadership Team -->
+            <div class="leadership-grid">
+                <div class="leader-card">
+                    <div class="leader-avatar">SJ</div>
+                    <div class="leader-name">Santhosh Jecob</div>
+                    <div class="leader-role">Founder & CEO</div>
+                    <div class="leader-experience">
+                        15+ years automotive industry experience combined with 8+ years in AI/ML development and enterprise SaaS solutions.
+                    </div>
+                    <div class="leader-highlights">
+                        <ul>
+                            <li>Former automotive operations director</li>
+                            <li>Led digital transformation initiatives</li>
+                            <li>Built and scaled AI teams</li>
+                            <li>Deep dealership operations knowledge</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="leader-card">
+                    <div class="leader-avatar">CTO</div>
+                    <div class="leader-name">Chief Technology Officer</div>
+                    <div class="leader-role">CTO & Co-Founder</div>
+                    <div class="leader-experience">
+                        Former Google AI engineer with 12+ years in enterprise SaaS architecture and machine learning systems at scale.
+                    </div>
+                    <div class="leader-highlights">
+                        <ul>
+                            <li>Ex-Google AI research team</li>
+                            <li>Built ML systems for 10M+ users</li>
+                            <li>Expert in scalable architectures</li>
+                            <li>Published AI research papers</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="leader-card">
+                    <div class="leader-avatar">VP</div>
+                    <div class="leader-name">VP Sales</div>
+                    <div class="leader-role">VP Sales & Partnerships</div>
+                    <div class="leader-experience">
+                        Ex-Maruti Suzuki executive with 20+ years in automotive sales, dealer relations, and channel partnerships.
+                    </div>
+                    <div class="leader-highlights">
+                        <ul>
+                            <li>Built dealer networks across India</li>
+                            <li>Deep OEM relationships</li>
+                            <li>Automotive industry credibility</li>
+                            <li>Proven sales track record</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="leader-card">
+                    <div class="leader-avatar">VE</div>
+                    <div class="leader-name">VP Engineering</div>
+                    <div class="leader-role">VP Engineering</div>
+                    <div class="leader-experience">
+                        10+ years scaling SaaS platforms from startup to enterprise, with expertise in multi-tenant architectures.
+                    </div>
+                    <div class="leader-highlights">
+                        <ul>
+                            <li>Scaled platforms to 100K+ users</li>
+                            <li>Multi-tenant architecture expert</li>
+                            <li>DevOps and security specialist</li>
+                            <li>Team building experience</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Statistics -->
+            <div class="team-stats">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Team Composition & Expertise</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">26</div>
+                        <div class="stat-label">Total Team Members</div>
+                        <div class="stat-description">Across engineering, AI/ML, sales, and operations</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">AI/ML Engineers</div>
+                        <div class="stat-description">PhD and Masters in AI, ML, and Data Science</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Full-Stack Developers</div>
+                        <div class="stat-description">React, Node.js, Python, and cloud expertise</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">DevOps Engineers</div>
+                        <div class="stat-description">AWS, Docker, Kubernetes, and security</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Data Scientists</div>
+                        <div class="stat-description">Statistical modeling and predictive analytics</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Core Expertise Areas -->
+            <div class="expertise-areas">
+                <div class="expertise-card">
+                    <div class="expertise-icon">🧠</div>
+                    <div class="expertise-title">Artificial Intelligence</div>
+                    <div class="expertise-description">
+                        Deep learning, natural language processing, computer vision, and predictive analytics with automotive domain expertise.
+                    </div>
+                </div>
+                
+                <div class="expertise-card">
+                    <div class="expertise-icon">🏗️</div>
+                    <div class="expertise-title">Enterprise Architecture</div>
+                    <div class="expertise-description">
+                        Scalable SaaS platforms, multi-tenant architectures, microservices, and cloud-native development.
+                    </div>
+                </div>
+                
+                <div class="expertise-card">
+                    <div class="expertise-icon">🚗</div>
+                    <div class="expertise-title">Automotive Domain</div>
+                    <div class="expertise-description">
+                        Deep understanding of dealership operations, OEM processes, and automotive industry workflows.
+                    </div>
+                </div>
+                
+                <div class="expertise-card">
+                    <div class="expertise-icon">📊</div>
+                    <div class="expertise-title">Data Engineering</div>
+                    <div class="expertise-description">
+                        Real-time data processing, ETL pipelines, data warehousing, and business intelligence systems.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advisory Board -->
+            <div class="advisory-board">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Strategic Advisory Board</h3>
+                <div class="advisor-grid">
+                    <div class="advisor-card">
+                        <div class="advisor-name">Dr. Rajesh Kumar</div>
+                        <div class="advisor-title">Former CTO</div>
+                        <div class="advisor-company">Tata Motors Digital</div>
+                    </div>
+                    <div class="advisor-card">
+                        <div class="advisor-name">Priya Sharma</div>
+                        <div class="advisor-title">VP Strategy</div>
+                        <div class="advisor-company">Mahindra Group</div>
+                    </div>
+                    <div class="advisor-card">
+                        <div class="advisor-name">Amit Patel</div>
+                        <div class="advisor-title">Former Director</div>
+                        <div class="advisor-company">Microsoft AI India</div>
+                    </div>
+                    <div class="advisor-card">
+                        <div class="advisor-name">Sunita Reddy</div>
+                        <div class="advisor-title">Automotive Consultant</div>
+                        <div class="advisor-company">Ex-Hyundai India</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Company Culture & Values -->
+            <div class="culture-values">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Our Core Values</h3>
+                <div class="values-grid">
+                    <div class="value-item">
+                        <div class="value-icon">🎯</div>
+                        <div class="value-title">Customer First</div>
+                        <div class="value-description">Every decision prioritizes customer success and value creation</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🚀</div>
+                        <div class="value-title">Innovation</div>
+                        <div class="value-description">Continuous learning and pushing boundaries in AI technology</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🤝</div>
+                        <div class="value-title">Collaboration</div>
+                        <div class="value-description">Teamwork and partnership drive our collective success</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">⚡</div>
+                        <div class="value-title">Excellence</div>
+                        <div class="value-description">Commitment to quality and continuous improvement</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🌱</div>
+                        <div class="value-title">Growth</div>
+                        <div class="value-description">Personal and professional development for all team members</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+</body>
+</html>

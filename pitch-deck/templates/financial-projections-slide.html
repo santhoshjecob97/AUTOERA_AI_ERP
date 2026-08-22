@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Projections - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .projections-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+        
+        .scenario-card.target {
+            border-color: var(--innovation-orange);
+        }
+        
+        .scenario-card.conservative {
+            border-color: var(--autoera-blue);
+        }
+        
+        .scenario-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .scenario-title.target {
+            color: var(--innovation-orange);
+        }
+        
+        .scenario-title.conservative {
+            color: var(--autoera-blue);
+        }
+        
+        .year-projections {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .year-block {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--autoera-blue);
+        }
+        
+        .year-title {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .year-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+            color: var(--innovation-orange);
+        }
+        
+        .growth-chart {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .chart-placeholder {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 8px;
+            padding: 3rem;
+            color: #64748b;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+        
+        .key-assumptions {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .assumptions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .assumption-item {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--innovation-orange);
+        }
+        
+        .assumption-title {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .assumption-value {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .market-size-visual {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .market-segment {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .segment-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--innovation-orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .segment-label {
+            color: var(--autoera-blue);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .segment-description {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">🚀 Autoera AI Solutions</div>
+            <div class="slide-number">07</div>
+        </div>
+        
+        <div class="slide-content">
+            <h2 class="slide-title">Financial Projections: Path to ₹500 Crores Revenue</h2>
+            
+            <!-- Market Opportunity -->
+            <div class="market-size-visual">
+                <div class="market-segment">
+                    <div class="segment-value">₹500Cr</div>
+                    <div class="segment-label">TAM</div>
+                    <div class="segment-description">Total Addressable Market</div>
+                </div>
+                <div class="market-segment">
+                    <div class="segment-value">₹150Cr</div>
+                    <div class="segment-label">SAM</div>
+                    <div class="segment-description">Serviceable Addressable Market</div>
+                </div>
+                <div class="market-segment">
+                    <div class="segment-value">₹50Cr</div>
+                    <div class="segment-label">SOM</div>
+                    <div class="segment-description">Serviceable Obtainable Market</div>
+                </div>
+            </div>
+            
+            <!-- Revenue Projections -->
+            <div class="projections-container">
+                <div class="scenario-card conservative">
+                    <h3 class="scenario-title conservative">Conservative Scenario</h3>
+                    <div class="year-projections">
+                        <div class="year-block">
+                            <div class="year-title">Year 1 (2024)</div>
+                            <div class="year-metrics">
+                                <div class="metric-item">
+                                    <span>Revenue:</span>
+                                    <span class="metric-value">₹12 Cr</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customers:</span>
+                                    <span class="metric-value">100</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>ARPU:</span>
+                                    <span class="metric-value">₹10,000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth:</span>
+                                    <span class="metric-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="year-block">
+                            <div class="year-title">Year 2 (2025)</div>
+                            <div class="year-metrics">
+                                <div class="metric-item">
+                                    <span>Revenue:</span>
+                                    <span class="metric-value">₹60 Cr</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customers:</span>
+                                    <span class="metric-value">500</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>ARPU:</span>
+                                    <span class="metric-value">₹10,000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth:</span>
+                                    <span class="metric-value">400%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="year-block">
+                            <div class="year-title">Year 3 (2026)</div>
+                            <div class="year-metrics">
+                                <div class="metric-item">
+                                    <span>Revenue:</span>
+                                    <span class="metric-value">₹150 Cr</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customers:</span>
+                                    <span class="metric-value">1,250</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>ARPU:</span>
+                                    <span class="metric-value">₹10,000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth:</span>
+                                    <span class="metric-value">150%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scenario-card target">
+                    <h3 class="scenario-title target">Target Scenario</h3>
+                    <div class="year-projections">
+                        <div class="year-block">
+                            <div class="year-title">Year 1 (2024)</div>
+                            <div class="year-metrics">
+                                <div class="metric-item">
+                                    <span>Revenue:</span>
+                                    <span class="metric-value">₹40 Cr</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customers:</span>
+                                    <span class="metric-value">100</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>ARPU:</span>
+                                    <span class="metric-value">₹33,000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth:</span>
+                                    <span class="metric-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="year-block">
+                            <div class="year-title">Year 2 (2025)</div>
+                            <div class="year-metrics">
+                                <div class="metric-item">
+                                    <span>Revenue:</span>
+                                    <span class="metric-value">₹200 Cr</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customers:</span>
+                                    <span class="metric-value">500</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>ARPU:</span>
+                                    <span class="metric-value">₹33,000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth:</span>
+                                    <span class="metric-value">400%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="year-block">
+                            <div class="year-title">Year 3 (2026)</div>
+                            <div class="year-metrics">
+                                <div class="metric-item">
+                                    <span>Revenue:</span>
+                                    <span class="metric-value">₹500 Cr</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customers:</span>
+                                    <span class="metric-value">1,250</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>ARPU:</span>
+                                    <span class="metric-value">₹33,000</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth:</span>
+                                    <span class="metric-value">150%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Growth Chart -->
+            <div class="growth-chart">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Revenue Growth Trajectory</h3>
+                <div class="chart-placeholder">
+                    📈 Revenue Growth Chart<br>
+                    Conservative vs Target Scenarios<br>
+                    (Interactive chart showing 3-year projections)
+                </div>
+            </div>
+            
+            <!-- Key Assumptions -->
+            <div class="key-assumptions">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Key Financial Assumptions</h3>
+                <div class="assumptions-grid">
+                    <div class="assumption-item">
+                        <div class="assumption-title">Customer Acquisition</div>
+                        <div class="assumption-value">20-30 new customers per month by Year 2</div>
+                    </div>
+                    <div class="assumption-item">
+                        <div class="assumption-title">Churn Rate</div>
+                        <div class="assumption-value">5% monthly churn (industry standard: 8-12%)</div>
+                    </div>
+                    <div class="assumption-item">
+                        <div class="assumption-title">ARPU Growth</div>
+                        <div class="assumption-value">15% annual increase through upselling</div>
+                    </div>
+                    <div class="assumption-item">
+                        <div class="assumption-title">Gross Margin</div>
+                        <div class="assumption-value">75% maintained across all tiers</div>
+                    </div>
+                    <div class="assumption-item">
+                        <div class="assumption-title">Market Penetration</div>
+                        <div class="assumption-value">5% of addressable market by Year 3</div>
+                    </div>
+                    <div class="assumption-item">
+                        <div class="assumption-title">Geographic Expansion</div>
+                        <div class="assumption-value">3 new states per year starting Year 2</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+</body>
+</html>

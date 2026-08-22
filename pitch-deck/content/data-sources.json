@@ -1,0 +1,334 @@
+{
+  "company": {
+    "name": "Autoera AI Solutions",
+    "tagline": "Transforming Automotive Dealerships with Intelligent Automation",
+    "website": "www.autoeraai.com",
+    "email": "founder.autoeraai@gmail.com",
+    "phone": "+91 7299534753",
+    "location": "Chennai, Tamil Nadu, India",
+    "founded": "2024",
+    "founder": "Santhosh Jecob"
+  },
+  
+  "problem_metrics": {
+    "manual_operations_percentage": 78,
+    "daily_hours_wasted": "6-8",
+    "monthly_losses_lakhs": "15-25",
+    "customer_dissatisfaction_percentage": 67,
+    "sales_time_on_data_entry": 60,
+    "service_complaints_from_scheduling": 40,
+    "finance_approval_days": "3-7",
+    "insurance_processing_days": 14,
+    "industry_standard_insurance_days": 2
+  },
+  
+  "solution_metrics": {
+    "ai_engines": 6,
+    "total_ai_models": 65,
+    "lead_conversion_improvement": 94,
+    "service_completion_improvement": 86,
+    "loan_approval_rate_increase": 78,
+    "fraud_detection_accuracy": 87,
+    "productivity_enhancement": 65,
+    "operational_cost_reduction": 45,
+    "proven_roi_percentage": 1944
+  },
+  
+  "ai_engines": [
+    {
+      "name": "Sales AI Engine",
+      "icon": "🎯",
+      "models": 12,
+      "capabilities": [
+        "Lead scoring and conversion prediction",
+        "Pricing optimization",
+        "Customer behavior analytics",
+        "Sales forecasting",
+        "Inventory management"
+      ]
+    },
+    {
+      "name": "Service AI Engine",
+      "icon": "🔧",
+      "models": 11,
+      "capabilities": [
+        "Predictive maintenance",
+        "Smart scheduling",
+        "Quality assurance",
+        "Parts optimization",
+        "Technician matching"
+      ]
+    },
+    {
+      "name": "Finance AI Engine",
+      "icon": "💰",
+      "models": 10,
+      "capabilities": [
+        "Credit scoring",
+        "Loan approval automation",
+        "Fraud detection",
+        "Risk assessment",
+        "Payment processing"
+      ]
+    },
+    {
+      "name": "Insurance AI Engine",
+      "icon": "🛡️",
+      "models": 9,
+      "capabilities": [
+        "Claim processing",
+        "Damage assessment",
+        "Policy recommendations",
+        "Settlement calculation",
+        "Document management"
+      ]
+    },
+    {
+      "name": "Workforce AI Engine",
+      "icon": "👥",
+      "models": 12,
+      "capabilities": [
+        "Skill matching",
+        "Performance optimization",
+        "Training recommendations",
+        "Scheduling optimization",
+        "Productivity tracking"
+      ]
+    },
+    {
+      "name": "Fleet AI Engine",
+      "icon": "🚛",
+      "models": 11,
+      "capabilities": [
+        "Route optimization",
+        "Maintenance prediction",
+        "Cost management",
+        "Fuel optimization",
+        "Driver performance"
+      ]
+    }
+  ],
+  
+  "market_data": {
+    "global_automotive_ai_market": {
+      "current_size_billion": 2.8,
+      "projected_size_billion": 15.8,
+      "growth_rate_cagr": 33.2,
+      "year_current": 2024,
+      "year_projected": 2030
+    },
+    "india_automotive_market": {
+      "total_market_crores": 50000,
+      "dealership_operations_crores": 5000,
+      "ai_opportunity_crores": 500
+    },
+    "target_customers": {
+      "authorized_dealerships": 25000,
+      "multi_brand_dealers": 15000,
+      "independent_service_centers": 50000,
+      "fleet_management_companies": 5000
+    }
+  },
+  
+  "pricing_tiers": [
+    {
+      "name": "Starter",
+      "price_monthly": 20000,
+      "target": "Small dealerships (50 vehicles/month)",
+      "features": [
+        "Basic AI modules",
+        "White-label branding",
+        "100 voice calls",
+        "1,000 SMS included"
+      ]
+    },
+    {
+      "name": "Professional",
+      "price_monthly": 40000,
+      "target": "Growing dealerships (200 vehicles/month)",
+      "features": [
+        "Complete AI suite (65 models)",
+        "Full white-label",
+        "500 voice calls",
+        "10,000 SMS included"
+      ]
+    },
+    {
+      "name": "Enterprise",
+      "price_monthly": 80000,
+      "target": "Large dealerships (unlimited vehicles)",
+      "features": [
+        "All AI engines",
+        "Custom integrations",
+        "5,000 voice calls",
+        "50,000 SMS included"
+      ]
+    },
+    {
+      "name": "Custom",
+      "price_monthly": 150000,
+      "target": "Enterprise groups & conglomerates",
+      "features": [
+        "Bespoke AI solutions",
+        "Priority development",
+        "Unlimited usage",
+        "Dedicated support"
+      ]
+    }
+  ],
+  
+  "financial_projections": {
+    "conservative": {
+      "year_1": {
+        "revenue_crores": 12,
+        "customers": 100,
+        "avg_monthly_revenue": 10000
+      },
+      "year_2": {
+        "revenue_crores": 60,
+        "customers": 500,
+        "avg_monthly_revenue": 10000
+      },
+      "year_3": {
+        "revenue_crores": 150,
+        "customers": 1250,
+        "avg_monthly_revenue": 10000
+      }
+    },
+    "target": {
+      "year_1": {
+        "revenue_crores": 40,
+        "customers": 100,
+        "avg_monthly_revenue": 33000
+      },
+      "year_2": {
+        "revenue_crores": 200,
+        "customers": 500,
+        "avg_monthly_revenue": 33000
+      },
+      "year_3": {
+        "revenue_crores": 500,
+        "customers": 1250,
+        "avg_monthly_revenue": 33000
+      }
+    }
+  },
+  
+  "unit_economics": {
+    "gross_margin_percentage": 75,
+    "customer_ltv_lakhs": 15,
+    "cac_payback_months": "6-8",
+    "ltv_cac_ratio": "15:1",
+    "deployment_time_hours": "2-4"
+  },
+  
+  "case_studies": [
+    {
+      "title": "Premium Auto Dealership",
+      "challenge": "Manual processes causing 40% customer complaints",
+      "solution": "Complete AutoEra AI implementation",
+      "results": [
+        "94% reduction in customer complaints",
+        "₹45 lakhs monthly savings in operational costs",
+        "78% increase in loan approval rates",
+        "1,944% ROI within 12 months"
+      ]
+    },
+    {
+      "title": "Multi-Brand Service Center",
+      "challenge": "Inefficient service scheduling and inventory management",
+      "solution": "Service AI Engine + Workforce AI Engine",
+      "results": [
+        "86% faster service completion times",
+        "65% improvement in technician productivity",
+        "96% parts availability vs 60% previously",
+        "4.8/5 customer satisfaction vs 3.2/5 previously"
+      ]
+    },
+    {
+      "title": "Fleet Management Company",
+      "challenge": "High operational costs and maintenance issues",
+      "solution": "Fleet AI Engine + Predictive Maintenance",
+      "results": [
+        "45% reduction in operational costs",
+        "67% decrease in unexpected breakdowns",
+        "₹2.5 crores annual savings in maintenance costs",
+        "99.2% fleet uptime vs 87% previously"
+      ]
+    }
+  ],
+  
+  "competitive_advantages": [
+    "65 AI Models vs competitors' 1-3 models",
+    "Complete ecosystem vs siloed solutions",
+    "White-label B2B vs generic platforms",
+    "Multi-tenant isolation vs single-tenant",
+    "Real-time processing vs batch processing",
+    "Continuous learning vs static models",
+    "Immediate deployment vs 3-6 month implementations"
+  ],
+  
+  "technology_stack": {
+    "backend": "Django 4.2.7 + PostgreSQL + Redis + Celery",
+    "frontend": "Next.js 13 + TypeScript + Material-UI",
+    "ai_ml": "TensorFlow, PyTorch, scikit-learn",
+    "infrastructure": "Docker + AWS/GCP + Load balancers",
+    "security": "SOC 2 Type II compliance + encryption"
+  },
+  
+  "team": {
+    "leadership": [
+      {
+        "role": "CEO",
+        "experience": "15+ years automotive industry + 8 years AI/ML"
+      },
+      {
+        "role": "CTO",
+        "experience": "Former Google AI, 12+ years enterprise SaaS"
+      },
+      {
+        "role": "VP Sales",
+        "experience": "Ex-Maruti, 20+ years automotive sales"
+      },
+      {
+        "role": "VP Engineering",
+        "experience": "10+ years scaling SaaS platforms"
+      }
+    ],
+    "technical_team": {
+      "ai_ml_engineers": 10,
+      "full_stack_developers": 8,
+      "devops_engineers": 5,
+      "data_scientists": 3
+    }
+  },
+  
+  "funding": {
+    "series_a_crores": 50,
+    "use_of_funds": {
+      "technology_development": 40,
+      "sales_marketing": 30,
+      "operations": 20,
+      "working_capital": 10
+    },
+    "expected_valuation_growth": {
+      "current_crores": 200,
+      "year_3_crores": 2000,
+      "multiple": "10x"
+    }
+  },
+  
+  "contact_info": {
+    "demo_scheduling": "autoera.ai/demo",
+    "response_time": "<2 hours",
+    "support_availability": "24/7",
+    "trial_duration": "1 week"
+  },
+  
+  "special_offers": [
+    "50% OFF first 3 months for early adopters",
+    "Free implementation & training (₹2 lakh value)",
+    "Dedicated success manager for 6 months",
+    "Custom AI model development (₹5 lakh value)"
+  ]
+}

@@ -1,0 +1,134 @@
+/* Autoera AI Solutions - Color Palette */
+/* Use these CSS variables for consistent color application */
+
+:root {
+  /* Primary Brand Colors */
+  --autoera-blue: #1E3A8A;
+  --autoera-blue-rgb: 30, 58, 138;
+  --autoera-blue-light: #3B82F6;
+  --autoera-blue-dark: #1E40AF;
+  
+  --innovation-orange: #F97316;
+  --innovation-orange-rgb: 249, 115, 22;
+  --innovation-orange-light: #FB923C;
+  --innovation-orange-dark: #EA580C;
+  
+  /* Secondary Colors */
+  --professional-gray: #374151;
+  --professional-gray-rgb: 55, 65, 81;
+  --professional-gray-light: #6B7280;
+  --professional-gray-dark: #1F2937;
+  
+  --light-gray: #F3F4F6;
+  --light-gray-rgb: 243, 244, 246;
+  --light-gray-dark: #E5E7EB;
+  --light-gray-darker: #D1D5DB;
+  
+  /* Status Colors */
+  --success-green: #10B981;
+  --success-green-rgb: 16, 185, 129;
+  --success-green-light: #34D399;
+  --success-green-dark: #059669;
+  
+  --warning-red: #EF4444;
+  --warning-red-rgb: 239, 68, 68;
+  --warning-red-light: #F87171;
+  --warning-red-dark: #DC2626;
+  
+  /* Neutral Colors */
+  --white: #FFFFFF;
+  --black: #000000;
+  --pure-gray: #808080;
+  
+  /* Gradient Combinations */
+  --gradient-primary: linear-gradient(135deg, var(--autoera-blue) 0%, var(--autoera-blue-light) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--innovation-orange) 0%, var(--innovation-orange-light) 100%);
+  --gradient-neutral: linear-gradient(135deg, var(--professional-gray) 0%, var(--professional-gray-light) 100%);
+}
+
+/* Color Classes for Easy Application */
+
+/* Background Colors */
+.bg-autoera-blue { background-color: var(--autoera-blue); }
+.bg-innovation-orange { background-color: var(--innovation-orange); }
+.bg-professional-gray { background-color: var(--professional-gray); }
+.bg-light-gray { background-color: var(--light-gray); }
+.bg-success-green { background-color: var(--success-green); }
+.bg-warning-red { background-color: var(--warning-red); }
+
+/* Text Colors */
+.text-autoera-blue { color: var(--autoera-blue); }
+.text-innovation-orange { color: var(--innovation-orange); }
+.text-professional-gray { color: var(--professional-gray); }
+.text-light-gray { color: var(--light-gray); }
+.text-success-green { color: var(--success-green); }
+.text-warning-red { color: var(--warning-red); }
+.text-white { color: var(--white); }
+.text-black { color: var(--black); }
+
+/* Border Colors */
+.border-autoera-blue { border-color: var(--autoera-blue); }
+.border-innovation-orange { border-color: var(--innovation-orange); }
+.border-professional-gray { border-color: var(--professional-gray); }
+.border-light-gray { border-color: var(--light-gray); }
+
+/* Gradient Backgrounds */
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-accent { background: var(--gradient-accent); }
+.bg-gradient-neutral { background: var(--gradient-neutral); }
+
+/* Opacity Variations */
+.bg-autoera-blue-10 { background-color: rgba(var(--autoera-blue-rgb), 0.1); }
+.bg-autoera-blue-20 { background-color: rgba(var(--autoera-blue-rgb), 0.2); }
+.bg-autoera-blue-50 { background-color: rgba(var(--autoera-blue-rgb), 0.5); }
+.bg-autoera-blue-80 { background-color: rgba(var(--autoera-blue-rgb), 0.8); }
+
+.bg-innovation-orange-10 { background-color: rgba(var(--innovation-orange-rgb), 0.1); }
+.bg-innovation-orange-20 { background-color: rgba(var(--innovation-orange-rgb), 0.2); }
+.bg-innovation-orange-50 { background-color: rgba(var(--innovation-orange-rgb), 0.5); }
+.bg-innovation-orange-80 { background-color: rgba(var(--innovation-orange-rgb), 0.8); }
+
+/* Hover States */
+.hover-autoera-blue:hover { background-color: var(--autoera-blue-light); }
+.hover-innovation-orange:hover { background-color: var(--innovation-orange-light); }
+.hover-professional-gray:hover { background-color: var(--professional-gray-light); }
+
+/* Color Combinations for Accessibility */
+.high-contrast-primary {
+  background-color: var(--autoera-blue);
+  color: var(--white);
+}
+
+.high-contrast-accent {
+  background-color: var(--innovation-orange);
+  color: var(--white);
+}
+
+.high-contrast-neutral {
+  background-color: var(--professional-gray);
+  color: var(--white);
+}
+
+.low-contrast-light {
+  background-color: var(--light-gray);
+  color: var(--professional-gray);
+}
+
+/* Chart and Data Visualization Colors */
+.chart-color-1 { color: var(--autoera-blue); }
+.chart-color-2 { color: var(--innovation-orange); }
+.chart-color-3 { color: var(--success-green); }
+.chart-color-4 { color: var(--professional-gray); }
+.chart-color-5 { color: var(--autoera-blue-light); }
+.chart-color-6 { color: var(--innovation-orange-light); }
+
+/* Usage Examples in Comments */
+/*
+Primary Actions: var(--autoera-blue)
+Secondary Actions: var(--innovation-orange)
+Success Messages: var(--success-green)
+Error Messages: var(--warning-red)
+Body Text: var(--professional-gray)
+Subtle Text: var(--light-gray)
+Backgrounds: var(--light-gray) or var(--white)
+*/

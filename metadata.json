@@ -1,0 +1,7 @@
+{
+  "name": "AUTOERA AI SaaS",
+  "description": "A comprehensive AI-powered automotive dealership management platform featuring 6 intelligent engines for Sales, Service, Finance, Insurance, Workforce, and Fleet management.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoEra AI — Master Strategy Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0C0E14;
+  --paper: #F5F0E8;
+  --cream: #EDE8DC;
+  --warm: #D4C9B0;
+  --orange: #D4500A;
+  --orange-light: #E8692A;
+  --red: #C0392B;
+  --green: #1A6B3A;
+  --blue: #1A3A6B;
+  --gold: #B8860B;
+  --muted: #6B6352;
+  --border: rgba(12,14,20,0.12);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* GRAIN TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.c { max-width: 960px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+/* MASTHEAD */
+.masthead {
+  border-bottom: 3px double var(--ink);
+  padding: 32px 0 24px;
+  margin-bottom: 0;
+}
+.masthead-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+.masthead-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.masthead-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(32px, 6vw, 72px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+.masthead h1 .orange { color: var(--orange); }
+.masthead-deck {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 600px;
+  margin-top: 14px;
+  font-style: italic;
+  border-left: 3px solid var(--orange);
+  padding-left: 14px;
+}
+
+/* VERDICT STRIP */
+.verdict-strip {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 16px 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  position: relative;
+  z-index: 1;
+}
+.verdict-item {
+  text-align: center;
+  padding: 12px 8px;
+  border-right: 1px solid rgba(245,240,232,0.1);
+}
+.verdict-item:last-child { border-right: none; }
+.verdict-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: rgba(245,240,232,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.verdict-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+.v-orange { color: #E8692A; }
+.v-red { color: #E74C3C; }
+.v-green { color: #27AE60; }
+.v-gold { color: #F1C40F; }
+
+/* SECTION */
+.section {
+  padding: 52px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sec-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-eyebrow::after { content: ''; flex:1; max-width:32px; height:1px; background:var(--orange); }
+.sec-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(22px, 4vw, 40px);
+  line-height: 1.05;
+  margin-bottom: 28px;
+}
+.sec-title .o { color: var(--orange); }
+.sec-title .r { color: var(--red); }
+.sec-title .g { color: var(--green); }
+
+/* REALITY CHECK — big honest callout */
+.reality-box {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 2px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.reality-box::before {
+  content: '!';
+  position: absolute;
+  right: 24px; top: -10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 200px;
+  color: rgba(212,80,10,0.08);
+  line-height: 1;
+  pointer-events: none;
+}
+.reality-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--orange-light);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.reality-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--paper);
+  max-width: 780px;
+}
+.reality-text strong { color: var(--orange-light); font-style: normal; }
+
+/* TRAFFIC LIGHT ASSESSMENT */
+.tl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.tl-card {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 20px;
+  background: white;
+  position: relative;
+  padding-top: 48px;
+}
+.tl-dot {
+  position: absolute;
+  top: 16px; left: 20px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+}
+.tl-red { background: var(--red); }
+.tl-gold { background: var(--gold); }
+.tl-green { background: var(--green); }
+.tl-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.tl-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.tl-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* FEATURE REALITY TABLE */
+.feat-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.feat-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--ink);
+  background: var(--cream);
+}
+.feat-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.4;
+}
+.feat-table tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
+.tag {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+.tag-now { background: #d4edda; color: var(--green); border: 1px solid #b8dfc5; }
+.tag-soon { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+.tag-future { background: #f8d7da; color: var(--red); border: 1px solid #f5c6cb; }
+.tag-never { background: #343a40; color: #f8f9fa; }
+.feat-name { font-weight: 600; color: var(--ink); }
+
+/* CHALLENGE CARDS */
+.challenge-list { display: flex; flex-direction: column; gap: 14px; }
+.challenge-card {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: white;
+}
+.challenge-num {
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+}
+.challenge-problem { padding: 16px; border-right: 1px solid var(--border); }
+.challenge-solution { padding: 16px; background: var(--cream); }
+.ch-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: var(--muted);
+}
+.ch-problem-label { color: var(--red); }
+.ch-solution-label { color: var(--green); }
+.ch-title { font-weight: 600; font-size: 13px; margin-bottom: 5px; line-height: 1.3; }
+.ch-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* GTM FUNNEL */
+.gtm-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 20px;
+}
+.funnel-stage {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  gap: 0;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  border-radius: 2px;
+}
+.funnel-label {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.funnel-content {
+  padding: 14px 18px;
+  background: white;
+  font-size: 13px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+}
+.funnel-metric {
+  padding: 14px 16px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  font-weight: 500;
+  min-width: 120px;
+}
+
+/* REVENUE MODEL CARDS */
+.rev-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.rev-card {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: white;
+}
+.rev-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rev-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.rev-tag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 2px; }
+.rev-tag-primary { background: var(--orange); }
+.rev-tag-secondary { background: rgba(245,240,232,0.2); }
+.rev-body { padding: 16px; }
+.rev-amount {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.rev-period { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+.rev-items { display: flex; flex-direction: column; gap: 5px; }
+.rev-item {
+  font-size: 12px;
+  color: var(--muted);
+  padding-left: 12px;
+  position: relative;
+}
+.rev-item::before { content: '—'; position: absolute; left: 0; color: var(--orange); }
+
+/* ROADMAP TIMELINE */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 6px; bottom: 6px;
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--ink) 0, var(--ink) 6px, transparent 6px, transparent 12px);
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 28px;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -24px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: 2px solid var(--paper);
+  outline: 2px solid var(--orange);
+}
+.tl-phase {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.tl-period {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.tl-items { display: flex; flex-direction: column; gap: 4px; }
+.tl-row {
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+}
+.tl-row::before { content: '▸'; color: var(--orange); flex-shrink: 0; font-size: 10px; margin-top: 3px; }
+.tl-target {
+  margin-top: 10px;
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* FINANCIAL REALITY */
+.fin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.fin-col { }
+.fin-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.fin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.fin-row-label { color: var(--muted); }
+.fin-row-val { font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+.fin-row-val.strike {
+  text-decoration: line-through;
+  color: var(--red);
+  font-size: 11px;
+}
+.fin-row-val.realistic { color: var(--green); }
+.fin-row-val.warning { color: var(--red); }
+
+/* NORTH STAR */
+.north-star {
+  background: var(--orange);
+  color: white;
+  padding: 40px 44px;
+  border-radius: 2px;
+  margin: 0;
+}
+.ns-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+.ns-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(20px, 4vw, 36px);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.ns-desc { font-size: 14px; opacity: 0.9; line-height: 1.6; max-width: 680px; }
+
+/* QUOTE PULL */
+.pull-quote {
+  margin: 28px 0;
+  padding: 20px 28px;
+  border-left: 4px solid var(--orange);
+  background: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.pull-quote cite {
+  display: block;
+  margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+/* SCORE CARD */
+.score-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.score-card-header {
+  background: var(--cream);
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.score-card-title { font-weight: 600; font-size: 14px; }
+.score-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+.sb-strong { background: #d4edda; color: var(--green); }
+.sb-caution { background: #fff3cd; color: #856404; }
+.sb-critical { background: #f8d7da; color: var(--red); }
+.score-body { padding: 16px 18px; }
+.score-text { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.score-text strong { color: var(--ink); }
+
+/* 2-COL LAYOUT */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.one-col { }
+
+/* FOOTER */
+footer {
+  border-top: 3px double var(--ink);
+  padding: 28px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+footer p { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+
+@media (max-width: 700px) {
+  .verdict-strip, .tl-grid, .rev-grid, .fin-grid, .two-col { grid-template-columns: 1fr 1fr; }
+  .challenge-card { grid-template-columns: 40px 1fr; }
+  .challenge-solution { display: none; }
+  .funnel-stage { grid-template-columns: 100px 1fr; }
+  .funnel-metric { display: none; }
+  .masthead-top { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="c">
+  <div class="masthead">
+    <div class="masthead-top">
+      <div class="masthead-brand">AutoEra AI Solutions · Strategic Audit</div>
+      <div class="masthead-date">JUNE 2025 · CONFIDENTIAL</div>
+    </div>
+    <h1>YOUR PLAN:<br><span class="orange">WHAT'S REAL,</span><br>WHAT'S RISK,<br><span class="orange">WHAT TO DO.</span></h1>
+    <p class="masthead-deck">A brutally honest assessment of your Super App master plan — what's genuinely buildable now, what's 5 years away, the real GTM path, the challenges you will face, and exactly how to navigate from Chennai to a fundable, scalable AI company.</p>
+  </div>
+</div>
+
+<!-- VERDICT STRIP -->
+<div class="verdict-strip">
+  <div class="verdict-item">
+    <div class="verdict-label">Plan Ambition</div>
+    <div class="verdict-val v-gold">BOLD</div>
+  </div>
+  <div class="verdict-item">
+    <div class="verdict-label">Year-1 Feasibility</div>
+    <div class="verdict-val v-red">30%</div>
+  </div>
+  <div class="verdict-item">
+    <div class="verdict-label">Core SaaS Modules</div>
+    <div class="verdict-val v-green">BUILD NOW</div>
+  </div>
+  <div class="verdict-item">
+    <div class="verdict-label">True Opportunity</div>
+    <div class="verdict-val v-orange">MASSIVE</div>
+  </div>
+</div>
+
+<div class="c">
+
+<!-- SECTION 1: HONEST PLAN ASSESSMENT -->
+<div class="section">
+  <div class="sec-eyebrow">01 · Plan Reality Check</div>
+  <div class="sec-title">The <span class="o">honest truth</span> about your master plan</div>
+
+  <div class="reality-box">
+    <div class="reality-title">⚡ Strategic Assessment</div>
+    <p class="reality-text">
+      Your master plan is <strong>visionary but dangerously overloaded</strong> for a founding team. The core opportunity — AI SaaS for Indian automobile dealerships — is <strong>real, urgent, and massively underserved</strong>. But the plan as written attempts to build what took companies like Cox Automotive, CDK Global, and Tesla 10–20 years and $500M+ to build — in Year 1. The risk is not that the vision is wrong. The risk is that <strong>trying to build 95 AI models, blockchain, AR/VR, metaverse, autonomous driving, and a 4.5M user social network simultaneously will kill the real, fundable business hiding inside this plan.</strong>
+    </p>
+  </div>
+
+  <div class="tl-grid">
+    <div class="tl-card">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-label">✓ Confirmed Real</div>
+      <div class="tl-title">The Core Dealership SaaS</div>
+      <div class="tl-desc">Service management, lead CRM, insurance renewals, parts prediction, fleet maintenance, workforce analytics. This is a real ₹500Cr+ India opportunity. Buildable now with a 3-person team in 6 months.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot tl-gold"></div>
+      <div class="tl-label">⚠ 2–3 Years Away</div>
+      <div class="tl-title">The AI Intelligence Layer</div>
+      <div class="tl-desc">True AI prediction (lead scoring, parts demand, battery health, churn risk). Needs 12–24 months of real dealership data first. You can stub this with rules-based logic initially, then replace with real ML.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot tl-red"></div>
+      <div class="tl-label">✗ 5–10 Years or Never</div>
+      <div class="tl-title">The "Super App" Vision</div>
+      <div class="tl-desc">Blockchain vehicle records, AR/VR training, metaverse car shows, NFT vehicle assets, autonomous driving engine, 4.5M global professional network. These require tens of millions in capital and years of data. Remove from Year-1 scope completely.</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    "The best startups are not the ones with the biggest vision slide. They are the ones who find one genuine pain so sharp that customers will pay to stop it — then build the minimum product that makes that pain go away."
+    <cite>— Strategic Principle for AutoEra AI, 2025</cite>
+  </div>
+</div>
+
+<!-- SECTION 2: WHAT AI IS POSSIBLE NOW -->
+<div class="section">
+  <div class="sec-eyebrow">02 · AI Feasibility Map</div>
+  <div class="sec-title">Which AI <span class="o">models are buildable</span> — right now vs later</div>
+
+  <table class="feat-table">
+    <thead>
+      <tr>
+        <th>AI Feature / Module</th>
+        <th>Feasibility Today</th>
+        <th>Data Needed</th>
+        <th>What to Use</th>
+        <th>Timeline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="feat-name">WhatsApp Auto-Updates (Service Status)</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>Zero — rule-based</td>
+        <td>Gupshup / Interakt API + triggers</td>
+        <td>2–3 weeks</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Insurance Expiry Reminder Engine</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>Policy dates from onboarding</td>
+        <td>Scheduled jobs + WhatsApp API</td>
+        <td>2–3 weeks</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Lead Scoring (Rule-Based v1)</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>Engagement signals (calls, visits, time)</td>
+        <td>Weighted scoring formula — no ML needed yet</td>
+        <td>3–4 weeks</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Parts Demand Alert (Threshold-Based)</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>Min stock levels + service history</td>
+        <td>Simple stock tracking + alerts</td>
+        <td>3–4 weeks</td>
+      </tr>
+      <tr>
+        <td class="feat-name">AI Daily Brief (Dealer Principal)</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>Your own platform data</td>
+        <td>Claude / GPT-4 API — summarise dashboard data daily</td>
+        <td>1–2 weeks</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Lead Scoring (True ML Model)</td>
+        <td><span class="tag tag-soon">6–12 MONTHS</span></td>
+        <td>1,000+ closed leads with outcomes</td>
+        <td>Scikit-learn logistic regression / XGBoost</td>
+        <td>After 3–4 dealer pilots</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Parts Demand Forecasting (ML)</td>
+        <td><span class="tag tag-soon">12–18 MONTHS</span></td>
+        <td>12+ months of parts consumption data</td>
+        <td>ARIMA or Prophet time-series model</td>
+        <td>After 6+ dealers onboarded</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Predictive Vehicle Maintenance</td>
+        <td><span class="tag tag-soon">12–24 MONTHS</span></td>
+        <td>OBD2 telematics + 10K+ service records</td>
+        <td>LSTM on time-series sensor data (AWS SageMaker)</td>
+        <td>Phase 3 — Fleet module</td>
+      </tr>
+      <tr>
+        <td class="feat-name">EV Battery Health Scoring</td>
+        <td><span class="tag tag-soon">18–24 MONTHS</span></td>
+        <td>BMS data from EV OEM partnership</td>
+        <td>Regression model on charge/discharge cycles</td>
+        <td>Need OLA/Ather API access first</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Computer Vision Damage Assessment</td>
+        <td><span class="tag tag-future">2–3 YEARS</span></td>
+        <td>100,000+ labelled vehicle damage images</td>
+        <td>Fine-tuned ResNet/EfficientNet — massive data cost</td>
+        <td>Post Series A with insurance co. partnership</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Autonomous Driving AI Engine</td>
+        <td><span class="tag tag-never">NOT FOR THIS STARTUP</span></td>
+        <td>Billions of miles of sensor data</td>
+        <td>Waymo / Tesla spend $1B+/year. Remove from plan.</td>
+        <td>Irrelevant for dealership SaaS</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Blockchain Vehicle Records</td>
+        <td><span class="tag tag-future">3–5 YEARS</span></td>
+        <td>Govt. VAHAN database integration needed</td>
+        <td>Not viable until India has digital vehicle registry API</td>
+        <td>Remove from MVP entirely</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Metaverse / AR/VR / NFT</td>
+        <td><span class="tag tag-never">NOT FOR THIS STARTUP</span></td>
+        <td>N/A — consumer adoption is near zero in India</td>
+        <td>Distraction. Remove from plan completely.</td>
+        <td>Not relevant 2025–2030</td>
+      </tr>
+      <tr>
+        <td class="feat-name">Multi-Bank EMI Calculator</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>Bank rate sheets (manual or API)</td>
+        <td>Simple calculator + HDFC/ICICI/SBI rate feeds</td>
+        <td>2–3 weeks</td>
+      </tr>
+      <tr>
+        <td class="feat-name">OBD2 Fleet Telematics Ingestion</td>
+        <td><span class="tag tag-now">BUILD NOW</span></td>
+        <td>OBD2 dongle (₹2,000–4,000/vehicle)</td>
+        <td>MQTT broker + AWS IoT Core + dashboard</td>
+        <td>4–6 weeks with 1 engineer</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 3: GTM ANALYSIS -->
+<div class="section">
+  <div class="sec-eyebrow">03 · GTM Analysis</div>
+  <div class="sec-title">Your real <span class="o">go-to-market path</span> — month by month</div>
+
+  <div class="gtm-funnel">
+    <div class="funnel-stage">
+      <div class="funnel-label">Months 1–2</div>
+      <div class="funnel-content"><strong>Zero-to-product sprint.</strong> Build ServicePulse MVP: digital job card + WhatsApp status + basic CRM. No AI yet — just automation. Target: 1 working dealership demo.</div>
+      <div class="funnel-metric">Cost: ₹0–2L</div>
+    </div>
+    <div class="funnel-stage">
+      <div class="funnel-label">Months 3–4</div>
+      <div class="funnel-content"><strong>3 free pilot dealerships</strong> near Valasaravakkam. No payment. Install, train, observe. Collect real feedback. Fix what breaks. Get testimonials and usage data.</div>
+      <div class="funnel-metric">Revenue: ₹0</div>
+    </div>
+    <div class="funnel-stage">
+      <div class="funnel-label">Months 5–6</div>
+      <div class="funnel-content"><strong>Add InsureGuard module.</strong> Show pilot dealers their insurance renewal leakage. Convert 2–3 to ₹10,000–15,000/month paid plans. First rupee of revenue. Proof of willingness-to-pay.</div>
+      <div class="funnel-metric">Revenue: ₹30–45K/mo</div>
+    </div>
+    <div class="funnel-stage">
+      <div class="funnel-label">Months 7–9</div>
+      <div class="funnel-content"><strong>Add SalesMind lead management.</strong> Target 10 paying customers across Chennai. Begin hiring BD person with dealer network contacts. Apply for TN Startup Seed Fund / NASSCOM 10K.</div>
+      <div class="funnel-metric">Revenue: ₹1.5L/mo</div>
+    </div>
+    <div class="funnel-stage">
+      <div class="funnel-label">Months 10–12</div>
+      <div class="funnel-content"><strong>Add FinanceFlow + basic AI scoring.</strong> Expand to Coimbatore + Madurai. Target 25 customers. Prepare investor deck. First ₹50L angel round is fundable at this traction.</div>
+      <div class="funnel-metric">Revenue: ₹3.5L/mo</div>
+    </div>
+    <div class="funnel-stage">
+      <div class="funnel-label">Year 2</div>
+      <div class="funnel-content"><strong>Fleet AI + EV module + true ML prediction.</strong> Expand to Bengaluru + Hyderabad. Raise ₹2–3Cr seed round. Target 75 customers. Build AI team with real data.</div>
+      <div class="funnel-metric">Revenue: ₹1–1.5Cr/mo</div>
+    </div>
+    <div class="funnel-stage">
+      <div class="funnel-label">Year 3–5</div>
+      <div class="funnel-content"><strong>National expansion + OEM partnerships.</strong> Series A. 300–500 dealerships. Begin building advanced AI models on top of 2+ years of proprietary data. That data becomes the true moat.</div>
+      <div class="funnel-metric">Revenue: ₹10–30Cr/mo</div>
+    </div>
+  </div>
+
+  <!-- GTM CHANNELS -->
+  <div class="two-col">
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">Primary GTM Channels</div>
+      <div class="challenge-list" style="gap:8px;">
+        <div style="background:white;border:1px solid var(--border);padding:12px 14px;border-radius:2px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:3px;">1. Direct Founder Sales (Months 1–6)</div>
+          <div style="font-size:12px;color:var(--muted);">You knock on doors in Valasaravakkam, Porur, Vadapalani. Use Step 2 Fitness gym member network. 3 pilots this way. Irreplaceable founder-to-owner trust-building.</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);padding:12px 14px;border-radius:2px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:3px;">2. ₹ Loss Audit as Lead Magnet</div>
+          <div style="font-size:12px;color:var(--muted);">Print a 1-page "Revenue Leakage Audit" for each dealer. Walk in, show them ₹3–5L/month they're losing. Free to prepare, irresistible to receive.</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);padding:12px 14px;border-radius:2px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:3px;">3. FADA Tamil Nadu Chapter</div>
+          <div style="font-size:12px;color:var(--muted);">Present at one FADA TN meeting. 1 endorsement = 50 warm introductions. Dealer principals trust their peer network more than any ad or LinkedIn post.</div>
+        </div>
+        <div style="background:white;border:1px solid var(--border);padding:12px 14px;border-radius:2px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:3px;">4. LinkedIn + WhatsApp Content</div>
+          <div style="font-size:12px;color:var(--muted);">Weekly posts: "This Chennai dealer recovered ₹2L in one month using AI renewal tracking." Real numbers. Tamil dealer community shares these aggressively.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">Revenue Model Stack</div>
+      <div class="rev-grid" style="grid-template-columns:1fr;">
+        <div class="rev-card">
+          <div class="rev-header"><span class="rev-name">Core SaaS Subscriptions</span><span class="rev-tag rev-tag-primary">PRIMARY</span></div>
+          <div class="rev-body">
+            <div class="rev-amount">₹8K–35K</div>
+            <div class="rev-period">per dealership per month</div>
+            <div class="rev-items">
+              <div class="rev-item">Starter: ₹8,000 (1 branch, 3 modules)</div>
+              <div class="rev-item">Growth: ₹18,000 (3 branches, all modules)</div>
+              <div class="rev-item">Enterprise: ₹35,000+ (unlimited branches)</div>
+            </div>
+          </div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-header"><span class="rev-name">Insurance Commission</span><span class="rev-tag rev-tag-secondary">BONUS</span></div>
+          <div class="rev-body">
+            <div class="rev-amount">3–8%</div>
+            <div class="rev-period">of each renewal premium processed</div>
+            <div class="rev-items">
+              <div class="rev-item">₹50K–2L per dealer per year passive income</div>
+              <div class="rev-item">Grows automatically as platform scales</div>
+            </div>
+          </div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-header"><span class="rev-name">Setup + Training Fee</span><span class="rev-tag rev-tag-secondary">ONE-TIME</span></div>
+          <div class="rev-body">
+            <div class="rev-amount">₹25,000</div>
+            <div class="rev-period">one-time onboarding per dealership</div>
+            <div class="rev-items">
+              <div class="rev-item">2-day on-site training included</div>
+              <div class="rev-item">Covers CAC for Starter tier customers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: FINANCIAL REALITY -->
+<div class="section">
+  <div class="sec-eyebrow">04 · Financial Reality Check</div>
+  <div class="sec-title">Your projections vs <span class="r">what's actually achievable</span></div>
+
+  <div class="fin-grid">
+    <div class="fin-col">
+      <div class="fin-title">Your Plan Projections</div>
+      <div class="fin-row"><span class="fin-row-label">Year 1 Revenue Target</span><span class="fin-row-val strike">₹550 Cr ($66M)</span></div>
+      <div class="fin-row"><span class="fin-row-label">Users by 2030</span><span class="fin-row-val strike">4.5M global users</span></div>
+      <div class="fin-row"><span class="fin-row-label">Diagnostic Accuracy</span><span class="fin-row-val strike">97.2% (no data yet)</span></div>
+      <div class="fin-row"><span class="fin-row-label">AI Models in v1</span><span class="fin-row-val strike">95+ models</span></div>
+      <div class="fin-row"><span class="fin-row-label">Year 1 Team Size implied</span><span class="fin-row-val strike">100+ engineers</span></div>
+      <div class="fin-row"><span class="fin-row-label">Global network Day 1</span><span class="fin-row-val strike">4.5M professionals</span></div>
+    </div>
+    <div class="fin-col">
+      <div class="fin-title">Realistic Projections</div>
+      <div class="fin-row"><span class="fin-row-label">Year 1 Revenue (realistic)</span><span class="fin-row-val realistic">₹25–40L ARR</span></div>
+      <div class="fin-row"><span class="fin-row-label">Year 1 Customers</span><span class="fin-row-val realistic">15–25 dealerships</span></div>
+      <div class="fin-row"><span class="fin-row-label">Year 1 AI Models</span><span class="fin-row-val realistic">3–5 real models</span></div>
+      <div class="fin-row"><span class="fin-row-label">Year 1 Team Size</span><span class="fin-row-val realistic">4–6 people</span></div>
+      <div class="fin-row"><span class="fin-row-label">Year 3 Revenue</span><span class="fin-row-val realistic">₹2–4 Cr ARR</span></div>
+      <div class="fin-row"><span class="fin-row-label">Series A Trigger</span><span class="fin-row-val realistic">₹5–8 Cr ARR + 100 customers</span></div>
+    </div>
+  </div>
+
+  <div class="pull-quote" style="margin-top:20px;">
+    ₹550 Crore in Year 1 means ₹45 Crore per month, every month, from Day 1 of launch. For context, Excellon DMS — India's top automotive DMS player with 25 years of history — is not at this revenue. Realistic Year 1 for a Chennai-based B2B SaaS with a strong execution team is ₹25–50L ARR. That is still a fundable, scalable business worth building.
+    <cite>— Financial Reality Assessment</cite>
+  </div>
+</div>
+
+<!-- SECTION 5: CHALLENGES + SOLUTIONS -->
+<div class="section">
+  <div class="sec-eyebrow">05 · Challenges You Will Face</div>
+  <div class="sec-title">Real obstacles ahead — <span class="o">and how to beat them</span></div>
+
+  <div class="challenge-list">
+    <div class="challenge-card">
+      <div class="challenge-num">1</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Dealer Trust — "Why should I trust new software with my business?"</div>
+        <div class="ch-desc">Indian dealer principals are conservative. They've used Tally + Excel for 15 years. They fear data loss, staff disruption, and paying for something that breaks. This is the #1 sales barrier.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Free 60-day pilot, zero contract, data export guarantee</div>
+        <div class="ch-desc">Offer to run alongside their existing system for 2 months free. Show results. Then charge. Also provide a written guarantee: if they leave, they get all their data in Excel format. Removes ALL risk perception.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">2</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Staff Resistance — "My service advisor won't use an app"</div>
+        <div class="ch-desc">Technicians and service advisors resist new software. Average age is 28–35, smartphone-comfortable but not software-trained. Every failed adoption = lost customer for you.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">WhatsApp-first UX. No new habits needed.</div>
+        <div class="ch-desc">Design the service advisor workflow entirely through WhatsApp (they already live there). Job card creation via WhatsApp bot. No app download, no login screen. Zero resistance. Adoption in 1 day, not 1 week.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">3</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Cash Burn Before Revenue — Funding Gap</div>
+        <div class="ch-desc">Building a full SaaS platform with AI before any paying customers is a 6–12 month cash burn with zero income. Indian B2B SaaS customers take 2–4 months to close and another 2 months to go live. Your Step 2 Fitness income may not cover this.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Build minimum, charge early, apply for grants</div>
+        <div class="ch-desc">Build just ServicePulse in Month 1–2. Charge ₹5,000/month from Month 3. Use TIDE 2.0 (MeitY) / TN iStart / NASSCOM 10K Startups grants (₹5–25L available). These grants are non-dilutive and specifically designed for this stage.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">4</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Building AI Without Training Data</div>
+        <div class="ch-desc">Your plan claims 97% accuracy AI models on Day 1. In reality, training an accurate predictive model requires 12–24 months of real dealership data. No data = no real AI. Using generic models = wrong predictions = lost customer trust.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Start rules-based, transition to ML as data grows</div>
+        <div class="ch-desc">Call it "AI-powered" but implement with smart business rules first (e.g., "flag leads not followed up in 48h"). Collect data. After 6 months with 5+ dealers, you have enough to train a first real ML model. Accuracy improves naturally.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">5</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">OEM Portal Integration is Blocked</div>
+        <div class="ch-desc">Maruti, Hyundai, TVS all have dealer portals with proprietary APIs that are not open. Getting API access requires formal OEM partnerships, NDAs, security audits. This takes 12–24 months of relationship-building.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Manual export bridge first, API later</div>
+        <div class="ch-desc">Build a "1-click OEM report export" that formats your data in whatever format each OEM portal requires. Dealers paste it in manually. Not elegant, but removes the friction. Apply for OEM partner programs (Maruti has one) officially from Year 1.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">6</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Churn — Dealers Cancelling After 3 Months</div>
+        <div class="ch-desc">Indian SME SaaS has high early churn. If a dealer's staff changes, or the owner loses interest, or a competitor offers ₹2,000 less, they cancel. B2B SaaS lifetime value depends on making switching painful (in a good way).</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Make data the lock-in. Add modules each quarter.</div>
+        <div class="ch-desc">Every month they use AutoEra, their customer history, service records, and lead data grows inside your platform. After 6 months, switching means losing 2+ years of history. Add a new module every quarter — each module deepens dependency and raises NPS.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">7</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Team Building in Chennai — Talent Cost vs Quality</div>
+        <div class="ch-desc">Good full-stack engineers in Chennai demand ₹8–15L/year. Good ML engineers demand ₹12–20L. Finding people with both automotive domain knowledge and technical skills is rare. Early hires who leave take critical knowledge.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Anna University / SRM fresh grads + ESOP culture</div>
+        <div class="ch-desc">Hire 1–2 fresh grads from Anna University, SRM, or VIT at ₹4–6L + 0.5–1% ESOP. They grow with you. Hire 1 senior engineer as a fractional CTO (part-time) to set architecture. Use Claude heavily for code review, architecture decisions, and documentation.</div>
+      </div>
+    </div>
+    <div class="challenge-card">
+      <div class="challenge-num">8</div>
+      <div class="challenge-problem">
+        <div class="ch-label ch-problem-label">Challenge</div>
+        <div class="ch-title">Copycat Competition — Cogxim / AutoBooom Adding "AI"</div>
+        <div class="ch-desc">If you start winning, competitors will add "AI" branding to their existing software and undercut your price. A company with 5,000 existing customers is dangerous even with inferior AI, because switching costs are real for those customers too.</div>
+      </div>
+      <div class="challenge-solution">
+        <div class="ch-label ch-solution-label">Your Solution</div>
+        <div class="ch-title">Data moat + speed. Be 18 months ahead, always.</div>
+        <div class="ch-desc">By the time a Cogxim adds "AI", you already have real ML models trained on 18 months of dealer data. Your models get better as you grow — theirs start from zero. Announce new features quarterly. Focus on EV + Fleet — they will never build that quickly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: PRODUCT DESIGN SCORECARD -->
+<div class="section">
+  <div class="sec-eyebrow">06 · Plan Scorecard</div>
+  <div class="sec-title">Module-by-module <span class="o">build priority</span> assessment</div>
+
+  <div class="score-card">
+    <div class="score-card-header"><div class="score-card-title">ServicePulse — Digital Job Card + WhatsApp</div><div class="score-badge sb-strong">BUILD FIRST · MONTH 1–2</div></div>
+    <div class="score-body"><div class="score-text">This is your <strong>fastest-to-prove, lowest-risk, highest-adoption</strong> module. Every dealer has vehicles being serviced every day. A digital job card that auto-sends WhatsApp updates replaces the #1 customer complaint immediately. Build this first. Show results in 2 weeks. This is your door-opener for every other module.</div></div>
+  </div>
+  <div class="score-card">
+    <div class="score-card-header"><div class="score-card-title">InsureGuard — Renewal Intelligence</div><div class="score-badge sb-strong">BUILD SECOND · MONTH 3–4</div></div>
+    <div class="score-body"><div class="score-text">This is your <strong>immediate revenue generator for the dealer</strong>. Every 30-day reminder that converts = ₹2,000–8,000 commission income they weren't getting before. When a dealer sees <strong>₹1.5L new income on their statement</strong> that didn't exist before, your product pays for itself. This module is what converts pilots to paid contracts.</div></div>
+  </div>
+  <div class="score-card">
+    <div class="score-card-header"><div class="score-card-title">SalesMind — Lead Pipeline + AI Scoring</div><div class="score-badge sb-caution">MONTH 5–6 · AFTER DATA</div></div>
+    <div class="score-body"><div class="score-text">Build the <strong>lead pipeline and follow-up system first</strong> (pure CRM, no AI needed). Add rule-based scoring (calls in 24h = warm, test drive done = hot). The real ML lead scoring model comes after you have 500+ closed leads with outcome data. Don't over-promise AI accuracy here in early sales conversations.</div></div>
+  </div>
+  <div class="score-card">
+    <div class="score-card-header"><div class="score-card-title">FinanceFlow — Multi-Bank EMI + DigiLocker</div><div class="score-badge sb-caution">MONTH 7–9</div></div>
+    <div class="score-body"><div class="score-text">Real-time bank API integration (HDFC, ICICI, SBI) takes 3–6 months to get API access approved. Start with <strong>manual rate sheets + a calculator</strong> while the bank partnerships are being established. DigiLocker API is available now — use it for document collection from Day 1.</div></div>
+  </div>
+  <div class="score-card">
+    <div class="score-card-header"><div class="score-card-title">Fleet AI + EV Intelligence</div><div class="score-badge sb-caution">YEAR 2 · AFTER 20+ DEALERS</div></div>
+    <div class="score-body"><div class="score-text">Extremely powerful — but needs OBD2 hardware partnerships (₹3,000–5,000/vehicle installation cost that someone must pay) and EV OEM API access. Target Chennai's 3PL logistics companies first — they have 20–100 vehicles and a clear ROI from prevented breakdowns. Use this as a separate enterprise tier.</div></div>
+  </div>
+  <div class="score-card">
+    <div class="score-card-header"><div class="score-card-title">Autonomous Driving + Blockchain + AR/VR + NFT + Metaverse</div><div class="score-badge sb-critical">REMOVE FROM PLAN ENTIRELY</div></div>
+    <div class="score-body"><div class="score-text"><strong>These features are why investors will reject your pitch</strong> if you include them in Year 1 plans. They signal to a sophisticated investor that the founder doesn't understand what's buildable vs. what's a buzzword list. <strong>Remove them from the pitch deck, the product roadmap, and the business plan</strong>. They may be relevant in 2030 — but for your 2025 fundraise, they hurt you.</div></div>
+  </div>
+</div>
+
+<!-- SECTION 7: TEAM AND COMPANY BUILD -->
+<div class="section">
+  <div class="sec-eyebrow">07 · Company Building</div>
+  <div class="sec-title">How to <span class="o">structure and build</span> AutoEra AI</div>
+
+  <div class="two-col">
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">Year 1 Team (6 People Max)</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">You — CEO + Head of Sales</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Customer development, product vision, GTM. Do NOT write code. Your job is 10 customer conversations per week.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Full-Stack Engineer #1</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">React + Django + PostgreSQL. Builds ServicePulse. Anna University / SRM grad at ₹5–7L + 1.5% ESOP.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Automotive Domain Expert</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Ex-dealership GM or service manager. Validates every product decision. Opens dealer doors. ₹5–8L.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Full-Stack Engineer #2 (Month 4+)</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Joins when first pilot is live. Builds InsureGuard + SalesMind. ₹6–8L.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">BD / Sales Person (Month 6+)</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Ex-OEM regional sales rep. Has dealer contacts across TN. ₹4–6L + 1.5% commission on ARR.</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);">Company Structure + Funding Path</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Legal: Convert to Pvt Ltd</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">You have UDYAM registration. Now convert to Private Limited (₹15–20K via CA). This is required for ESOP issuance, investor funding, and bank current account.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Non-Dilutive Grants First (Month 1–3)</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">Apply: TIDE 2.0 (MeitY) — up to ₹25L. TN iStart — up to ₹10L. NASSCOM 10K Startups. These take 60–90 days but cost zero equity.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Angel Round (Month 8–10)</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">At 10+ paying dealers + ₹15L ARR: raise ₹50L–1.5Cr angel. Target: Chennai Angel Network, iCreate Gujarat, IAN (Indian Angel Network). Dilute max 12–15%.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">Seed Round (Year 2)</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">At 30+ dealers + ₹60–80L ARR: raise ₹2–3Cr seed from Stellaris, Kalaari, Blume, or 3one4. At this point the deal is very investable.</div></div>
+        <div style="background:white;border:1px solid var(--border);padding:12px;border-radius:2px;"><div style="font-weight:600;font-size:13px;">IP Strategy</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">File provisional patent for your insurance renewal intelligence and parts demand prediction algorithm (even rules-based version). Low cost, high signal to investors. Trade secret: your training data.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 8: ROADMAP -->
+<div class="section">
+  <div class="sec-eyebrow">08 · Execution Roadmap</div>
+  <div class="sec-title">The <span class="o">90-day sprint</span> to first paying customer</div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-phase">Week 1–2</div>
+      <div class="tl-period">Decision + Foundation</div>
+      <div class="tl-items">
+        <div class="tl-row">Decide: remove Super App elements from Year-1 plan. Refocus on dealership SaaS only.</div>
+        <div class="tl-row">Convert UDYAM to Pvt Ltd. Open current account.</div>
+        <div class="tl-row">Post job for full-stack engineer. Interview 5 candidates from Anna University / LinkedIn.</div>
+        <div class="tl-row">Apply for NASSCOM 10K Startups program online (free, 30 min).</div>
+      </div>
+      <div class="tl-target">Deliverable: Company incorporated + 1 engineer hired</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Week 3–8</div>
+      <div class="tl-period">Build ServicePulse MVP</div>
+      <div class="tl-items">
+        <div class="tl-row">Digital job card (web + mobile) with vehicle + service type + technician assignment.</div>
+        <div class="tl-row">WhatsApp status updates via Gupshup API (vehicle received → in progress → ready).</div>
+        <div class="tl-row">Basic dealer dashboard with today's jobs, bay status, revenue total.</div>
+        <div class="tl-row">GST-compliant invoice generation PDF.</div>
+        <div class="tl-row">Simple CRM: customer record, vehicle history, contact info.</div>
+      </div>
+      <div class="tl-target">Deliverable: Working demo on laptop, ready to show dealers</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Week 9–16</div>
+      <div class="tl-period">3 Pilot Dealerships</div>
+      <div class="tl-items">
+        <div class="tl-row">Identify 3 dealers in Valasaravakkam / Porur / Vadapalani via gym network + cold walk-in.</div>
+        <div class="tl-row">Install free. Train staff in 1 day on-site. Run alongside their existing system.</div>
+        <div class="tl-row">Visit every week. Fix every bug. Watch how staff actually use it.</div>
+        <div class="tl-row">Add insurance expiry tracker — show dealers their upcoming renewals list.</div>
+      </div>
+      <div class="tl-target">Deliverable: 3 active pilots, weekly usage, testimonials recorded</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Month 4–6</div>
+      <div class="tl-period">First Revenue</div>
+      <div class="tl-items">
+        <div class="tl-row">Convert 2–3 pilot dealers to ₹10,000–15,000/month paid plan.</div>
+        <div class="tl-row">Launch InsureGuard — show renewal commission reports to dealer principals.</div>
+        <div class="tl-row">Apply for TIDE 2.0 grant with pilot data as evidence.</div>
+        <div class="tl-row">Hire BD person with dealer contacts. Target 10 total customers.</div>
+      </div>
+      <div class="tl-target">Milestone: ₹1.5–2L MRR · First angel conversations</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Month 7–12</div>
+      <div class="tl-period">Scale Tamil Nadu</div>
+      <div class="tl-items">
+        <div class="tl-row">Add SalesMind + FinanceFlow. Expand to 25 customers.</div>
+        <div class="tl-row">Present at FADA TN chapter meeting. Get endorsement.</div>
+        <div class="tl-row">Raise ₹50L–1.5Cr angel round at ₹4–6Cr valuation.</div>
+        <div class="tl-row">Begin building true ML models with 12 months of real data.</div>
+      </div>
+      <div class="tl-target">Milestone: ₹3.5–4L MRR · Angel round closed</div>
+    </div>
+  </div>
+</div>
+
+<!-- NORTH STAR -->
+<div class="section" style="border-bottom:none; padding-bottom:0;">
+  <div class="north-star">
+    <div class="ns-label">Your North Star Statement</div>
+    <div class="ns-title">"AutoEra AI is the operating system for India's automobile dealers — we don't sell software, we recover lost revenue."</div>
+    <div class="ns-desc">Strip the Super App. Kill the metaverse. Ignore the blockchain. Focus every rupee, every hour, and every hire on making Chennai's dealers more money than they spend on you. When 10 dealers feel that, word travels. When 50 feel that, VCs call you. When 200 feel that, you raise Series A and build the rest of the vision on top of real data, real trust, and real revenue.</div>
+  </div>
+</div>
+
+</div><!-- end .c -->
+
+<div class="c">
+<footer>
+  <div class="footer-brand">AUTOERA AI</div>
+  <p>CHENNAI · UDYAM-TN-24-0162449 · MASTER STRATEGY AUDIT · JUNE 2025</p>
+</footer>
+</div>
+
+</body>
+</html>

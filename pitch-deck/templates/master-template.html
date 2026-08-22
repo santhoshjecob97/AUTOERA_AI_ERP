@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoera AI Solutions - Pitch Deck Template</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        /* Master Template Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--white);
+            color: var(--professional-gray);
+        }
+
+        /* Slide Container */
+        .slide {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            background: var(--white);
+            border: 1px solid var(--light-gray);
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header Section */
+        .slide-header {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 120px;
+        }
+
+        .slide-header .logo {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slide-header .slide-number {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-medium);
+            opacity: 0.8;
+        }
+
+        /* Content Section */
+        .slide-content {
+            flex: 1;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide-title {
+            font-size: var(--font-size-5xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--autoera-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .slide-subtitle {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-medium);
+            color: var(--professional-gray);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Content Blocks */
+        .content-block {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-block h3 {
+            color: var(--autoera-blue);
+            margin-bottom: 1rem;
+        }
+
+        .content-block ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-block li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            line-height: var(--line-height-relaxed);
+        }
+
+        .content-block li::before {
+            content: "→";
+            color: var(--innovation-orange);
+            font-weight: var(--font-weight-bold);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Metrics Display */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--light-gray);
+            border-radius: 12px;
+            border-left: 4px solid var(--innovation-orange);
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--success-green);
+            line-height: var(--line-height-tight);
+        }
+
+        .metric-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--professional-gray);
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-wide);
+            margin-top: 0.5rem;
+        }
+
+        /* Chart Placeholder */
+        .chart-container {
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed var(--professional-gray);
+        }
+
+        .chart-placeholder {
+            color: var(--professional-gray);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-medium);
+        }
+
+        /* Call to Action */
+        .cta-section {
+            background: var(--gradient-accent);
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .cta-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: var(--font-size-lg);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: var(--white);
+            color: var(--innovation-orange);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+        }
+
+        /* Footer Section */
+        .slide-footer {
+            background: var(--professional-gray);
+            color: var(--white);
+            padding: 1rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-size-sm);
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-contact span {
+            opacity: 0.8;
+        }
+
+        /* Section Divider Slide */
+        .section-divider {
+            background: var(--gradient-primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .section-divider .slide-content {
+            padding: 8rem 4rem;
+        }
+
+        .section-divider .slide-title {
+            color: var(--white);
+            font-size: var(--font-size-6xl);
+            margin-bottom: 2rem;
+        }
+
+        .section-divider .slide-subtitle {
+            color: var(--white);
+            opacity: 0.9;
+            font-size: var(--font-size-2xl);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            .slide {
+                width: 100%;
+                max-width: 1200px;
+                height: auto;
+                min-height: 675px;
+            }
+            
+            .slide-content {
+                padding: 2rem;
+            }
+            
+            .slide-header {
+                padding: 1rem 2rem;
+            }
+            
+            .slide-footer {
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: var(--font-size-2xl);
+            }
+            .two-column, .three-column, .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .slide {
+                width: 100%;
+                height: auto;
+                margin: 0;
+                border: none;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Title Slide Template -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">
+                🚀 Autoera AI Solutions
+            </div>
+            <div class="slide-number">01</div>
+        </div>
+        <div class="slide-content">
+            <h1 class="slide-title">Transforming Automotive Dealerships with Intelligent Automation</h1>
+            <p class="slide-subtitle">The World's Most Comprehensive Automotive AI Platform</p>
+            <div class="cta-section">
+                <h2 class="cta-title">One Platform. Six AI Engines. 65 Specialized Models.</h2>
+                <p class="cta-subtitle">Infinite Possibilities for Your Dealership</p>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+
+    <!-- Section Divider Template -->
+    <div class="slide section-divider">
+        <div class="slide-content">
+            <h1 class="slide-title">The Problem</h1>
+            <p class="slide-subtitle">Automotive Dealerships Are Drowning in Manual Operations</p>
+        </div>
+    </div>
+
+    <!-- Content Slide Template -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">
+                🚀 Autoera AI Solutions
+            </div>
+            <div class="slide-number">03</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">Current Reality: Massive Inefficiencies</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">78%</div>
+                    <div class="metric-label">Manual Operations</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">6-8 hrs</div>
+                    <div class="metric-label">Daily Waste</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">₹15-25L</div>
+                    <div class="metric-label">Monthly Losses</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">67%</div>
+                    <div class="metric-label">Customer Dissatisfaction</div>
+                </div>
+            </div>
+            <div class="two-column">
+                <div class="content-block">
+                    <h3>Key Pain Points</h3>
+                    <ul>
+                        <li>Sales teams spend 60% time on data entry vs selling</li>
+                        <li>Service scheduling conflicts cause 40% customer complaints</li>
+                        <li>Finance approvals take 3-7 days vs competitors' instant decisions</li>
+                        <li>Insurance claims processing takes 14 days vs industry 2-day standard</li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-placeholder">
+                        📊 Efficiency Comparison Chart<br>
+                        Manual vs AI-Powered Operations
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+
+    <!-- Two Column Content Template -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">
+                🚀 Autoera AI Solutions
+            </div>
+            <div class="slide-number">04</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">Our Solution: Complete AI Ecosystem</h2>
+            <div class="two-column">
+                <div>
+                    <div class="content-block">
+                        <h3>🎯 Sales AI Engine</h3>
+                        <ul>
+                            <li>Lead scoring and conversion prediction</li>
+                            <li>Pricing optimization</li>
+                            <li>Customer behavior analytics</li>
+                        </ul>
+                    </div>
+                    <div class="content-block">
+                        <h3>🔧 Service AI Engine</h3>
+                        <ul>
+                            <li>Predictive maintenance</li>
+                            <li>Smart scheduling</li>
+                            <li>Quality assurance</li>
+                        </ul>
+                    </div>
+                    <div class="content-block">
+                        <h3>💰 Finance AI Engine</h3>
+                        <ul>
+                            <li>Credit scoring</li>
+                            <li>Loan approval automation</li>
+                            <li>Fraud detection</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div class="content-block">
+                        <h3>🛡️ Insurance AI Engine</h3>
+                        <ul>
+                            <li>Claim processing</li>
+                            <li>Damage assessment</li>
+                            <li>Policy recommendations</li>
+                        </ul>
+                    </div>
+                    <div class="content-block">
+                        <h3>👥 Workforce AI Engine</h3>
+                        <ul>
+                            <li>Skill matching</li>
+                            <li>Performance optimization</li>
+                            <li>Training recommendations</li>
+                        </ul>
+                    </div>
+                    <div class="content-block">
+                        <h3>🚛 Fleet AI Engine</h3>
+                        <ul>
+                            <li>Route optimization</li>
+                            <li>Maintenance prediction</li>
+                            <li>Cost management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+
+    <!-- Chart/Data Slide Template -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">
+                🚀 Autoera AI Solutions
+            </div>
+            <div class="slide-number">05</div>
+        </div>
+        <div class="slide-content">
+            <h2 class="slide-title">Proven Results: 1,944% ROI</h2>
+            <div class="chart-container">
+                <div class="chart-placeholder">
+                    📈 ROI Breakdown Chart<br>
+                    Cost Savings vs Revenue Increase
+                </div>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">94%</div>
+                    <div class="metric-label">Lead Conversion Improvement</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">86%</div>
+                    <div class="metric-label">Faster Service Completion</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">78%</div>
+                    <div class="metric-label">Loan Approval Rate Increase</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">87%</div>
+                    <div class="metric-label">Fraud Detection Accuracy</div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+
+    <!-- Call to Action Slide Template -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">
+                🚀 Autoera AI Solutions
+            </div>
+            <div class="slide-number">15</div>
+        </div>
+        <div class="slide-content">
+            <div class="cta-section">
+                <h2 class="cta-title">Ready to Transform Your Dealership?</h2>
+                <p class="cta-subtitle">Join the AI Revolution in Automotive Operations</p>
+                <button class="cta-button">Schedule Your Demo Today</button>
+            </div>
+            <div class="three-column">
+                <div class="content-block">
+                    <h3>📞 Contact Us</h3>
+                    <ul>
+                        <li>Email: founder.autoeraai@gmail.com</li>
+                        <li>Phone: +91 7299534753</li>
+                        <li>Website: www.autoeraai.com</li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <h3>🎯 Next Steps</h3>
+                    <ul>
+                        <li>30-minute product demo</li>
+                        <li>1-week free trial</li>
+                        <li>Custom ROI analysis</li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <h3>🎁 Special Offer</h3>
+                    <ul>
+                        <li>50% OFF first 3 months</li>
+                        <li>Free implementation</li>
+                        <li>Dedicated success manager</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+</body>
+</html>

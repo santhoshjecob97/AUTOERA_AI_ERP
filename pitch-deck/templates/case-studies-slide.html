@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies Slide - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .case-studies-slide {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #6EE7B7 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-studies-content {
+            flex: 1;
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .case-studies-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .case-studies-subtitle {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .case-studies-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .featured-case-study {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 3rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-case-study::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #F97316, #FB923C);
+        }
+
+        .case-study-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .case-study-icon {
+            font-size: 3.5rem;
+            background: rgba(249, 115, 22, 0.2);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 3px solid rgba(249, 115, 22, 0.4);
+        }
+
+        .case-study-info {
+            flex: 1;
+        }
+
+        .case-study-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #F97316;
+        }
+
+        .case-study-type {
+            font-size: 1rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .case-study-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #F97316;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            font-size: 1rem;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid #F97316;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .result-highlight {
+            font-weight: 700;
+            color: #F97316;
+        }
+
+        .additional-cases {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mini-case-study {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .mini-case-study:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .mini-case-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .mini-case-icon {
+            font-size: 2rem;
+            background: rgba(249, 115, 22, 0.2);
+            padding: 0.75rem;
+            border-radius: 10px;
+        }
+
+        .mini-case-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #F97316;
+        }
+
+        .mini-case-results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .mini-result {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .roi-highlight {
+            position: absolute;
+            top: 50%;
+            right: 4rem;
+            transform: translateY(-50%);
+            background: rgba(239, 68, 68, 0.95);
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border: 4px solid #FFFFFF;
+            max-width: 320px;
+        }
+
+        .roi-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .roi-number {
+            font-size: 4.5rem;
+            font-weight: 700;
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .roi-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .roi-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .testimonial-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .testimonial-author {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #F97316;
+        }
+
+        .testimonial-company {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 0.25rem;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(60deg, white 25%, transparent 25%),
+                linear-gradient(120deg, white 25%, transparent 25%);
+            background-size: 100px 100px;
+            background-position: 0 0, 50px 50px;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 4rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4); }
+            50% { box-shadow: 0 25px 50px rgba(239, 68, 68, 0.6); }
+        }
+
+        .roi-highlight {
+            animation: glow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="case-studies-slide">
+        <div class="background-pattern"></div>
+        <div class="slide-number">07</div>
+        
+        <div class="roi-highlight">
+            <div class="roi-title">Proven Results</div>
+            <div class="roi-number">1,944%</div>
+            <div class="roi-subtitle">ROI Achieved</div>
+            <div class="roi-description">
+                Real customers, real results. 
+                Not projections or estimates—
+                documented transformation.
+            </div>
+        </div>
+        
+        <div class="case-studies-content">
+            <h1 class="case-studies-title">
+                Customer Success: Real Results from Real Dealerships
+            </h1>
+            
+            <p class="case-studies-subtitle">
+                These aren't hypothetical scenarios or pilot programs. These are actual results 
+                from paying customers who transformed their operations with Autoera AI.
+            </p>
+            
+            <div class="case-studies-container">
+                <div class="featured-case-study">
+                    <div class="case-study-header">
+                        <div class="case-study-icon">🏆</div>
+                        <div class="case-study-info">
+                            <div class="case-study-title">Premium Auto Dealership</div>
+                            <div class="case-study-type">Complete AI Transformation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="case-study-section">
+                        <div class="section-title">
+                            🎯 Challenge
+                        </div>
+                        <div class="section-content">
+                            Manual processes causing 40% customer complaints, inefficient operations 
+                            leading to lost revenue, and inability to compete with faster, more 
+                            efficient competitors in the market.
+                        </div>
+                    </div>
+                    
+                    <div class="case-study-section">
+                        <div class="section-title">
+                            💡 Solution
+                        </div>
+                        <div class="section-content">
+                            Complete Autoera AI implementation across all six engines: Sales, Service, 
+                            Finance, Insurance, Workforce, and Fleet management with full white-label 
+                            integration.
+                        </div>
+                    </div>
+                    
+                    <div class="case-study-section">
+                        <div class="section-title">
+                            📈 Results
+                        </div>
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="result-highlight">94% reduction</span> in customer complaints
+                            </div>
+                            <div class="result-item">
+                                <span class="result-highlight">₹45 lakhs monthly savings</span> in operational costs
+                            </div>
+                            <div class="result-item">
+                                <span class="result-highlight">78% increase</span> in loan approval rates
+                            </div>
+                            <div class="result-item">
+                                <span class="result-highlight">1,944% ROI</span> within 12 months
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="additional-cases">
+                    <div class="mini-case-study">
+                        <div class="mini-case-header">
+                            <div class="mini-case-icon">🔧</div>
+                            <div class="mini-case-title">Multi-Brand Service Center</div>
+                        </div>
+                        <div class="mini-case-results">
+                            <div class="mini-result">86% faster service completion</div>
+                            <div class="mini-result">65% productivity improvement</div>
+                            <div class="mini-result">96% parts availability</div>
+                            <div class="mini-result">4.8/5 customer satisfaction</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mini-case-study">
+                        <div class="mini-case-header">
+                            <div class="mini-case-icon">🚛</div>
+                            <div class="mini-case-title">Fleet Management Company</div>
+                        </div>
+                        <div class="mini-case-results">
+                            <div class="mini-result">45% operational cost reduction</div>
+                            <div class="mini-result">67% fewer breakdowns</div>
+                            <div class="mini-result">₹2.5 crores annual savings</div>
+                            <div class="mini-result">99.2% fleet uptime</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mini-case-study">
+                        <div class="mini-case-header">
+                            <div class="mini-case-icon">💰</div>
+                            <div class="mini-case-title">Auto Finance Company</div>
+                        </div>
+                        <div class="mini-case-results">
+                            <div class="mini-result">78% loan approval increase</div>
+                            <div class="mini-result">87% fraud detection accuracy</div>
+                            <div class="mini-result">3-minute approval time</div>
+                            <div class="mini-result">₹12 crores additional revenue</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-section">
+                <div class="testimonial-quote">
+                    "Autoera AI transformed our dealership completely. We went from manual chaos 
+                    to AI-powered efficiency in just 4 hours. Our ROI was 1,944% in the first year!"
+                </div>
+                <div class="testimonial-author">— Rajesh Patel</div>
+                <div class="testimonial-company">Managing Director, Premium Auto Dealership</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

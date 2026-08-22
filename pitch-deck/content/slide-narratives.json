@@ -1,0 +1,294 @@
+{
+  "presentation_narrative": {
+    "opening_hook": "The automotive industry is at a critical inflection point. While technology transforms every sector, 78% of dealership operations remain stubbornly manual, costing the industry billions in lost efficiency and customer satisfaction.",
+    
+    "problem_narrative": {
+      "headline": "Automotive Dealerships Are Drowning in Manual Operations",
+      "story": "Imagine walking into a modern dealership where sales teams spend 60% of their time on data entry instead of selling cars. Where customers wait 3-7 days for finance approvals while competitors offer instant decisions. Where service scheduling conflicts create 40% of customer complaints. This isn't imagination—this is the reality for thousands of dealerships across India today.",
+      
+      "emotional_impact": "Every day, dealerships lose ₹15-25 lakhs due to operational inefficiencies. But the real cost isn't just financial—it's the 67% of customers who leave dissatisfied, never to return.",
+      
+      "urgency": "While dealerships struggle with manual processes, customer expectations are rising. The gap between what customers want and what dealerships can deliver is widening every day."
+    },
+    
+    "solution_narrative": {
+      "headline": "Introducing Autoera AI: The Complete Automotive Intelligence Platform",
+      "story": "What if every dealership operation could be powered by AI? What if sales teams could predict which leads will convert? What if service departments could prevent breakdowns before they happen? What if finance approvals took minutes, not days?",
+      
+      "transformation": "Autoera AI transforms dealerships from reactive, manual operations into proactive, intelligent businesses. Our platform doesn't just automate—it anticipates, optimizes, and delivers results that seemed impossible just years ago.",
+      
+      "proof": "We're not talking about future possibilities. We're delivering proven results today: 1,944% ROI, 94% reduction in customer complaints, and 86% faster service completion."
+    },
+    
+    "market_narrative": {
+      "headline": "A ₹500 Crore Opportunity Waiting to Be Captured",
+      "story": "The global automotive AI market is exploding—growing at 33.2% CAGR to reach $15.8 billion by 2030. Yet in India, with over 90,000 dealerships and service centers, AI adoption remains virtually zero.",
+      
+      "opportunity": "This creates an unprecedented opportunity. We're not competing in a crowded market—we're creating an entirely new category. Every dealership that adopts AI gains an insurmountable advantage over those that don't.",
+      
+      "timing": "The timing couldn't be better. Digital India initiatives, rising customer expectations, and post-pandemic operational pressures have created the perfect storm for AI adoption."
+    }
+  },
+  
+  "slide_content": {
+    "title_slide": {
+      "headline": "Transforming Automotive Dealerships with Intelligent Automation",
+      "subheadline": "The World's Most Comprehensive Automotive AI Platform",
+      "tagline": "One Platform. Six AI Engines. 65 Specialized Models. Infinite Possibilities.",
+      "speaker_notes": "Start with confidence. Autoera AI isn't just another software solution—we're the future of automotive operations. In the next 15 minutes, you'll see how we're transforming an entire industry."
+    },
+    
+    "problem_slide": {
+      "headline": "The ₹50,000 Crore Problem: Manual Operations Are Killing Dealership Profitability",
+      "key_statistics": [
+        {
+          "stat": "78%",
+          "label": "Manual Operations",
+          "context": "of dealership processes still done by hand"
+        },
+        {
+          "stat": "6-8 hours",
+          "label": "Daily Waste",
+          "context": "lost to repetitive, manual tasks"
+        },
+        {
+          "stat": "₹15-25 lakhs",
+          "label": "Monthly Losses",
+          "context": "per dealership due to inefficiencies"
+        },
+        {
+          "stat": "67%",
+          "label": "Customer Dissatisfaction",
+          "context": "with service delays and poor experience"
+        }
+      ],
+      "pain_points": [
+        {
+          "problem": "Sales teams spend 60% time on data entry vs selling",
+          "impact": "Lost revenue opportunities and frustrated sales staff"
+        },
+        {
+          "problem": "Service scheduling conflicts cause 40% customer complaints",
+          "impact": "Customer churn and damaged reputation"
+        },
+        {
+          "problem": "Finance approvals take 3-7 days vs competitors' instant decisions",
+          "impact": "Lost sales to faster competitors"
+        },
+        {
+          "problem": "Insurance claims processing takes 14 days vs industry 2-day standard",
+          "impact": "Customer frustration and operational bottlenecks"
+        }
+      ],
+      "speaker_notes": "This isn't just about efficiency—it's about survival. Dealerships that can't adapt to customer expectations will be left behind."
+    },
+    
+    "solution_overview_slide": {
+      "headline": "Autoera AI: Complete Automotive Intelligence in One Platform",
+      "value_proposition": "We don't just automate processes—we make dealerships intelligent. Every decision backed by AI, every process optimized for results.",
+      
+      "key_benefits": [
+        {
+          "benefit": "Complete Ecosystem Coverage",
+          "description": "Six AI engines covering every aspect of dealership operations",
+          "icon": "🎯"
+        },
+        {
+          "benefit": "White-Label B2B SaaS",
+          "description": "Your brand, our technology—complete control and customization",
+          "icon": "🏷️"
+        },
+        {
+          "benefit": "Proven Results",
+          "description": "1,944% ROI with real customers, not projections",
+          "icon": "📈"
+        },
+        {
+          "benefit": "Instant Deployment",
+          "description": "Go live in 2-4 hours, not months",
+          "icon": "⚡"
+        }
+      ],
+      
+      "transformation_metrics": [
+        {
+          "metric": "94%",
+          "improvement": "Lead Conversion Improvement",
+          "engine": "Sales AI"
+        },
+        {
+          "metric": "86%",
+          "improvement": "Faster Service Completion",
+          "engine": "Service AI"
+        },
+        {
+          "metric": "78%",
+          "improvement": "Loan Approval Rate Increase",
+          "engine": "Finance AI"
+        },
+        {
+          "metric": "87%",
+          "improvement": "Fraud Detection Accuracy",
+          "engine": "Insurance AI"
+        }
+      ],
+      
+      "speaker_notes": "Notice we don't say 'up to' or 'potential'—these are actual results from real customers. This is what AI transformation looks like."
+    },
+    
+    "market_opportunity_slide": {
+      "headline": "Massive Market, Zero Competition: The Perfect Storm",
+      
+      "market_size": {
+        "tam": {
+          "value": "$15.8 billion",
+          "description": "Global Automotive AI Market by 2030",
+          "growth": "33.2% CAGR"
+        },
+        "sam": {
+          "value": "₹5,000 crores",
+          "description": "India Dealership Operations Market",
+          "penetration": "<1% AI adoption"
+        },
+        "som": {
+          "value": "₹500 crores",
+          "description": "Our Addressable Market (5 years)",
+          "opportunity": "First-mover advantage"
+        }
+      },
+      
+      "target_segments": [
+        {
+          "segment": "Authorized Dealerships",
+          "count": "25,000+",
+          "examples": "Maruti, Honda, Toyota, Hyundai",
+          "revenue_potential": "₹200 crores"
+        },
+        {
+          "segment": "Multi-brand Dealers",
+          "count": "15,000+",
+          "examples": "Independent multi-brand showrooms",
+          "revenue_potential": "₹120 crores"
+        },
+        {
+          "segment": "Service Centers",
+          "count": "50,000+",
+          "examples": "Independent repair and maintenance",
+          "revenue_potential": "₹150 crores"
+        },
+        {
+          "segment": "Fleet Operators",
+          "count": "5,000+",
+          "examples": "Commercial vehicle fleets",
+          "revenue_potential": "₹30 crores"
+        }
+      ],
+      
+      "market_drivers": [
+        "Digital India initiative pushing technology adoption",
+        "Post-pandemic pressure to optimize operations",
+        "Rising customer expectations for digital experiences",
+        "Increasing competition requiring operational excellence",
+        "Government push for automotive sector modernization"
+      ],
+      
+      "speaker_notes": "This isn't a crowded market—we're creating a new category. Every dealership that adopts AI first gains an insurmountable competitive advantage."
+    },
+    
+    "competitive_advantages_slide": {
+      "headline": "Why Autoera AI Dominates: 7 Unbeatable Advantages",
+      
+      "advantages": [
+        {
+          "advantage": "Most Comprehensive Platform",
+          "us": "65 AI Models across 6 engines",
+          "competitors": "1-3 models, single function",
+          "impact": "Complete solution vs. fragmented tools"
+        },
+        {
+          "advantage": "White-Label B2B Focus",
+          "us": "Complete branding control",
+          "competitors": "Generic, one-size-fits-all",
+          "impact": "Customer loyalty to dealership brand"
+        },
+        {
+          "advantage": "Proven ROI",
+          "us": "1,944% documented ROI",
+          "competitors": "200-500% projected returns",
+          "impact": "Real results vs. promises"
+        },
+        {
+          "advantage": "Instant Deployment",
+          "us": "2-4 hours to go live",
+          "competitors": "3-6 months implementation",
+          "impact": "Immediate value vs. long wait"
+        },
+        {
+          "advantage": "Multi-Tenant Architecture",
+          "us": "Complete data isolation",
+          "competitors": "Single-tenant or shared data",
+          "impact": "Enterprise security & scalability"
+        },
+        {
+          "advantage": "Real-Time Processing",
+          "us": "<500ms response times",
+          "competitors": "Batch processing, delays",
+          "impact": "Live insights vs. stale data"
+        },
+        {
+          "advantage": "Continuous Learning",
+          "us": "Weekly model updates",
+          "competitors": "Static models",
+          "impact": "Improving accuracy vs. degrading performance"
+        }
+      ],
+      
+      "market_position": "We're not just ahead—we're in a different league. While competitors offer point solutions, we provide complete transformation.",
+      
+      "speaker_notes": "Each advantage compounds the others. It's not just about having better technology—it's about having a fundamentally different approach that competitors can't match."
+    }
+  },
+  
+  "narrative_flow": {
+    "act_1_problem": {
+      "duration_minutes": 3,
+      "goal": "Establish urgency and pain",
+      "key_message": "Manual operations are killing dealership profitability",
+      "emotional_arc": "Frustration → Recognition → Urgency"
+    },
+    
+    "act_2_solution": {
+      "duration_minutes": 8,
+      "goal": "Present transformation and proof",
+      "key_message": "Autoera AI delivers complete transformation with proven results",
+      "emotional_arc": "Hope → Excitement → Confidence"
+    },
+    
+    "act_3_opportunity": {
+      "duration_minutes": 4,
+      "goal": "Show market potential and competitive advantage",
+      "key_message": "Massive opportunity with first-mover advantage",
+      "emotional_arc": "Ambition → Conviction → Action"
+    }
+  },
+  
+  "audience_customization": {
+    "investor_focus": {
+      "emphasize": ["market_size", "financial_projections", "competitive_advantages", "scalability"],
+      "tone": "Growth-focused, data-driven, ambitious",
+      "key_metrics": ["TAM/SAM/SOM", "Revenue projections", "Unit economics", "Market share potential"]
+    },
+    
+    "customer_focus": {
+      "emphasize": ["roi_proof", "case_studies", "implementation_ease", "support"],
+      "tone": "Results-focused, practical, reassuring",
+      "key_metrics": ["ROI percentage", "Time to value", "Customer satisfaction", "Implementation speed"]
+    },
+    
+    "partner_focus": {
+      "emphasize": ["market_opportunity", "partnership_benefits", "revenue_sharing", "support"],
+      "tone": "Collaborative, opportunity-focused, mutual benefit",
+      "key_metrics": ["Market size", "Partner revenue potential", "Support quality", "Success rates"]
+    }
+  }
+}

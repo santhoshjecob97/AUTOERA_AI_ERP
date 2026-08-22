@@ -1,0 +1,285 @@
+{
+  "version_configurations": {
+    "investor": {
+      "name": "Investor Version",
+      "description": "Focus on financials, growth, and investment opportunity",
+      "duration_minutes": 20,
+      "target_audience": "Investors, VCs, Angel Investors",
+      "key_focus": ["financials", "growth", "market_opportunity", "team", "funding"],
+      "slides": [
+        "title",
+        "problem",
+        "solution_overview",
+        "market_opportunity",
+        "business_model",
+        "financial_projections",
+        "traction",
+        "competitive_advantages",
+        "team",
+        "funding_ask",
+        "use_of_funds",
+        "expected_returns",
+        "next_steps",
+        "contact"
+      ],
+      "emphasis": {
+        "financial_metrics": "high",
+        "roi_data": "high",
+        "growth_projections": "high",
+        "market_size": "high",
+        "technical_details": "medium",
+        "implementation": "low"
+      }
+    },
+    
+    "customer": {
+      "name": "Customer Version",
+      "description": "Emphasize ROI metrics and implementation ease",
+      "duration_minutes": 15,
+      "target_audience": "Dealership Owners, Operations Managers, Decision Makers",
+      "key_focus": ["roi", "implementation", "case_studies", "support", "pricing"],
+      "slides": [
+        "title",
+        "problem",
+        "solution_detailed",
+        "ai_engines_showcase",
+        "case_studies",
+        "roi_demonstration",
+        "implementation_process",
+        "pricing_tiers",
+        "support_services",
+        "demo_offer",
+        "trial_program",
+        "next_steps",
+        "contact"
+      ],
+      "emphasis": {
+        "roi_data": "high",
+        "case_studies": "high",
+        "implementation": "high",
+        "support": "high",
+        "financial_metrics": "medium",
+        "technical_details": "medium",
+        "funding": "low"
+      }
+    },
+    
+    "partner": {
+      "name": "Partner Version",
+      "description": "Highlight collaboration opportunities and mutual benefits",
+      "duration_minutes": 12,
+      "target_audience": "System Integrators, Consultants, Channel Partners",
+      "key_focus": ["partnership_benefits", "revenue_sharing", "market_opportunity", "support"],
+      "slides": [
+        "title",
+        "market_opportunity",
+        "solution_overview",
+        "partnership_model",
+        "revenue_sharing",
+        "channel_benefits",
+        "support_program",
+        "success_stories",
+        "competitive_advantages",
+        "next_steps",
+        "contact"
+      ],
+      "emphasis": {
+        "partnership_benefits": "high",
+        "revenue_sharing": "high",
+        "market_opportunity": "high",
+        "support": "high",
+        "technical_details": "medium",
+        "implementation": "medium",
+        "funding": "low"
+      }
+    },
+    
+    "general": {
+      "name": "General Version",
+      "description": "Comprehensive overview suitable for various stakeholders",
+      "duration_minutes": 30,
+      "target_audience": "Mixed Audience, Conferences, General Presentations",
+      "key_focus": ["overview", "capabilities", "market", "results", "vision"],
+      "slides": [
+        "title",
+        "problem",
+        "solution_overview",
+        "ai_engines_showcase",
+        "market_opportunity",
+        "case_studies",
+        "competitive_advantages",
+        "technology_overview",
+        "business_model",
+        "team",
+        "vision",
+        "next_steps",
+        "contact"
+      ],
+      "emphasis": {
+        "overview": "high",
+        "capabilities": "high",
+        "market_opportunity": "high",
+        "case_studies": "high",
+        "technical_details": "medium",
+        "financial_metrics": "medium",
+        "implementation": "medium"
+      }
+    }
+  },
+  
+  "slide_templates": {
+    "title": {
+      "template": "title_slide",
+      "required_data": ["company_name", "tagline", "contact_info"],
+      "customizable": ["background_image", "subtitle"]
+    },
+    
+    "problem": {
+      "template": "problem_slide",
+      "required_data": ["problem_metrics", "pain_points"],
+      "customizable": ["industry_focus", "specific_challenges"]
+    },
+    
+    "solution_overview": {
+      "template": "solution_overview_slide",
+      "required_data": ["ai_engines", "key_benefits"],
+      "customizable": ["focus_engines", "benefit_emphasis"]
+    },
+    
+    "solution_detailed": {
+      "template": "solution_detailed_slide",
+      "required_data": ["ai_engines", "detailed_capabilities"],
+      "customizable": ["engine_selection", "capability_depth"]
+    },
+    
+    "ai_engines_showcase": {
+      "template": "ai_engines_slide",
+      "required_data": ["ai_engines", "use_cases"],
+      "customizable": ["engine_order", "use_case_selection"]
+    },
+    
+    "market_opportunity": {
+      "template": "market_slide",
+      "required_data": ["market_data", "target_customers"],
+      "customizable": ["geographic_focus", "segment_emphasis"]
+    },
+    
+    "business_model": {
+      "template": "business_model_slide",
+      "required_data": ["pricing_tiers", "revenue_streams"],
+      "customizable": ["tier_selection", "revenue_emphasis"]
+    },
+    
+    "financial_projections": {
+      "template": "financial_slide",
+      "required_data": ["financial_projections", "unit_economics"],
+      "customizable": ["scenario_selection", "metric_focus"]
+    },
+    
+    "case_studies": {
+      "template": "case_study_slide",
+      "required_data": ["case_studies"],
+      "customizable": ["case_selection", "result_emphasis"]
+    },
+    
+    "roi_demonstration": {
+      "template": "roi_slide",
+      "required_data": ["roi_metrics", "cost_savings"],
+      "customizable": ["calculation_method", "timeframe"]
+    },
+    
+    "competitive_advantages": {
+      "template": "competitive_slide",
+      "required_data": ["competitive_advantages"],
+      "customizable": ["advantage_selection", "comparison_focus"]
+    },
+    
+    "technology_overview": {
+      "template": "technology_slide",
+      "required_data": ["technology_stack", "architecture"],
+      "customizable": ["technical_depth", "focus_areas"]
+    },
+    
+    "implementation_process": {
+      "template": "implementation_slide",
+      "required_data": ["deployment_timeline", "support_process"],
+      "customizable": ["process_detail", "timeline_emphasis"]
+    },
+    
+    "team": {
+      "template": "team_slide",
+      "required_data": ["team_info", "leadership"],
+      "customizable": ["team_focus", "experience_emphasis"]
+    },
+    
+    "funding_ask": {
+      "template": "funding_slide",
+      "required_data": ["funding_requirements", "use_of_funds"],
+      "customizable": ["amount_range", "fund_allocation"]
+    },
+    
+    "partnership_model": {
+      "template": "partnership_slide",
+      "required_data": ["partnership_benefits", "collaboration_model"],
+      "customizable": ["benefit_focus", "model_details"]
+    },
+    
+    "next_steps": {
+      "template": "next_steps_slide",
+      "required_data": ["contact_info", "call_to_action"],
+      "customizable": ["action_type", "urgency_level"]
+    }
+  },
+  
+  "customization_options": {
+    "industry_focus": {
+      "automotive_only": "Focus exclusively on automotive industry",
+      "multi_industry": "Show broader industry applications",
+      "specific_segment": "Target specific automotive segment"
+    },
+    
+    "technical_depth": {
+      "high": "Detailed technical explanations and architecture",
+      "medium": "Balanced technical and business content",
+      "low": "Business-focused with minimal technical details"
+    },
+    
+    "geographic_scope": {
+      "india": "Focus on Indian market opportunity",
+      "south_asia": "Expand to South Asian markets",
+      "global": "Global market opportunity and expansion"
+    },
+    
+    "time_format": {
+      "10_minute": "Executive summary format",
+      "15_minute": "Standard presentation format",
+      "30_minute": "Comprehensive detailed format"
+    }
+  },
+  
+  "export_formats": {
+    "powerpoint": {
+      "extension": ".pptx",
+      "description": "Microsoft PowerPoint format for editing",
+      "features": ["editable", "animations", "speaker_notes"]
+    },
+    
+    "pdf": {
+      "extension": ".pdf",
+      "description": "PDF format for sharing and printing",
+      "features": ["portable", "print_ready", "secure"]
+    },
+    
+    "web": {
+      "extension": ".html",
+      "description": "Web-based presentation for online sharing",
+      "features": ["interactive", "responsive", "analytics"]
+    },
+    
+    "images": {
+      "extension": ".png",
+      "description": "Individual slide images",
+      "features": ["high_resolution", "social_media_ready", "backup"]
+    }
+  }
+}

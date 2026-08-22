@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go-to-Market Strategy - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .slide {
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .strategy-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .strategy-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--autoera-blue);
+        }
+        
+        .strategy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .strategy-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .strategy-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .strategy-metrics {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-weight: bold;
+            color: var(--innovation-orange);
+        }
+        
+        .customer-segments {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .segments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .segment-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .segment-card:hover {
+            border-color: var(--innovation-orange);
+            transform: translateY(-2px);
+        }
+        
+        .segment-title {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .segment-size {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--innovation-orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .segment-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .acquisition-funnel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .funnel-stages {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .funnel-stage {
+            background: white;
+            border: 3px solid var(--autoera-blue);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .funnel-stage::after {
+            content: "→";
+            position: absolute;
+            right: -40px;
+            font-size: 2rem;
+            color: var(--innovation-orange);
+            z-index: 1;
+        }
+        
+        .funnel-stage:last-child::after {
+            display: none;
+        }
+        
+        .stage-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--innovation-orange);
+        }
+        
+        .stage-label {
+            font-size: 0.8rem;
+            color: var(--autoera-blue);
+            font-weight: bold;
+        }
+        
+        .partnerships {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .partnership-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--innovation-orange);
+        }
+        
+        .partnership-type {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .partnership-benefits {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .partnership-benefits li {
+            padding: 0.3rem 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .partnership-benefits li:before {
+            content: "✓";
+            color: var(--success-green);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .timeline {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .timeline-phase {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--innovation-orange);
+        }
+        
+        .phase-title {
+            font-weight: bold;
+            color: var(--autoera-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .phase-duration {
+            color: var(--innovation-orange);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .phase-goals {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .phase-goals li {
+            padding: 0.2rem 0;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="slide-header">
+            <div class="logo">🚀 Autoera AI Solutions</div>
+            <div class="slide-number">08</div>
+        </div>
+        
+        <div class="slide-content">
+            <h2 class="slide-title">Go-to-Market Strategy: Multi-Channel Approach</h2>
+            
+            <!-- Customer Segments -->
+            <div class="customer-segments">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Target Customer Segments</h3>
+                <div class="segments-grid">
+                    <div class="segment-card">
+                        <div class="segment-title">Authorized Dealerships</div>
+                        <div class="segment-size">25,000</div>
+                        <div class="segment-description">OEM authorized dealers with established operations and higher ARPU potential</div>
+                    </div>
+                    <div class="segment-card">
+                        <div class="segment-title">Multi-Brand Dealers</div>
+                        <div class="segment-size">15,000</div>
+                        <div class="segment-description">Independent dealers handling multiple brands, seeking operational efficiency</div>
+                    </div>
+                    <div class="segment-card">
+                        <div class="segment-title">Service Centers</div>
+                        <div class="segment-size">50,000</div>
+                        <div class="segment-description">Independent service centers focused on maintenance and repair operations</div>
+                    </div>
+                    <div class="segment-card">
+                        <div class="segment-title">Fleet Companies</div>
+                        <div class="segment-size">5,000</div>
+                        <div class="segment-description">Commercial fleet operators requiring comprehensive management solutions</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Acquisition Strategy -->
+            <div class="strategy-overview">
+                <div class="strategy-card">
+                    <div class="strategy-icon">🎯</div>
+                    <div class="strategy-title">Direct Sales</div>
+                    <div class="strategy-description">
+                        Dedicated sales team targeting high-value enterprise customers with personalized demos and custom solutions.
+                    </div>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span>Target:</span>
+                            <span class="metric-value">Enterprise & Custom tiers</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Sales Cycle:</span>
+                            <span class="metric-value">30-60 days</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Conversion:</span>
+                            <span class="metric-value">25-30%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="strategy-card">
+                    <div class="strategy-icon">🌐</div>
+                    <div class="strategy-title">Digital Marketing</div>
+                    <div class="strategy-description">
+                        SEO-optimized content, targeted Google Ads, LinkedIn campaigns, and automotive industry publications.
+                    </div>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span>Target:</span>
+                            <span class="metric-value">Starter & Professional</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>CAC:</span>
+                            <span class="metric-value">₹15,000</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Conversion:</span>
+                            <span class="metric-value">8-12%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="strategy-card">
+                    <div class="strategy-icon">🤝</div>
+                    <div class="strategy-title">Channel Partners</div>
+                    <div class="strategy-description">
+                        System integrators, consultants, and automotive technology partners with revenue sharing models.
+                    </div>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span>Commission:</span>
+                            <span class="metric-value">15-25%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Partners:</span>
+                            <span class="metric-value">50+ by Year 2</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Revenue Share:</span>
+                            <span class="metric-value">30% of sales</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="strategy-card">
+                    <div class="strategy-icon">📱</div>
+                    <div class="strategy-title">Product-Led Growth</div>
+                    <div class="strategy-description">
+                        Free trials, freemium models, and viral referral programs to drive organic adoption.
+                    </div>
+                    <div class="strategy-metrics">
+                        <div class="metric-row">
+                            <span>Trial Period:</span>
+                            <span class="metric-value">1 week</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Trial-to-Paid:</span>
+                            <span class="metric-value">35-40%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Referral Rate:</span>
+                            <span class="metric-value">20%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customer Acquisition Funnel -->
+            <div class="acquisition-funnel">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">Customer Acquisition Funnel</h3>
+                <div class="funnel-stages">
+                    <div class="funnel-stage">
+                        <div class="stage-number">1</div>
+                        <div class="stage-label">Awareness</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-number">2</div>
+                        <div class="stage-label">Interest</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-number">3</div>
+                        <div class="stage-label">Demo</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-number">4</div>
+                        <div class="stage-label">Trial</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-number">5</div>
+                        <div class="stage-label">Purchase</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Strategic Partnerships -->
+            <div class="partnerships">
+                <div class="partnership-card">
+                    <div class="partnership-type">🏭 OEM Partnerships</div>
+                    <ul class="partnership-benefits">
+                        <li>Direct integration with manufacturer systems</li>
+                        <li>Co-marketing opportunities</li>
+                        <li>Preferred vendor status</li>
+                        <li>Access to dealer networks</li>
+                    </ul>
+                </div>
+                
+                <div class="partnership-card">
+                    <div class="partnership-type">💻 Technology Partners</div>
+                    <ul class="partnership-benefits">
+                        <li>DMS and CRM integrations</li>
+                        <li>API partnerships</li>
+                        <li>Joint solution development</li>
+                        <li>Technical co-selling</li>
+                    </ul>
+                </div>
+                
+                <div class="partnership-card">
+                    <div class="partnership-type">🎓 Training Partners</div>
+                    <ul class="partnership-benefits">
+                        <li>Implementation services</li>
+                        <li>User training programs</li>
+                        <li>Certification programs</li>
+                        <li>Ongoing support services</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Implementation Timeline -->
+            <div class="timeline">
+                <h3 style="color: var(--autoera-blue); margin-bottom: 1rem;">3-Year GTM Timeline</h3>
+                <div class="timeline-grid">
+                    <div class="timeline-phase">
+                        <div class="phase-title">Phase 1: Foundation</div>
+                        <div class="phase-duration">Months 1-6</div>
+                        <ul class="phase-goals">
+                            <li>Direct sales team setup</li>
+                            <li>Digital marketing launch</li>
+                            <li>First 50 customers</li>
+                            <li>Product-market fit validation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-title">Phase 2: Scale</div>
+                        <div class="phase-duration">Months 7-18</div>
+                        <ul class="phase-goals">
+                            <li>Channel partner program</li>
+                            <li>Geographic expansion</li>
+                            <li>500+ customers</li>
+                            <li>OEM partnerships</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-phase">
+                        <div class="phase-title">Phase 3: Dominate</div>
+                        <div class="phase-duration">Months 19-36</div>
+                        <ul class="phase-goals">
+                            <li>Market leadership position</li>
+                            <li>1,250+ customers</li>
+                            <li>International expansion</li>
+                            <li>Platform ecosystem</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="slide-footer">
+            <div class="footer-contact">
+                <span>📧 founder.autoeraai@gmail.com</span>
+                <span>📱 +91 7299534753</span>
+                <span>🌐 www.autoeraai.com</span>
+            </div>
+            <div>© 2024 Autoera AI Solutions</div>
+        </div>
+    </div>
+</body>
+</html>

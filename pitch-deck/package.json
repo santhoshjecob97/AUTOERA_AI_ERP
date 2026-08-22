@@ -1,0 +1,42 @@
+{
+  "name": "autoera-ai-pitch-deck",
+  "version": "1.0.0",
+  "description": "Comprehensive pitch deck system for Autoera AI Solutions",
+  "main": "scripts/build-presentation.js",
+  "scripts": {
+    "build": "node scripts/build-presentation.js build",
+    "build:investor": "node scripts/build-presentation.js build investor",
+    "build:customer": "node scripts/build-presentation.js build customer",
+    "build:partner": "node scripts/build-presentation.js build partner",
+    "build:all": "node scripts/build-presentation.js build-all",
+    "validate": "node tests/validation-tests.js",
+    "test": "npm run validate",
+    "start": "npm run build && npm run validate",
+    "clean": "rm -rf exports/*",
+    "help": "node scripts/build-presentation.js help"
+  },
+  "keywords": [
+    "pitch-deck",
+    "presentation",
+    "autoera",
+    "ai",
+    "automotive",
+    "saas"
+  ],
+  "author": "Autoera AI Solutions",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/autoera-ai/pitch-deck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/autoera-ai/pitch-deck/issues"
+  },
+  "homepage": "https://www.autoeraai.com"
+}

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Engines Showcase - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .ai-engines-slide {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #10B981 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .engines-content {
+            flex: 1;
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .engines-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .engines-subtitle {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .engines-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .engine-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .engine-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .engine-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #F97316, #FB923C, #10B981);
+        }
+
+        .engine-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .engine-icon {
+            font-size: 3rem;
+            background: rgba(249, 115, 22, 0.2);
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .engine-info {
+            flex: 1;
+        }
+
+        .engine-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #F97316;
+        }
+
+        .engine-models {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .engine-capabilities {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .engine-capabilities li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .engine-capabilities li::before {
+            content: "→";
+            color: #10B981;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .metrics-showcase {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .metrics-title {
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #F97316;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #10B981;
+            font-family: 'Roboto Mono', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-engine {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .platform-stats {
+            position: absolute;
+            top: 50%;
+            right: 4rem;
+            transform: translateY(-50%);
+            background: rgba(249, 115, 22, 0.95);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 3px solid #FFFFFF;
+            max-width: 280px;
+        }
+
+        .platform-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .platform-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .platform-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .platform-metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .platform-metric-value {
+            font-weight: 700;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 25% 25%, white 3px, transparent 3px),
+                radial-gradient(circle at 75% 75%, white 2px, transparent 2px);
+            background-size: 120px 120px, 80px 80px;
+            background-position: 0 0, 60px 60px;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 4rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.05); }
+        }
+
+        .platform-stats {
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .engine-card:nth-child(odd) {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .engine-card:nth-child(even) {
+            animation: float 6s ease-in-out infinite 3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="ai-engines-slide">
+        <div class="background-pattern"></div>
+        <div class="slide-number">06</div>
+        
+        <div class="platform-stats">
+            <div class="platform-title">
+                Complete AI Ecosystem
+            </div>
+            <div class="platform-metrics">
+                <div class="platform-metric">
+                    <span class="platform-metric-label">AI Engines:</span>
+                    <span class="platform-metric-value">6</span>
+                </div>
+                <div class="platform-metric">
+                    <span class="platform-metric-label">AI Models:</span>
+                    <span class="platform-metric-value">65+</span>
+                </div>
+                <div class="platform-metric">
+                    <span class="platform-metric-label">Response Time:</span>
+                    <span class="platform-metric-value">&lt;500ms</span>
+                </div>
+                <div class="platform-metric">
+                    <span class="platform-metric-label">Accuracy:</span>
+                    <span class="platform-metric-value">99%+</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="engines-content">
+            <h1 class="engines-title">
+                Six AI Engines: Complete Automotive Intelligence
+            </h1>
+            
+            <p class="engines-subtitle">
+                Every aspect of dealership operations powered by specialized AI. 
+                From sales prediction to fleet optimization, our comprehensive platform 
+                transforms manual processes into intelligent automation.
+            </p>
+            
+            <div class="engines-grid">
+                <div class="engine-card">
+                    <div class="engine-header">
+                        <div class="engine-icon">🎯</div>
+                        <div class="engine-info">
+                            <div class="engine-name">Sales AI Engine</div>
+                            <div class="engine-models">12 AI Models</div>
+                        </div>
+                    </div>
+                    <ul class="engine-capabilities">
+                        <li>Lead scoring and conversion prediction</li>
+                        <li>Pricing optimization algorithms</li>
+                        <li>Customer behavior analytics</li>
+                        <li>Sales forecasting models</li>
+                        <li>Inventory demand prediction</li>
+                    </ul>
+                </div>
+                
+                <div class="engine-card">
+                    <div class="engine-header">
+                        <div class="engine-icon">🔧</div>
+                        <div class="engine-info">
+                            <div class="engine-name">Service AI Engine</div>
+                            <div class="engine-models">11 AI Models</div>
+                        </div>
+                    </div>
+                    <ul class="engine-capabilities">
+                        <li>Predictive maintenance alerts</li>
+                        <li>Smart scheduling optimization</li>
+                        <li>Quality assurance automation</li>
+                        <li>Parts availability prediction</li>
+                        <li>Technician skill matching</li>
+                    </ul>
+                </div>
+                
+                <div class="engine-card">
+                    <div class="engine-header">
+                        <div class="engine-icon">💰</div>
+                        <div class="engine-info">
+                            <div class="engine-name">Finance AI Engine</div>
+                            <div class="engine-models">10 AI Models</div>
+                        </div>
+                    </div>
+                    <ul class="engine-capabilities">
+                        <li>Credit scoring algorithms</li>
+                        <li>Loan approval automation</li>
+                        <li>Fraud detection systems</li>
+                        <li>Risk assessment models</li>
+                        <li>Payment processing optimization</li>
+                    </ul>
+                </div>
+                
+                <div class="engine-card">
+                    <div class="engine-header">
+                        <div class="engine-icon">🛡️</div>
+                        <div class="engine-info">
+                            <div class="engine-name">Insurance AI Engine</div>
+                            <div class="engine-models">9 AI Models</div>
+                        </div>
+                    </div>
+                    <ul class="engine-capabilities">
+                        <li>Claim processing automation</li>
+                        <li>Damage assessment AI</li>
+                        <li>Policy recommendation engine</li>
+                        <li>Settlement calculation models</li>
+                        <li>Document management AI</li>
+                    </ul>
+                </div>
+                
+                <div class="engine-card">
+                    <div class="engine-header">
+                        <div class="engine-icon">👥</div>
+                        <div class="engine-info">
+                            <div class="engine-name">Workforce AI Engine</div>
+                            <div class="engine-models">12 AI Models</div>
+                        </div>
+                    </div>
+                    <ul class="engine-capabilities">
+                        <li>Skill matching algorithms</li>
+                        <li>Performance optimization</li>
+                        <li>Training recommendation AI</li>
+                        <li>Scheduling optimization</li>
+                        <li>Productivity tracking models</li>
+                    </ul>
+                </div>
+                
+                <div class="engine-card">
+                    <div class="engine-header">
+                        <div class="engine-icon">🚛</div>
+                        <div class="engine-info">
+                            <div class="engine-name">Fleet AI Engine</div>
+                            <div class="engine-models">11 AI Models</div>
+                        </div>
+                    </div>
+                    <ul class="engine-capabilities">
+                        <li>Route optimization algorithms</li>
+                        <li>Maintenance prediction models</li>
+                        <li>Cost management systems</li>
+                        <li>Fuel optimization AI</li>
+                        <li>Driver performance analytics</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="metrics-showcase">
+                <h2 class="metrics-title">Proven Performance: Real Results from Each Engine</h2>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">94%</div>
+                        <div class="metric-label">Lead Conversion Improvement</div>
+                        <div class="metric-engine">Sales AI Engine</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">86%</div>
+                        <div class="metric-label">Faster Service Completion</div>
+                        <div class="metric-engine">Service AI Engine</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">78%</div>
+                        <div class="metric-label">Loan Approval Rate Increase</div>
+                        <div class="metric-engine">Finance AI Engine</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">87%</div>
+                        <div class="metric-label">Fraud Detection Accuracy</div>
+                        <div class="metric-engine">Insurance AI Engine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

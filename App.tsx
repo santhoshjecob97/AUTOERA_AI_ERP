@@ -1,0 +1,278 @@
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Bell, Search, Sparkles } from 'lucide-react';
+import Sidebar from './components/Sidebar';
+import Dashboard from './pages/Dashboard';
+import SalesEngine from './pages/SalesEngine';
+import ServiceLayout from './components/layouts/ServiceLayout';
+import ServiceOverviewPage from './pages/service/ServiceOverviewPage';
+import FinanceEngine from './pages/FinanceEngine';
+import InsuranceEngine from './pages/InsuranceEngine';
+import WorkforceEngine from './pages/WorkforceEngine';
+import FleetEngine from './pages/FleetEngine';
+import ServiceAIDashboard from './pages/ai-engines/ServiceAIDashboard';
+import PlansPage from './pages/PlansPage';
+import AIChatModal from './components/AIChatModal';
+import LoginScreen from './components/LoginScreen';
+import { ViewState } from './types';
+import { VoiceProvider } from './context/VoiceContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// Import Service sub-pages
+import ServiceBaysPage from './pages/service/ServiceBaysPage';
+import ServiceMaintenancePage from './pages/service/ServiceMaintenancePage';
+import ServiceTechniciansPage from './pages/service/ServiceTechniciansPage';
+import ServiceInventoryPage from './pages/service/ServiceInventoryPage';
+import ServiceQualityPage from './pages/service/ServiceQualityPage';
+import ServiceEmergencyPage from './pages/service/ServiceEmergencyPage';
+import ServiceAnalyticsPage from './pages/service/ServiceAnalyticsPage';
+
+import OperationsPage from './pages/service/OperationsPage';
+import SchedulerPage from './pages/service/SchedulerPage';
+import CommunicationPage from './pages/service/CommunicationPage';
+import QualityPage from './pages/service/QualityPage';
+import AnalyticsPage from './pages/service/AnalyticsPage';
+
+// Import Sales sub-pages
+import LeadsPage from './pages/sales/LeadsPage';
+import VirtualShowroomPage from './pages/sales/VirtualShowroomPage';
+import PricingPage from './pages/sales/PricingPage';
+import ChatbotPage from './pages/sales/ChatbotPage';
+import SalesAnalyticsPage from './pages/sales/AnalyticsPage';
+
+// Import Finance sub-pages
+import CreditScoringPage from './pages/finance/CreditScoringPage';
+import LoanApprovalPage from './pages/finance/LoanApprovalPage';
+import RiskAssessmentPage from './pages/finance/RiskAssessmentPage';
+import PaymentProcessingPage from './pages/finance/PaymentProcessingPage';
+import FraudDetectionPage from './pages/finance/FraudDetectionPage';
+import LoanCalculatorPage from './pages/finance/LoanCalculatorPage';
+import CompliancePage from './pages/finance/CompliancePage';
+import FinanceAnalyticsPage from './pages/finance/AnalyticsPage';
+
+// Import Insurance sub-pages
+import ClaimProcessingPage from './pages/insurance/ClaimProcessingPage';
+import DamageAssessmentPage from './pages/insurance/DamageAssessmentPage';
+import InsuranceFraudDetectionPage from './pages/insurance/FraudDetectionPage';
+import PolicyRecommendationsPage from './pages/insurance/PolicyRecommendationsPage';
+import SettlementCalculatorPage from './pages/insurance/SettlementCalculatorPage';
+import DocumentManagementPage from './pages/insurance/DocumentManagementPage';
+import InsuranceAnalyticsPage from './pages/insurance/AnalyticsPage';
+
+const AppContent: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, isLoading, logout } = useAuth(); // Use AuthContext
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+
+  // Derive current view from location
+  const getCurrentView = (): ViewState => {
+    const path = location.pathname;
+    if (path.startsWith('/sales')) return 'sales';
+    if (path.startsWith('/service')) return 'service';
+    if (path.startsWith('/finance')) return 'finance';
+    if (path.startsWith('/insurance')) return 'insurance';
+    if (path.startsWith('/workforce')) return 'workforce';
+    if (path.startsWith('/fleet')) return 'fleet';
+    if (path.startsWith('/plans')) return 'plans';
+    if (path.startsWith('/service-ai')) return 'service-ai';
+    return 'dashboard';
+  };
+
+  const currentView = getCurrentView();
+
+  if (isLoading) {
+    return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
+  }
+
+  // If not logged in, show login screen
+  if (!user) {
+    return <LoginScreen />;
+  }
+
+  return (
+    <VoiceProvider>
+      <div className="flex h-screen bg-slate-50 overflow-hidden">
+        <Sidebar
+          currentView={currentView}
+          onChangeView={(view) => {
+            // Map view to route
+            const routeMap: Record<ViewState, string> = {
+              dashboard: '/',
+              sales: '/sales',
+              service: '/service',
+              finance: '/finance',
+              insurance: '/insurance',
+              workforce: '/workforce',
+              fleet: '/fleet',
+              ev: '/ev',
+              plans: '/plans',
+              'service-ai': '/service-ai',
+              'sales-ai': '/sales-ai',
+              'finance-ai': '/finance-ai',
+              'insurance-ai': '/insurance-ai',
+              'fleet-ai': '/fleet-ai',
+              'workforce-ai': '/workforce-ai',
+              'ev-ai': '/ev-ai',
+              'voice-ai': '/voice-ai'
+            };
+            navigate(routeMap[view] || '/');
+            setIsSidebarOpen(false);
+          }}
+          isOpen={isSidebarOpen}
+          user={user}
+          onLogout={logout}
+        />
+
+        <div className="flex-1 flex flex-col h-full overflow-hidden w-full">
+
+          <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-30">
+            <div className="flex items-center">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="p-2 mr-4 md:hidden text-slate-500 hover:bg-slate-100 rounded-lg"
+              >
+                <Menu size={24} />
+              </button>
+
+              <div className="hidden md:flex flex-col">
+                <span className="text-xs text-slate-400 font-medium">
+                  {user.role} Workspace
+                </span>
+                <span className="text-sm font-bold text-slate-900 capitalize">
+                  {currentView === 'dashboard' ? 'Overview' : `${currentView} Management`}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <div className="hidden md:flex relative">
+                <input
+                  type="text"
+                  placeholder="Search platform..."
+                  className="pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-0 rounded-lg text-sm transition-all w-64"
+                />
+                <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
+              </div>
+
+              <button
+                onClick={() => setIsAIModalOpen(true)}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm hover:shadow-indigo-200/50"
+              >
+                <Sparkles size={16} />
+                <span className="hidden md:inline">Ask AI</span>
+              </button>
+
+              <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors relative">
+                <Bell size={20} />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+              </button>
+
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white border-2 border-white shadow-sm bg-indigo-500">
+                {user.avatar ? (
+                  <img src={user.avatar} alt="avatar" className="w-full h-full rounded-full" />
+                ) : (
+                  user.name.charAt(0)
+                )}
+              </div>
+            </div>
+          </header>
+
+          <main className="flex-1 overflow-auto p-4 md:p-8 relative">
+            <Routes>
+              <Route path="/" element={<Dashboard onNavigate={(view) => {
+                const routeMap: Record<ViewState, string> = {
+                  dashboard: '/',
+                  sales: '/sales',
+                  service: '/service',
+                  finance: '/finance',
+                  insurance: '/insurance',
+                  workforce: '/workforce',
+                  fleet: '/fleet',
+                  ev: '/ev',
+                  plans: '/plans',
+                  'service-ai': '/service-ai',
+                  'sales-ai': '/sales-ai',
+                  'finance-ai': '/finance-ai',
+                  'insurance-ai': '/insurance-ai',
+                  'fleet-ai': '/fleet-ai',
+                  'workforce-ai': '/workforce-ai',
+                  'ev-ai': '/ev-ai',
+                  'voice-ai': '/voice-ai'
+                };
+                navigate(routeMap[view] || '/');
+              }} user={user} />} />
+              <Route path="/sales" element={<SalesEngine />} />
+              <Route path="/sales/leads" element={<LeadsPage />} />
+              <Route path="/sales/showroom" element={<VirtualShowroomPage />} />
+              <Route path="/sales/pricing" element={<PricingPage />} />
+              <Route path="/sales/chatbot" element={<ChatbotPage />} />
+              <Route path="/sales/analytics" element={<SalesAnalyticsPage />} />
+              {/* Service Engine Routes */}
+              <Route path="/service" element={<ServiceLayout />}>
+                <Route index element={<ServiceOverviewPage />} />
+                <Route path="bays" element={<ServiceBaysPage />} />
+                <Route path="maintenance" element={<ServiceMaintenancePage />} />
+                <Route path="technicians" element={<ServiceTechniciansPage />} />
+                <Route path="inventory" element={<ServiceInventoryPage />} />
+                <Route path="operations" element={<OperationsPage />} />
+                <Route path="scheduler" element={<SchedulerPage />} />
+                <Route path="communication" element={<CommunicationPage />} />
+                <Route path="quality" element={<ServiceQualityPage />} />
+                <Route path="emergency" element={<ServiceEmergencyPage />} />
+                <Route path="analytics" element={<ServiceAnalyticsPage />} />
+              </Route>
+              <Route path="/finance" element={<FinanceEngine />} />
+              <Route path="/finance/credit-scoring" element={<CreditScoringPage />} />
+              <Route path="/finance/loan-approval" element={<LoanApprovalPage />} />
+              <Route path="/finance/risk-assessment" element={<RiskAssessmentPage />} />
+              <Route path="/finance/payments" element={<PaymentProcessingPage />} />
+              <Route path="/finance/fraud-detection" element={<FraudDetectionPage />} />
+              <Route path="/finance/calculator" element={<LoanCalculatorPage />} />
+              <Route path="/finance/compliance" element={<CompliancePage />} />
+              <Route path="/finance/analytics" element={<FinanceAnalyticsPage />} />
+              <Route path="/insurance" element={<InsuranceEngine />} />
+              <Route path="/insurance/claims" element={<ClaimProcessingPage />} />
+              <Route path="/insurance/damage-assessment" element={<DamageAssessmentPage />} />
+              <Route path="/insurance/fraud-detection" element={<InsuranceFraudDetectionPage />} />
+              <Route path="/insurance/policies" element={<PolicyRecommendationsPage />} />
+              <Route path="/insurance/settlement" element={<SettlementCalculatorPage />} />
+              <Route path="/insurance/documents" element={<DocumentManagementPage />} />
+              <Route path="/insurance/analytics" element={<InsuranceAnalyticsPage />} />
+              <Route path="/workforce" element={<WorkforceEngine />} />
+              <Route path="/fleet" element={<FleetEngine />} />
+              <Route path="/plans" element={<PlansPage />} />
+              <Route path="/service-ai" element={<ServiceAIDashboard />} />
+            </Routes>
+          </main>
+        </div>
+
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-30 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        <AIChatModal
+          isOpen={isAIModalOpen}
+          onClose={() => setIsAIModalOpen(false)}
+          context={`${currentView} (User: ${user.name}, Role: ${user.role})`}
+        />
+      </div>
+    </VoiceProvider>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+};
+
+export default App;

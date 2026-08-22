@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitive Advantages Slide - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .competitive-slide {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #374151 0%, #6B7280 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .competitive-content {
+            flex: 1;
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .competitive-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .competitive-subtitle {
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .advantage-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #F97316, #FB923C);
+        }
+
+        .advantage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .advantage-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #F97316;
+            flex: 1;
+        }
+
+        .advantage-icon {
+            font-size: 2rem;
+            color: #F97316;
+        }
+
+        .comparison-section {
+            margin-bottom: 1rem;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .us-value {
+            font-weight: 600;
+            color: #10B981;
+            font-size: 0.95rem;
+        }
+
+        .vs-text {
+            color: #F97316;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .competitor-value {
+            font-weight: 500;
+            color: #EF4444;
+            font-size: 0.95rem;
+        }
+
+        .impact-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-style: italic;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .market-position {
+            background: rgba(249, 115, 22, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .position-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #F97316;
+        }
+
+        .position-subtext {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .dominance-highlight {
+            position: absolute;
+            top: 50%;
+            right: 4rem;
+            transform: translateY(-50%);
+            background: rgba(16, 185, 129, 0.95);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 3px solid #FFFFFF;
+            max-width: 280px;
+        }
+
+        .dominance-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .dominance-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .dominance-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #F97316;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(45deg, white 25%, transparent 25%),
+                linear-gradient(-45deg, white 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, white 75%),
+                linear-gradient(-45deg, transparent 75%, white 75%);
+            background-size: 40px 40px;
+            background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 4rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.6); }
+        }
+
+        .dominance-highlight {
+            animation: glow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="competitive-slide">
+        <div class="background-pattern"></div>
+        <div class="slide-number">05</div>
+        
+        <div class="dominance-highlight">
+            <div class="dominance-title">
+                Market Dominance
+            </div>
+            <div class="dominance-stats">
+                <div class="dominance-stat">
+                    <span class="stat-label">AI Models:</span>
+                    <span class="stat-value">65 vs 1-3</span>
+                </div>
+                <div class="dominance-stat">
+                    <span class="stat-label">Deployment:</span>
+                    <span class="stat-value">Hours vs Months</span>
+                </div>
+                <div class="dominance-stat">
+                    <span class="stat-label">ROI:</span>
+                    <span class="stat-value">1,944% vs 200%</span>
+                </div>
+                <div class="dominance-stat">
+                    <span class="stat-label">Coverage:</span>
+                    <span class="stat-value">Complete vs Partial</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="competitive-content">
+            <h1 class="competitive-title">
+                Why Autoera AI Dominates: 7 Unbeatable Advantages
+            </h1>
+            
+            <p class="competitive-subtitle">
+                We're not just ahead—we're in a different league. While competitors offer point solutions, 
+                we provide complete transformation. Each advantage compounds the others, creating an 
+                insurmountable competitive moat.
+            </p>
+            
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <div class="advantage-header">
+                        <div class="advantage-title">Most Comprehensive Platform</div>
+                        <div class="advantage-icon">🎯</div>
+                    </div>
+                    <div class="comparison-section">
+                        <div class="comparison-row">
+                            <span class="us-value">65 AI Models across 6 engines</span>
+                            <span class="vs-text">vs</span>
+                            <span class="competitor-value">1-3 models, single function</span>
+                        </div>
+                    </div>
+                    <div class="impact-text">
+                        Complete solution vs. fragmented tools requiring multiple vendors
+                    </div>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-header">
+                        <div class="advantage-title">White-Label B2B Focus</div>
+                        <div class="advantage-icon">🏷️</div>
+                    </div>
+                    <div class="comparison-section">
+                        <div class="comparison-row">
+                            <span class="us-value">Complete branding control</span>
+                            <span class="vs-text">vs</span>
+                            <span class="competitor-value">Generic, one-size-fits-all</span>
+                        </div>
+                    </div>
+                    <div class="impact-text">
+                        Customer loyalty to dealership brand vs. software vendor
+                    </div>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-header">
+                        <div class="advantage-title">Proven ROI</div>
+                        <div class="advantage-icon">📈</div>
+                    </div>
+                    <div class="comparison-section">
+                        <div class="comparison-row">
+                            <span class="us-value">1,944% documented ROI</span>
+                            <span class="vs-text">vs</span>
+                            <span class="competitor-value">200-500% projected returns</span>
+                        </div>
+                    </div>
+                    <div class="impact-text">
+                        Real results from paying customers vs. promises and projections
+                    </div>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-header">
+                        <div class="advantage-title">Instant Deployment</div>
+                        <div class="advantage-icon">⚡</div>
+                    </div>
+                    <div class="comparison-section">
+                        <div class="comparison-row">
+                            <span class="us-value">2-4 hours to go live</span>
+                            <span class="vs-text">vs</span>
+                            <span class="competitor-value">3-6 months implementation</span>
+                        </div>
+                    </div>
+                    <div class="impact-text">
+                        Immediate value and results vs. long wait for benefits
+                    </div>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-header">
+                        <div class="advantage-title">Enterprise Architecture</div>
+                        <div class="advantage-icon">🏗️</div>
+                    </div>
+                    <div class="comparison-section">
+                        <div class="comparison-row">
+                            <span class="us-value">Multi-tenant data isolation</span>
+                            <span class="vs-text">vs</span>
+                            <span class="competitor-value">Single-tenant or shared data</span>
+                        </div>
+                    </div>
+                    <div class="impact-text">
+                        Enterprise security at SaaS economics vs. expensive or insecure
+                    </div>
+                </div>
+                
+                <div class="advantage-card">
+                    <div class="advantage-header">
+                        <div class="advantage-title">Real-Time Processing</div>
+                        <div class="advantage-icon">⚡</div>
+                    </div>
+                    <div class="comparison-section">
+                        <div class="comparison-row">
+                            <span class="us-value">&lt;500ms response times</span>
+                            <span class="vs-text">vs</span>
+                            <span class="competitor-value">Batch processing, delays</span>
+                        </div>
+                    </div>
+                    <div class="impact-text">
+                        Live insights for immediate action vs. stale data and missed opportunities
+                    </div>
+                </div>
+            </div>
+            
+            <div class="market-position">
+                <div class="position-text">
+                    Market Position: Creating a New Category
+                </div>
+                <div class="position-subtext">
+                    We're not competing in an existing market—we're creating an entirely new category. 
+                    While others offer generic tools or single-function solutions, we provide complete 
+                    automotive transformation with proven results, instant deployment, and continuous improvement.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

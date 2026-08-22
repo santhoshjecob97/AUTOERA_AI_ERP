@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Slide - Autoera AI Solutions</title>
+    <link rel="stylesheet" href="../brand-guidelines/color-palette.css">
+    <link rel="stylesheet" href="../brand-guidelines/typography.css">
+    <style>
+        .problem-slide {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-header {
+            padding: 2rem 4rem;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .problem-content {
+            flex: 1;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .problem-title {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 3rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .problem-subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .statistics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #F97316;
+            margin-bottom: 1rem;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-context {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .pain-points-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .pain-points-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #F97316;
+        }
+
+        .pain-points-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .pain-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #F97316;
+        }
+
+        .pain-icon {
+            font-size: 2rem;
+            color: #F97316;
+            flex-shrink: 0;
+        }
+
+        .pain-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .pain-content p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .urgency-banner {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #F97316;
+            padding: 1.5rem 4rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 25% 25%, white 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, white 2px, transparent 2px);
+            background-size: 100px 100px;
+            background-position: 0 0, 50px 50px;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 4rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="problem-slide">
+        <div class="background-pattern"></div>
+        <div class="slide-number">02</div>
+        
+        <div class="problem-content">
+            <h1 class="problem-title">
+                The ₹50,000 Crore Problem:<br>
+                Manual Operations Are Killing Dealership Profitability
+            </h1>
+            
+            <p class="problem-subtitle">
+                While technology transforms every industry, 78% of dealership operations remain stubbornly manual, 
+                costing billions in lost efficiency and customer satisfaction.
+            </p>
+            
+            <div class="statistics-grid">
+                <div class="stat-card">
+                    <div class="stat-number">78%</div>
+                    <div class="stat-label">Manual Operations</div>
+                    <div class="stat-context">of dealership processes still done by hand</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">6-8 hrs</div>
+                    <div class="stat-label">Daily Waste</div>
+                    <div class="stat-context">lost to repetitive, manual tasks</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">₹15-25L</div>
+                    <div class="stat-label">Monthly Losses</div>
+                    <div class="stat-context">per dealership due to inefficiencies</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">67%</div>
+                    <div class="stat-label">Customer Dissatisfaction</div>
+                    <div class="stat-context">with service delays and poor experience</div>
+                </div>
+            </div>
+            
+            <div class="pain-points-section">
+                <h2 class="pain-points-title">The Reality: Critical Pain Points Crushing Profitability</h2>
+                
+                <div class="pain-points-grid">
+                    <div class="pain-point">
+                        <div class="pain-icon">📊</div>
+                        <div class="pain-content">
+                            <h4>Sales teams spend 60% time on data entry vs selling</h4>
+                            <p>Lost revenue opportunities and frustrated sales staff</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pain-point">
+                        <div class="pain-icon">⏰</div>
+                        <div class="pain-content">
+                            <h4>Service scheduling conflicts cause 40% customer complaints</h4>
+                            <p>Customer churn and damaged reputation</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pain-point">
+                        <div class="pain-icon">💰</div>
+                        <div class="pain-content">
+                            <h4>Finance approvals take 3-7 days vs competitors' instant decisions</h4>
+                            <p>Lost sales to faster competitors</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pain-point">
+                        <div class="pain-icon">🛡️</div>
+                        <div class="pain-content">
+                            <h4>Insurance claims processing takes 14 days vs industry 2-day standard</h4>
+                            <p>Customer frustration and operational bottlenecks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="urgency-banner">
+            Every day dealerships wait, they lose ₹83,000 in potential savings. The cost of inaction is accelerating.
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,355 @@
+/* Autoera AI Solutions - Typography System */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Font Families */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Roboto Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-6xl: 3.75rem;   /* 60px */
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+}
+
+/* Base Typography Styles */
+body {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--professional-gray);
+}
+
+/* Heading Styles */
+.heading-1, h1 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--autoera-blue);
+  margin-bottom: 1.5rem;
+}
+
+.heading-2, h2 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--professional-gray);
+  margin-bottom: 1.25rem;
+}
+
+.heading-3, h3 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--professional-gray);
+  margin-bottom: 1rem;
+}
+
+.heading-4, h4 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  color: var(--professional-gray);
+  margin-bottom: 0.75rem;
+}
+
+.heading-5, h5 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--professional-gray);
+  margin-bottom: 0.5rem;
+}
+
+.heading-6, h6 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--professional-gray);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Body Text Styles */
+.text-body, p {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--professional-gray);
+  margin-bottom: 1rem;
+}
+
+.text-large {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+}
+
+.text-small {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.text-xs {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+}
+
+/* Emphasis Styles */
+.text-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.text-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+/* Special Text Styles */
+.text-caption {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--light-gray);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.text-code, code {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  background-color: var(--light-gray);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.text-number {
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Link Styles */
+.link, a {
+  color: var(--autoera-blue);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color 0.2s ease;
+}
+
+.link:hover, a:hover {
+  color: var(--autoera-blue-light);
+  text-decoration: underline;
+}
+
+.link-accent {
+  color: var(--innovation-orange);
+}
+
+.link-accent:hover {
+  color: var(--innovation-orange-light);
+}
+
+/* List Styles */
+.list-styled ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.list-styled li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.list-styled li::before {
+  content: "•";
+  color: var(--innovation-orange);
+  font-weight: var(--font-weight-bold);
+  position: absolute;
+  left: 0;
+}
+
+.list-numbered ol {
+  counter-reset: item;
+  padding-left: 0;
+}
+
+.list-numbered li {
+  display: block;
+  margin-bottom: 0.5rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.list-numbered li::before {
+  content: counter(item) ".";
+  counter-increment: item;
+  color: var(--autoera-blue);
+  font-weight: var(--font-weight-semibold);
+  position: absolute;
+  left: 0;
+}
+
+/* Quote Styles */
+.quote, blockquote {
+  font-size: var(--font-size-lg);
+  font-style: italic;
+  line-height: var(--line-height-relaxed);
+  color: var(--professional-gray);
+  border-left: 4px solid var(--innovation-orange);
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+/* Presentation-Specific Styles */
+.slide-title {
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--autoera-blue);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.slide-subtitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  color: var(--professional-gray);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.slide-section-header {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--white);
+  background: var(--gradient-primary);
+  padding: 1rem 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.slide-bullet {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: 1rem;
+}
+
+.slide-highlight {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--innovation-orange);
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.slide-metric {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--success-green);
+  text-align: center;
+  line-height: var(--line-height-tight);
+}
+
+.slide-metric-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--professional-gray);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .heading-1, h1 {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .heading-2, h2 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .slide-title {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .slide-subtitle {
+    font-size: var(--font-size-lg);
+  }
+  
+  .slide-section-header {
+    font-size: var(--font-size-2xl);
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading-1, h1 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .heading-2, h2 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .slide-title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .slide-metric {
+    font-size: var(--font-size-3xl);
+  }
+}

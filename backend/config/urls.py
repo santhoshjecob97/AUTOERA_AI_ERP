@@ -88,7 +88,9 @@ urlpatterns = [
     # Health & Observability Probes
     path('api/v1/health/', HealthCheckView.as_view(), name='health_check'),
     path('api/v1/health/ready/', ReadinessView.as_view(), name='readiness_check'),
+    path('api/v1/health/readiness/', ReadinessView.as_view(), name='readiness_alias'),
     path('api/v1/health/live/', LivenessView.as_view(), name='liveness_check'),
+    path('api/v1/health/liveness/', LivenessView.as_view(), name='liveness_alias'),
 
     # OpenAPI Schema & Interactive Docs
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

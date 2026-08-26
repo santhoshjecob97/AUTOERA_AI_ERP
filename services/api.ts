@@ -14,9 +14,12 @@ class APIService {
   private refreshSubscribers: Array<(token: string) => void> = [];
 
   constructor() {
+    const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+    const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, '').replace(/\/api\/v1$/, '');
+
     this.client = axios.create({
-      baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
-      timeout: 20000,
+      baseURL: normalizedBaseUrl,
+      timeout: 25000,
       headers: {
         'Content-Type': 'application/json',
       },

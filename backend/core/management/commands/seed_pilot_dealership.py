@@ -1,3 +1,4 @@
+import os
 import uuid
 from decimal import Decimal
 from django.core.management.base import BaseCommand
@@ -67,6 +68,7 @@ class Command(BaseCommand):
         )
 
         # 2. Users & Roles
+        pilot_password = os.environ.get('PILOT_SEED_PASSWORD', 'AutoEra2026!Secure')
         roles_to_create = [
             ('dp_apex', 'dp@apex.in', 'DEALER_PRINCIPAL', 'Vikram', 'Singhania'),
             ('gm_apex', 'gm@apex.in', 'GENERAL_MANAGER', 'Anand', 'Nambiar'),
@@ -83,7 +85,7 @@ class Command(BaseCommand):
         for username, email, role, first_name, last_name in roles_to_create:
             if not User.objects.filter(username=username).exists():
                 User.objects.create_user(
-                    username=username, email=email, password='Password@123',
+                    username=username, email=email, password=pilot_password,
                     role=role, first_name=first_name, last_name=last_name,
                     organization=org, branch=branch_downtown
                 )

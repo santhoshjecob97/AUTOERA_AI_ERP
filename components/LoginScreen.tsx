@@ -37,19 +37,18 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleQuickFill = (role: 'gm' | 'sa' | 'tech' | 'sales' | 'fin' | 'ins') => {
-    const credentials = {
-      gm: { user: 'gm_apex', pass: 'Password@123' },
-      sa: { user: 'sa_apex', pass: 'Password@123' },
-      tech: { user: 'tech_apex', pass: 'Password@123' },
-      sales: { user: 'salesm_apex', pass: 'Password@123' },
-      fin: { user: 'fin_apex', pass: 'Password@123' },
-      ins: { user: 'ins_apex', pass: 'Password@123' },
+    const roleUsernames: Record<string, string> = {
+      gm: 'gm_apex',
+      sa: 'sa_apex',
+      tech: 'tech_apex',
+      sales: 'salesm_apex',
+      fin: 'fin_apex',
+      ins: 'ins_apex',
     };
 
-    const target = credentials[role];
-    if (target) {
-      setIdentifier(target.user);
-      setPassword(target.pass);
+    const targetUser = roleUsernames[role];
+    if (targetUser) {
+      setIdentifier(targetUser);
       setErrorMessage(null);
     }
   };

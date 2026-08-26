@@ -1,0 +1,53 @@
+# ================================================================
+# AutoEra AI ERP 2026 — Render Blueprint Infrastructure as Code
+# ================================================================
+# Deploy via: Render Dashboard → New → Blueprint → Connect Repository
+# ================================================================
+
+services:
+  # ─── Django REST Framework Backend Web Service ────────────────
+  - type: web
+    name: autoera-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    region: oregon
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 2 config.wsgi:application"
+    healthCheckPath: /api/v1/health/
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "localhost,127.0.0.1,.onrender.com"
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://autoera-ai-erp.vercel.app,http://localhost:5173,http://localhost:3000"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://autoera-ai-erp.vercel.app,http://localhost:5173,http://localhost:3000"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: autoera-postgres
+          property: connectionString
+      - key: VOICE_ENABLED
+        value: "false"
+      - key: TWILIO_ENABLED
+        value: "false"
+      - key: GEMINI_MODEL_NAME
+        value: "gemini-3.6-flash"
+      - key: GEMINI_FAST_MODEL_NAME
+        value: "gemini-3.5-flash-lite"
+      - key: GEMINI_EMBEDDING_MODEL
+        value: "models/gemini-embedding-2"
+      - key: GEMINI_API_KEY
+        sync: false # Set manually in Render Dashboard
+
+databases:
+  # ─── Render Managed PostgreSQL Database ───────────────────────
+  - name: autoera-postgres
+    databaseName: autoera_db
+    user: autoera_user
+    plan: free
+    region: oregon
+    postgresMajorVersion: "16"

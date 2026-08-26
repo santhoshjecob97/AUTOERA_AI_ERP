@@ -28,7 +28,8 @@ class WebSocketService {
 
     this.isConnecting = true;
     const token = localStorage.getItem('authToken');
-    const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+    const wsUrl = import.meta.env.VITE_WS_URL || apiBase.replace(/^http/, 'ws');
 
     this.socket = io(wsUrl, {
       auth: {

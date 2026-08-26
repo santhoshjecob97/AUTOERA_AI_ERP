@@ -126,10 +126,12 @@ class APIService {
   }
 
   private formatError(error: any): APIError {
-    const status = error.response?.status || (error.code === 'ECONNABORTED' ? 408 : 500);
+    const status = error.response?.status || (error.code === 'ECONNABORTED' ? 408 : 503);
     let message = 'An unexpected server error occurred';
 
-    if (error.response?.data) {
+    if (error.code === 'ERR_NETWORK' || error.message === 'Network Error' || !error.response) {
+      message = 'Unable to reach AutoEra AI Backend. Ensure your Render backend service is active and VITE_API_BASE_URL is set in Vercel.';
+    } else if (error.response?.data) {
       const data = error.response.data;
       if (typeof data === 'string') {
         message = data;

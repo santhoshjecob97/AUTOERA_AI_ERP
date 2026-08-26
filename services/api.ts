@@ -44,9 +44,10 @@ class APIService {
   private async handleError(error: AxiosError): Promise<any> {
     const config = error.config as AxiosRequestConfig & { _retry?: number };
 
-    // Handle 401 Unauthorized - redirect to login
+    // Handle 401 Unauthorized - clear JWT tokens and redirect to login
     if (error.response?.status === 401) {
       localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
       window.location.href = '/';
       return Promise.reject(error);
     }

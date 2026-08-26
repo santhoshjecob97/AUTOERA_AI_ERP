@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { supabase } from '../src/lib/supabase';
+import apiService from '../services/api';
 import {
     Wrench, Clock, AlertTriangle, CheckCircle, Plus, LayoutGrid, List, Sparkles, User, Car,
     Calendar, Box, Truck, ShieldCheck, BarChart2, Activity, MapPin, Search, Zap, ClipboardList, ThumbsUp, MessageSquare
@@ -172,43 +172,40 @@ const ServiceEngine: React.FC = () => {
     const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
     const [selectedCustomerForCall, setSelectedCustomerForCall] = useState<ServiceJob | null>(null);
 
-    /* Supabase Integration */
+    /* Django API Integration */
     const [isLoading, setIsLoading] = useState(true);
 
-    // Fetch jobs from Supabase
+    // Fetch jobs from Django backend API
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const { data, error } = await supabase
-                    .from('service_jobs')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+                const data = await apiService.get<any[]>('/api/v1/service/job-cards/');
 
-                if (error) throw error;
-
-                if (data) {
+                if (data && Array.isArray(data)) {
                     const mappedJobs: ServiceJob[] = data.map(job => ({
-                        id: job.id,
-                        customer: job.customer_name,
-                        vehicle: job.vehicle_model,
-                        issue: job.issue,
+                        id: job.job_card_number || job.id,
+                        customer: job.customer_name || `${job.customer?.first_name || ''} ${job.customer?.last_name || ''}`.trim() || 'Unknown',
+                        vehicle: job.vehicle_model || job.vehicle?.model || 'Unknown',
+                        issue: job.customer_complaints || job.issue || 'General Service',
                         status: job.status as any,
-                        priority: job.priority as any,
-                        technician: job.technician,
-                        bay: job.bay || 'Unassigned',
-                        predictedCompletion: 'TBD', // Not in DB yet
+                        priority: job.priority as any || 'Medium',
+                        technician: job.assigned_technician_name || job.technician || 'Unassigned',
+                        bay: job.allocated_bay_name || job.bay || 'Unassigned',
+                        predictedCompletion: job.estimated_delivery_date || 'TBD',
+                        phone: job.customer_phone,
+                        email: job.customer_email,
                         aiInsights: {
                             diagnosisConfidence: 85,
                             partsRequired: [],
                             partsAvailability: 'In Stock',
-                            estimatedCost: job.estimated_cost?.toString() || '0'
+                            estimatedCost: job.estimated_total_cost?.toString() || job.estimated_cost?.toString() || '0'
                         }
                     }));
                     setJobs(mappedJobs);
                 }
             } catch (error) {
-                console.error('Error fetching jobs:', error);
-                // Fallback to initialJobs if DB fails (e.g. valid credentials missing)
+                console.error('Error fetching jobs from Django API:', error);
+                // Fallback to initialJobs if backend is unavailable
                 setJobs(initialJobs);
             } finally {
                 setIsLoading(false);
@@ -217,50 +214,56 @@ const ServiceEngine: React.FC = () => {
 
         fetchJobs();
 
-        // Real-time subscription
-        const channel = supabase
-            .channel('service_jobs_changes')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'service_jobs' }, (payload) => {
-                fetchJobs(); // Refetch on any change
-            })
-            .subscribe();
-
-        return () => { supabase.removeChannel(channel); };
+        // Poll for updates every 30 seconds (replaces Supabase real-time)
+        const interval = setInterval(fetchJobs, 30000);
+        return () => clearInterval(interval);
     }, []);
 
     const handleAddJob = async (newJobData: Omit<ServiceJob, 'id' | 'status' | 'aiInsights'>) => {
         try {
-            const { data: { user } } = await supabase.auth.getUser();
+            // Create job card via Django API
+            const response = await apiService.post<any>('/api/v1/service/job-cards/', {
+                customer_complaints: newJobData.issue,
+                priority: newJobData.priority || 'Medium',
+                // Additional fields would be mapped from the form
+            });
 
-            if (!user) {
-                // alert('You must be logged in to add a job');
-                // Simplified fallback for prototype persistence without auth setup
-                const newJob: ServiceJob = {
-                    ...newJobData,
-                    id: `SV-00${jobs.length + 1}`,
-                    status: 'Pending',
-                    aiInsights: { diagnosisConfidence: 85, partsRequired: ['Diagnostic Scan'], partsAvailability: 'In Stock', estimatedCost: 'TBD' }
-                };
-                setJobs([newJob, ...jobs]);
-                return;
+            if (response?.id) {
+                // Refetch jobs to get the server-generated data
+                const data = await apiService.get<any[]>('/api/v1/service/job-cards/');
+                if (data && Array.isArray(data)) {
+                    // Re-map and set (reuse the same mapping logic)
+                    setJobs(data.map(job => ({
+                        id: job.job_card_number || job.id,
+                        customer: job.customer_name || 'Unknown',
+                        vehicle: job.vehicle_model || 'Unknown',
+                        issue: job.customer_complaints || 'General Service',
+                        status: job.status as any,
+                        priority: job.priority as any || 'Medium',
+                        technician: job.assigned_technician_name || 'Unassigned',
+                        bay: job.allocated_bay_name || 'Unassigned',
+                        predictedCompletion: job.estimated_delivery_date || 'TBD',
+                        phone: job.customer_phone,
+                        email: job.customer_email,
+                        aiInsights: {
+                            diagnosisConfidence: 85,
+                            partsRequired: [],
+                            partsAvailability: 'In Stock',
+                            estimatedCost: job.estimated_total_cost?.toString() || '0'
+                        }
+                    })));
+                }
             }
-
-            const { error } = await supabase
-                .from('service_jobs')
-                .insert([{
-                    user_id: user.id,
-                    customer_name: newJobData.customer,
-                    vehicle_model: newJobData.vehicle,
-                    issue: newJobData.issue,
-                    priority: newJobData.priority,
-                    technician: newJobData.technician || 'Unassigned',
-                    estimated_cost: 0 // Placeholder
-                }]);
-
-            if (error) throw error;
-
         } catch (error) {
-            console.error('Error adding job:', error);
+            console.error('Error creating job via Django API:', error);
+            // Fallback: add to local state
+            const newJob: ServiceJob = {
+                ...newJobData,
+                id: `SV-00${jobs.length + 1}`,
+                status: 'Pending',
+                aiInsights: { diagnosisConfidence: 85, partsRequired: ['Diagnostic Scan'], partsAvailability: 'In Stock', estimatedCost: 'TBD' }
+            };
+            setJobs([newJob, ...jobs]);
         }
     };
 

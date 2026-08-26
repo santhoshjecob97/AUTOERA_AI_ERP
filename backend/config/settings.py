@@ -150,9 +150,13 @@ AUTH_USER_MODEL = 'identity.User'
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://localhost:3000'
+    'http://localhost:5173,http://localhost:3000,https://autoera-ai-erp.vercel.app'
 ).split(',')
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept', 'accept-encoding', 'authorization', 'content-type',
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
+]
 
 # ──────────────────────────────────────────────
 # REST FRAMEWORK
@@ -219,10 +223,8 @@ CELERY_TASK_SERIALIZER = 'json'
 # ──────────────────────────────────────────────
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': os.environ.get('REDIS_URL', 'redis://localhost:6379/2'),
-    } if not DEBUG else {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache' if os.environ.get('REDIS_URL') else 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': os.environ.get('REDIS_URL', 'autoera-locmem-cache'),
     }
 }
 

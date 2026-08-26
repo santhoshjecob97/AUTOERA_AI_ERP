@@ -1,242 +1,278 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, Zap, User as UserIcon, Briefcase } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ShieldCheck, Cpu, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const LoginScreen: React.FC = () => {
   const { login } = useAuth();
-  const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Form States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [companyName, setCompanyName] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage(null);
 
     try {
-      if (isLogin) {
-        await login(email, password);
-      } else {
-        // For now, just alert that registration requires Admin setup or implement Supabase SignUp
-        // We'll treat registration as 'contact sales' or just try login for prototype flow
-        alert("Registration is currently invite-only. Please contact support.");
-        // Alternatively, call supabase.auth.signUp() if we implemented it in AuthContext
-      }
+      await login(email.trim(), password);
     } catch (error: any) {
-      alert(error.message || 'Authentication failed');
+      setErrorMessage(error.message || 'Authentication failed. Please verify your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleDemoFill = (role: 'admin' | 'advisor') => {
+    if (role === 'admin') {
+      setEmail('manager@autoera.com');
+      setPassword('AutoEraAdmin2026!');
+    } else {
+      setEmail('advisor@autoera.com');
+      setPassword('AdvisorPass2026!');
+    }
+    setErrorMessage(null);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row font-sans">
-
-      {/* Left Panel - Branding */}
-      <div className="w-full md:w-5/12 bg-slate-900 text-white p-8 md:p-12 flex flex-col justify-between relative overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute right-0 top-0 w-96 h-96 bg-indigo-500 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3"></div>
-          <div className="absolute left-0 bottom-0 w-64 h-64 bg-blue-500 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
-          {/* Soundwave pattern simulation */}
-          <div className="absolute top-1/2 left-0 w-full h-32 flex items-center justify-center space-x-1 opacity-20 transform -translate-y-1/2">
-            {[...Array(40)].map((_, i) => (
-              <div key={i} className="w-1 bg-white rounded-full animate-pulse" style={{ height: `${Math.random() * 100}%`, animationDelay: `${i * 0.1}s` }}></div>
-            ))}
-          </div>
+    <div className="min-h-screen bg-[#070a13] flex flex-col lg:flex-row text-slate-100 font-sans selection:bg-orange-500 selection:text-white">
+      
+      {/* ─── Left Panel: Branding & Automotive AI Heritage ─── */}
+      <div className="lg:w-7/12 bg-gradient-to-br from-[#0c1222] via-[#090d18] to-[#05070d] p-8 lg:p-16 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800/60">
+        
+        {/* Subtle Ambient Background Gradients */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+          <div className="absolute -top-32 -left-32 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl animate-pulse-glow" />
+          <div className="absolute top-1/2 -right-32 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
+          
+          {/* Subtle Grid overlay */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]" 
+            style={{ 
+              backgroundImage: `radial-gradient(#ffffff 1px, transparent 1px)`, 
+              backgroundSize: '24px 24px' 
+            }} 
+          />
         </div>
 
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="bg-indigo-600 p-2 rounded-lg">
-              <Zap size={24} className="text-white" />
+        {/* Top Header / Logo Header */}
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center gap-3.5">
+            <img 
+              src="/assets/autoera-ai-logo.png" 
+              alt="AutoEra AI" 
+              className="h-12 w-auto object-contain drop-shadow-[0_4px_12px_rgba(249,115,22,0.25)]"
+              style={{ maxHeight: '48px' }}
+            />
+            <div className="flex flex-col">
+              <span className="font-extrabold text-xl tracking-tight text-white font-['Outfit']">
+                AUTOERA <span className="text-orange-500 font-black">AI</span>
+              </span>
+              <span className="text-[10px] tracking-widest uppercase text-slate-400 font-semibold">
+                Enterprise Dealership ERP
+              </span>
             </div>
-            <span className="text-xl font-bold tracking-tight">AUTOERA AI</span>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs text-slate-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Pilot Release 2026.1</span>
           </div>
         </div>
 
-        <div className="relative z-10 max-w-md">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            Your AI-Powered <br />
-            <span className="text-indigo-400">Dealership Engine</span>
+        {/* Hero Value Proposition */}
+        <div className="relative z-10 my-auto py-12 max-w-xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-6">
+            <Sparkles size={14} className="text-orange-500 flex-shrink-0" />
+            The Intelligence Behind Every Drive
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-white mb-6 font-['Outfit']">
+            Autonomous AI for <br />
+            <span className="bg-gradient-to-r from-orange-400 via-orange-500 to-amber-300 bg-clip-text text-transparent">
+              Modern Dealerships
+            </span>
           </h1>
-          <p className="text-slate-400 text-lg leading-relaxed mb-8">
-            Streamline operations, boost sales, and automate service workflows with the world's first comprehensive automotive SaaS platform.
+
+          <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-10 font-normal">
+            Unified multi-tenant dealership management platform powered by Google Gemini AI, pgvector RAG, and real-time automotive service intelligence.
           </p>
 
-          <div className="flex gap-2">
-            <span className="w-2 h-2 rounded-full bg-white"></span>
-            <span className="w-2 h-2 rounded-full bg-slate-600"></span>
-            <span className="w-2 h-2 rounded-full bg-slate-600"></span>
+          {/* Value Highlights Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+              <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-400 mb-2.5">
+                <Cpu size={18} />
+              </div>
+              <h4 className="font-semibold text-white text-sm">Customer & Vehicle 360</h4>
+              <p className="text-xs text-slate-400 mt-1">Unified lifecycle intelligence from booking to workshop delivery.</p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm">
+              <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 mb-2.5">
+                <ShieldCheck size={18} />
+              </div>
+              <h4 className="font-semibold text-white text-sm">Enterprise Multi-Tenancy</h4>
+              <p className="text-xs text-slate-400 mt-1">Strict row-level partition, JWT authorization, and action audit logs.</p>
+            </div>
           </div>
         </div>
 
-        <div className="relative z-10 text-xs text-slate-500">
-          © 2024 AutoEra AI Inc. All rights reserved.
+        {/* Footer info */}
+        <div className="relative z-10 pt-6 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+          <span>&copy; 2026 AutoEra AI Inc. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <span className="hover:text-slate-400 cursor-pointer transition-colors">Privacy Policy</span>
+            <span>&bull;</span>
+            <span className="hover:text-slate-400 cursor-pointer transition-colors">Dealership Security</span>
+            <span>&bull;</span>
+            <span className="hover:text-slate-400 cursor-pointer transition-colors">Status</span>
+          </div>
         </div>
       </div>
 
-      {/* Right Panel - Form */}
-      <div className="w-full md:w-7/12 bg-white p-8 md:p-12 flex flex-col justify-center overflow-y-auto">
-        <div className="max-w-md w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-
-          <div className="mb-10 text-center md:text-left">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 mb-4 md:hidden">
-              <Zap size={24} />
-            </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-2">
-              {isLogin ? 'Log in to your Account' : 'Create Your Account'}
+      {/* ─── Right Panel: Secure Login Form ─── */}
+      <div className="lg:w-5/12 bg-[#090d16] p-8 lg:p-16 flex flex-col justify-center relative">
+        <div className="max-w-md w-full mx-auto">
+          
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2 font-['Outfit']">
+              Sign in to AutoEra
             </h2>
-            <p className="text-slate-500">
-              {isLogin ? 'Welcome back! Please enter your details.' : 'Get started with your AI Dealership CRM.'}
+            <p className="text-sm text-slate-400">
+              Access your dealership operations console and AI copilot.
             </p>
           </div>
 
+          {/* Error Alert Box */}
+          {errorMessage && (
+            <div className="mb-6 p-4 rounded-xl bg-red-950/40 border border-red-800/50 text-red-300 text-sm flex items-start gap-3 animate-fade-in">
+              <AlertCircle size={18} className="text-red-400 mt-0.5 flex-shrink-0" />
+              <div className="leading-snug">{errorMessage}</div>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
-
-            {!isLogin && (
-              <>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 block">Full Name</label>
-                  <div className="relative">
-                    <UserIcon size={18} className="absolute left-3.5 top-3.5 text-slate-400" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. John Doe"
-                      className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-slate-700 block">Company Name</label>
-                  <div className="relative">
-                    <Briefcase size={18} className="absolute left-3.5 top-3.5 text-slate-400" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Global Motors Inc."
-                      className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
+            
+            {/* Email / Username Input */}
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700 block">{isLogin ? 'Email Address' : 'Work Email'}</label>
+              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+                Work Email / Username
+              </label>
               <div className="relative">
-                <Mail size={18} className="absolute left-3.5 top-3.5 text-slate-400" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Mail size={18} style={{ width: '18px', height: '18px' }} />
+                </div>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  placeholder={isLogin ? "Enter your email" : "you@company.com"}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
+                  placeholder="name@dealership.com"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-900/90 border border-slate-800 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all text-sm text-white placeholder-slate-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={isLoading}
                 />
               </div>
             </div>
 
+            {/* Password Input */}
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700 block">Password</label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={() => alert("Please contact your Dealership Administrator or General Manager to reset your password.")}
+                  className="text-xs text-orange-400 hover:text-orange-300 transition-colors font-medium"
+                >
+                  Forgot Password?
+                </button>
+              </div>
               <div className="relative">
-                <Lock size={18} className="absolute left-3.5 top-3.5 text-slate-400" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Lock size={18} style={{ width: '18px', height: '18px' }} />
+                </div>
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  placeholder={isLogin ? "Enter your password" : "Create a password"}
-                  className="w-full pl-10 pr-12 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
+                  placeholder="Enter your secure password"
+                  className="w-full pl-10 pr-12 py-3 bg-slate-900/90 border border-slate-800 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all text-sm text-white placeholder-slate-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-200 transition-colors"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? (
+                    <EyeOff size={18} style={{ width: '18px', height: '18px' }} />
+                  ) : (
+                    <Eye size={18} style={{ width: '18px', height: '18px' }} />
+                  )}
                 </button>
               </div>
             </div>
 
-            {!isLogin && (
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700 block">Confirm Password</label>
-                <div className="relative">
-                  <Lock size={18} className="absolute left-3.5 top-3.5 text-slate-400" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    placeholder="Confirm your password"
-                    className="w-full pl-10 pr-12 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm"
-                  />
-                </div>
-              </div>
-            )}
+            {/* Remember Me */}
+            <div className="flex items-center justify-between text-sm py-1">
+              <label className="flex items-center gap-2.5 cursor-pointer text-slate-300 select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-orange-500 focus:ring-orange-500/20"
+                />
+                <span className="text-xs">Remember this device</span>
+              </label>
+            </div>
 
-            {isLogin && (
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                  <span className="text-slate-600">Remember Me</span>
-                </label>
-                <a href="#" className="text-indigo-600 font-medium hover:text-indigo-700">Forgot Password?</a>
-              </div>
-            )}
-
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full py-3.5 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed group"
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                isLogin ? 'Login' : 'Register'
+                <>
+                  <span>Sign In to Dashboard</span>
+                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                </>
               )}
             </button>
 
-            <div className="relative py-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200"></div>
+            {/* Demo Credential Quick-Fill Helpers for Testing & Pilot Rehearsal */}
+            <div className="pt-6 mt-6 border-t border-slate-800/80">
+              <div className="text-center mb-3">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Pilot Testing Credentials
+                </span>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-slate-500">or</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3">
-              <button type="button" className="flex items-center justify-center gap-3 w-full py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors text-slate-700 font-medium text-sm">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
-                Sign in with Google
-              </button>
-              <button type="button" className="flex items-center justify-center gap-3 w-full py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors text-slate-700 font-medium text-sm">
-                <img src="https://www.svgrepo.com/show/452269/microsoft.svg" className="w-5 h-5" alt="Microsoft" />
-                Sign in with Microsoft
-              </button>
-            </div>
-
-            <div className="text-center mt-6">
-              <p className="text-sm text-slate-600">
-                {isLogin ? "Don't have an account?" : "Already have an account?"} {' '}
+              <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-indigo-600 font-bold hover:text-indigo-700 transition-colors"
+                  onClick={() => handleDemoFill('admin')}
+                  className="px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-all text-center"
                 >
-                  {isLogin ? 'Register Now' : 'Login'}
+                  General Manager
                 </button>
-              </p>
+                <button
+                  type="button"
+                  onClick={() => handleDemoFill('advisor')}
+                  className="px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-all text-center"
+                >
+                  Service Advisor
+                </button>
+              </div>
             </div>
 
           </form>

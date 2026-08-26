@@ -9,7 +9,9 @@ import {
   Users, 
   Zap, 
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Bot,
+  Layers
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -25,76 +27,103 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, isOpen, us
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'sales', label: 'Sales Engine', icon: Car },
     { id: 'service', label: 'Service Engine', icon: Wrench },
+    { id: 'service-ai', label: 'AI Copilot Hub', icon: Bot },
     { id: 'finance', label: 'Finance Engine', icon: DollarSign },
     { id: 'insurance', label: 'Insurance Engine', icon: ShieldCheck },
     { id: 'workforce', label: 'Workforce Engine', icon: Users },
     { id: 'fleet', label: 'Fleet EV Engine', icon: Zap },
-    { id: 'plans', label: 'Plans & Pricing', icon: DollarSign },
+    { id: 'plans', label: 'Plans & Pricing', icon: Layers },
   ];
 
   // Filter menu items based on user permissions
-  const menuItems = allMenuItems.filter(item => user.permissions.includes(item.id as ViewState));
+  const menuItems = allMenuItems.filter(item => {
+    if (item.id === 'service-ai') return true;
+    return user.permissions.includes(item.id as ViewState);
+  });
 
   return (
     <aside className={`
-      fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out
+      fixed inset-y-0 left-0 z-40 w-64 bg-[#090d16] text-white border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out
       ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:flex-shrink-0
     `}>
-      <div className="flex flex-col h-full">
-        <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-900">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-indigo-500/20">
-            <span className="font-bold text-white">A</span>
-          </div>
-          <span className="text-xl font-bold tracking-tight">AUTOERA</span>
-        </div>
-
-        <div className="p-4">
-            <div className="bg-slate-800 rounded-xl p-3 flex items-center gap-3 border border-slate-700">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-md bg-indigo-500">
-                    {user.avatar}
-                </div>
-                <div className="overflow-hidden">
-                    <p className="text-sm font-bold text-white truncate">{user.name}</p>
-                    <p className="text-xs text-slate-400 truncate">{user.role}</p>
-                </div>
-            </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto py-2 space-y-1">
-          <div className="px-6 mb-2 mt-2">
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Engine Operations</p>
-          </div>
-          
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => onChangeView(item.id as ViewState)}
-              className={`w-full flex items-center justify-between px-6 py-3 text-sm font-medium transition-all border-l-4
-                ${currentView === item.id 
-                  ? 'bg-slate-800 border-indigo-500 text-white' 
-                  : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800/50'}
-              `}
-            >
-              <div className="flex items-center">
-                <item.icon size={18} className={`mr-3 ${currentView === item.id ? 'text-indigo-400' : 'text-slate-500'}`} />
-                {item.label}
+      <div className="flex flex-col h-full justify-between">
+        
+        {/* Brand Header */}
+        <div>
+          <div className="h-18 flex items-center px-5 border-b border-slate-800/80 bg-[#090d16]">
+            <div className="flex items-center gap-3">
+              <img 
+                src="/assets/autoera-ai-logo.png" 
+                alt="AutoEra AI" 
+                className="h-9 w-auto object-contain drop-shadow-[0_2px_8px_rgba(249,115,22,0.25)]"
+                style={{ maxHeight: '36px' }}
+              />
+              <div className="flex flex-col">
+                <span className="font-extrabold text-base tracking-tight text-white font-['Outfit']">
+                  AUTOERA <span className="text-orange-500 font-black">AI</span>
+                </span>
+                <span className="text-[9px] tracking-wider uppercase text-slate-400 font-medium">
+                  Dealership ERP 2026
+                </span>
               </div>
-              {currentView === item.id && <ChevronRight size={14} className="text-indigo-500" />}
-            </button>
-          ))}
+            </div>
+          </div>
 
+          {/* User Profile Card */}
+          <div className="p-3.5">
+            <div className="bg-slate-900/90 rounded-xl p-3 flex items-center gap-3 border border-slate-800">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white shadow bg-gradient-to-br from-orange-500 to-orange-600 text-sm">
+                {user.name.charAt(0) || 'U'}
+              </div>
+              <div className="overflow-hidden min-w-0">
+                <p className="text-xs font-bold text-white truncate">{user.name}</p>
+                <p className="text-[11px] text-orange-400 font-medium truncate">{user.role}</p>
+              </div>
+            </div>
+          </div>
 
+          {/* Navigation Section */}
+          <div className="py-2 space-y-1">
+            <div className="px-5 mb-2 mt-1">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                ERP Modules
+              </p>
+            </div>
+            
+            {menuItems.map((item) => {
+              const isActive = currentView === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onChangeView(item.id as ViewState)}
+                  className={`w-full flex items-center justify-between px-5 py-2.5 text-xs font-semibold transition-all border-l-3
+                    ${isActive 
+                      ? 'bg-orange-500/10 border-orange-500 text-orange-400 font-bold' 
+                      : 'border-transparent text-slate-400 hover:text-slate-100 hover:bg-slate-800/40'}
+                  `}
+                >
+                  <div className="flex items-center gap-3">
+                    <item.icon size={17} className={isActive ? 'text-orange-400' : 'text-slate-500'} />
+                    <span>{item.label}</span>
+                  </div>
+                  {isActive && <ChevronRight size={14} className="text-orange-500" />}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="p-6 border-t border-slate-800">
+        {/* Footer / Sign Out */}
+        <div className="p-4 border-t border-slate-800/80 bg-[#090d16]">
           <button 
             onClick={onLogout}
-            className="flex items-center w-full text-sm text-slate-400 hover:text-white hover:bg-slate-800/50 p-2 rounded-lg transition-colors group"
+            className="flex items-center justify-center gap-2 w-full text-xs text-slate-400 hover:text-red-400 hover:bg-red-500/10 py-2.5 px-3 rounded-lg transition-all border border-transparent hover:border-red-500/20 font-medium group"
           >
-            <LogOut size={18} className="mr-3 group-hover:text-red-400 transition-colors" />
-            Sign Out
+            <LogOut size={16} className="group-hover:text-red-400 transition-colors" />
+            <span>Sign Out</span>
           </button>
         </div>
+
       </div>
     </aside>
   );

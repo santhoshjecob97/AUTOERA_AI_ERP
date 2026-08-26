@@ -127,20 +127,20 @@ const AppContent: React.FC = () => {
 
         <div className="flex-1 flex flex-col h-full overflow-hidden w-full">
 
-          <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-30">
+          <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-30 shadow-xs">
             <div className="flex items-center">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 className="p-2 mr-4 md:hidden text-slate-500 hover:bg-slate-100 rounded-lg"
               >
-                <Menu size={24} />
+                <Menu size={22} />
               </button>
 
               <div className="hidden md:flex flex-col">
-                <span className="text-xs text-slate-400 font-medium">
+                <span className="text-[11px] text-orange-600 font-bold uppercase tracking-wider">
                   {user.role} Workspace
                 </span>
-                <span className="text-sm font-bold text-slate-900 capitalize">
+                <span className="text-sm font-bold text-slate-900 capitalize font-['Outfit']">
                   {currentView === 'dashboard' ? 'Overview' : `${currentView} Management`}
                 </span>
               </div>
@@ -150,26 +150,26 @@ const AppContent: React.FC = () => {
               <div className="hidden md:flex relative">
                 <input
                   type="text"
-                  placeholder="Search platform..."
-                  className="pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-0 rounded-lg text-sm transition-all w-64"
+                  placeholder="Search vehicles, customers, job cards..."
+                  className="pl-9 pr-4 py-2 bg-slate-100/90 border border-slate-200 focus:bg-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-lg text-xs transition-all w-72 text-slate-800 placeholder-slate-400 outline-none"
                 />
-                <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
+                <Search size={15} className="absolute left-3 top-2.5 text-slate-400" />
               </div>
 
               <button
                 onClick={() => setIsAIModalOpen(true)}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all shadow-sm hover:shadow-indigo-200/50"
+                className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-md shadow-orange-500/20 active:scale-[0.98]"
               >
-                <Sparkles size={16} />
-                <span className="hidden md:inline">Ask AI</span>
+                <Sparkles size={15} className="text-amber-200" />
+                <span className="hidden md:inline">AutoEra Copilot</span>
               </button>
 
-              <button className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors relative">
-                <Bell size={20} />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+              <button className="p-2 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors relative">
+                <Bell size={19} />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full border border-white"></span>
               </button>
 
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white border-2 border-white shadow-sm bg-indigo-500">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white border border-orange-500/30 shadow-sm bg-gradient-to-br from-slate-800 to-slate-900">
                 {user.avatar ? (
                   <img src={user.avatar} alt="avatar" className="w-full h-full rounded-full" />
                 ) : (

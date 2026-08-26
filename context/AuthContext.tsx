@@ -1,37 +1,77 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User as AppUser, UserRole } from '../types';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { User as AppUser, UserRole, ViewState } from '../types';
 import apiService from '../services/api';
 
 /**
- * AuthContext — Django JWT Authentication
- *
- * Authentication flow:
- *   1. User submits email + password
- *   2. POST /api/v1/auth/login/ → { access, refresh, user }
- *   3. Tokens stored in localStorage
- *   4. api.ts interceptor injects Bearer token on every request
- *   5. On 401, token is cleared and user redirected to login
+ * Role to ViewState Permissions Mapping
  */
+const ROLE_PERMISSIONS_MAP: Record<string, ViewState[]> = {
+  SUPER_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
+  ENTERPRISE_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
+  DEALER_PRINCIPAL: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
+  GENERAL_MANAGER: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
+  SERVICE_MANAGER: ['dashboard', 'service', 'service-ai', 'workforce', 'plans'],
+  SERVICE_ADVISOR: ['dashboard', 'service', 'service-ai', 'plans'],
+  TECHNICIAN: ['dashboard', 'service', 'service-ai'],
+  SALES_MANAGER: ['dashboard', 'sales', 'sales-ai', 'workforce', 'plans'],
+  SALES_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans'],
+  PARTS_MANAGER: ['dashboard', 'service', 'service-ai', 'plans'],
+  FINANCE_OFFICER: ['dashboard', 'finance', 'finance-ai', 'plans'],
+  INSURANCE_OFFICER: ['dashboard', 'insurance', 'insurance-ai', 'plans'],
+};
+
+const ROLE_DISPLAY_MAP: Record<string, UserRole> = {
+  SUPER_ADMIN: 'Super Admin',
+  ENTERPRISE_ADMIN: 'Enterprise Admin',
+  DEALER_PRINCIPAL: 'Dealer Principal',
+  GENERAL_MANAGER: 'General Manager',
+  SERVICE_MANAGER: 'Service Manager',
+  SERVICE_ADVISOR: 'Service Advisor',
+  TECHNICIAN: 'Technician',
+  SALES_MANAGER: 'Sales Manager',
+  SALES_EXECUTIVE: 'Sales Executive',
+  PARTS_MANAGER: 'Parts Manager',
+  FINANCE_OFFICER: 'Finance Officer',
+  INSURANCE_OFFICER: 'Insurance Officer',
+};
 
 // Map Django user response to frontend AppUser
-const mapDjangoUser = (data: any): AppUser => {
+export const mapDjangoUser = (data: any): AppUser => {
+  const rawRole = (data.role || 'GENERAL_MANAGER').toUpperCase();
+  const roleDisplay = ROLE_DISPLAY_MAP[rawRole] || (data.role as UserRole) || 'General Manager';
+  const permissions = ROLE_PERMISSIONS_MAP[rawRole] || ['dashboard', 'service', 'sales', 'finance', 'insurance', 'plans'];
+
   return {
-    id: data.id,
-    name: [data.first_name, data.last_name].filter(Boolean).join(' ') || data.username || 'User',
+    id: String(data.id),
+    username: data.username || '',
+    name: [data.first_name, data.last_name].filter(Boolean).join(' ') || data.username || 'Dealership User',
     email: data.email || '',
-    role: (data.role as UserRole) || 'General Manager',
-    avatar: data.avatar_url,
-    permissions: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'plans'] as any[],
+    role: roleDisplay,
+    avatar: data.avatar_url || '',
+    permissions,
+    organizationId: data.organization ? String(data.organization) : undefined,
+    organizationName: data.organization_name || 'Apex Mobility Group',
+    branchId: data.branch ? String(data.branch) : undefined,
+    branchName: data.branch_name || 'Indiranagar Main Branch',
+    department: roleDisplay.includes('Service') || roleDisplay === 'Technician' ? 'Service & Workshop' :
+                roleDisplay.includes('Sales') ? 'Sales & Showroom' :
+                roleDisplay.includes('Finance') ? 'Finance & Accounts' :
+                roleDisplay.includes('Insurance') ? 'Insurance & Claims' : 'General Management',
   };
 };
 
+export type AuthStatus = 'INITIALIZING' | 'AUTHENTICATED' | 'UNAUTHENTICATED' | 'ERROR';
+
 interface AuthContextType {
   user: AppUser | null;
+  authStatus: AuthStatus;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  errorMessage: string | null;
+  login: (usernameOrEmail: string, password: string) => Promise<AppUser>;
   logout: () => void;
   updateUser: (updates: Partial<AppUser>) => Promise<void>;
+  retryInit: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,86 +82,118 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AppUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [authStatus, setAuthStatus] = useState<AuthStatus>('INITIALIZING');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // On mount, check if we have a valid token and fetch user profile
-  useEffect(() => {
-    const initAuth = async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setIsLoading(false);
-        return;
-      }
+  const initAuth = useCallback(async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setUser(null);
+      setAuthStatus('UNAUTHENTICATED');
+      return;
+    }
 
-      try {
-        // Verify token by fetching current user profile
-        const userData = await apiService.get<any>('/api/v1/auth/me/');
-        setUser(mapDjangoUser(userData));
-      } catch {
-        // Token invalid or expired — clear it
+    setAuthStatus('INITIALIZING');
+    setErrorMessage(null);
+
+    // Timeout safeguard for backend cold start or network delay (5s timeout)
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Connection timeout to AutoEra API server')), 5000)
+    );
+
+    try {
+      const fetchProfilePromise = apiService.get<any>('/api/v1/auth/me/');
+      const userData = await Promise.race([fetchProfilePromise, timeoutPromise]);
+      
+      const mappedUser = mapDjangoUser(userData);
+      setUser(mappedUser);
+      setAuthStatus('AUTHENTICATED');
+    } catch (err: any) {
+      console.warn('Auth initialization error:', err?.message || err);
+      // If unauthorized, clear tokens
+      if (err?.status === 401 || err?.response?.status === 401) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('refreshToken');
-      } finally {
-        setIsLoading(false);
+        setUser(null);
+        setAuthStatus('UNAUTHENTICATED');
+      } else {
+        // Network timeout / offline server
+        setErrorMessage(err?.message || 'Unable to connect to AutoEra AI ERP backend.');
+        setAuthStatus('UNAUTHENTICATED');
       }
-    };
-
-    initAuth();
+    }
   }, []);
 
-  const login = async (email: string, password: string): Promise<void> => {
-    setIsLoading(true);
+  // Listen for unauthorized events emitted by api.ts
+  useEffect(() => {
+    initAuth();
+
+    const handleUnauthorized = () => {
+      setUser(null);
+      setAuthStatus('UNAUTHENTICATED');
+    };
+
+    window.addEventListener('autoera:unauthorized', handleUnauthorized);
+    return () => {
+      window.removeEventListener('autoera:unauthorized', handleUnauthorized);
+    };
+  }, [initAuth]);
+
+  const login = async (usernameOrEmail: string, password: string): Promise<AppUser> => {
+    setErrorMessage(null);
     try {
-      // Django LoginView expects { username, password }
-      // We accept email from the UI and send it as username
       const response = await apiService.post<{
         access: string;
         refresh: string;
         user: any;
       }>('/api/v1/auth/login/', {
-        username: email,
+        username: usernameOrEmail.trim(),
         password,
       });
 
-      // Store JWT tokens
-      localStorage.setItem('authToken', response.access);
-      localStorage.setItem('refreshToken', response.refresh);
+      if (!response?.access) {
+        throw new Error('Invalid response from authentication server.');
+      }
 
-      // Map and set user
-      setUser(mapDjangoUser(response.user));
+      localStorage.setItem('authToken', response.access);
+      if (response.refresh) {
+        localStorage.setItem('refreshToken', response.refresh);
+      }
+
+      const mappedUser = mapDjangoUser(response.user);
+      setUser(mappedUser);
+      setAuthStatus('AUTHENTICATED');
+      return mappedUser;
     } catch (error: any) {
-      setIsLoading(false);
-      // Extract error message from Django response
-      const message =
-        error?.details?.error?.non_field_errors?.[0] ||
-        error?.details?.error ||
-        error?.message ||
-        'Invalid email or password.';
-      throw new Error(typeof message === 'string' ? message : 'Authentication failed.');
-    } finally {
-      setIsLoading(false);
+      const msg = error?.message || error?.details?.error || 'Invalid credentials or connection error.';
+      setErrorMessage(typeof msg === 'string' ? msg : 'Authentication failed.');
+      throw error;
     }
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = (): void => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
     setUser(null);
+    setAuthStatus('UNAUTHENTICATED');
+    setErrorMessage(null);
   };
 
   const updateUser = async (updates: Partial<AppUser>): Promise<void> => {
     if (!user) return;
-    // Future: call PATCH /api/v1/auth/me/ or /api/v1/users/{id}/
     setUser({ ...user, ...updates });
   };
 
   const value: AuthContextType = {
     user,
-    isAuthenticated: !!user,
-    isLoading,
+    authStatus,
+    isAuthenticated: authStatus === 'AUTHENTICATED' && !!user,
+    isLoading: authStatus === 'INITIALIZING',
+    errorMessage,
     login,
     logout,
     updateUser,
+    retryInit: initAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

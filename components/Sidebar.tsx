@@ -78,6 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView, isOpen, us
               <div className="overflow-hidden min-w-0">
                 <p className="text-xs font-bold text-white truncate">{user.name}</p>
                 <p className="text-[11px] text-orange-400 font-medium truncate">{user.role}</p>
+                <p className="text-[10px] text-slate-400 truncate">{user.branchName || user.department || 'Main Branch'}</p>
               </div>
             </div>
           </div>

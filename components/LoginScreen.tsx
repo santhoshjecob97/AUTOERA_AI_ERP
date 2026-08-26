@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, ShieldCheck, Cpu, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ShieldCheck, Cpu, ArrowRight, AlertCircle, Sparkles, Building, UserCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const LoginScreen: React.FC = () => {
@@ -9,7 +9,7 @@ const LoginScreen: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Form States
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
 
@@ -19,23 +19,34 @@ const LoginScreen: React.FC = () => {
     setErrorMessage(null);
 
     try {
-      await login(email.trim(), password);
+      await login(identifier.trim(), password);
     } catch (error: any) {
-      setErrorMessage(error.message || 'Authentication failed. Please verify your credentials.');
+      setErrorMessage(
+        error?.message ||
+        error?.details?.error ||
+        'Authentication failed. Please verify your credentials.'
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDemoFill = (role: 'admin' | 'advisor') => {
-    if (role === 'admin') {
-      setEmail('manager@autoera.com');
-      setPassword('AutoEraAdmin2026!');
-    } else {
-      setEmail('advisor@autoera.com');
-      setPassword('AdvisorPass2026!');
+  const handleQuickFill = (role: 'gm' | 'sa' | 'tech' | 'sales' | 'fin' | 'ins') => {
+    const credentials = {
+      gm: { user: 'gm_apex', pass: 'Password@123' },
+      sa: { user: 'sa_apex', pass: 'Password@123' },
+      tech: { user: 'tech_apex', pass: 'Password@123' },
+      sales: { user: 'salesm_apex', pass: 'Password@123' },
+      fin: { user: 'fin_apex', pass: 'Password@123' },
+      ins: { user: 'ins_apex', pass: 'Password@123' },
+    };
+
+    const target = credentials[role];
+    if (target) {
+      setIdentifier(target.user);
+      setPassword(target.pass);
+      setErrorMessage(null);
     }
-    setErrorMessage(null);
   };
 
   return (
@@ -44,13 +55,12 @@ const LoginScreen: React.FC = () => {
       {/* ─── Left Panel: Branding & Automotive AI Heritage ─── */}
       <div className="lg:w-7/12 bg-gradient-to-br from-[#0c1222] via-[#090d18] to-[#05070d] p-8 lg:p-16 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800/60">
         
-        {/* Subtle Ambient Background Gradients */}
+        {/* Ambient Background Gradients */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl animate-pulse-glow" />
           <div className="absolute top-1/2 -right-32 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
           
-          {/* Subtle Grid overlay */}
           <div 
             className="absolute inset-0 opacity-[0.03]" 
             style={{ 
@@ -86,7 +96,7 @@ const LoginScreen: React.FC = () => {
         </div>
 
         {/* Hero Value Proposition */}
-        <div className="relative z-10 my-auto py-12 max-w-xl">
+        <div className="relative z-10 my-auto py-10 max-w-xl">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-6">
             <Sparkles size={14} className="text-orange-500 flex-shrink-0" />
             The Intelligence Behind Every Drive
@@ -99,7 +109,7 @@ const LoginScreen: React.FC = () => {
             </span>
           </h1>
 
-          <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-10 font-normal">
+          <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 font-normal">
             Unified multi-tenant dealership management platform powered by Google Gemini AI, pgvector RAG, and real-time automotive service intelligence.
           </p>
 
@@ -137,8 +147,8 @@ const LoginScreen: React.FC = () => {
       </div>
 
       {/* ─── Right Panel: Secure Login Form ─── */}
-      <div className="lg:w-5/12 bg-[#090d16] p-8 lg:p-16 flex flex-col justify-center relative">
-        <div className="max-w-md w-full mx-auto">
+      <div className="lg:w-5/12 bg-[#090d16] p-8 lg:p-14 flex flex-col justify-center relative overflow-y-auto">
+        <div className="max-w-md w-full mx-auto py-6">
           
           <div className="mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2 font-['Outfit']">
@@ -162,7 +172,7 @@ const LoginScreen: React.FC = () => {
             {/* Email / Username Input */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
-                Work Email / Username
+                Work Email or Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -171,10 +181,10 @@ const LoginScreen: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="name@dealership.com"
+                  placeholder="e.g. gm_apex or user@dealership.com"
                   className="w-full pl-10 pr-4 py-3 bg-slate-900/90 border border-slate-800 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all text-sm text-white placeholder-slate-500"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
@@ -238,7 +248,7 @@ const LoginScreen: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed group"
+              className="w-full py-3.5 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed group cursor-pointer"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -250,27 +260,68 @@ const LoginScreen: React.FC = () => {
               )}
             </button>
 
-            {/* Demo Credential Quick-Fill Helpers for Testing & Pilot Rehearsal */}
+            {/* Dealership Role Quick-Fill Buttons */}
             <div className="pt-6 mt-6 border-t border-slate-800/80">
-              <div className="text-center mb-3">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Pilot Testing Credentials
+              <div className="text-center mb-3 flex items-center justify-center gap-2">
+                <Building size={14} className="text-orange-400" />
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  Select Dealership Pilot Role
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-2.5">
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <button
                   type="button"
-                  onClick={() => handleDemoFill('admin')}
-                  className="px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-all text-center"
+                  onClick={() => handleQuickFill('gm')}
+                  className="p-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition-all hover:border-orange-500/30 group"
                 >
-                  General Manager
+                  <p className="text-xs font-bold text-white group-hover:text-orange-400 truncate">General Manager</p>
+                  <p className="text-[10px] text-slate-400">Executive / All</p>
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => handleDemoFill('advisor')}
-                  className="px-3 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-all text-center"
+                  onClick={() => handleQuickFill('sa')}
+                  className="p-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition-all hover:border-orange-500/30 group"
                 >
-                  Service Advisor
+                  <p className="text-xs font-bold text-white group-hover:text-orange-400 truncate">Service Advisor</p>
+                  <p className="text-[10px] text-slate-400">Job Cards / 360</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleQuickFill('tech')}
+                  className="p-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition-all hover:border-orange-500/30 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-orange-400 truncate">Technician</p>
+                  <p className="text-[10px] text-slate-400">Workshop / QC</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleQuickFill('sales')}
+                  className="p-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition-all hover:border-orange-500/30 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-orange-400 truncate">Sales Manager</p>
+                  <p className="text-[10px] text-slate-400">Leads / Deals</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleQuickFill('fin')}
+                  className="p-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition-all hover:border-orange-500/30 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-orange-400 truncate">Finance Officer</p>
+                  <p className="text-[10px] text-slate-400">Invoices / Ledger</p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleQuickFill('ins')}
+                  className="p-2.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-left transition-all hover:border-orange-500/30 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-orange-400 truncate">Insurance Officer</p>
+                  <p className="text-[10px] text-slate-400">Claims / Renewals</p>
                 </button>
               </div>
             </div>

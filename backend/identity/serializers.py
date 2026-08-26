@@ -22,12 +22,26 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True)
 
     def validate(self, attrs):
-        username = attrs.get('username')
+        login_identifier = attrs.get('username', '').strip()
         password = attrs.get('password')
 
-        user = authenticate(username=username, password=password)
+        # Check if user passed an email address
+        resolved_username = login_identifier
+        if '@' in login_identifier:
+            try:
+                user_obj = User.objects.filter(email__iexact=login_identifier).first()
+                if user_obj:
+                    resolved_username = user_obj.username
+            except Exception:
+                pass
+
+        user = authenticate(username=resolved_username, password=password)
+        if not user and resolved_username != login_identifier:
+            # Fallback to direct username authenticate if email lookup had a different username
+            user = authenticate(username=login_identifier, password=password)
+
         if not user:
-            raise serializers.ValidationError('Invalid username or password.')
+            raise serializers.ValidationError('Invalid username/email or password.')
         if not user.is_active:
             raise serializers.ValidationError('User account is disabled.')
 

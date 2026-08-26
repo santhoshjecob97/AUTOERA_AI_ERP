@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, Bell, Search, Sparkles } from 'lucide-react';
+import { Menu, Bell, Search, Sparkles, RefreshCw, LogOut } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import SalesEngine from './pages/SalesEngine';
@@ -62,7 +62,7 @@ import InsuranceAnalyticsPage from './pages/insurance/AnalyticsPage';
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isLoading, logout } = useAuth(); // Use AuthContext
+  const { user, isLoading, logout, retryInit } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
@@ -82,11 +82,54 @@ const AppContent: React.FC = () => {
 
   const currentView = getCurrentView();
 
+  // Premium Branded Loading & Timeout Recovery Screen
   if (isLoading) {
-    return <div className="h-screen w-full flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen bg-[#070a13] flex flex-col items-center justify-center p-6 text-slate-100 font-sans">
+        <div className="max-w-sm w-full text-center space-y-6 animate-fade-in">
+          <div className="flex justify-center">
+            <img
+              src="/assets/autoera-ai-logo.png"
+              alt="AutoEra AI"
+              className="h-16 w-auto object-contain drop-shadow-[0_4px_16px_rgba(249,115,22,0.3)] animate-pulse"
+            />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-white tracking-tight font-['Outfit']">
+              AutoEra AI ERP 2026
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">
+              Synchronizing dealership security & session...
+            </p>
+          </div>
+
+          <div className="flex justify-center py-2">
+            <div className="w-8 h-8 border-3 border-orange-500/20 border-t-orange-500 rounded-full animate-spin" />
+          </div>
+
+          <div className="pt-4 flex items-center justify-center gap-3">
+            <button
+              onClick={() => retryInit()}
+              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 font-medium transition-all flex items-center gap-1.5"
+            >
+              <RefreshCw size={13} />
+              <span>Retry</span>
+            </button>
+            <button
+              onClick={() => logout()}
+              className="px-3 py-1.5 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-xs text-orange-400 font-medium transition-all flex items-center gap-1.5"
+            >
+              <LogOut size={13} />
+              <span>Sign In Screen</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  // If not logged in, show login screen
+  // If not authenticated, show login screen
   if (!user) {
     return <LoginScreen />;
   }
@@ -97,7 +140,6 @@ const AppContent: React.FC = () => {
         <Sidebar
           currentView={currentView}
           onChangeView={(view) => {
-            // Map view to route
             const routeMap: Record<ViewState, string> = {
               dashboard: '/',
               sales: '/sales',
@@ -115,7 +157,7 @@ const AppContent: React.FC = () => {
               'fleet-ai': '/fleet-ai',
               'workforce-ai': '/workforce-ai',
               'ev-ai': '/ev-ai',
-              'voice-ai': '/voice-ai'
+              'voice-ai': '/voice-ai',
             };
             navigate(routeMap[view] || '/');
             setIsSidebarOpen(false);
@@ -126,7 +168,6 @@ const AppContent: React.FC = () => {
         />
 
         <div className="flex-1 flex flex-col h-full overflow-hidden w-full">
-
           <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 z-30 shadow-xs">
             <div className="flex items-center">
               <button
@@ -138,10 +179,10 @@ const AppContent: React.FC = () => {
 
               <div className="hidden md:flex flex-col">
                 <span className="text-[11px] text-orange-600 font-bold uppercase tracking-wider">
-                  {user.role} Workspace
+                  {user.role} &bull; {user.organizationName || 'Apex Mobility Group'}
                 </span>
                 <span className="text-sm font-bold text-slate-900 capitalize font-['Outfit']">
-                  {currentView === 'dashboard' ? 'Overview' : `${currentView} Management`}
+                  {currentView === 'dashboard' ? 'Overview & Live Operations' : `${currentView} Management`}
                 </span>
               </div>
             </div>
@@ -158,7 +199,7 @@ const AppContent: React.FC = () => {
 
               <button
                 onClick={() => setIsAIModalOpen(true)}
-                className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-md shadow-orange-500/20 active:scale-[0.98]"
+                className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-md shadow-orange-500/20 active:scale-[0.98] cursor-pointer"
               >
                 <Sparkles size={15} className="text-amber-200" />
                 <span className="hidden md:inline">AutoEra Copilot</span>
@@ -166,7 +207,7 @@ const AppContent: React.FC = () => {
 
               <button className="p-2 text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors relative">
                 <Bell size={19} />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full border border-white"></span>
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full border border-white" />
               </button>
 
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white border border-orange-500/30 shadow-sm bg-gradient-to-br from-slate-800 to-slate-900">
@@ -181,28 +222,36 @@ const AppContent: React.FC = () => {
 
           <main className="flex-1 overflow-auto p-4 md:p-8 relative">
             <Routes>
-              <Route path="/" element={<Dashboard onNavigate={(view) => {
-                const routeMap: Record<ViewState, string> = {
-                  dashboard: '/',
-                  sales: '/sales',
-                  service: '/service',
-                  finance: '/finance',
-                  insurance: '/insurance',
-                  workforce: '/workforce',
-                  fleet: '/fleet',
-                  ev: '/ev',
-                  plans: '/plans',
-                  'service-ai': '/service-ai',
-                  'sales-ai': '/sales-ai',
-                  'finance-ai': '/finance-ai',
-                  'insurance-ai': '/insurance-ai',
-                  'fleet-ai': '/fleet-ai',
-                  'workforce-ai': '/workforce-ai',
-                  'ev-ai': '/ev-ai',
-                  'voice-ai': '/voice-ai'
-                };
-                navigate(routeMap[view] || '/');
-              }} user={user} />} />
+              <Route
+                path="/"
+                element={
+                  <Dashboard
+                    onNavigate={(view) => {
+                      const routeMap: Record<ViewState, string> = {
+                        dashboard: '/',
+                        sales: '/sales',
+                        service: '/service',
+                        finance: '/finance',
+                        insurance: '/insurance',
+                        workforce: '/workforce',
+                        fleet: '/fleet',
+                        ev: '/ev',
+                        plans: '/plans',
+                        'service-ai': '/service-ai',
+                        'sales-ai': '/sales-ai',
+                        'finance-ai': '/finance-ai',
+                        'insurance-ai': '/insurance-ai',
+                        'fleet-ai': '/fleet-ai',
+                        'workforce-ai': '/workforce-ai',
+                        'ev-ai': '/ev-ai',
+                        'voice-ai': '/voice-ai',
+                      };
+                      navigate(routeMap[view] || '/');
+                    }}
+                    user={user}
+                  />
+                }
+              />
               <Route path="/sales" element={<SalesEngine />} />
               <Route path="/sales/leads" element={<LeadsPage />} />
               <Route path="/sales/showroom" element={<VirtualShowroomPage />} />

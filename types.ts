@@ -2,15 +2,33 @@ import React from 'react';
 
 export type ViewState = 'dashboard' | 'sales' | 'service' | 'finance' | 'insurance' | 'workforce' | 'fleet' | 'ev' | 'plans' | 'service-ai' | 'sales-ai' | 'finance-ai' | 'insurance-ai' | 'fleet-ai' | 'workforce-ai' | 'ev-ai' | 'voice-ai';
 
-export type UserRole = 'General Manager' | 'Sales Manager' | 'Service Advisor' | 'Finance Officer' | 'Technician' | 'Super Admin';
+export type UserRole = 
+  | 'Super Admin' 
+  | 'Enterprise Admin' 
+  | 'Dealer Principal' 
+  | 'General Manager' 
+  | 'Service Manager' 
+  | 'Service Advisor' 
+  | 'Technician' 
+  | 'Sales Manager' 
+  | 'Sales Executive' 
+  | 'Parts Manager' 
+  | 'Finance Officer' 
+  | 'Insurance Officer';
 
 export interface User {
   id: string;
   name: string;
+  username: string;
   role: UserRole;
   avatar: string;
   permissions: ViewState[];
   email: string;
+  organizationId?: string;
+  organizationName?: string;
+  branchId?: string;
+  branchName?: string;
+  department?: string;
 }
 
 export interface StatCardProps {

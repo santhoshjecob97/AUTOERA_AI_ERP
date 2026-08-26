@@ -46,26 +46,31 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
-            <BrainCircuit className="text-indigo-600" size={32} />
-            AUTOERA AI SaaS Platform
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 text-xs font-bold uppercase tracking-wider mb-2">
+            <Sparkles size={13} className="text-orange-500" />
+            {user?.organizationName || 'Apex Mobility Group'} &bull; {user?.branchName || 'Indiranagar Main Branch'}
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-3 font-['Outfit'] tracking-tight">
+            <BrainCircuit className="text-orange-600" size={30} />
+            AutoEra AI ERP Operations Center
           </h1>
-          <p className="text-slate-500 mt-1">
-            Welcome back, {user?.name.split(' ')[0] || 'Manager'} • Central Control Panel for All AI Engines
+          <p className="text-slate-500 mt-1 text-sm">
+            Welcome back, {user?.name || 'Dealership Executive'} &bull; Real-time AI Operations, Workshop & Lead Telemetry
           </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-1">Current Role</p>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">
-              {user?.role}
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Assigned Role</p>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100 border border-orange-200 text-orange-800 text-xs font-bold shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+              {user?.role || 'General Manager'}
             </span>
           </div>
-          <div className="text-right">
-            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider mb-1">AI Models</p>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-sm font-bold">
-              <Sparkles size={14} />
-              {platformKPIs.totalModels} Active
+          <div className="text-right hidden sm:block">
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Gemini AI</p>
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
+              <Sparkles size={13} className="text-orange-500" />
+              AI Copilot Ready
             </span>
           </div>
         </div>

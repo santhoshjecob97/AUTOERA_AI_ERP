@@ -17,6 +17,7 @@ import LoginScreen from './components/LoginScreen';
 import { ViewState } from './types';
 import { VoiceProvider } from './context/VoiceContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import RoleProtectedRoute from './components/RoleProtectedRoute';
 
 // Import Service sub-pages
 import ServiceBaysPage from './pages/service/ServiceBaysPage';
@@ -252,14 +253,16 @@ const AppContent: React.FC = () => {
                   />
                 }
               />
-              <Route path="/sales" element={<SalesEngine />} />
-              <Route path="/sales/leads" element={<LeadsPage />} />
-              <Route path="/sales/showroom" element={<VirtualShowroomPage />} />
-              <Route path="/sales/pricing" element={<PricingPage />} />
-              <Route path="/sales/chatbot" element={<ChatbotPage />} />
-              <Route path="/sales/analytics" element={<SalesAnalyticsPage />} />
+              {/* Sales Routes */}
+              <Route path="/sales" element={<RoleProtectedRoute permission="sales"><SalesEngine /></RoleProtectedRoute>} />
+              <Route path="/sales/leads" element={<RoleProtectedRoute permission="sales"><LeadsPage /></RoleProtectedRoute>} />
+              <Route path="/sales/showroom" element={<RoleProtectedRoute permission="sales"><VirtualShowroomPage /></RoleProtectedRoute>} />
+              <Route path="/sales/pricing" element={<RoleProtectedRoute permission="sales"><PricingPage /></RoleProtectedRoute>} />
+              <Route path="/sales/chatbot" element={<RoleProtectedRoute permission="sales"><ChatbotPage /></RoleProtectedRoute>} />
+              <Route path="/sales/analytics" element={<RoleProtectedRoute permission="sales"><SalesAnalyticsPage /></RoleProtectedRoute>} />
+              
               {/* Service Engine Routes */}
-              <Route path="/service" element={<ServiceLayout />}>
+              <Route path="/service" element={<RoleProtectedRoute permission="service"><ServiceLayout /></RoleProtectedRoute>}>
                 <Route index element={<ServiceOverviewPage />} />
                 <Route path="bays" element={<ServiceBaysPage />} />
                 <Route path="maintenance" element={<ServiceMaintenancePage />} />
@@ -272,27 +275,33 @@ const AppContent: React.FC = () => {
                 <Route path="emergency" element={<ServiceEmergencyPage />} />
                 <Route path="analytics" element={<ServiceAnalyticsPage />} />
               </Route>
-              <Route path="/finance" element={<FinanceEngine />} />
-              <Route path="/finance/credit-scoring" element={<CreditScoringPage />} />
-              <Route path="/finance/loan-approval" element={<LoanApprovalPage />} />
-              <Route path="/finance/risk-assessment" element={<RiskAssessmentPage />} />
-              <Route path="/finance/payments" element={<PaymentProcessingPage />} />
-              <Route path="/finance/fraud-detection" element={<FraudDetectionPage />} />
-              <Route path="/finance/calculator" element={<LoanCalculatorPage />} />
-              <Route path="/finance/compliance" element={<CompliancePage />} />
-              <Route path="/finance/analytics" element={<FinanceAnalyticsPage />} />
-              <Route path="/insurance" element={<InsuranceEngine />} />
-              <Route path="/insurance/claims" element={<ClaimProcessingPage />} />
-              <Route path="/insurance/damage-assessment" element={<DamageAssessmentPage />} />
-              <Route path="/insurance/fraud-detection" element={<InsuranceFraudDetectionPage />} />
-              <Route path="/insurance/policies" element={<PolicyRecommendationsPage />} />
-              <Route path="/insurance/settlement" element={<SettlementCalculatorPage />} />
-              <Route path="/insurance/documents" element={<DocumentManagementPage />} />
-              <Route path="/insurance/analytics" element={<InsuranceAnalyticsPage />} />
-              <Route path="/workforce" element={<WorkforceEngine />} />
-              <Route path="/fleet" element={<FleetEngine />} />
+
+              {/* Finance Routes */}
+              <Route path="/finance" element={<RoleProtectedRoute permission="finance"><FinanceEngine /></RoleProtectedRoute>} />
+              <Route path="/finance/credit-scoring" element={<RoleProtectedRoute permission="finance"><CreditScoringPage /></RoleProtectedRoute>} />
+              <Route path="/finance/loan-approval" element={<RoleProtectedRoute permission="finance"><LoanApprovalPage /></RoleProtectedRoute>} />
+              <Route path="/finance/risk-assessment" element={<RoleProtectedRoute permission="finance"><RiskAssessmentPage /></RoleProtectedRoute>} />
+              <Route path="/finance/payments" element={<RoleProtectedRoute permission="finance"><PaymentProcessingPage /></RoleProtectedRoute>} />
+              <Route path="/finance/fraud-detection" element={<RoleProtectedRoute permission="finance"><FraudDetectionPage /></RoleProtectedRoute>} />
+              <Route path="/finance/calculator" element={<RoleProtectedRoute permission="finance"><LoanCalculatorPage /></RoleProtectedRoute>} />
+              <Route path="/finance/compliance" element={<RoleProtectedRoute permission="finance"><CompliancePage /></RoleProtectedRoute>} />
+              <Route path="/finance/analytics" element={<RoleProtectedRoute permission="finance"><FinanceAnalyticsPage /></RoleProtectedRoute>} />
+
+              {/* Insurance Routes */}
+              <Route path="/insurance" element={<RoleProtectedRoute permission="insurance"><InsuranceEngine /></RoleProtectedRoute>} />
+              <Route path="/insurance/claims" element={<RoleProtectedRoute permission="insurance"><ClaimProcessingPage /></RoleProtectedRoute>} />
+              <Route path="/insurance/damage-assessment" element={<RoleProtectedRoute permission="insurance"><DamageAssessmentPage /></RoleProtectedRoute>} />
+              <Route path="/insurance/fraud-detection" element={<RoleProtectedRoute permission="insurance"><InsuranceFraudDetectionPage /></RoleProtectedRoute>} />
+              <Route path="/insurance/policies" element={<RoleProtectedRoute permission="insurance"><PolicyRecommendationsPage /></RoleProtectedRoute>} />
+              <Route path="/insurance/settlement" element={<RoleProtectedRoute permission="insurance"><SettlementCalculatorPage /></RoleProtectedRoute>} />
+              <Route path="/insurance/documents" element={<RoleProtectedRoute permission="insurance"><DocumentManagementPage /></RoleProtectedRoute>} />
+              <Route path="/insurance/analytics" element={<RoleProtectedRoute permission="insurance"><InsuranceAnalyticsPage /></RoleProtectedRoute>} />
+
+              {/* Operations & AI Routes */}
+              <Route path="/workforce" element={<RoleProtectedRoute permission="workforce"><WorkforceEngine /></RoleProtectedRoute>} />
+              <Route path="/fleet" element={<RoleProtectedRoute permission="fleet"><FleetEngine /></RoleProtectedRoute>} />
               <Route path="/plans" element={<PlansPage />} />
-              <Route path="/service-ai" element={<ServiceAIDashboard />} />
+              <Route path="/service-ai" element={<RoleProtectedRoute permission="service-ai"><ServiceAIDashboard /></RoleProtectedRoute>} />
             </Routes>
           </main>
         </div>

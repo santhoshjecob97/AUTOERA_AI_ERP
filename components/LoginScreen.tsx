@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ShieldCheck, Cpu, ArrowRight, AlertCircle, Sparkles, Building, UserCheck } from 'lucide-react';
+import { getDashboardForUser } from '../services/roleRouter';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const LoginScreen: React.FC = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -19,7 +22,9 @@ const LoginScreen: React.FC = () => {
     setErrorMessage(null);
 
     try {
-      await login(identifier.trim(), password);
+      const authUser = await login(identifier.trim(), password);
+      const targetDashboard = getDashboardForUser(authUser);
+      navigate(targetDashboard);
     } catch (error: any) {
       setErrorMessage(
         error?.message ||

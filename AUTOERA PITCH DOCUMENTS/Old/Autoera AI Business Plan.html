@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AutoEra AI | Business Plan 2025 – AI SaaS for India's Auto Dealerships</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #FEFAF7;
+            color: #1A2A3A;
+            line-height: 1.4;
+        }
+
+        :root {
+            --orange: #D4500A;
+            --navy: #0A1628;
+            --cream: #FFF8F2;
+            --lgray: #F2F4F7;
+            --dgray: #4A5568;
+            --white: #FFFFFF;
+            --green: #1A6B3A;
+            --red: #C0392B;
+            --gold: #B8860B;
+            --blue: #1A3A6B;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            margin-bottom: 64px;
+            scroll-margin-top: 80px;
+        }
+
+        .section-banner {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 48px 0 32px 0;
+            background: var(--navy);
+            border-left: 8px solid var(--orange);
+            border-radius: 0 16px 16px 0;
+            overflow: hidden;
+        }
+        .section-num {
+            background: var(--orange);
+            padding: 12px 24px;
+            font-weight: 800;
+            font-size: 28px;
+            color: white;
+            min-width: 100px;
+            text-align: center;
+        }
+        .section-title {
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 26px;
+            color: white;
+            background: var(--navy);
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--orange) 0%, #F57C2E 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 24px 0 16px 0;
+            border-left: 5px solid var(--orange);
+            padding-left: 18px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--orange);
+            margin: 20px 0 12px 0;
+        }
+
+        .badge-orange {
+            background: var(--orange);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 24px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #EEE5DE;
+            transition: all 0.2s;
+        }
+        .metric-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-3px);
+        }
+        .metric-value {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--orange);
+            line-height: 1.2;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--dgray);
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .data-table-wrapper {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 500px;
+        }
+        th {
+            background: var(--navy);
+            color: white;
+            padding: 14px 12px;
+            font-weight: 600;
+            text-align: left;
+        }
+        td {
+            padding: 12px 12px;
+            border-bottom: 1px solid #E9E2DB;
+            color: var(--dgray);
+        }
+        tr:nth-child(even) {
+            background-color: var(--lgray);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+            margin: 32px 0;
+        }
+        .module-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px -12px rgba(0,0,0,0.1);
+            border: 1px solid #F0E4DA;
+        }
+        .module-header {
+            background: var(--orange);
+            padding: 20px 20px 12px;
+            color: white;
+        }
+        .module-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .module-body {
+            padding: 20px;
+        }
+        .module-body ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .module-body li {
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #2C3E4E;
+        }
+        .module-body li::before {
+            content: "▸";
+            color: var(--orange);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .challenge-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin: 30px 0;
+        }
+        .challenge-item {
+            background: white;
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: 70px 1fr 1fr;
+            align-items: stretch;
+            overflow: hidden;
+            border: 1px solid #EDE3DB;
+        }
+        .challenge-num {
+            background: var(--navy);
+            color: var(--orange);
+            font-size: 2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .challenge-problem {
+            background: #FFF0EE;
+            padding: 18px 20px;
+        }
+        .challenge-solution {
+            background: #EEFFF4;
+            padding: 18px 20px;
+        }
+        .challenge-label {
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .timeline-phase {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--orange);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .timeline-head {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--lgray);
+            border-radius: 20px 20px 0 0;
+            font-weight: 700;
+        }
+        .timeline-body {
+            padding: 20px 24px;
+        }
+        .pill {
+            background: var(--orange);
+            color: white;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .automotive-svg {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            opacity: 0.9;
+        }
+        .svg-icon {
+            text-align: center;
+            color: var(--orange);
+        }
+        footer {
+            background: var(--navy);
+            color: #B0C4DE;
+            padding: 48px 0 32px;
+            margin-top: 64px;
+            border-radius: 32px 32px 0 0;
+        }
+        @media (max-width: 780px) {
+            .challenge-item {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+        .status-green {
+            color: var(--green);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Hero with car illustration (SVG) -->
+    <div style="text-align: center; padding: 48px 0 24px;">
+        <div class="badge-orange" style="background: var(--orange); margin-bottom: 20px;">UDYAM-TN-24-0162449 | Chennai, Tamil Nadu</div>
+        <h1>AUTOERA AI SOLUTIONS</h1>
+        <p style="font-size: 1.2rem; color: var(--dgray); max-width: 700px; margin: 0 auto;">AI-Powered SaaS Platform for India's Automobile Dealerships</p>
+        <div class="automotive-svg">
+            <i class="fas fa-car-side" style="font-size: 42px; color: var(--orange);"></i>
+            <i class="fas fa-charging-station" style="font-size: 42px; color: var(--orange);"></i>
+            <i class="fas fa-headset" style="font-size: 42px; color: var(--orange);"></i>
+            <i class="fas fa-chart-line" style="font-size: 42px; color: var(--orange);"></i>
+        </div>
+        <div style="background: var(--navy); border-radius: 48px; padding: 40px 24px; margin: 32px 0; color: white;">
+            <p style="font-size: 1rem; letter-spacing: 2px; color: var(--orange);">COMPREHENSIVE BUSINESS PLAN</p>
+            <p style="font-size: 1.8rem; font-weight: 700; margin: 20px 0;">Sales | Service | Finance | Insurance | Workforce | Fleet & EV</p>
+            <p style="font-size: 0.9rem;">CONFIDENTIAL  |  JUNE 2025</p>
+        </div>
+    </div>
+
+    <!-- KPI metrics from cover -->
+    <div class="metric-grid">
+        <div class="metric-card"><div class="metric-value">₹626 Cr</div><div class="metric-label">India Auto Software Market 2025</div></div>
+        <div class="metric-card"><div class="metric-value">8.6%</div><div class="metric-label">India CAGR (Fastest in APAC)</div></div>
+        <div class="metric-card"><div class="metric-value">80%</div><div class="metric-label">Dealers still undigitised</div></div>
+        <div class="metric-card"><div class="metric-value">5,000+</div><div class="metric-label">Tamil Nadu Dealerships</div></div>
+    </div>
+
+    <!-- SECTION 01 EXECUTIVE SUMMARY -->
+    <div class="section" id="summary">
+        <div class="section-banner"><div class="section-num">01</div><div class="section-title">EXECUTIVE SUMMARY</div></div>
+        <p style="font-size: 1rem; margin-bottom: 24px;">AutoEra AI is India's first full-lifecycle AI SaaS platform purpose-built for automobile dealerships. We replace fragmented Excel sheets, WhatsApp groups, and disconnected billing software with one intelligent platform that covers sales, service, finance, insurance, workforce management, and fleet & EV operations — delivering measurable revenue outcomes to every dealership on Day 1.</p>
+        <h3>📌 Mission Statement</h3>
+        <p>To democratise automotive intelligence across India's automobile dealerships — empowering every dealer, service advisor, sales professional, and fleet operator with AI-powered insights that drive real revenue, reduce real costs, and create genuinely connected automotive ecosystems.</p>
+        <h3>🔭 Vision Statement</h3>
+        <p>To be the definitive AI operating system for India's automotive trade — the platform every dealer principal relies on each morning, every service advisor uses on every job, and every fleet manager trusts for every vehicle.</p>
+        <h2>Key Market Metrics</h2>
+        <div class="metric-grid">
+            <div class="metric-card"><div class="metric-value">$6.4B</div><div class="metric-label">Global DMS Market (2026) → $13.1B by 2035</div></div>
+            <div class="metric-card"><div class="metric-value">₹3-6L</div><div class="metric-label">Monthly revenue leakage / dealer</div></div>
+            <div class="metric-card"><div class="metric-value">46%</div><div class="metric-label">Annual staff turnover</div></div>
+            <div class="metric-card"><div class="metric-value">22x</div><div class="metric-label">ROI for dealers</div></div>
+        </div>
+        <h2>Financial Highlights (ARR Projections)</h2>
+        <div class="data-table-wrapper">
+            <table><thead><tr><th>Metric</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 5</th></tr></thead>
+            <tbody><tr><td>Revenue (ARR)</td><td>₹25–40L</td><td>₹1.2–1.8 Cr</td><td>₹4–6 Cr</td><td>₹18–25 Cr</td></tr>
+            <tr><td>Paying Customers</td><td>15–25 dealers</td><td>60–80 dealers</td><td>200+ dealers</td><td>600+ dealers</td></tr>
+            <tr><td>Avg Revenue/Dealer</td><td>₹12K/mo</td><td>₹18K/mo</td><td>₹22K/mo</td><td>₹28K/mo</td></tr>
+            <tr><td>Gross Margin</td><td>65–70%</td><td>70–75%</td><td>75–80%</td><td>80%+</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 02 PROBLEM (condensed but complete) -->
+    <div class="section" id="problem">
+        <div class="section-banner"><div class="section-num">02</div><div class="section-title">THE PROBLEM — 18 PAIN POINTS ACROSS 6 VERTICALS</div></div>
+        <p>India's ₹3.5 lakh crore auto dealership industry runs on Excel, WhatsApp, and paper. Every gap is an opportunity.</p>
+        <h3>⚠️ Sales Pain Points</h3>
+        <div class="data-table-wrapper"><table><thead><tr><th>Pain Point</th><th>Impact</th><th>AutoEra Solution</th></tr></thead><tbody><tr><td>Lead leakage (walk-in, WhatsApp, web)</td><td>30–40% enquiries lost</td><td>SalesMind AI unified CRM</td></tr><tr><td>No follow-up discipline</td><td>Competitor captures sale</td><td>AI lead scoring + reminders</td></tr><tr><td>Inventory mismatch variants</td><td>Capital locked in slow-movers</td><td>Demand forecasting</td></tr><tr><td>Scheme & discount chaos</td><td>Margin erosion</td><td>Scheme eligibility engine</td></tr></tbody></table></div>
+        <h3>🛠️ Service Pain Points</h3>
+        <div class="data-table-wrapper"><table><thead><tr><th>Pain Point</th><th>Impact</th><th>AutoEra Solution</th></tr></thead><tbody><tr><td>Manual job cards (30–40 min)</td><td>Customer frustration</td><td>Digital job card (<3 min)</td></tr><tr><td>Parts stockout mid-repair</td><td>Vehicle stuck for days</td><td>Predictive parts replenishment</td></tr><tr><td>No repair status visibility</td><td>Advisor productivity loss</td><td>WhatsApp auto-updates</td></tr></tbody></table></div>
+        <div class="automotive-svg"><i class="fas fa-tools" style="font-size: 28px; color: var(--orange);"></i><i class="fas fa-chart-simple" style="font-size: 28px; color: var(--orange);"></i></div>
+    </div>
+
+    <!-- SECTION 03 PRODUCT MODULES -->
+    <div class="section" id="product">
+        <div class="section-banner"><div class="section-num">03</div><div class="section-title">THE PRODUCT — 6 AI-POWERED MODULES</div></div>
+        <div class="modules-grid">
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-chart-line"></i> SalesMind AI</div></div><div class="module-body"><ul><li>Unified lead capture (walk-in, WhatsApp, Insta, web)</li><li>AI lead scoring: Hot/Warm/Cold real-time</li><li>Automated follow-ups via WhatsApp</li><li>Inventory demand forecasting by variant/colour</li><li>Scheme & discount engine with margin guard</li></ul></div></div>
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-wrench"></i> ServicePulse AI</div></div><div class="module-body"><ul><li>Digital job card under 3 minutes</li><li>Real-time bay allocation + technician dashboard</li><li>WhatsApp status auto-updates</li><li>Parts demand forecasting, auto PO before stockout</li><li>CSI collected automatically post-service</li></ul></div></div>
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-rupee-sign"></i> FinanceFlow AI</div></div><div class="module-body"><ul><li>DigiLocker API – no physical paperwork</li><li>Multi-bank EMI comparison (HDFC, SBI, ICICI)</li><li>Loan approval probability scoring</li><li>Subvention & OEM scheme management</li></ul></div></div>
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-shield-alt"></i> InsureGuard AI</div></div><div class="module-body"><ul><li>Policy expiry tracker for every customer</li><li>Automated reminders at 90/60/30/7 days</li><li>Multi-insurer quote engine</li><li>Commission dashboard (renewals captured vs missed)</li></ul></div></div>
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-users"></i> WorkforceIQ</div></div><div class="module-body"><ul><li>Real-time KPI dashboard: leads, conversions, CSI</li><li>Customer relationships stored in platform</li><li>AI churn risk scoring (staff leaving prediction)</li><li>Digital onboarding & incentive tracking</li></ul></div></div>
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-charging-station"></i> FleetEV Intelligence</div></div><div class="module-body"><ul><li>OBD2 telematics integration – real-time health</li><li>Predictive maintenance: brake, battery, oil alerts</li><li>EV battery health scoring & range prediction</li><li>Charging session management & TCO dashboards</li></ul></div></div>
+            <div class="module-card"><div class="module-header"><div class="module-name"><i class="fas fa-tachometer-alt"></i> Command Centre</div></div><div class="module-body"><ul><li>Unified real-time P&L across departments</li><li>AI morning brief via WhatsApp at 8 AM</li><li>Multi-branch consolidation</li><li>OEM reporting automation (Maruti, Hyundai, TVS)</li></ul></div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 04 AI ROADMAP -->
+    <div class="section" id="ai-roadmap">
+        <div class="section-banner"><div class="section-num">04</div><div class="section-title">AI TECHNOLOGY STRATEGY — REAL & WHEN</div></div>
+        <div class="data-table-wrapper"><table><thead><tr><th>AI Feature</th><th>Approach</th><th>Timeline</th><th>Status</th></tr></thead><tbody>
+            <tr><td>WhatsApp Auto-Updates</td><td>Rule-based triggers</td><td>Weeks 1–2</td><td class="status-green">BUILD NOW</td></tr>
+            <tr><td>Insurance Expiry Alerts</td><td>Scheduled jobs + WA API</td><td>Weeks 2–3</td><td class="status-green">BUILD NOW</td></tr>
+            <tr><td>AI Daily Brief (DP)</td><td>LLM API (Claude/GPT-4)</td><td>Weeks 3–4</td><td class="status-green">BUILD NOW</td></tr>
+            <tr><td>Lead Scoring v1</td><td>Weighted rules engine</td><td>Month 1–2</td><td class="status-green">BUILD NOW</td></tr>
+            <tr><td>Lead Scoring (ML)</td><td>XGBoost classifier</td><td>Month 8–12</td><td class="status-green">PHASE 2</td></tr>
+            <tr><td>Parts Forecast (ML)</td><td>Prophet time-series</td><td>Month 14–18</td><td class="status-green">PHASE 2</td></tr>
+            <tr><td>Predictive Maintenance</td><td>LSTM on OBD2 data</td><td>Month 18–24</td><td>PHASE 3</td></tr>
+        </tbody></table></div>
+        <h3>📀 Data Moat Strategy</h3>
+        <p>After 18 months with 30+ dealers, AutoEra will hold 500K+ service records, 150K+ lead interactions, 200K+ insurance policies → proprietary dataset no competitor can replicate.</p>
+    </div>
+
+    <!-- SECTION 05 COMPETITIVE LANDSCAPE -->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">05</div><div class="section-title">COMPETITIVE LANDSCAPE</div></div>
+        <div class="data-table-wrapper"><table><thead><tr><th>Competitor</th><th>Type</th><th>Pricing</th><th>AI?</th><th>Fatal Weakness</th></tr></thead><tbody>
+            <tr><td>Excellon DMS</td><td>Enterprise DMS</td><td>₹2–5L/yr</td><td>Analytics only</td><td>Too expensive, slow deployment</td></tr>
+            <tr><td>Cogxim Autogenius</td><td>Billing+Stock</td><td>₹6.5K lifetime</td><td>Zero</td><td>No SaaS, stuck in 2015</td></tr>
+            <tr><td>AutoBooom DMS</td><td>Sales+Service</td><td>₹22K licence</td><td>Zero</td><td>Not mobile, poor support</td></tr>
+            <tr><td>GaragePlug</td><td>Workshop only</td><td>₹1.5–3K/mo</td><td>Zero</td><td>No sales, finance, fleet</td></tr>
+            <tr><td style="color:var(--orange); font-weight:bold;">AutoEra AI</td><td>AI-native full-cycle</td><td>₹8K–35K/mo</td><td>Real AI</td><td>Complete lifecycle + EV + Fleet</td></tr>
+        </tbody></table></div>
+        <p><strong>5 Unfair Advantages:</strong> AI-native, Full lifecycle, India-first UX (WhatsApp, DigiLocker, Tamil), SME pricing, Data moat.</p>
+    </div>
+
+    <!-- SECTION 06 GTM - includes missing GTM CHANNELS TABLE -->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">06</div><div class="section-title">GO-TO-MARKET STRATEGY</div></div>
+        <div class="timeline-phase"><div class="timeline-head"><span>PHASE 1 · Months 1–3</span><span class="pill">Foundation</span></div><div class="timeline-body">Build ServicePulse MVP. 3 pilot dealers in Valasaravakkam. 60-day free pilot.<br><strong>Target:</strong> 3 active pilots | Revenue ₹0</div></div>
+        <div class="timeline-phase"><div class="timeline-head"><span>PHASE 2 · Months 4–6</span><span class="pill">First Revenue</span></div><div class="timeline-body">Add InsureGuard, convert pilots to ₹10–15K/month plans. Apply for TIDE 2.0 & NASSCOM grants.<br><strong>Target:</strong> 8–10 paying dealers → ₹1–1.5L MRR</div></div>
+        <div class="timeline-phase"><div class="timeline-head"><span>PHASE 3 · Months 7–9</span><span class="pill">Scale Chennai</span></div><div class="timeline-body">SalesMind + FinanceFlow. Hire BD with dealer network. FADA TN chapter endorsement.<br><strong>Target:</strong> 20–25 dealers → ₹3–4L MRR</div></div>
+        <div class="timeline-phase"><div class="timeline-head"><span>PHASE 4 · Months 10–12</span><span class="pill">Angel Raise</span></div><div class="timeline-body">WorkforceIQ + ML lead scoring. Expand Coimbatore/Madurai. Raise ₹50L–1.5Cr at ₹4–6Cr valuation.<br><strong>Target:</strong> 30+ dealers → ₹5–6L MRR</div></div>
+        <div class="timeline-phase"><div class="timeline-head"><span>PHASE 5 · Year 2</span><span class="pill">Seed Round</span></div><div class="timeline-body">Launch FleetEV, enter Bengaluru/Hyderabad, raise ₹2–3Cr seed.<br><strong>Target:</strong> 70-80 dealers → ₹1.2–1.8Cr ARR</div></div>
+        
+        <!-- NEW: GTM Channels Table (missing) -->
+        <h3>📢 GTM Channels</h3>
+        <div class="data-table-wrapper"><table><thead><tr><th>Channel</th><th>Description</th><th>Cost</th><th>Timeline</th></tr></thead><tbody>
+            <tr><td>Founder Direct Sales</td><td>Walk into dealerships within 5km of Valasaravakkam. Use gym network for warm intros.</td><td>Zero</td><td>Months 1–6</td></tr>
+            <tr><td>FADA TN Chapter</td><td>Present at Federation of Automobile Dealers Associations Tamil Nadu chapter.</td><td>₹5,000 membership</td><td>Month 4–6</td></tr>
+            <tr><td>LinkedIn Content</td><td>Weekly posts: real dealer results in rupees. “This Chennai dealer recovered ₹2.3L in one month.”</td><td>Zero</td><td>Ongoing</td></tr>
+            <tr><td>EV Dealership Direct</td><td>OLA Electric, Ather, Tata EV showrooms in Chennai have zero legacy DMS.</td><td>Zero</td><td>Month 6+</td></tr>
+            <tr><td>WhatsApp Dealer Groups</td><td>Active Tamil Nadu dealer communities. Share case studies, offer free audits.</td><td>Zero</td><td>Month 3+</td></tr>
+        </tbody></table></div>
+        
+        <h3>💰 Revenue Leakage Audit (Sales methodology)</h3>
+        <p>Start every conversation with a printed report: ₹1.5–3L missed insurance renewals, ₹1.6L lead loss, ₹80K parts delay → “You’re losing ₹4–6L/month. AutoEra costs ₹18K/month. 22x ROI.”</p>
+    </div>
+
+    <!-- SECTION 07 REVENUE MODEL + ADDITIONAL REVENUE STREAMS (NEW) -->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">07</div><div class="section-title">REVENUE MODEL & PRICING</div></div>
+        <div class="data-table-wrapper"><table><thead><tr><th>Tier</th><th>Price</th><th>Modules Included</th></tr></thead><tbody>
+            <tr><td>Starter</td><td>₹8,000/month</td><td>ServicePulse + InsureGuard + Basic CRM</td></tr>
+            <tr style="background:#FFF0ED;"><td>Growth</td><td>₹18,000/month</td><td>Starter + SalesMind + FinanceFlow + WorkforceIQ + AI scoring</td></tr>
+            <tr><td>Enterprise</td><td>₹35,000+/month</td><td>All Growth + FleetEV Intelligence + OEM sync + custom AI</td></tr>
+        </tbody></table></div>
+        
+        <!-- NEW: Additional Revenue Streams Table (was missing) -->
+        <h3>💎 Additional Revenue Streams</h3>
+        <div class="data-table-wrapper"><table><thead><tr><th>Stream</th><th>Mechanics</th><th>Expected Contribution</th></tr></thead><tbody>
+            <tr><td>Insurance Commission</td><td>3–8% of renewal premium value processed through platform — paid by insurer</td><td>₹50K–2L per dealer per year — passive and growing</td></tr>
+            <tr><td>Onboarding Fee</td><td>₹25,000 one-time setup + 2-day on-site training</td><td>Covers customer acquisition cost for Starter tier</td></tr>
+            <tr><td>OBD2 Hardware Margin</td><td>₹3,000–4,500 margin per OBD2 device installed for Fleet module</td><td>₹30–45L additional revenue at 100 fleet vehicles</td></tr>
+            <tr><td>Data Intelligence Reports</td><td>Aggregated market reports sold to OEMs, insurers, NBFCs — anonymised</td><td>Year 3+ revenue stream — high margin</td></tr>
+        </tbody></table></div>
+
+        <div class="metric-grid" style="margin-top: 20px;"><div class="metric-card"><div class="metric-value">₹30-40L</div><div class="metric-label">Year 1 ARR</div></div><div class="metric-card"><div class="metric-value">₹1.5Cr</div><div class="metric-label">Year 2 ARR</div></div><div class="metric-card"><div class="metric-value">₹5Cr</div><div class="metric-label">Year 3 ARR</div></div><div class="metric-card"><div class="metric-value">₹20Cr</div><div class="metric-label">Year 5 ARR</div></div></div>
+    </div>
+
+    <!-- SECTION 08 CHALLENGES & SOLUTIONS -->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">08</div><div class="section-title">CHALLENGES & HOW WE SOLVE THEM</div></div>
+        <div class="challenge-grid">
+            <div class="challenge-item"><div class="challenge-num">1</div><div class="challenge-problem"><div class="challenge-label">CHALLENGE</div>Dealer Trust: "Why trust new software?"</div><div class="challenge-solution"><div class="challenge-label">SOLUTION</div>60-day free pilot, zero contract, data export guarantee</div></div>
+            <div class="challenge-item"><div class="challenge-num">2</div><div class="challenge-problem"><div class="challenge-label">CHALLENGE</div>Staff Resistance to apps</div><div class="challenge-solution"><div class="challenge-label">SOLUTION</div>WhatsApp-first UX – create job cards via WhatsApp, no app download</div></div>
+            <div class="challenge-item"><div class="challenge-num">3</div><div class="challenge-problem"><div class="challenge-label">CHALLENGE</div>Cash burn before revenue</div><div class="challenge-solution"><div class="challenge-label">SOLUTION</div>Build MVP in 6 weeks, charge ₹5K from month 3, apply for TIDE 2.0 & TN iStart grants</div></div>
+            <div class="challenge-item"><div class="challenge-num">4</div><div class="challenge-problem"><div class="challenge-label">CHALLENGE</div>No training data for AI</div><div class="challenge-solution"><div class="challenge-label">SOLUTION</div>Phase 1: smart business rules. ML models after month 6 with real dealer data</div></div>
+            <div class="challenge-item"><div class="challenge-num">5</div><div class="challenge-problem"><div class="challenge-label">CHALLENGE</div>OEM portal integration blocked</div><div class="challenge-solution"><div class="challenge-label">SOLUTION</div>Manual OEM export formatter + formal partner program applications</div></div>
+            <div class="challenge-item"><div class="challenge-num">6</div><div class="challenge-problem"><div class="challenge-label">CHALLENGE</div>High early churn</div><div class="challenge-solution"><div class="challenge-label">SOLUTION</div>Data lock-in: after 6 months, switching loses 2+ years history</div></div>
+        </div>
+    </div>
+
+    <!-- SECTION 09 TEAM & FUNDING 10-->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">09</div><div class="section-title">TEAM & COMPANY STRUCTURE</div></div>
+        <div class="data-table-wrapper"><table><thead><tr><th>Role</th><th>Profile</th></tr></thead><tbody>
+            <tr><td>Founder & CEO – SJ</td><td>Serial entrepreneur (Step 2 Fitness + AutoEra), Chennai, domain + GTM</td></tr>
+            <tr><td>Full-Stack Engineer #1</td><td>React + Django, builds MVP, equity aligned</td></tr>
+            <tr><td>Automotive Domain Expert</td><td>Ex-dealership GM, opens dealer doors, training</td></tr>
+            <tr><td>BD/Sales (Month 6+)</td><td>Ex-OEM regional rep, active TN dealer network</td></tr>
+        </tbody></table></div>
+        <p><strong>Legal:</strong> Convert UDYAM to Pvt Ltd (₹15-20K). ESOP pool 10-12%. DPDP Act 2023 compliance built-in.</p>
+        <div class="section-banner"><div class="section-num">10</div><div class="section-title">FUNDING STRATEGY</div></div>
+        <div class="data-table-wrapper"><table><thead><tr><th>Stage</th><th>Amount</th><th>Trigger</th></tr></thead><tbody>
+            <tr><td>Grants (TIDE 2.0, TN iStart)</td><td>₹10–25L</td><td>Month 1–3</td></tr>
+            <tr><td>Angel Round</td><td>₹50L–1.5Cr</td><td>10+ paying dealers + ₹15L ARR</td></tr>
+            <tr><td>Seed Round</td><td>₹2–3Cr</td><td>40+ dealers + ₹80L ARR</td></tr>
+            <tr><td>Series A</td><td>₹15–25Cr</td><td>150+ dealers + ₹5Cr ARR</td></tr>
+        </tbody></table></div>
+    </div>
+
+    <!-- SECTION 11 90-DAY EXECUTION PLAN -->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">11</div><div class="section-title">90-DAY EXECUTION PLAN</div></div>
+        <div class="data-table-wrapper"><table><thead><tr><th>Week</th><th>Priority Deliverable</th></tr></thead><tbody>
+            <tr><td>Week 1–2</td><td>Incorporate Pvt Ltd, post engineer job, apply NASSCOM 10K</td></tr>
+            <tr><td>Week 3–6</td><td>ServicePulse MVP: digital job card + WhatsApp updates + dashboard</td></tr>
+            <tr><td>Week 7–8</td><td>3 pilot dealers in Valasaravakkam (gym network)</td></tr>
+            <tr><td>Week 9–10</td><td>InsureGuard MVP + renewal audit for pilots</td></tr>
+            <tr><td>Week 11–12</td><td>Show leakage report → convert to ₹10K/month paid plan</td></tr>
+            <tr><td>Week 13+</td><td>Add SalesMind CRM, target 10 customers, file TIDE 2.0</td></tr>
+        </tbody></table></div>
+    </div>
+
+    <!-- SECTION 12 NORTH STAR -->
+    <div class="section">
+        <div class="section-banner"><div class="section-num">12</div><div class="section-title">NORTH STAR & CLOSING STATEMENT</div></div>
+        <div style="background: var(--navy); border-radius: 36px; padding: 48px 32px; text-align: center; color: white; margin: 24px 0;">
+            <p style="color: var(--orange); letter-spacing: 1px;">OUR NORTH STAR</p>
+            <p style="font-size: 1.8rem; font-style: italic; margin: 20px 0;">"AutoEra AI is the operating system for India's automobile dealers.</p>
+            <p style="font-size: 1.8rem; font-style: italic; color: var(--orange);">We don't sell software. We recover lost revenue."</p>
+        </div>
+        <p>AutoEra AI is built at the intersection of India's auto digitalisation and the AI revolution. We are not building a feature-rich DMS — we are building a revenue-recovery platform. The market is ready, the pain is deep, the competition is weak.</p>
+        <p><strong>AutoEra AI Solutions Pvt Ltd</strong><br>UDYAM-TN-24-0162449 | Valasaravakkam, Chennai, Tamil Nadu<br>Founder & CEO: SJ</p>
+    </div>
+</div>
+
+<footer>
+    <div class="container" style="text-align: center;">
+        <p><i class="fas fa-car"></i> AutoEra AI Solutions — AI-native operating system for India’s automobile dealerships</p>
+        <p style="margin-top: 16px; font-size: 0.8rem;">Confidential Business Plan 2025 | Chennai, Tamil Nadu</p>
+    </div>
+</footer>
+</body>
+</html>

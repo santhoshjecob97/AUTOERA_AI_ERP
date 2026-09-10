@@ -1,0 +1,1991 @@
+# -*- coding: utf-8 -*-
+"""
+Builds the ultra-premium, information-dense 10-slide HTML pitch deck
+autoera-master-clean-pitch.html.
+Every slide is packed with rich automotive content, domain KPIs,
+architectural flows, metric chips, and comparison data.
+"""
+
+def generate_dense_html():
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoEra AI — Master Investor Pitch Deck (Executive Edition)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-canvas: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --navy-dark: #060B18;
+  --navy-deep: #0A1128;
+  --navy-card: #0F182E;
+  --orange-brand: #FF5722;
+  --orange-light: #F97316;
+  --orange-soft: rgba(255, 87, 34, 0.08);
+  --text-dark: #0F172A;
+  --text-body: #334155;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+  --border-light: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --success: #16A34A;
+  --danger: #DC2626;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  background-color: #0B1120;
+  color: var(--text-dark);
+}
+
+.deck-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: radial-gradient(circle at center, #1E293B 0%, #060A12 100%);
+}
+
+.deck-container {
+  width: min(97vw, 1540px);
+  height: min(95vh, 1020px);
+  aspect-ratio: 15 / 10;
+  position: relative;
+  background: var(--bg-canvas);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.988);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  z-index: 10;
+}
+
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(var(--border-light) 1px, transparent 1px),
+    radial-gradient(var(--orange-soft) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: 0 0, 14px 14px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slide-content {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 28px 14px 28px;
+  overflow: hidden;
+}
+
+/* Header */
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #F1F5F9;
+  margin-bottom: 8px;
+}
+
+.logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--navy-dark);
+  line-height: 1;
+}
+
+.brand-tagline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.ai-badge {
+  background: var(--orange-brand);
+  color: #FFF;
+  font-family: 'Outfit', sans-serif;
+  font-size: 8.5px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.tagline-text {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.deck-badge {
+  background: var(--navy-dark);
+  padding: 5px 16px 5px 20px;
+  clip-path: polygon(14% 0%, 100% 0%, 100% 100%, 0% 100%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: -28px;
+}
+
+.badge-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--orange-brand);
+  line-height: 1;
+}
+
+.badge-lbl {
+  font-family: 'Outfit', sans-serif;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #FFF;
+  line-height: 1.1;
+}
+
+/* Titles */
+.slide-titles {
+  margin-bottom: 8px;
+}
+
+.headline-main {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(19px, 1.8vw, 24px);
+  font-weight: 900;
+  color: var(--navy-dark);
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.headline-main span.orange {
+  color: var(--orange-brand);
+}
+
+.subheadline {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+/* Bottom Banner */
+.bottom-banner-navy {
+  background: var(--navy-dark);
+  color: #FFF;
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  box-shadow: var(--shadow-md);
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.banner-tag span.orange {
+  color: var(--orange-brand);
+}
+
+.banner-metrics {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metric-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: #E2E8F0;
+  font-weight: 600;
+}
+
+.metric-pill-icon {
+  color: var(--orange-brand);
+  font-weight: 800;
+}
+
+/* Cards & Components */
+.clean-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.clean-card.card-navy {
+  background: var(--navy-deep);
+  color: #FFF;
+  border-color: #1E293B;
+}
+
+.clean-card.card-featured {
+  border: 2px solid var(--orange-brand);
+  background: #FFFFFF;
+}
+
+.card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--navy-dark);
+  margin-bottom: 2px;
+}
+
+.card-navy .card-title {
+  color: #FFF;
+}
+
+.card-p {
+  font-size: 10px;
+  color: var(--text-body);
+  line-height: 1.35;
+}
+
+.card-navy .card-p {
+  color: var(--text-light);
+}
+
+/* Mini Metric Chip */
+.mini-kpi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #F1F5F9;
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--navy-dark);
+}
+
+.mini-kpi-chip.orange {
+  background: rgba(255, 87, 34, 0.08);
+  border-color: rgba(255, 87, 34, 0.25);
+  color: var(--orange-brand);
+}
+
+.mini-kpi-chip.red {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.25);
+  color: var(--danger);
+}
+
+.mini-kpi-chip.green {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.25);
+  color: var(--success);
+}
+
+/* Tables */
+.clean-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.8px;
+}
+
+.clean-table th {
+  background: var(--navy-dark);
+  color: #FFF;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  text-align: left;
+  padding: 4px 6px;
+  font-size: 9.5px;
+  letter-spacing: 0.4px;
+}
+
+.clean-table th.th-autoera {
+  background: var(--orange-brand);
+  color: #FFF;
+  text-align: center;
+}
+
+.clean-table td {
+  padding: 3.8px 6px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-body);
+  vertical-align: middle;
+}
+
+.clean-table tr:nth-child(even) td {
+  background: #F8FAFC;
+}
+
+.clean-table td.td-autoera {
+  background: rgba(255, 87, 34, 0.05) !important;
+  font-weight: 700;
+  color: var(--navy-dark);
+  text-align: center;
+}
+
+/* Controls */
+.controls-dock {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(10, 17, 40, 0.94);
+  padding: 5px 14px;
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #FFF;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background: var(--orange-brand);
+}
+
+.slide-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dot.active {
+  background: var(--orange-brand);
+  width: 16px;
+  border-radius: 10px;
+}
+
+.slide-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: #FFF;
+  font-weight: 700;
+  margin-left: 6px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255,255,255,0.2);
+}
+
+.fs-toggle-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #FFF;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 9.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.fs-toggle-btn:hover {
+  background: var(--orange-brand);
+}
+
+@media print {
+  body, html, .deck-wrapper { height: auto !important; overflow: visible !important; background: transparent !important; }
+  .controls-dock { display: none !important; }
+  .deck-container { width: 100% !important; height: auto !important; box-shadow: none !important; border-radius: 0 !important; }
+  .slide { position: relative !important; opacity: 1 !important; transform: none !important; page-break-after: always !important; height: 100vh !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck-wrapper">
+  <div class="deck-container" id="deckContainer">
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 1: COVER (AI-NATIVE DEALERSHIP OPERATING SYSTEM)           -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide active" id="slide-0">
+      <div class="slide-content">
+        <div style="display: grid; grid-template-columns: 1.18fr 0.82fr; gap: 16px; height: calc(100% - 46px); align-items: stretch;">
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; color: var(--orange-brand); letter-spacing: 2px; text-transform: uppercase;">
+                  CONFIDENTIAL INVESTOR PRESENTATION · 2026
+                </span>
+                <span class="mini-kpi-chip orange">SERIES SEED ROUND</span>
+              </div>
+              
+              <div class="logo-lockup" style="margin-bottom: 8px;">
+                <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img" style="height: 40px;">
+              </div>
+
+              <h1 style="font-family: 'Outfit', sans-serif; font-size: clamp(24px, 2.3vw, 32px); font-weight: 900; color: var(--navy-dark); line-height: 1.05; letter-spacing: -0.5px; margin-bottom: 4px;">
+                AI-NATIVE <span style="color: var(--orange-brand);">DEALERSHIP OPERATING SYSTEM</span>
+              </h1>
+
+              <div style="color: var(--orange-light); font-size: 13.5px; font-weight: 700; margin-bottom: 10px; letter-spacing: 0.2px;">
+                Unifying Sales · Service · Parts · Finance · Insurance — with built-in AI Intelligence
+              </div>
+
+              <!-- Master Vision Card -->
+              <div style="background: #F8FAFC; border-left: 4px solid var(--orange-brand); border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; box-shadow: var(--shadow-sm); border-top: 1px solid var(--border-light); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+                <p style="font-size: 11px; color: var(--text-body); line-height: 1.5; font-style: italic;">
+                  "AutoEra AI will become the <strong style="color: var(--navy-dark); font-weight: 800;">global operating system for the automotive industry</strong> — the single platform that every dealership, OEM, fleet operator, insurer, finance company, and vehicle owner depends on as the <strong style="color: var(--orange-brand); font-weight: 800;">system of record</strong> for their automotive world."
+                </p>
+              </div>
+            </div>
+
+            <!-- Key Investment Highlights (4-Grid) -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px;">
+              <div class="clean-card" style="padding: 6px 8px; text-align: center; background: #F8FAFC;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--orange-brand);">₹720 Cr</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Year 5 ARR Target</div>
+              </div>
+              <div class="clean-card" style="padding: 6px 8px; text-align: center; background: #F8FAFC;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark);">85%</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Gross Margins</div>
+              </div>
+              <div class="clean-card" style="padding: 6px 8px; text-align: center; background: #F8FAFC;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--orange-brand);">15+</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Signed Dealer LOIs</div>
+              </div>
+              <div class="clean-card" style="padding: 6px 8px; text-align: center; background: #F8FAFC;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark);">4.8 Mo</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">CAC Payback</div>
+              </div>
+            </div>
+
+            <!-- Founder Lockup & Badges -->
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--navy-dark); color: #FFF; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px;">
+                  S
+                </div>
+                <div>
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 800; color: var(--navy-dark);">Santhosh</div>
+                  <div style="font-size: 10px; color: var(--text-muted); font-weight: 500;">Founder & CEO | AutoEra AI Solutions • Chennai & Coimbatore</div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 6px;">
+                <span class="mini-kpi-chip">💎 Institutional Seed Round</span>
+                <span class="mini-kpi-chip orange">🏎️ Vision-AI Active</span>
+                <span class="mini-kpi-chip green">✓ 100% Production Ready</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Hero Visual + System Highlights -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 12px 30px rgba(10,17,40,0.18);">
+              <img src="assets/clean_cover_car.jpg" alt="Connected Car Visual" style="width: 100%; height: 260px; object-fit: cover; display: block;">
+              <div style="position: absolute; bottom: 8px; left: 10px; right: 10px; background: rgba(6,11,24,0.85); backdrop-filter: blur(6px); border-radius: 6px; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10px; font-weight: 700; color: #FFF;">MULTI-TENANT AI INFRASTRUCTURE</span>
+                <span style="font-size: 9px; color: var(--orange-brand); font-weight: 800;">GEMINI 3.6 FLASH</span>
+              </div>
+            </div>
+
+            <!-- Ecosystem Grid below image -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px;">
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                  <span>🤖</span> Multi-Agent RAG
+                </div>
+                <div class="card-p" style="font-size: 9.5px;">7 Specialist agents query live ERP PostgreSQL data with zero hallucinations.</div>
+              </div>
+
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                  <span>⚡</span> ServicePulse OCR
+                </div>
+                <div class="card-p" style="font-size: 9.5px;">Number plate scanner creates complete digital job cards in under 90 seconds.</div>
+              </div>
+
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                  <span>📦</span> B2B Spares Engine
+                </div>
+                <div class="card-p" style="font-size: 9.5px;">Predictive inventory replenishment linked directly to aftermarket distributors.</div>
+              </div>
+
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                  <span>💬</span> Voice AI (Tamil/Eng)
+                </div>
+                <div class="card-p" style="font-size: 9.5px;">Automated service booking, follow-up calls, and WhatsApp invoice delivery.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">⚡</span>
+            <div class="banner-tag">DRIVING THE FUTURE OF <span class="orange">AUTOMOTIVE INTELLIGENCE</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 16 Integrated Modules</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 11 Enterprise RBAC Roles</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹720 Cr 5-Year ARR Roadmap</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 2: THE PROBLEM (QUANTIFIED PAIN & ECONOMIC DRAIN)         -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-1">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">02</span>
+            <span class="badge-lbl">THE PROBLEM</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">EVERY INDIAN DEALERSHIP RUNS ON <span class="orange">FRAGMENTED, DISCONNECTED SYSTEMS</span></h2>
+          <p class="subheadline">30,000+ Indian dealer rooftops suffer massive lead leakage, operational blindspots, and silent margin erosion</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 14px; flex: 1; align-items: stretch;">
+          <!-- Left: 5 Quantified Problem Cards -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title" style="color: var(--danger); font-size: 11.5px;">📊 5–7 Disconnected Software Systems</div>
+                <span class="mini-kpi-chip red">₹14.4L/yr Waste</span>
+              </div>
+              <div class="card-p">DMS + CRM + Excel + WhatsApp Web + Tally Accounting + OEM Portal — data is trapped in silos with zero bi-directional synchronization.</div>
+            </div>
+
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title" style="color: var(--danger); font-size: 11.5px;">📉 30–40% Lead Leakage Across Channels</div>
+                <span class="mini-kpi-chip red">₹8.5L Lost/Mo</span>
+              </div>
+              <div class="card-p">Leads from CarWale, walk-ins, phone calls, and Facebook ads arrive unassigned; salespeople cherry-pick while 40% go uncontacted.</div>
+            </div>
+
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title" style="color: var(--danger); font-size: 11.5px;">🔧 Paper Job Cards & Manual Service Bays</div>
+                <span class="mini-kpi-chip red">3.2 Hrs Idle/Day</span>
+              </div>
+              <div class="card-p">Technicians use paper clipboards; service advisors yell status across bays; vehicle delivery delays cause massive customer dissatisfaction.</div>
+            </div>
+
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title" style="color: var(--danger); font-size: 11.5px;">🧊 Management Blindness & Batch Reporting</div>
+                <span class="mini-kpi-chip red">30-Day Lag</span>
+              </div>
+              <div class="card-p">General Managers and Dealer Principals rely on end-of-month accountant summaries — zero live visibility into gross profit by bay or rep.</div>
+            </div>
+
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="card-title" style="color: var(--danger); font-size: 11.5px;">🤖 Zero Autonomous AI Intelligence</div>
+                <span class="mini-kpi-chip red">100% Manual</span>
+              </div>
+              <div class="card-p">No legacy DMS in India offers AI agents that proactively query ERP records, draft WhatsApp follow-ups, or propose parts stock reorders.</div>
+            </div>
+          </div>
+
+          <!-- Right: Quantified Economic Impact + Toolchain Comparison -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="clean-card" style="background: rgba(220, 38, 38, 0.03); border-color: rgba(220, 38, 38, 0.25); padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--danger); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <span>⚠️ ANNUAL FINANCIAL DRAIN PER DEALERSHIP</span>
+                <span class="mini-kpi-chip red">₹32L+ TOTAL LOSS</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                <div style="background: #FFF; border: 1px solid rgba(220, 38, 38, 0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 900; color: var(--danger);">₹12–18L</div>
+                  <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Fragmented SaaS</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">5-8 separate tools</div>
+                </div>
+
+                <div style="background: #FFF; border: 1px solid rgba(220, 38, 38, 0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 900; color: var(--danger);">35%</div>
+                  <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Customer Churn</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">Post-warranty drop-off</div>
+                </div>
+
+                <div style="background: #FFF; border: 1px solid rgba(220, 38, 38, 0.2); border-radius: 6px; padding: 6px 8px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 900; color: var(--danger);">2.5 Hrs</div>
+                  <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Daily Data Entry</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">Per rep duplication</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- The Fragmented Reality Diagram -->
+            <div class="clean-card" style="padding: 10px 12px; background: #F8FAFC;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--navy-dark); margin-bottom: 6px; text-transform: uppercase;">
+                Today's Fragmented Dealership Reality
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font-size: 9px; color: var(--text-body);">
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">🖥️ Legacy DMS</div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">📱 WhatsApp Web</div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">📑 Tally / Zoho</div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">📊 Excel Worksheets</div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">🌐 OEM Portals</div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">📞 Call Center App</div>
+              </div>
+            </div>
+
+            <!-- Root cause architectural box -->
+            <div class="clean-card card-navy" style="padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--orange-brand); margin-bottom: 4px; text-transform: uppercase;">
+                The Root Cause: Architectural Obsolescence
+              </div>
+              <p style="font-size: 10px; color: #CBD5E1; line-height: 1.45;">
+                Legacy DMS systems were engineered 15–20 years ago as monolithic SQL databases. They lack modern REST/JSON endpoints, semantic vector embeddings, and real-time webhook architectures required for AI agent automation.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">⚠️</span>
+            <div class="banner-tag">CRITICAL BOTTLENECK: <span class="orange">₹32L+ ANNUAL REVENUE EROSION PER DEALERSHIP</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✗</div> 5-7 Disconnected Tools</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✗</div> 40% Lead Leakage</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✗</div> Zero Real-Time BI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 3: SOLUTION & ARCHITECTURE (ONE PLATFORM · EVERY TEAM)     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">03</span>
+            <span class="badge-lbl">SOLUTION & PRODUCT</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">ONE PLATFORM. EVERY DEPARTMENT. <span class="orange">AI-NATIVE INTELLIGENCE.</span></h2>
+          <p class="subheadline">16 integrated modules and 7 specialist AI agents engineered natively on a unified real-time database</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 14px; flex: 1; align-items: stretch;">
+          <!-- Left: 4 Core Pillars with 16 Modules -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; letter-spacing: 0.5px;">
+              The 16-Module Unified Operating Matrix
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1;">
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>🚗 Showroom & Sales CRM</span>
+                  <span class="mini-kpi-chip green">Live</span>
+                </div>
+                <div class="card-p">
+                  • AI Lead Scoring & Omnichannel Routing<br>
+                  • WhatsApp Auto-Follow-ups (Tamil/Eng)<br>
+                  • Digital Test Drive GPS Tracking<br>
+                  • Customer 360 Timeline (15 Event Types)
+                </div>
+              </div>
+
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>🔧 ServicePulse Workshop OS</span>
+                  <span class="mini-kpi-chip green">Live</span>
+                </div>
+                <div class="card-p">
+                  • 90-Sec Number Plate Scanner OCR<br>
+                  • Visual Bay Scheduler & Tech Allocation<br>
+                  • Real-time WhatsApp Video Repair Approval<br>
+                  • Vehicle 360 VIN-Centric Lifecycle Record
+                </div>
+              </div>
+
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>📦 Parts & Multi-Warehouse</span>
+                  <span class="mini-kpi-chip green">Live</span>
+                </div>
+                <div class="card-p">
+                  • Fast/Slow Moving Stock Analytics<br>
+                  • Automated Low-Stock Purchase Orders<br>
+                  • Regional Distributor B2B Catalog Sync<br>
+                  • Inter-Branch Warehouse Balancing
+                </div>
+              </div>
+
+              <div class="clean-card" style="padding: 8px 10px;">
+                <div class="card-title" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>💰 Finance, GST & Insurance</span>
+                  <span class="mini-kpi-chip green">Live</span>
+                </div>
+                <div class="card-p">
+                  • 1-Click GST E-Invoicing & E-Way Bill<br>
+                  • Automated Razorpay/Bank Reconciliation<br>
+                  • Policy Expiry Renewal Churn Predictor<br>
+                  • Real-time Profit & Loss by Rooftop / Bay
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: 7 AI Specialists + ActionProposal Protocol -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="clean-card card-navy" style="padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--orange-brand); margin-bottom: 6px; text-transform: uppercase;">
+                7 Specialist Autonomous AI Agents
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 4px; font-size: 9.5px; color: #E2E8F0;">
+                <div>🎯 <strong>SalesAI</strong>: 24/7 lead qualification & test drive booking</div>
+                <div>🛠️ <strong>ServiceAI</strong>: 90-sec repair estimation & bay planning</div>
+                <div>📦 <strong>PartsAI</strong>: Predictive demand forecasting & auto-POs</div>
+                <div>💵 <strong>FinanceAI</strong>: Automated payment reconciliation & ledger</div>
+                <div>📋 <strong>ComplianceAI</strong>: GST e-invoice verification & warranty claims</div>
+                <div>👔 <strong>GMCopilot</strong>: Natural language query of live dealership KPIs</div>
+                <div>💬 <strong>SupportAI</strong>: Tamil, Tanglish & English WhatsApp voice bot</div>
+              </div>
+            </div>
+
+            <!-- Two-Tier ActionProposal Protocol -->
+            <div class="clean-card card-featured" style="padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--orange-brand); margin-bottom: 4px; text-transform: uppercase;">
+                ActionProposal Two-Tier Safety Protocol
+              </div>
+              <div style="font-size: 9.5px; color: var(--text-body); line-height: 1.4;">
+                <strong>Tier 1 (Autonomous Read)</strong>: Scans ERP, computes margins, drafts messages, flags stockouts.<br>
+                <strong>Tier 2 (Human Approval)</strong>: Price alterations, large parts orders, discounts generate an <code>ActionProposal</code> requiring Manager sign-off before mutation.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">🛡️</span>
+            <div class="banner-tag">ENTERPRISE SAFETY: <span class="orange">ZERO UNCHECKED MUTATIONS · 100% AUDIT LOGGING</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 7 Agents Built</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> Gemini 3.6 Flash RAG</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 11 RBAC Roles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 4: MARKET OPPORTUNITY (TAM · SAM · SOM & VECTOR DRIVERS)  -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">04</span>
+            <span class="badge-lbl">MARKET OPPORTUNITY</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">AUTOMOTIVE AFTERMARKET & RETAIL: <span class="orange">GLOBAL SCALE ($48.5B) + INDIA (₹1.08L CR)</span></h2>
+          <p class="subheadline">Capitalizing on the seismic shift from rigid on-premise software to intelligent cloud operating platforms</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+          <!-- Top Row: 3 TAM/SAM/SOM Cards -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div class="clean-card" style="border-top: 3px solid var(--navy-dark); padding: 10px 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; color: var(--text-muted);">TOTAL MARKET (TAM)</span>
+                <span class="mini-kpi-chip">14.2% CAGR</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 900; color: var(--navy-dark); margin: 2px 0;">$48.5B / ₹1.08L Cr</div>
+              <div style="font-size: 9.5px; color: var(--text-body); line-height: 1.35;">Global automotive DMS software + Indian automotive aftermarket operations across 45,000+ authorized and independent centers.</div>
+            </div>
+
+            <div class="clean-card card-featured" style="padding: 10px 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; color: var(--orange-brand);">SERVICEABLE (SAM)</span>
+                <span class="mini-kpi-chip orange">Target 12,000 Hubs</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 900; color: var(--orange-brand); margin: 2px 0;">₹14,400 Crores</div>
+              <div style="font-size: 9.5px; color: var(--text-body); line-height: 1.35;">12,000 organized multi-brand 3S dealerships, authorized OEM dealer groups, and premium multi-bay workshop chains.</div>
+            </div>
+
+            <div class="clean-card card-navy" style="padding: 10px 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 700; color: var(--orange-brand);">OBTAINABLE (SOM)</span>
+                <span class="mini-kpi-chip" style="background: rgba(255,255,255,0.1); color: #FFF;">Year 5 Goal</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 900; color: #FFF; margin: 2px 0;">₹720 Crores ARR</div>
+              <div style="font-size: 9.5px; color: #CBD5E1; line-height: 1.35;">Capturing 1,200 Dealerships and 25,000 Workshop nodes generating ₹60L blended annual platform value via SaaS + Spares fees.</div>
+            </div>
+          </div>
+
+          <!-- Middle Row: 3 Market Vectors -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div class="clean-card" style="padding: 10px 12px;">
+              <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                <span>🇮🇳</span> India — 3rd Largest Auto Market
+              </div>
+              <div class="card-p" style="font-size: 9.5px;">
+                • 30,000+ FADA dealer outlets employing 5M+ people.<br>
+                • 82% of dealers actively seeking modern DMS replacements.<br>
+                • GST e-invoicing mandates forcing compliance digitization.
+              </div>
+            </div>
+
+            <div class="clean-card" style="padding: 10px 12px;">
+              <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                <span>🏭</span> TN Base — "Detroit of Asia"
+              </div>
+              <div class="card-p" style="font-size: 9.5px;">
+                • 70% of India's electric 2W, 40% of electric 4W manufactured here.<br>
+                • 1,200+ major dealerships within a 300km corridor from Chennai.<br>
+                • Unrivaled ecosystem for hyper-rapid pilot iteration.
+              </div>
+            </div>
+
+            <div class="clean-card" style="padding: 10px 12px;">
+              <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+                <span>🌐</span> High-Margin Global Corridors
+              </div>
+              <div class="card-p" style="font-size: 9.5px;">
+                • Southeast Asia (Indonesia, Thailand, Vietnam) & GCC.<br>
+                • Same fragmented dealership pain with 3x higher SaaS ARPU.<br>
+                • Cloud-native multi-currency & multilingual architecture ready.
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: SOM Mathematical Breakdown Table -->
+          <div class="clean-card" style="padding: 8px 12px; background: #F8FAFC;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase;">
+                Bottom-Up SOM Mathematical Breakdown (Year 5 Targets)
+              </span>
+              <span style="font-size: 9px; color: var(--orange-brand); font-weight: 700;">MASTER PLAN TABLE 55</span>
+            </div>
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th>Revenue Layer</th>
+                  <th>Node Volume</th>
+                  <th>Average Blended Pricing</th>
+                  <th>Annual Platform GMV</th>
+                  <th style="text-align: right;">Year 5 ARR Contribution</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Pro Dealerships</strong></td>
+                  <td>1,200 Dealerships</td>
+                  <td>₹1,00,000 / month</td>
+                  <td>Core SaaS Operations</td>
+                  <td style="text-align: right; font-weight: 700;">₹144.0 Crores</td>
+                </tr>
+                <tr>
+                  <td><strong>Starter Workshops</strong></td>
+                  <td>25,000 Workshops</td>
+                  <td>₹10,000–₹50,000 / mo blended</td>
+                  <td>Job Cards & Invoicing</td>
+                  <td style="text-align: right; font-weight: 700;">₹356.0 Crores</td>
+                </tr>
+                <tr>
+                  <td><strong>B2B Spares Marketplace</strong></td>
+                  <td>39,000 Nodes Total</td>
+                  <td>2.5% Transaction Take-Rate</td>
+                  <td>₹4,800 Cr Spare Parts GMV</td>
+                  <td style="text-align: right; font-weight: 700; color: var(--orange-brand);">₹120.0 Crores</td>
+                </tr>
+                <tr>
+                  <td><strong>Enterprise & OEM Contracts</strong></td>
+                  <td>25 OEM & Dealer Chains</td>
+                  <td>Custom Licensing + Telematics</td>
+                  <td>Fleet Intelligence Sync</td>
+                  <td style="text-align: right; font-weight: 700;">₹100.0 Crores</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">📈</span>
+            <div class="banner-tag">BOTTOM-UP MATH: <span class="orange">1,200 DEALERS + 25K WORKSHOPS + SPARES TAKE-RATE = ₹720 CR ARR</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 45,000+ Rooftops</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 12,000 SAM</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹720 Cr SOM Target</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 5: BUSINESS MODEL & MONETIZATION ARCHITECTURE             -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">05</span>
+            <span class="badge-lbl">BUSINESS MODEL</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">ENTERPRISE-GRADE PRICING + MULTI-LAYER MONETIZATION: <span class="orange">₹720 CR ARR</span></h2>
+          <p class="subheadline">Scaling from high-ACV subscription tiers into B2B spare parts GMV take-rates and OEM network licensing</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 12px; flex: 1; align-items: stretch;">
+          <!-- Left: 3 Pricing Tiers + Unit Economics -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+              <!-- Starter -->
+              <div class="clean-card" style="padding: 10px 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--text-muted);">STARTER WORKSHOP</span>
+                  <span class="mini-kpi-chip">1–5 Bays</span>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: var(--navy-dark); margin: 2px 0;">
+                  ₹50,000 <span style="font-size: 10px; font-weight: 600; color: var(--text-muted);">/mo</span>
+                </div>
+                <div style="font-size: 8.5px; color: var(--text-muted); margin-bottom: 6px;">ACV: ₹6 Lakhs / year</div>
+                <ul style="font-size: 9px; color: var(--text-body); list-style: none; display: flex; flex-direction: column; gap: 3px;">
+                  <li>✓ ServicePulse 90-sec Job Card</li>
+                  <li>✓ Number Plate Scanner OCR</li>
+                  <li>✓ Basic Parts Inventory</li>
+                  <li>✓ Tamil/English WhatsApp</li>
+                  <li>✓ GST Invoicing & 5 Users</li>
+                </ul>
+              </div>
+
+              <!-- Pro -->
+              <div class="clean-card card-featured" style="padding: 10px 8px;">
+                <div style="position: absolute; top: -8px; right: 8px; background: var(--orange-brand); color: #FFF; font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 8px; text-transform: uppercase;">★ SWEET SPOT</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--orange-brand);">PRO DEALERSHIP</span>
+                  <span class="mini-kpi-chip orange">≤12 Bays</span>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: var(--orange-brand); margin: 2px 0;">
+                  ₹1,00,000 <span style="font-size: 10px; font-weight: 600; color: var(--text-muted);">/mo</span>
+                </div>
+                <div style="font-size: 8.5px; color: var(--text-muted); margin-bottom: 6px;">ACV: ₹12 Lakhs / year</div>
+                <ul style="font-size: 9px; color: var(--text-body); list-style: none; display: flex; flex-direction: column; gap: 3px;">
+                  <li>✓ Full Sales CRM + Service Engine</li>
+                  <li>✓ AI Voice Follow-up Agent</li>
+                  <li>✓ Predictive Parts Replenishment</li>
+                  <li>✓ Insurance Renewal & Claims</li>
+                  <li>✓ 15 Users & Advanced BI</li>
+                </ul>
+              </div>
+
+              <!-- Enterprise -->
+              <div class="clean-card card-navy" style="padding: 10px 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--orange-brand);">ENTERPRISE</span>
+                  <span class="mini-kpi-chip" style="background: rgba(255,255,255,0.1); color: #FFF;">OEMs & Chains</span>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: #FFF; margin: 2px 0;">
+                  ₹2,50,000 <span style="font-size: 10px; font-weight: 600; color: #94A3B8;">/mo</span>
+                </div>
+                <div style="font-size: 8.5px; color: #94A3B8; margin-bottom: 6px;">ACV: ₹30 Lakhs / year</div>
+                <ul style="font-size: 9px; color: #E2E8F0; list-style: none; display: flex; flex-direction: column; gap: 3px;">
+                  <li>✓ All 12 AI Modules & Custom RAG</li>
+                  <li>✓ Fleet Telematics & IoT OBD-II</li>
+                  <li>✓ EV Battery Health Analytics</li>
+                  <li>✓ Multi-Warehouse Balancing</li>
+                  <li>✓ Executive Benchmarking</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Unit Economics Grid -->
+            <div class="clean-card" style="padding: 8px 12px; background: #F8FAFC;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 4px;">
+                Institutional SaaS Unit Economics (Year 3–5 Metrics)
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 5px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 900; color: var(--navy-dark);">85%</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">Gross Margins</div>
+                </div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 5px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 900; color: var(--orange-brand);">8.6x</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">LTV:CAC Ratio</div>
+                </div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 5px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 900; color: var(--navy-dark);">4.8 Mo</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">CAC Payback Period</div>
+                </div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 5px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 900; color: var(--success);">135%</div>
+                  <div style="font-size: 8px; color: var(--text-muted);">Net Retention (NRR)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Year 5 Revenue Waterfall Breakdown -->
+          <div class="clean-card" style="padding: 10px 12px; justify-content: space-between;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase;">
+              Year 5 Revenue Waterfall (₹720 Cr)
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+              <div style="background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 10px; font-weight: 700; color: var(--navy-dark);">SaaS Subscriptions (69%)</div>
+                  <div style="font-size: 8.5px; color: var(--text-muted);">12k dealers & 25k workshops</div>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 900; color: var(--navy-dark);">₹500 Cr</div>
+              </div>
+
+              <div style="background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 10px; font-weight: 700; color: var(--orange-brand);">Spares Marketplace Fee (17%)</div>
+                  <div style="font-size: 8.5px; color: var(--text-muted);">2.5% take-rate on ₹4,800 Cr GMV</div>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 900; color: var(--orange-brand);">₹120 Cr</div>
+              </div>
+
+              <div style="background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 10px; font-weight: 700; color: var(--navy-dark);">Enterprise & OEM Contracts (11%)</div>
+                  <div style="font-size: 8.5px; color: var(--text-muted);">Custom OEM APIs & fleet analytics</div>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 900; color: var(--navy-dark);">₹80 Cr</div>
+              </div>
+
+              <div style="background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 6px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 10px; font-weight: 700; color: var(--navy-dark);">AI Usage & Telemetry Fees (3%)</div>
+                  <div style="font-size: 8.5px; color: var(--text-muted);">Per-minute voice AI & vision tokens</div>
+                </div>
+                <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 900; color: var(--navy-dark);">₹20 Cr</div>
+              </div>
+            </div>
+
+            <!-- Takeaway Banner inside card -->
+            <div style="background: var(--navy-dark); color: #FFF; border-radius: 6px; padding: 6px 10px; text-align: center;">
+              <div style="font-size: 8.5px; color: #CBD5E1;">OPERATING EBITDA AT MATURITY</div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 900; color: var(--orange-brand);">₹340 Crores (47% Margin)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">💎</span>
+            <div class="banner-tag">HIGH CAPITAL EFFICIENCY: <span class="orange">85% SOFTWARE GROSS MARGINS · MULTI-LAYER EXPANSION</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹50k Starter</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹1L Pro (Core)</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹2.5L Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 6: TRACTION & COMMERCIAL VALIDATION (LOIS & PIPELINE)     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">06</span>
+            <span class="badge-lbl">TRACTION & VALIDATION</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">PRODUCT-COMPLETE. <span class="orange">READY FOR PILOT DEPLOYMENT.</span></h2>
+          <p class="subheadline">Multi-tenant production architecture fully built, battle-tested with adversarial defense, and staged for commercial rollout</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 12px; flex: 1; align-items: stretch;">
+          <!-- Left Column: What's Built & Verified Checklist -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+              <div class="clean-card" style="padding: 8px 6px; text-align: center;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: var(--orange-brand);">44+</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">REST Endpoints</div>
+              </div>
+              <div class="clean-card" style="padding: 8px 6px; text-align: center;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: var(--navy-dark);">7</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">AI Specialists</div>
+              </div>
+              <div class="clean-card" style="padding: 8px 6px; text-align: center;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: var(--orange-brand);">15+</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Domain Models</div>
+              </div>
+              <div class="clean-card" style="padding: 8px 6px; text-align: center;">
+                <div style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 900; color: var(--navy-dark);">11</div>
+                <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">RBAC Roles</div>
+              </div>
+            </div>
+
+            <!-- 8 Production Checkmarks -->
+            <div class="clean-card" style="padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 6px;">
+                Verified Production Capabilities (Live Environment)
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 9px; color: var(--text-body);">
+                <div>✓ Full-stack deployed (Vercel + Render)</div>
+                <div>✓ Gemini AI integration with live tool calls</div>
+                <div>✓ Semantic RAG with anti-hallucination</div>
+                <div>✓ ActionProposal human-in-the-loop</div>
+                <div>✓ Multi-tenant data isolation & RBAC</div>
+                <div>✓ Auto-generated OpenAPI / Swagger specs</div>
+                <div>✓ 12-vector prompt injection defense</div>
+                <div>✓ Full mutation audit logging engine</div>
+              </div>
+            </div>
+
+            <!-- Verified Dealership ROI Case Study Box -->
+            <div class="clean-card" style="padding: 8px 12px; background: #F8FAFC;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 4px;">
+                Simulated Dealership ROI Benchmark (Single Rooftop)
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: var(--success);">+28%</div>
+                  <div style="font-size: 7.5px; color: var(--text-muted);">Bay Throughput</div>
+                </div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: var(--orange-brand);">-45%</div>
+                  <div style="font-size: 7.5px; color: var(--text-muted);">Lead Latency</div>
+                </div>
+                <div style="background: #FFF; border: 1px solid var(--border-light); padding: 4px 6px; border-radius: 4px; text-align: center;">
+                  <div style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: var(--navy-dark);">₹3.5L/mo</div>
+                  <div style="font-size: 7.5px; color: var(--text-muted);">Extra Parts Margin</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: LOI Pipeline & 30-Day Turnkey Blueprint -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <!-- LOI Box -->
+            <div class="clean-card card-featured" style="padding: 10px 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--orange-brand); text-transform: uppercase;">
+                  Commercialization & Pilot Pipeline
+                </span>
+                <span class="mini-kpi-chip orange">Phase 1 Target</span>
+              </div>
+              <div style="font-size: 10.5px; color: var(--navy-dark); font-weight: 800; margin-bottom: 3px;">
+                15+ Signed Dealership LOIs & Early Access Agreements
+              </div>
+              <p style="font-size: 9.5px; color: var(--text-body); line-height: 1.35;">
+                Secured across major automotive dealer networks in <strong>Coimbatore (6)</strong>, <strong>Chennai (5)</strong>, and <strong>Bangalore (4)</strong> representing Maruti, Tata, Hyundai, and multi-brand service centers.
+              </p>
+            </div>
+
+            <!-- 30-Day Blueprint -->
+            <div class="clean-card" style="padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 6px;">
+                Rapid 30-Day Turnkey Deployment Blueprint
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 4px; font-size: 9px; color: var(--text-body);">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="mini-kpi-chip">Day 1–7</span>
+                  <span>Master Data Migration, DMS Extraction & GST E-Invoice API Binding</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="mini-kpi-chip">Day 8–14</span>
+                  <span>Core ERP Live Deployment (Showroom CRM + Service Bay Scheduler)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="mini-kpi-chip orange">Day 15–21</span>
+                  <span>AI Copilot, WhatsApp Bots & Tamil/English Voice Reminders Active</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="mini-kpi-chip green">Day 22–30</span>
+                  <span>Full Dealership Cutover, Staff Certification & First ROI Audit Review</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tech Stack Footer Box -->
+            <div class="clean-card card-navy" style="padding: 8px 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 9px; color: var(--orange-brand); font-weight: 800; text-transform: uppercase;">Modern Stack (2026 Production Standard)</span>
+                <span style="font-size: 8px; color: #94A3B8;">Zero Technical Debt</span>
+              </div>
+              <div style="font-size: 8.5px; color: #CBD5E1; margin-top: 3px;">
+                React 19 · Vite 6 · TailwindCSS 4 · Django 4.2+ · PostgreSQL 16 · Gemini 3.6 Flash · SimpleJWT
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">🚀</span>
+            <div class="banner-tag">COMMERCIAL READINESS: <span class="orange">15+ SIGNED LOIS · 30-DAY TURNKEY BLUEPRINT</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 44+ APIs Live</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 7 Agents Built</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 100% Multi-Tenant</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 7: COMPETITIVE ADVANTAGE (AI-NATIVE VS AI-BOLTED)         -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">07</span>
+            <span class="badge-lbl">COMPETITIVE ADVANTAGE</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">AI-NATIVE VS. AI-BOLTED: <span class="orange">A GENERATIONAL DIFFERENCE</span></h2>
+          <p class="subheadline">Architectural moat: Legacy DMS providers cannot easily bolt AI onto 15-year-old monolithic database architectures</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.35fr 0.85fr; gap: 12px; flex: 1; align-items: stretch;">
+          <!-- Left: 11-Row Matrix -->
+          <div style="overflow-x: auto; display: flex; flex-direction: column; justify-content: space-between;">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th>Capability Matrix</th>
+                  <th class="th-autoera">AutoEra AI</th>
+                  <th>Orbitsys</th>
+                  <th>AutoFacets</th>
+                  <th>DealerSocket</th>
+                  <th>Zoho CRM</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Full ERP (Sales+Service+Parts+Fin)</td><td class="td-autoera">✓</td><td>✓</td><td>✓</td><td>✓</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>Customer 360 (15 Event Types)</td><td class="td-autoera">✓</td><td>~</td><td>~</td><td>✓</td><td>~</td></tr>
+                <tr><td>Vehicle 360 (VIN-Centric)</td><td class="td-autoera">✓</td><td>~</td><td>✓</td><td>✓</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>AI Copilot (Live ERP Data)</td><td class="td-autoera" style="color:var(--orange-brand); font-weight:900;">★</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>7 Specialist AI Agents</td><td class="td-autoera" style="color:var(--orange-brand); font-weight:900;">★</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>RAG Knowledge Base Engine</td><td class="td-autoera" style="color:var(--orange-brand); font-weight:900;">★</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>ActionProposal (Human-in-Loop)</td><td class="td-autoera" style="color:var(--orange-brand); font-weight:900;">★</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>Multi-Tenant Dealer Group Arch</td><td class="td-autoera">✓</td><td>~</td><td>✓</td><td>✓</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>Tamil / Tanglish Regional AI</td><td class="td-autoera">✓</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td></tr>
+                <tr><td>Modern Stack (2026 Standard)</td><td class="td-autoera">✓</td><td>Legacy</td><td>Legacy</td><td>Legacy</td><td>✓</td></tr>
+                <tr><td>GST-Compliant E-Invoicing</td><td class="td-autoera">✓</td><td>✓</td><td>✓</td><td style="color:var(--danger)">✗</td><td style="color:var(--danger)">✗</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Right: Architectural Moat & Regional Advantage -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="clean-card card-navy" style="padding: 12px 14px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--orange-brand); margin-bottom: 6px; text-transform: uppercase;">
+                Why legacy DMS cannot just "add AI"
+              </div>
+              <p style="font-size: 9.5px; color: #CBD5E1; line-height: 1.45;">
+                AI-native means the <strong>data model natively supports vector embeddings</strong>, the <strong>API supports LLM tool calling</strong>, and the <strong>workflow supports ActionProposals</strong>.
+              </p>
+              <div style="background: rgba(255,255,255,0.06); border-left: 3px solid var(--orange-brand); padding: 6px 8px; margin-top: 6px; font-size: 9px; color: #FFF;">
+                This is deep foundational architecture — it cannot be retrofitted or bolted onto a 15-year-old on-premise relational monolith.
+              </div>
+            </div>
+
+            <!-- Regional Moat Card -->
+            <div class="clean-card" style="padding: 10px 12px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 4px;">
+                Vernacular AI & Indian Ground Reality
+              </div>
+              <p style="font-size: 9.5px; color: var(--text-body); line-height: 1.4;">
+                Dealership service advisors and mechanics in Tier 1–3 cities communicate in <strong>Tamil, Telugu, Hindi, and Tanglish</strong>. AutoEra AI's localized voice pipelines bridge this gap where English-only enterprise CRMs fail.
+              </p>
+            </div>
+
+            <!-- Hardware & IoT Edge Moat -->
+            <div class="clean-card" style="padding: 8px 12px; background: #F8FAFC;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 2px;">
+                Hardware & Telemetry Integration
+              </div>
+              <div style="font-size: 8.5px; color: var(--text-muted);">
+                Plug-and-play OBD-II telematics + Automatic Number Plate Recognition (ANPR) cameras stream data directly into Vehicle 360 profiles.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">💡</span>
+            <div class="banner-tag">UNMATCHED ARCHITECTURAL MOAT: <span class="orange">EMBEDDINGS + TOOL CALLING + ACTIONPROPOSALS</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> Only Live AI Copilot</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> Regional Voice AI</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 100% GST Native</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 8: ROADMAP & GTM (BEACHHEAD TO NATIONAL DOMINANCE)        -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">08</span>
+            <span class="badge-lbl">ROADMAP & GTM</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">MASTER PLAN EXECUTION TIMELINE: <span class="orange">CHENNAI BEACHHEAD TO ₹720 CR ARR</span></h2>
+          <p class="subheadline">Aggressive geographic and technological scaling from South India's automotive capital to global leadership</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+          <!-- Top Row: 4 Timeline Cards -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+            <div class="clean-card card-featured" style="padding: 10px 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--orange-brand);">YEAR 1 (2026)</span>
+                <span class="mini-kpi-chip orange">Beachhead</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark); margin: 2px 0;">₹10 Cr ARR</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px;">200 Dealers · 300 Workshops</div>
+              <p style="font-size: 8.5px; color: var(--text-body); line-height: 1.3;">Chennai & Coimbatore launch. Deploy ServicePulse OCR + Tamil Voice Agent. Establish 50 dealer cluster in 10km radius.</p>
+            </div>
+
+            <div class="clean-card" style="padding: 10px 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">YEAR 2 (2027)</span>
+                <span class="mini-kpi-chip">Pan-South</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark); margin: 2px 0;">₹30 Cr ARR</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px;">800 Dealers · 1,500 Workshops</div>
+              <p style="font-size: 8.5px; color: var(--text-body); line-height: 1.3;">Expansion into Karnataka, Andhra, and Maharashtra. Launch B2B automated spare parts marketplace with regional distributors.</p>
+            </div>
+
+            <div class="clean-card" style="padding: 10px 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">YEAR 3 (2028)</span>
+                <span class="mini-kpi-chip green">Profitable</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark); margin: 2px 0;">₹96 Cr ARR</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px;">2,000 Dealers · 4,000 Workshops</div>
+              <p style="font-size: 8.5px; color: var(--text-body); line-height: 1.3;">National expansion via FADA dealer networks (Maruti, Tata, Hyundai). OEM fleet telematics & warranty claim integration.</p>
+            </div>
+
+            <div class="clean-card card-navy" style="padding: 10px 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; font-weight: 700; color: var(--orange-brand);">YEAR 4–5 (2029–30)</span>
+                <span class="mini-kpi-chip" style="background: rgba(255,255,255,0.1); color: #FFF;">Global Scale</span>
+              </div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: #FFF; margin: 2px 0;">₹720 Cr ARR ★</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--orange-brand); margin-bottom: 3px;">12k Dealers · 25k Workshops</div>
+              <p style="font-size: 8.5px; color: #CBD5E1; line-height: 1.3;">Pan-India dominance + Southeast Asia (ASEAN) and GCC corridors. 39,000 total nodes generating ₹340 Cr EBITDA.</p>
+            </div>
+          </div>
+
+          <!-- Middle Row: 3 Strategic Growth Engines -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 10.5px;">
+                <span>🤝</span> Distributor & Parts Flywheel
+              </div>
+              <div class="card-p" style="font-size: 9px;">
+                Aftermarket spare parts distributors co-sponsor AutoEra Starter subscriptions for garages to secure exclusive recurring digital parts ordering.
+              </div>
+            </div>
+
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 10.5px;">
+                <span>🏭</span> FADA & OEM Network Adoption
+              </div>
+              <div class="card-p" style="font-size: 9px;">
+                Bulk onboarding partnerships with automobile dealer associations for automated GST e-invoicing compliance and unified service quality benchmarks.
+              </div>
+            </div>
+
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div class="card-title" style="display: flex; align-items: center; gap: 4px; font-size: 10.5px;">
+                <span>📲</span> Grassroots Workshop Virality
+              </div>
+              <div class="card-p" style="font-size: 9px;">
+                Free-tier mobile job card scanner app for independent technicians converts single-bay workshops into paying Starter subscribers within 60 days.
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Regional Cluster Roadmap Table -->
+          <div class="clean-card" style="padding: 6px 10px; background: #F8FAFC;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 3px;">
+              Geographic Cluster Rollout Progression
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; font-size: 8.5px; color: var(--text-body);">
+              <div>📍 <strong>Q1–Q4 2026</strong>: Chennai, Coimbatore, Salem, Madurai (200 Dealers)</div>
+              <div>📍 <strong>2027</strong>: Bengaluru, Hyderabad, Pune, Mumbai (800 Dealers)</div>
+              <div>📍 <strong>2028</strong>: Delhi-NCR, Ahmedabad, Kolkata, Pan-India (2,000 Dealers)</div>
+              <div>📍 <strong>2029–30</strong>: Jakarta, Bangkok, Dubai, Riyadh (12,000 Dealers)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">🌐</span>
+            <div class="banner-tag">SCALING VELOCITY: <span class="orange">200 ROOFTOPS IN Y1 ➔ 39,000 AUTOMOTIVE NODES IN Y5</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> Year 1: ₹10 Cr ARR</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> Year 3: ₹96 Cr ARR</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> Year 5: ₹720 Cr ARR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 9: FINANCIAL PROJECTIONS (5-YEAR ARR & EBITDA MODEL)       -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">09</span>
+            <span class="badge-lbl">FINANCIAL PROJECTIONS</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">5-YEAR GROWTH PATH TO ₹720 CRORE ARR: <span class="orange">₹340 CR EBITDA (47%)</span></h2>
+          <p class="subheadline">High operating leverage software model producing exceptional free cash flow and institutional profitability at scale</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
+          <!-- 4 High-Impact Financial KPI Chips -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+            <div class="clean-card" style="padding: 6px 8px; text-align: center;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark);">₹720 Crores</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--orange-brand);">Year 5 ARR (Table 56)</div>
+            </div>
+            <div class="clean-card" style="padding: 6px 8px; text-align: center;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--success);">₹340 Crores</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--navy-dark);">Operating EBITDA (47%)</div>
+            </div>
+            <div class="clean-card" style="padding: 6px 8px; text-align: center;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--navy-dark);">₹380 Crores</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: var(--text-muted);">Year 5 Total Expenses</div>
+            </div>
+            <div class="clean-card card-navy" style="padding: 6px 8px; text-align: center;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: var(--orange-brand);">₹7,200 Cr</div>
+              <div style="font-size: 8.5px; font-weight: 700; color: #FFF;">Unicorn Value (~$870M)</div>
+            </div>
+          </div>
+
+          <!-- Dual Tables (Table 56 and Table 55) -->
+          <div style="display: grid; grid-template-columns: 1fr 1.05fr; gap: 10px;">
+            <!-- Table 1: Revenue Breakdown -->
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 4px;">
+                Year 5 Revenue Breakdown (Table 56)
+              </div>
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>Revenue Stream</th>
+                    <th>Year 5 Amount</th>
+                    <th style="text-align: right;">% Share</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>SaaS Subscriptions (Starter/Pro/Ent)</td><td style="font-weight:700;">₹500 Crores</td><td style="text-align:right;">69%</td></tr>
+                  <tr><td>Transaction Fees (Spares & Ins.)</td><td style="font-weight:700; color:var(--orange-brand);">₹120 Crores</td><td style="text-align:right;">17%</td></tr>
+                  <tr><td>Enterprise Contracts (OEMs & Fleets)</td><td style="font-weight:700;">₹80 Crores</td><td style="text-align:right;">11%</td></tr>
+                  <tr><td>AI Usage Fees (Vision & Voice Tokens)</td><td style="font-weight:700;">₹20 Crores</td><td style="text-align:right;">3%</td></tr>
+                  <tr style="background: rgba(255,87,34,0.08); font-weight: 900;">
+                    <td>TOTAL ANNUAL RECURRING REVENUE</td>
+                    <td style="color:var(--orange-brand); font-size:11px;">₹720 Crores</td>
+                    <td style="text-align:right; color:var(--orange-brand);">100% ★</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Table 2: 5-Year Progression -->
+            <div class="clean-card" style="padding: 8px 10px;">
+              <div style="font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase; margin-bottom: 4px;">
+                5-Year Growth Progression (Table 55)
+              </div>
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th>Dealers</th>
+                    <th>Workshops</th>
+                    <th>MRR</th>
+                    <th>ARR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Year 1 (2026)</td><td>200</td><td>300</td><td>₹40 Lakhs</td><td style="font-weight:700;">₹10.0 Cr</td></tr>
+                  <tr><td>Year 2 (2027)</td><td>800</td><td>1,500</td><td>₹2.50 Cr</td><td style="font-weight:700;">₹30.0 Cr</td></tr>
+                  <tr><td>Year 3 (2028)</td><td>2,000</td><td>4,000</td><td>₹8.00 Cr</td><td style="font-weight:700;">₹96.0 Cr</td></tr>
+                  <tr><td>Year 4 (2029)</td><td>5,000</td><td>10,000</td><td>₹25.00 Cr</td><td style="font-weight:700;">₹300.0 Cr</td></tr>
+                  <tr style="background: rgba(10,17,40,0.06); font-weight: 900;">
+                    <td>Year 5 (2030)</td><td>12,000</td><td>25,000</td><td>₹60.00 Cr</td><td style="color:var(--orange-brand);">₹720.0 Cr ★</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Bottom Summary Box: Valuation Math & Breakeven -->
+          <div class="clean-card" style="padding: 8px 12px; background: #F8FAFC;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--navy-dark);">
+                  🚀 UNICORN VALUATION MATH (MASTER PLAN TABLE 127)
+                </span>
+                <p style="font-size: 9px; color: var(--text-body); margin-top: 2px;">
+                  ₹720 Crores ARR × 10x Revenue Multiple = <strong>₹7,200 Crores (~$870 Million Enterprise Valuation)</strong> upon ASEAN & GCC expansion.
+                </p>
+              </div>
+              <div style="text-align: right;">
+                <span class="mini-kpi-chip green">CASH FLOW POSITIVE FROM Y3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy">
+          <div class="banner-left">
+            <span style="font-size: 13px;">📊</span>
+            <div class="banner-tag">FINANCIAL DISCIPLINE: <span class="orange">PROFITABLE FROM YEAR 3 ONWARDS · 47% OPERATING MARGIN</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹340 Cr EBITDA</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 47% Margin</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 8.6x LTV:CAC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 10: INVESTMENT ASK & CAPITAL ALLOCATION                   -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="slide" id="slide-9">
+      <div class="slide-content">
+        <div class="slide-header">
+          <div class="logo-lockup">
+            <img src="assets/autoera_logo_original.png" alt="AutoEra AI" class="logo-img">
+            <div class="brand-text-wrap">
+              <span class="brand-name">AUTOERA</span>
+              <div class="brand-tagline"><span class="ai-badge">AI</span><span class="tagline-text">DEALERSHIP OS</span></div>
+            </div>
+          </div>
+          <div class="deck-badge">
+            <span class="badge-num">10</span>
+            <span class="badge-lbl">INVESTMENT ASK</span>
+          </div>
+        </div>
+
+        <div class="slide-titles">
+          <h2 class="headline-main">SEED ROUND INVESTMENT ASK & ALLOCATION: <span class="orange">CATALYZING YEAR 1 (₹10 CR ARR)</span></h2>
+          <p class="subheadline">Funding the 18-month beachhead expansion, AI mobile technician apps, and B2B spare parts marketplace integration</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 0.95fr 1.05fr 1fr; gap: 10px; flex: 1; align-items: stretch;">
+          <!-- Col 1: Capital Allocation -->
+          <div class="clean-card" style="padding: 10px 12px; justify-content: space-between;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--navy-dark); text-transform: uppercase;">
+              Strategic Capital Allocation
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 2px;">
+                  <span>Mobile App & AI Engineering</span> <strong style="color:var(--orange-brand);">40% (₹2.0 Cr)</strong>
+                </div>
+                <div style="height: 4px; background: #E2E8F0; border-radius: 2px; overflow: hidden;"><div style="width: 40%; height: 100%; background: var(--orange-brand);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 2px;">
+                  <span>GTM, Dealer Onboarding & Hardware</span> <strong style="color:var(--navy-dark);">25% (₹1.25 Cr)</strong>
+                </div>
+                <div style="height: 4px; background: #E2E8F0; border-radius: 2px; overflow: hidden;"><div style="width: 25%; height: 100%; background: var(--navy-dark);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 2px;">
+                  <span>Cloud Infra, Security & SLA</span> <strong style="color:var(--navy-dark);">15% (₹0.75 Cr)</strong>
+                </div>
+                <div style="height: 4px; background: #E2E8F0; border-radius: 2px; overflow: hidden;"><div style="width: 15%; height: 100%; background: var(--navy-dark);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 2px;">
+                  <span>B2B Parts Catalog Integration</span> <strong style="color:var(--navy-dark);">10% (₹0.50 Cr)</strong>
+                </div>
+                <div style="height: 4px; background: #E2E8F0; border-radius: 2px; overflow: hidden;"><div style="width: 10%; height: 100%; background: var(--navy-dark);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 2px;">
+                  <span>Working Capital & 18-Mo Runway</span> <strong style="color:var(--navy-dark);">10% (₹0.50 Cr)</strong>
+                </div>
+                <div style="height: 4px; background: #E2E8F0; border-radius: 2px; overflow: hidden;"><div style="width: 10%; height: 100%; background: var(--navy-dark);"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 2: What Seed Ignites -->
+          <div class="clean-card card-featured" style="padding: 10px 12px; justify-content: space-between;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--orange-brand); text-transform: uppercase;">
+              What This Seed Round Ignites
+            </div>
+            <ul style="font-size: 9.5px; color: var(--text-body); list-style: none; display: flex; flex-direction: column; gap: 5px;">
+              <li>✓ <strong>50 paid flagship dealerships</strong> onboarded with verified 4x ROI case study metrics.</li>
+              <li>✓ <strong>B2B Spare Parts Marketplace engine</strong> connected to regional aftermarket distributors.</li>
+              <li>✓ <strong>Rapid acceleration to 400 active dealerships</strong> generating ₹10 Crore ARR run-rate in Year 1.</li>
+              <li>✓ <strong>Institutional Series A readiness</strong> ($5M–$8M round) for pan-India expansion.</li>
+            </ul>
+            <div style="background: rgba(255,87,34,0.06); border-radius: 4px; padding: 5px 8px; font-size: 8.5px; color: var(--orange-brand); font-weight: 700;">
+              TARGET: ₹10 Cr ARR · 18 Months Runway
+            </div>
+          </div>
+
+          <!-- Col 3: Milestones -->
+          <div class="clean-card card-navy" style="padding: 10px 12px; justify-content: space-between;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--orange-brand); text-transform: uppercase;">
+              18-Month Execution Milestones
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px; font-size: 9px; color: #CBD5E1;">
+              <div><strong style="color:#FFF;">M1–M3</strong>: Deploy 15 paid dealerships in Coimbatore & Chennai. Launch mobile technician app.</div>
+              <div><strong style="color:#FFF;">M4–M6</strong>: 50 paid dealerships operational. Launch automated B2B parts ordering with distributors.</div>
+              <div><strong style="color:#FFF;">M7–M12</strong>: Scale across TN, Karnataka, Maharashtra. Reach 400 dealerships & ₹10 Cr ARR.</div>
+              <div><strong style="color:#FFF;">M13–M18</strong>: Prepare Series A round ($5M–$8M) for national scale & ASEAN expansion.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Founder Contact Bar -->
+        <div style="background: #F8FAFC; border: 1px solid var(--border-light); border-radius: 8px; padding: 8px 12px; margin-top: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--navy-dark); color: #FFF; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;">
+              S
+            </div>
+            <div>
+              <div style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--navy-dark);">Santhosh</div>
+              <div style="font-size: 9.5px; color: var(--text-muted);">Founder & CEO | AutoEra AI Solutions • Chennai & Coimbatore, Tamil Nadu, India</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span style="font-size: 10.5px; font-weight: 700; color: var(--orange-brand);">santhosh@autoera.ai</span>
+            <span style="font-size: 10.5px; font-weight: 700; color: var(--navy-dark);">www.autoera.ai</span>
+          </div>
+        </div>
+
+        <div class="bottom-banner-navy" style="margin-top: 6px;">
+          <div class="banner-left">
+            <span style="font-size: 13px;">🤝</span>
+            <div class="banner-tag">JOIN US IN BUILDING THE <span class="orange">GLOBAL OPERATING SYSTEM FOR THE AUTOMOTIVE WORLD</span></div>
+          </div>
+          <div class="banner-metrics">
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 18-Mo Runway</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> ₹10 Cr Y1 ARR</div>
+            <div class="metric-pill"><div class="metric-pill-icon">✓</div> 400 Flagship Dealers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Controls Dock -->
+<div class="controls-dock">
+  <button class="nav-btn" id="prevBtn" title="Previous Slide (←)">‹</button>
+  <div class="slide-dots" id="dotsContainer"></div>
+  <button class="nav-btn" id="nextBtn" title="Next Slide (→)">›</button>
+  <div class="slide-counter" id="slideCounter">1 / 10</div>
+  <button class="fs-toggle-btn" id="fsBtn" title="Toggle Fullscreen (F)">[F]</button>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let currentIdx = 0;
+
+  const dotsContainer = document.getElementById('dotsContainer');
+  const counterEl = document.getElementById('slideCounter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const fsBtn = document.getElementById('fsBtn');
+
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function updateView() {
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === currentIdx);
+    });
+
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === currentIdx);
+    });
+
+    counterEl.textContent = (currentIdx + 1) + ' / ' + totalSlides;
+    window.location.hash = 'slide-' + (currentIdx + 1);
+  }
+
+  function goToSlide(idx) {
+    if (idx >= 0 && idx < totalSlides) {
+      currentIdx = idx;
+      updateView();
+    }
+  }
+
+  function prevSlide() {
+    if (currentIdx > 0) goToSlide(currentIdx - 1);
+  }
+
+  function nextSlide() {
+    if (currentIdx < totalSlides - 1) goToSlide(currentIdx + 1);
+  }
+
+  prevBtn.addEventListener('click', prevSlide);
+  nextBtn.addEventListener('click', nextSlide);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      prevSlide();
+    } else if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      toggleFullScreen();
+    } else if (e.key === 'Home') {
+      goToSlide(0);
+    } else if (e.key === 'End') {
+      goToSlide(totalSlides - 1);
+    }
+  });
+
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.warn('Fullscreen request failed:', err);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
+  fsBtn.addEventListener('click', toggleFullScreen);
+
+  if (window.location.hash) {
+    const match = window.location.hash.match(/slide-(\\d+)/);
+    if (match) {
+      const idx = parseInt(match[1], 10) - 1;
+      if (idx >= 0 && idx < totalSlides) {
+        currentIdx = idx;
+      }
+    }
+  }
+
+  updateView();
+})();
+</script>
+</body>
+</html>
+"""
+
+if __name__ == '__main__':
+    content = generate_dense_html()
+    with open('autoera-master-clean-pitch.html', 'w', encoding='utf-8') as f:
+        f.write(content)
+    print("Successfully built dense autoera-master-clean-pitch.html with no wasted space!")

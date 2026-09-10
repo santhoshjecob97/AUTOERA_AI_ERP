@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: autoera-production
+  labels:
+    name: autoera-production
+    environment: production
+    managed-by: argocd
+    compliance: dpdp-act-2023
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: autoera-compute-quota
+  namespace: autoera-production
+spec:
+  hard:
+    requests.cpu: "32"
+    requests.memory: 64Gi
+    limits.cpu: "64"
+    limits.memory: 128Gi
+    pods: "100"

@@ -11,6 +11,7 @@ import FleetDashboard from '../components/dashboard/FleetDashboard';
 import VoiceCallButton from '../components/voice/VoiceCallButton';
 import VoiceCallModal from '../components/voice/VoiceCallModal';
 import UniversalVoiceCampaignSection from '../components/voice/UniversalVoiceCampaignSection';
+import Section09FleetWorkspace from '../components/fleet/Section09FleetWorkspace';
 
 const initialVehicles: FleetVehicle[] = [
     { id: 'EV-001', model: 'Tata Ace EV', plateNumber: 'MH-12-EV-9921', type: 'EV', status: 'Active', batteryLevel: 72, range: 105, healthScore: 96, location: 'Route 4 (Andheri)', driver: 'Ramesh P.', nextMaintenance: '2024-12-10' },
@@ -171,6 +172,9 @@ const FleetEngine: React.FC = () => {
         <StatCard title="CO2 Saved" value="1.2 Tons" trend="This Month" icon={<TrendingUp size={24}/>} color="green" />
         <StatCard title="Charging Status" value={`${stations.filter(s => s.status === 'Available').length}/${stations.length}`} trend="Available" icon={<Zap size={24}/>} color="orange" />
       </div>
+      
+      {/* Section 09: Fleet Module Master Architecture Workspace */}
+      <Section09FleetWorkspace />
 
       {/* Enterprise Analytics Dashboard */}
       <FleetDashboard />

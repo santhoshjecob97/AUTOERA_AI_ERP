@@ -1,0 +1,38 @@
+# Datadog Helm Chart Values for AutoEra AI Production Cluster
+targetSystem: "linux"
+datadog:
+  apiKeyExistingSecret: "datadog-secret"
+  appKeyExistingSecret: "datadog-secret"
+  clusterName: "autoera-prod-ap-south-1"
+  site: "datadoghq.com"
+  
+  # APM & Distributed Tracing
+  apm:
+    portEnabled: true
+    socketEnabled: true
+    hostSocketPath: /var/run/datadog/apm.socket
+  
+  # Log Ingestion & Tagging
+  logs:
+    enabled: true
+    containerCollectAll: true
+  
+  # DogStatsD Custom Automotive Metrics
+  dogstatsd:
+    port: 8125
+    useHostPort: true
+    nonLocalTraffic: true
+  
+  # Global Environment Tags
+  tags:
+    - "env:production"
+    - "service:autoera-platform"
+    - "region:ap-south-1"
+    - "compliance:dpdp-act-2023"
+
+# Cluster Agent for Kubernetes HPA Custom Metrics
+clusterAgent:
+  enabled: true
+  metricsProvider:
+    enabled: true
+    useDatadogMetrics: true

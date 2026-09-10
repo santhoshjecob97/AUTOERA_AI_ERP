@@ -42,6 +42,15 @@ class TenantMiddleware(MiddlewareMixin):
             elif hasattr(request.user, 'branch') and request.user.branch:
                 request.branch_id = request.user.branch.id
 
+            # PostgreSQL Row-Level Security (RLS) session context binding
+            if request.organization_id:
+                try:
+                    from django.db import connection
+                    with connection.cursor() as cursor:
+                        cursor.execute("SET LOCAL app.current_organization_id = %s;", [str(request.organization_id)])
+                except Exception:
+                    pass
+
             logger.info(
                 "Tenant resolved",
                 extra={
@@ -137,3 +146,70 @@ class AuditLogMiddleware(MiddlewareMixin):
             logger.error(f"AuditLog write failed: {e}")
 
         return response
+
+
+class RateLimitMiddleware(MiddlewareMixin):
+    """
+    Tiered API Rate Limiting Middleware (Section 08 — Security Architecture).
+    Enforces request limits per client IP / user identity using cache:
+      - Auth endpoints (/api/v1/auth/): 10 requests / minute
+      - AI Copilot / LLM endpoints (/api/v1/ai/): 25 requests / minute
+      - General REST endpoints (/api/v1/): 120 requests / minute
+    Returns HTTP 429 Too Many Requests when limits are breached.
+    """
+    from django.core.cache import cache
+    from django.http import JsonResponse
+
+    RATE_LIMITS = [
+        # (path_prefix, max_requests, window_seconds)
+        ('/api/v1/auth/login/', 10, 60),
+        ('/api/v1/auth/', 20, 60),
+        ('/api/v1/ai/', 30, 60),
+        ('/api/v1/voice/', 40, 60),
+        ('/api/v1/', 150, 60),
+    ]
+
+    def process_request(self, request):
+        from django.core.cache import cache
+        from django.http import JsonResponse
+
+        # Skip rate limiting for static/admin/health checks
+        if request.path.startswith('/api/v1/health/') or request.path.startswith('/admin/'):
+            return None
+
+        client_id = None
+        if hasattr(request, 'user') and request.user.is_authenticated:
+            client_id = f"user_{request.user.id}"
+        else:
+            client_id = f"ip_{TenantMiddleware._get_client_ip(request)}"
+
+        path = request.path
+        for prefix, max_reqs, window in self.RATE_LIMITS:
+            if path.startswith(prefix):
+                cache_key = f"ratelimit:{prefix}:{client_id}"
+                current_count = cache.get(cache_key, 0)
+
+                if current_count >= max_reqs:
+                    logger.warning(
+                        f"Rate limit exceeded for {client_id} on {path} ({current_count}/{max_reqs})"
+                    )
+                    response = JsonResponse({
+                        'error': 'Too Many Requests',
+                        'detail': f'Rate limit of {max_reqs} requests per {window}s exceeded. Please retry later.',
+                        'status_code': 429
+                    }, status=429)
+                    response['Retry-After'] = str(window)
+                    return response
+
+                # Increment count
+                try:
+                    if current_count == 0:
+                        cache.set(cache_key, 1, timeout=window)
+                    else:
+                        cache.incr(cache_key)
+                except Exception:
+                    pass
+                break
+
+        return None
+

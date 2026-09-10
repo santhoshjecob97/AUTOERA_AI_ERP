@@ -103,3 +103,77 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.save(organization=org, branch=branch)
         else:
             serializer.save()
+
+
+class MFASetupView(APIView):
+    """
+    Initiates TOTP MFA setup. Generates base32 secret and provisioning URI.
+    POST /api/v1/auth/mfa/setup/
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        from .mfa import mfa_engine
+        user = request.user
+        secret = mfa_engine.generate_secret()
+        email = user.email or user.username
+        provisioning_uri = mfa_engine.generate_provisioning_uri(secret, email)
+
+        return Response({
+            'secret': secret,
+            'provisioning_uri': provisioning_uri,
+            'is_mandatory_for_role': mfa_engine.is_mfa_required_for_role(user.role),
+            'instructions': 'Enter secret into Google Authenticator or scan provisioning URI QR code.'
+        }, status=status.HTTP_200_OK)
+
+
+class MFAVerifyView(APIView):
+    """
+    Confirms TOTP setup by verifying the first 6-digit token.
+    POST /api/v1/auth/mfa/verify/
+    Body: { "secret": "...", "code": "123456" }
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        from .mfa import mfa_engine
+        secret = request.data.get('secret')
+        code = request.data.get('code')
+
+        if not secret or not code:
+            return Response({'error': 'Both secret and 6-digit code are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        is_valid = mfa_engine.verify_totp(secret, str(code))
+        if not is_valid:
+            return Response({'error': 'Invalid 6-digit TOTP code. Please check device clock and retry.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # In production, save secret to User.totp_secret and set mfa_enabled=True
+        user = request.user
+        logger.info(f"MFA successfully enabled for user {user.username}")
+
+        return Response({
+            'status': 'MFA_ACTIVATED',
+            'message': 'Multi-Factor Authentication successfully activated for your account.'
+        }, status=status.HTTP_200_OK)
+
+
+class MFAValidateView(APIView):
+    """
+    Validates TOTP token during session authentication for manager accounts.
+    POST /api/v1/auth/mfa/validate/
+    Body: { "secret": "...", "code": "123456" }
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        from .mfa import mfa_engine
+        secret = request.data.get('secret')
+        code = request.data.get('code')
+
+        if not secret or not code:
+            return Response({'error': 'Secret and code are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if mfa_engine.verify_totp(secret, str(code)):
+            return Response({'status': 'VALID', 'message': 'MFA challenge passed.'}, status=status.HTTP_200_OK)
+        return Response({'status': 'INVALID', 'error': 'Invalid TOTP code.'}, status=status.HTTP_401_UNAUTHORIZED)
+

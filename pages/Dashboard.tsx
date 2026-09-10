@@ -24,6 +24,9 @@ const revenueData: ChartData[] = [
 ];
 
 const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
+  const [activeBranch, setActiveBranch] = React.useState('Indiranagar Main (BLR)');
+  const [isBriefDismissed, setIsBriefDismissed] = React.useState(false);
+
   // Platform-wide KPIs
   const platformKPIs = {
     totalRevenue: '₹42.5M',
@@ -46,16 +49,34 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 text-xs font-bold uppercase tracking-wider mb-2">
-            <Sparkles size={13} className="text-orange-500" />
-            {user?.organizationName || 'Apex Mobility Group'} &bull; {user?.branchName || 'Indiranagar Main Branch'}
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 text-xs font-bold uppercase tracking-wider">
+              <Sparkles size={13} className="text-orange-500" />
+              {user?.organizationName || 'Apex Mobility Group'}
+            </span>
+
+            {/* Multi-Branch Selector */}
+            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+              {['Indiranagar Main (BLR)', 'Anna Nagar (Chennai)', 'OMR Tech Hub', 'Porur Workshop'].map(br => (
+                <button
+                  key={br}
+                  onClick={() => setActiveBranch(br)}
+                  className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold transition-all ${
+                    activeBranch === br ? 'bg-white shadow-xs text-orange-600' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {br}
+                </button>
+              ))}
+            </div>
           </div>
+
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-3 font-['Outfit'] tracking-tight">
             <BrainCircuit className="text-orange-600" size={30} />
             AutoEra AI ERP Operations Center
           </h1>
           <p className="text-slate-500 mt-1 text-sm">
-            Welcome back, {user?.name || 'Dealership Executive'} &bull; Real-time AI Operations, Workshop & Lead Telemetry
+            Welcome back, {user?.name || 'Dealership Executive'} &bull; Real-time Multi-Branch AI Operations, Workshop &amp; Lead Telemetry
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -67,14 +88,54 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
             </span>
           </div>
           <div className="text-right hidden sm:block">
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Gemini AI</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">AutoEra AI-OS</p>
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
               <Sparkles size={13} className="text-orange-500" />
-              AI Copilot Ready
+              10 Agents Active
             </span>
           </div>
         </div>
       </div>
+
+      {/* AI Morning Brief & Pending ActionProposal Alert Strip (Section 02/11) */}
+      {!isBriefDismissed && (
+        <div className="bg-gradient-to-r from-slate-900 via-[#0D1117] to-slate-900 text-white rounded-2xl p-4 sm:p-5 border border-slate-800 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 shrink-0 mt-0.5">
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-orange-400 uppercase tracking-wider font-mono">
+                  8:00 AM Dealer Principal Brief &bull; Executive Analytics Agent
+                </span>
+                <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                  DHI 94/100
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                <strong>{activeBranch}:</strong> Yesterday revenue reached 104% of daily target. 3 urgent actions pending GM approval: Senthil Nathan 2.8% discount exception, 40x Tata Nexon brake pads replenishment order, and 12 insurance renewals expiring in &lt; 30 days.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => onNavigate('service-ai')}
+              className="px-3 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Review AI Proposals (3)</span>
+              <ArrowRight size={13} />
+            </button>
+            <button
+              onClick={() => setIsBriefDismissed(true)}
+              className="p-1.5 text-slate-400 hover:text-slate-200 text-xs transition-colors"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Platform-Wide KPI Overview */}
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-200 p-6">

@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOERA — Complete White-Label Automotive AI SaaS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   AUTOERA DESIGN SYSTEM — COMPLETE
+═══════════════════════════════════════════ */
+:root {
+  /* Core palette */
+  --ink: #080C14;
+  --ink2: #0C1220;
+  --ink3: #111827;
+  --surface: #141E2E;
+  --surface2: #1A2438;
+  --surface3: #1F2B3E;
+  --rim: #243044;
+  --rim2: #2E3D56;
+
+  /* Brand accents */
+  --cyan: #06D6A0;
+  --cyan2: #00B4D8;
+  --amber: #F59E0B;
+  --amber2: #FBBF24;
+  --violet: #818CF8;
+  --rose: #FB7185;
+  --emerald: #34D399;
+  --sky: #38BDF8;
+
+  /* Semantic */
+  --success: #22C55E;
+  --warn: #F59E0B;
+  --danger: #EF4444;
+  --info: #38BDF8;
+
+  /* Text */
+  --t1: #F1F5F9;
+  --t2: #94A3B8;
+  --t3: #64748B;
+  --t4: #475569;
+
+  /* Font */
+  --fh: 'Outfit', sans-serif;
+  --fb: 'Plus Jakarta Sans', sans-serif;
+  --fm: 'Fira Code', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--t1);
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--ink2); }
+::-webkit-scrollbar-thumb { background: var(--rim2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+/* ── Portal Switcher (Login Screen) ── */
+#login-screen {
+  position: fixed; inset: 0;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 9999;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(6,214,160,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(0,180,216,0.05) 0%, transparent 60%);
+}
+
+.login-logo {
+  font-family: var(--fh);
+  font-size: 42px; font-weight: 900;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--cyan), var(--cyan2), var(--violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+
+.login-tagline {
+  font-size: 13px; color: var(--t3);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 48px; font-family: var(--fm);
+}
+
+.portal-grid {
+  display: grid; grid-template-columns: repeat(2, 260px);
+  gap: 16px; margin-bottom: 32px;
+}
+
+.portal-card {
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: 16px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative; overflow: hidden;
+}
+
+.portal-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  border-radius: 16px 16px 0 0;
+  opacity: 0; transition: opacity 0.2s;
+}
+
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--rim2);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+}
+
+.portal-card:hover::before { opacity: 1; }
+
+.portal-card.p-super::before { background: linear-gradient(90deg, var(--violet), var(--cyan)); }
+.portal-card.p-dealer::before { background: linear-gradient(90deg, var(--cyan), var(--emerald)); }
+.portal-card.p-customer::before { background: linear-gradient(90deg, var(--amber), var(--rose)); }
+.portal-card.p-tech::before { background: linear-gradient(90deg, var(--sky), var(--violet)); }
+
+.portal-icon { font-size: 36px; margin-bottom: 14px; }
+.portal-name { font-family: var(--fh); font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+.portal-desc { font-size: 12px; color: var(--t3); line-height: 1.5; }
+.portal-badge {
+  display: inline-flex; margin-top: 12px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 10px; font-family: var(--fm); font-weight: 500;
+}
+
+.pb-super { background: rgba(129,140,248,0.15); color: var(--violet); border: 1px solid rgba(129,140,248,0.25); }
+.pb-dealer { background: rgba(6,214,160,0.12); color: var(--cyan); border: 1px solid rgba(6,214,160,0.25); }
+.pb-customer { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+.pb-tech { background: rgba(56,189,248,0.12); color: var(--sky); border: 1px solid rgba(56,189,248,0.25); }
+
+.login-version { font-size: 11px; color: var(--t4); font-family: var(--fm); }
+
+/* ── App Shell ── */
+#app { display: none; min-height: 100vh; }
+#app.visible { display: flex; flex-direction: column; }
+
+/* ── Top Portal Bar ── */
+.portal-bar {
+  background: var(--ink2);
+  border-bottom: 1px solid var(--rim);
+  height: 48px;
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 16px;
+  position: sticky; top: 0; z-index: 200;
+}
+
+.pbar-logo {
+  font-family: var(--fh); font-weight: 900; font-size: 18px; letter-spacing: -0.01em;
+  background: linear-gradient(90deg, var(--cyan), var(--cyan2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-right: 8px;
+}
+
+.pbar-portal-name {
+  font-size: 12px; font-weight: 600; padding: 3px 10px;
+  border-radius: 20px; font-family: var(--fm);
+}
+
+.pbar-sep { width: 1px; height: 24px; background: var(--rim); margin: 0 4px; }
+
+.pbar-tabs { display: flex; gap: 2px; flex: 1; }
+
+.pbar-tab {
+  padding: 5px 14px; border-radius: 6px;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  color: var(--t3); transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.pbar-tab:hover { color: var(--t1); background: var(--surface); }
+.pbar-tab.active { background: var(--surface2); color: var(--t1); }
+.pbar-tab .tab-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--cyan); opacity: 0; transition: opacity 0.15s;
+}
+.pbar-tab.active .tab-dot { opacity: 1; }
+
+.pbar-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+.ai-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(6,214,160,0.08);
+  border: 1px solid rgba(6,214,160,0.2);
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; color: var(--cyan); font-family: var(--fm);
+}
+
+.ai-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan);
+  animation: blink 2s infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.notif-btn {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--rim);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; position: relative;
+  transition: all 0.15s;
+}
+.notif-btn:hover { border-color: var(--cyan); }
+.notif-btn .badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--danger); color: white;
+  font-size: 9px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--fm); font-weight: 700; border: 2px solid var(--ink2);
+}
+
+.switch-portal-btn {
+  padding: 5px 12px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--rim);
+  color: var(--t2); font-size: 11px; font-family: var(--fm);
+  cursor: pointer; transition: all 0.15s;
+}
+.switch-portal-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── Content Area ── */
+.content-area { flex: 1; display: flex; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 220px; min-width: 220px;
+  background: var(--ink2);
+  border-right: 1px solid var(--rim);
+  position: sticky; top: 48px;
+  height: calc(100vh - 48px);
+  overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+}
+
+.sb-section { padding: 16px 10px 4px; }
+.sb-label {
+  font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.16em; color: var(--t4);
+  font-family: var(--fm); padding-left: 8px;
+}
+
+.sb-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; margin: 1px 0;
+  border-radius: 8px; cursor: pointer;
+  font-size: 13px; color: var(--t3);
+  transition: all 0.12s; position: relative;
+}
+
+.sb-item:hover { background: var(--surface); color: var(--t1); }
+
+.sb-item.active {
+  background: linear-gradient(90deg, rgba(6,214,160,0.12), transparent);
+  color: var(--cyan);
+  border-left: 2px solid var(--cyan);
+  padding-left: 8px;
+}
+
+.sb-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+
+.sb-badge {
+  margin-left: auto; font-size: 9px; font-family: var(--fm); font-weight: 700;
+  padding: 1px 6px; border-radius: 10px;
+}
+
+.sb-badge-red { background: rgba(239,68,68,0.2); color: var(--danger); }
+.sb-badge-amber { background: rgba(245,158,11,0.2); color: var(--amber); }
+.sb-badge-cyan { background: rgba(6,214,160,0.15); color: var(--cyan); }
+.sb-badge-violet { background: rgba(129,140,248,0.15); color: var(--violet); }
+
+.sb-bottom {
+  margin-top: auto; padding: 12px;
+  border-top: 1px solid var(--rim);
+}
+
+.user-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--rim);
+}
+
+.user-av {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--surface3), var(--rim));
+  display: flex; align-items: center; justify-content: center; font-size: 13px;
+  flex-shrink: 0;
+}
+
+.user-name { font-size: 12px; font-weight: 600; }
+.user-role { font-size: 10px; color: var(--t3); }
+
+/* ── Main Panel ── */
+.main-panel {
+  flex: 1; overflow-y: auto;
+  background: var(--ink);
+  background-image: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(6,214,160,0.04) 0%, transparent 60%);
+}
+
+.page-wrap { padding: 24px 28px; }
+
+/* ── Page header ── */
+.page-hdr { margin-bottom: 24px; }
+.page-hdr-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.page-title { font-family: var(--fh); font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+.page-sub { font-size: 12.5px; color: var(--t3); margin-top: 4px; }
+.hdr-actions { display: flex; gap: 8px; align-items: center; }
+
+/* ── KPI Grid ── */
+.kpi-row { display: grid; gap: 14px; margin-bottom: 24px; }
+.kpi-4 { grid-template-columns: repeat(4, 1fr); }
+.kpi-3 { grid-template-columns: repeat(3, 1fr); }
+.kpi-6 { grid-template-columns: repeat(6, 1fr); }
+
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.kpi:hover { border-color: var(--rim2); }
+
+.kpi-glow {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  border-radius: 14px 14px 0 0;
+}
+
+.kpi-lbl { font-size: 10.5px; color: var(--t3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.kpi-val { font-family: var(--fh); font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+.kpi-chg { font-size: 11px; display: flex; align-items: center; gap: 4px; }
+.kpi-chg.up { color: var(--success); }
+.kpi-chg.dn { color: var(--danger); }
+.kpi-chg.flat { color: var(--t3); }
+.kpi-ico { position: absolute; top: 16px; right: 16px; font-size: 20px; opacity: 0.2; }
+
+/* ── Grid layouts ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 20px; }
+
+/* ── Cards / Panels ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: 14px; overflow: hidden;
+}
+
+.card-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--rim);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.card-title { font-size: 13px; font-weight: 700; font-family: var(--fh); }
+.card-sub { font-size: 11px; color: var(--t3); }
+.card-body { padding: 16px 18px; }
+.card-foot { padding: 12px 18px; border-top: 1px solid var(--rim); }
+
+/* ── Table ── */
+.tbl-wrap {
+  background: var(--surface); border: 1px solid var(--rim);
+  border-radius: 14px; overflow: hidden; margin-bottom: 20px;
+}
+
+.tbl-head-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--rim); }
+
+table { width: 100%; border-collapse: collapse; }
+
+thead tr { border-bottom: 1px solid var(--rim); }
+thead th {
+  padding: 10px 14px; text-align: left;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--t4); font-family: var(--fm); font-weight: 500;
+  background: var(--ink3); white-space: nowrap;
+}
+
+tbody tr { border-top: 1px solid rgba(36,48,68,0.5); transition: background 0.1s; }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+td { padding: 10px 14px; font-size: 12.5px; color: var(--t2); vertical-align: middle; }
+td.strong { font-weight: 600; color: var(--t1); }
+
+/* ── Badges ── */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 10.5px; font-weight: 600; font-family: var(--fm);
+  white-space: nowrap; letter-spacing: 0.02em;
+}
+
+.tag-green { background: rgba(34,197,94,0.12); color: var(--success); border: 1px solid rgba(34,197,94,0.2); }
+.tag-amber { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.tag-red { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+.tag-cyan { background: rgba(6,214,160,0.1); color: var(--cyan); border: 1px solid rgba(6,214,160,0.2); }
+.tag-sky { background: rgba(56,189,248,0.1); color: var(--sky); border: 1px solid rgba(56,189,248,0.2); }
+.tag-violet { background: rgba(129,140,248,0.1); color: var(--violet); border: 1px solid rgba(129,140,248,0.2); }
+.tag-rose { background: rgba(251,113,133,0.1); color: var(--rose); border: 1px solid rgba(251,113,133,0.2); }
+.tag-amber2 { background: rgba(251,191,36,0.1); color: var(--amber2); border: 1px solid rgba(251,191,36,0.2); }
+
+/* ── Progress bars ── */
+.prog { display: flex; align-items: center; gap: 8px; }
+.prog-track { flex: 1; height: 5px; background: var(--rim); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.prog-lbl { font-size: 11px; font-family: var(--fm); color: var(--t2); min-width: 36px; text-align: right; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 9px;
+  font-size: 12.5px; font-weight: 600; font-family: var(--fb);
+  cursor: pointer; border: none; transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-primary { background: var(--cyan); color: var(--ink); }
+.btn-primary:hover { background: #04BF8F; }
+.btn-secondary { background: var(--surface2); border: 1px solid var(--rim2); color: var(--t1); }
+.btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn-ghost { background: transparent; border: 1px solid var(--rim); color: var(--t3); }
+.btn-ghost:hover { border-color: var(--rim2); color: var(--t1); }
+.btn-danger { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: var(--danger); }
+.btn-amber { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: var(--amber); }
+.btn-violet { background: rgba(129,140,248,0.15); border: 1px solid rgba(129,140,248,0.3); color: var(--violet); }
+.btn-sm { padding: 5px 10px; font-size: 11.5px; }
+.btn-xs { padding: 3px 8px; font-size: 10.5px; }
+
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── AI Alert ── */
+.ai-alert {
+  display: flex; gap: 12px; padding: 12px 14px;
+  border-radius: 10px; margin-bottom: 10px;
+  border-left: 3px solid;
+}
+
+.ai-alert.critical { background: rgba(239,68,68,0.07); border-color: var(--danger); }
+.ai-alert.warn { background: rgba(245,158,11,0.07); border-color: var(--amber); }
+.ai-alert.info { background: rgba(6,214,160,0.07); border-color: var(--cyan); }
+.ai-alert.violet { background: rgba(129,140,248,0.07); border-color: var(--violet); }
+
+.ai-alert-ico { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.ai-alert-title { font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
+.ai-alert-txt { font-size: 11.5px; color: var(--t3); line-height: 1.5; }
+
+/* ── Form ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fg-full { grid-column: 1/-1; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+
+label { font-size: 11px; color: var(--t3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+
+input, select, textarea {
+  background: var(--ink3); border: 1px solid var(--rim2);
+  color: var(--t1); padding: 8px 12px; border-radius: 8px;
+  font-size: 13px; font-family: var(--fb); outline: none;
+  transition: border-color 0.15s; width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(6,214,160,0.07);
+}
+
+select option { background: var(--ink3); }
+textarea { resize: vertical; min-height: 80px; }
+
+/* ── Modal ── */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  z-index: 500; display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.modal-bg.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--rim2); border-radius: 18px;
+  width: 580px; max-width: 92vw; max-height: 88vh; overflow-y: auto;
+  animation: mIn 0.22s ease;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+}
+
+@keyframes mIn {
+  from { opacity:0; transform: translateY(24px) scale(0.96); }
+  to { opacity:1; transform: translateY(0) scale(1); }
+}
+
+.modal-hd {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--rim);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.modal-title { font-family: var(--fh); font-size: 17px; font-weight: 800; }
+.modal-close { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 22px; line-height: 1; transition: color 0.15s; }
+.modal-close:hover { color: var(--t1); }
+.modal-bd { padding: 20px 24px; }
+.modal-ft { padding: 14px 24px; border-top: 1px solid var(--rim); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ── Toast ── */
+.toast-dock {
+  position: fixed; bottom: 20px; right: 20px;
+  z-index: 999; display: flex; flex-direction: column; gap: 8px;
+}
+
+.toast {
+  background: var(--surface2); border: 1px solid var(--rim2);
+  border-radius: 10px; padding: 11px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12.5px; min-width: 280px;
+  animation: tIn 0.25s ease;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+@keyframes tIn { from { opacity:0; transform: translateX(30px); } to { opacity:1; transform: translateX(0); } }
+
+.toast.success { border-left: 3px solid var(--success); }
+.toast.warn { border-left: 3px solid var(--amber); }
+.toast.info { border-left: 3px solid var(--cyan); }
+.toast.error { border-left: 3px solid var(--danger); }
+
+/* ── Section divider ── */
+.sec-div {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
+}
+.sec-div-line { flex: 1; height: 1px; background: var(--rim); }
+.sec-div-txt { font-size: 11px; color: var(--t4); font-family: var(--fm); text-transform: uppercase; letter-spacing: 0.12em; }
+
+/* ── List items ── */
+.list-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid rgba(36,48,68,0.5);
+}
+.list-row:last-child { border-bottom: none; }
+
+.list-ico {
+  width: 36px; height: 36px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+
+.list-body { flex: 1; }
+.list-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.list-meta { font-size: 11px; color: var(--t3); }
+.list-right { text-align: right; flex-shrink: 0; }
+.list-val { font-size: 13px; font-weight: 700; }
+.list-time { font-size: 10px; color: var(--t3); font-family: var(--fm); }
+
+/* ── Separator ── */
+.sep { height: 1px; background: var(--rim); margin: 14px 0; }
+
+/* ── AI Prediction box ── */
+.ai-box {
+  background: linear-gradient(135deg, rgba(6,214,160,0.06), rgba(0,180,216,0.04));
+  border: 1px solid rgba(6,214,160,0.18);
+  border-radius: 12px; padding: 14px 16px;
+}
+
+.ai-box-title {
+  font-size: 10px; color: var(--cyan); font-family: var(--fm);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+
+.ai-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; margin-bottom: 7px;
+}
+.ai-row:last-child { margin-bottom: 0; }
+.ai-row-key { color: var(--t2); }
+.ai-row-val { font-weight: 700; font-family: var(--fm); }
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex; gap: 2px;
+  background: var(--ink3); border: 1px solid var(--rim);
+  border-radius: 10px; padding: 3px; margin-bottom: 18px;
+}
+
+.tab {
+  padding: 7px 16px; border-radius: 7px;
+  font-size: 12.5px; cursor: pointer; color: var(--t3);
+  transition: all 0.15s; font-weight: 500;
+}
+
+.tab.active {
+  background: var(--surface2); color: var(--t1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.tab:hover:not(.active) { color: var(--t2); }
+
+/* ── Empty state ── */
+.empty { text-align: center; padding: 40px 20px; color: var(--t3); }
+.empty-ico { font-size: 36px; margin-bottom: 10px; }
+.empty-txt { font-size: 13px; }
+
+/* ── Donut mini ── */
+.donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.donut-val { font-family: var(--fh); font-size: 24px; font-weight: 800; }
+.donut-lbl { font-size: 10.5px; color: var(--t3); text-align: center; }
+
+/* ── Engine switcher pills ── */
+.engine-pills {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px;
+}
+
+.ep {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--rim); color: var(--t3);
+  transition: all 0.15s; background: var(--surface);
+}
+
+.ep:hover { border-color: var(--rim2); color: var(--t1); }
+.ep.active { border-color: var(--cyan); color: var(--cyan); background: rgba(6,214,160,0.08); }
+
+/* ── Animations ── */
+@keyframes fadeSlide {
+  from { opacity:0; transform: translateY(10px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+.page-section { animation: fadeSlide 0.22s ease; }
+
+/* ── WhiteLabel theme vars ── */
+.wl-honda { --brand: #CC0000; --brand2: #E60026; }
+.wl-maruti { --brand: #0061A1; --brand2: #0078C8; }
+.wl-tata { --brand: #00338D; --brand2: #1A4BA0; }
+
+/* ── Map placeholder ── */
+.map-placeholder {
+  background: var(--ink3); border: 1px solid var(--rim);
+  border-radius: 10px; height: 200px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 8px; color: var(--t4);
+  font-size: 13px; font-family: var(--fm);
+}
+
+/* ── Bar chart ── */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 90px; margin: 10px 0; }
+.bc-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bc-bar { width: 100%; border-radius: 4px 4px 0 0; transition: all 0.3s; cursor: pointer; }
+.bc-bar:hover { opacity: 0.8; }
+.bc-x { font-size: 9px; color: var(--t4); font-family: var(--fm); }
+
+/* ── Horizontal bar ── */
+.hbar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.hbar-lbl { font-size: 11.5px; color: var(--t2); width: 130px; flex-shrink: 0; }
+.hbar-track { flex: 1; height: 6px; background: var(--rim); border-radius: 3px; overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: 3px; }
+.hbar-val { font-size: 11.5px; font-family: var(--fm); color: var(--t2); width: 48px; text-align: right; flex-shrink: 0; }
+
+/* ── Tech card ── */
+.tech-card {
+  background: var(--ink3); border: 1px solid var(--rim);
+  border-radius: 12px; padding: 14px;
+  transition: border-color 0.15s; cursor: pointer;
+}
+.tech-card:hover { border-color: var(--rim2); }
+.tech-card.available { border-color: rgba(34,197,94,0.3); }
+.tech-card.busy { border-color: rgba(245,158,11,0.3); }
+.tech-card.overload { border-color: rgba(239,68,68,0.3); }
+
+/* ── Responsive helper ── */
+@media (max-width: 900px) {
+  .kpi-4 { grid-template-columns: repeat(2,1fr); }
+  .kpi-6 { grid-template-columns: repeat(3,1fr); }
+  .grid-2, .grid-3, .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
+  .sidebar { width: 180px; min-width: 180px; }
+}
+
+/* ── Customer portal specific ── */
+.cust-hero {
+  background: linear-gradient(135deg, var(--surface2), var(--surface3));
+  border: 1px solid var(--rim);
+  border-radius: 16px; padding: 24px; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.cust-hero::before {
+  content: '🚗'; position: absolute; right: 24px; top: 50%;
+  transform: translateY(-50%); font-size: 64px; opacity: 0.08;
+}
+
+/* ── Technician mobile card ── */
+.job-mobile-card {
+  background: var(--surface2); border: 1px solid var(--rim);
+  border-radius: 14px; padding: 16px; margin-bottom: 12px;
+  transition: border-color 0.15s;
+}
+.job-mobile-card.urgent { border-color: rgba(239,68,68,0.4); }
+.job-mobile-card.active { border-color: rgba(6,214,160,0.4); }
+
+/* ── Checklist ── */
+.check-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid rgba(36,48,68,0.5);
+  cursor: pointer;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 2px solid var(--rim2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; font-size: 11px;
+}
+.check-item.done .check-box { background: var(--cyan); border-color: var(--cyan); color: var(--ink); }
+.check-lbl { font-size: 13px; }
+.check-item.done .check-lbl { color: var(--t3); text-decoration: line-through; }
+
+/* ── Vertical timeline ── */
+.vtl { display: flex; flex-direction: column; gap: 0; }
+.vtl-item { display: flex; gap: 14px; position: relative; padding-bottom: 16px; }
+.vtl-item:last-child { padding-bottom: 0; }
+.vtl-left { display: flex; flex-direction: column; align-items: center; }
+.vtl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; z-index: 1; }
+.vtl-line { width: 2px; flex: 1; background: var(--rim); margin: 4px 0; }
+.vtl-item:last-child .vtl-line { display: none; }
+.vtl-title { font-size: 12.5px; font-weight: 600; }
+.vtl-meta { font-size: 11px; color: var(--t3); }
+
+/* ── Stat ring ── */
+.ring-stat { display: flex; flex-direction: column; align-items: center; }
+.ring-num { font-family: var(--fh); font-size: 28px; font-weight: 800; }
+.ring-sub { font-size: 10.5px; color: var(--t3); text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ LOGIN / PORTAL SELECT ═══════════════════ -->
+<div id="login-screen">
+  <div class="login-logo">AUTOERA</div>
+  <div class="login-tagline">Automotive AI SaaS Platform · v2.0 MVP</div>
+
+  <div class="portal-grid">
+    <div class="portal-card p-super" onclick="enterPortal('super')">
+      <div class="portal-icon">🏢</div>
+      <div class="portal-name">Super Admin</div>
+      <div class="portal-desc">AUTOERA HQ — manage all dealers, tenants, revenue, system health and white-label configs</div>
+      <div class="portal-badge pb-super">AUTOERA HQ</div>
+    </div>
+    <div class="portal-card p-dealer" onclick="enterPortal('dealer')">
+      <div class="portal-icon">🚗</div>
+      <div class="portal-name">Dealer Admin</div>
+      <div class="portal-desc">Full dealership operations — all 6 AI engines across sales, service, finance, insurance, fleet & HR</div>
+      <div class="portal-badge pb-dealer">Kumaran Honda · Chennai</div>
+    </div>
+    <div class="portal-card p-customer" onclick="enterPortal('customer')">
+      <div class="portal-icon">👤</div>
+      <div class="portal-name">Customer Portal</div>
+      <div class="portal-desc">Book service, track your vehicle in real-time, view history, get AI maintenance alerts</div>
+      <div class="portal-badge pb-customer">Customer App</div>
+    </div>
+    <div class="portal-card p-tech" onclick="enterPortal('tech')">
+      <div class="portal-icon">🔧</div>
+      <div class="portal-name">Technician View</div>
+      <div class="portal-desc">Mobile-optimised job queue, digital job cards, skill matching and performance tracking</div>
+      <div class="portal-badge pb-tech">Workshop Floor</div>
+    </div>
+  </div>
+  <div class="login-version">AUTOERA White-Label SaaS · All 6 AI Engines · MVP Build</div>
+</div>
+
+<!-- ═══════════════════ APP SHELL ═══════════════════ -->
+<div id="app">
+  <!-- Top Portal Bar -->
+  <div class="portal-bar">
+    <span class="pbar-logo">AUTOERA</span>
+    <span class="pbar-portal-name" id="pbar-portal-badge"></span>
+    <div class="pbar-sep"></div>
+    <div class="pbar-tabs" id="pbar-tabs"></div>
+    <div class="pbar-right">
+      <div class="ai-pill"><div class="ai-dot"></div><span id="ai-pill-txt">AI Active</span></div>
+      <div class="notif-btn">🔔<div class="badge">5</div></div>
+      <button class="switch-portal-btn" onclick="switchPortal()">⇄ Switch Portal</button>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar"></div>
+
+    <!-- Main Panel -->
+    <div class="main-panel" id="main-panel">
+      <div class="page-wrap" id="page-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Dock -->
+<div class="toast-dock" id="toast-dock"></div>
+
+<!-- Global Modal -->
+<div class="modal-bg" id="global-modal">
+  <div class="modal" id="modal-inner">
+    <div class="modal-hd">
+      <div class="modal-title" id="modal-title">Modal</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-bd" id="modal-body"></div>
+    <div class="modal-ft" id="modal-foot"></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   AUTOERA COMPLETE SaaS — JAVASCRIPT ENGINE
+═══════════════════════════════════════════ */
+
+let currentPortal = null;
+let currentPage = null;
+
+// ── Portal config ──
+const PORTALS = {
+  super: {
+    name: 'Super Admin',
+    badge: '🏢 AUTOERA HQ',
+    badgeClass: 'pb-super',
+    aiTxt: '65 AI Models · 142 Dealers Active',
+    color: '#818CF8',
+    tabs: ['Overview','Dealers','Revenue','White-Label','System'],
+    user: { name: 'Arjun Mehta', role: 'AUTOERA CEO', ico: '👤' },
+    pages: ['overview','dealers','revenue','whitelabel','system']
+  },
+  dealer: {
+    name: 'Dealer Admin',
+    badge: '🚗 Kumaran Honda',
+    badgeClass: 'pb-dealer',
+    aiTxt: '13 Engines Active · 94% Accuracy',
+    color: '#06D6A0',
+    tabs: ['Dashboard','Service','Sales','Finance','Insurance','Fleet·EV','Workforce'],
+    user: { name: 'Rajesh Kumar', role: 'Dealer Principal', ico: '🏪' },
+    pages: ['dealer-dash','service','sales','finance','insurance','fleet','workforce']
+  },
+  customer: {
+    name: 'Customer Portal',
+    badge: '👤 Priya Rajan',
+    badgeClass: 'pb-customer',
+    aiTxt: 'AI Vehicle Health Active',
+    color: '#F59E0B',
+    tabs: ['My Vehicle','Book Service','History','Support'],
+    user: { name: 'Priya Rajan', role: 'Honda City Owner', ico: '👩' },
+    pages: ['my-vehicle','book-service','history','support']
+  },
+  tech: {
+    name: 'Technician',
+    badge: '🔧 Rajan Kumar',
+    badgeClass: 'pb-tech',
+    aiTxt: 'AI Job Matching Active',
+    color: '#38BDF8',
+    tabs: ['My Jobs','Job Card','Performance','Training'],
+    user: { name: 'Rajan Kumar', role: 'Engine Specialist L5', ico: '👨‍🔧' },
+    pages: ['my-jobs','job-card','performance','training']
+  }
+};
+
+// ── Entry ──
+function enterPortal(p) {
+  currentPortal = p;
+  const cfg = PORTALS[p];
+  document.getElementById('login-screen').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  app.style.flexDirection = 'column';
+
+  // Portal badge
+  const badge = document.getElementById('pbar-portal-badge');
+  badge.textContent = cfg.badge;
+  badge.className = 'pbar-portal-name ' + cfg.badgeClass;
+
+  // AI pill
+  document.getElementById('ai-pill-txt').textContent = cfg.aiTxt;
+
+  // Tabs
+  const tabsEl = document.getElementById('pbar-tabs');
+  tabsEl.innerHTML = cfg.tabs.map((t,i) =>
+    `<div class="pbar-tab ${i===0?'active':''}" onclick="selectTab(${i},'${p}')"><div class="tab-dot"></div>${t}</div>`
+  ).join('');
+
+  // Sidebar
+  buildSidebar(p);
+
+  // Load first page
+  selectTab(0, p);
+
+  toast('Welcome to ' + cfg.name + ' Portal', 'info');
+}
+
+function selectTab(idx, portal) {
+  const cfg = PORTALS[portal || currentPortal];
+  document.querySelectorAll('.pbar-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  const pageKey = cfg.pages[idx];
+  loadPage(pageKey);
+  updateSidebarActive(pageKey);
+}
+
+function switchPortal() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+// ── Sidebar builder ──
+function buildSidebar(portal) {
+  const sb = document.getElementById('sidebar');
+  const cfg = PORTALS[portal];
+  const menus = getSidebarMenus(portal);
+
+  sb.innerHTML = menus.map(section => `
+    <div class="sb-section"><div class="sb-label">${section.label}</div></div>
+    ${section.items.map(item => `
+      <div class="sb-item" onclick="loadPage('${item.page}')" id="sb-${item.page}">
+        <span class="sb-icon">${item.ico}</span>
+        <span>${item.name}</span>
+        ${item.badge ? `<span class="sb-badge sb-badge-${item.badgeColor}">${item.badge}</span>` : ''}
+      </div>
+    `).join('')}
+  `).join('') + `
+    <div class="sb-bottom">
+      <div class="user-card">
+        <div class="user-av">${cfg.user.ico}</div>
+        <div>
+          <div class="user-name">${cfg.user.name}</div>
+          <div class="user-role">${cfg.user.role}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getSidebarMenus(portal) {
+  const menus = {
+    super: [
+      { label: 'Platform', items: [
+        { ico:'📊', name:'Overview', page:'overview' },
+        { ico:'🏢', name:'All Dealers', page:'dealers', badge:'142', badgeColor:'cyan' },
+        { ico:'💰', name:'Revenue', page:'revenue' },
+        { ico:'🌐', name:'White-Label Config', page:'whitelabel' },
+        { ico:'⚙️', name:'System Health', page:'system' },
+      ]},
+      { label: 'Management', items: [
+        { ico:'🤖', name:'AI Model Monitor', page:'ai-monitor', badge:'3', badgeColor:'amber' },
+        { ico:'👥', name:'User Management', page:'users' },
+        { ico:'📋', name:'Compliance', page:'compliance' },
+        { ico:'📈', name:'Analytics', page:'sa-analytics' },
+        { ico:'🔔', name:'Alerts', page:'sa-alerts', badge:'5', badgeColor:'red' },
+      ]},
+    ],
+    dealer: [
+      { label: 'Overview', items: [
+        { ico:'📊', name:'Dashboard', page:'dealer-dash' },
+        { ico:'🏆', name:'KPI Tracker', page:'kpi' },
+      ]},
+      { label: '6 AI Engines', items: [
+        { ico:'🔧', name:'Service AI', page:'service', badge:'7', badgeColor:'amber' },
+        { ico:'📈', name:'Sales AI', page:'sales', badge:'24', badgeColor:'cyan' },
+        { ico:'💰', name:'Finance AI', page:'finance' },
+        { ico:'🛡️', name:'Insurance AI', page:'insurance', badge:'3', badgeColor:'red' },
+        { ico:'🚗', name:'Fleet & EV', page:'fleet' },
+        { ico:'👥', name:'Workforce', page:'workforce' },
+      ]},
+      { label: 'Operations', items: [
+        { ico:'📅', name:'Bookings', page:'bookings', badge:'7', badgeColor:'amber' },
+        { ico:'🗂️', name:'Job Cards', page:'jobcards', badge:'12', badgeColor:'cyan' },
+        { ico:'📦', name:'Inventory', page:'inventory' },
+        { ico:'📈', name:'Reports', page:'reports' },
+        { ico:'⚙️', name:'Settings', page:'dealer-settings' },
+      ]},
+    ],
+    customer: [
+      { label: 'My Account', items: [
+        { ico:'🚗', name:'My Vehicle', page:'my-vehicle' },
+        { ico:'📅', name:'Book Service', page:'book-service' },
+        { ico:'📋', name:'Service History', page:'history' },
+        { ico:'🤖', name:'AI Health Alerts', page:'cust-alerts', badge:'2', badgeColor:'amber' },
+      ]},
+      { label: 'More', items: [
+        { ico:'💰', name:'Finance & EMI', page:'cust-finance' },
+        { ico:'🛡️', name:'Insurance', page:'cust-insurance' },
+        { ico:'💬', name:'Support', page:'support' },
+        { ico:'⭐', name:'Rewards', page:'rewards' },
+      ]},
+    ],
+    tech: [
+      { label: 'Workshop', items: [
+        { ico:'📋', name:'My Jobs', page:'my-jobs', badge:'5', badgeColor:'amber' },
+        { ico:'🗂️', name:'Active Job Card', page:'job-card' },
+        { ico:'🏗️', name:'Bay Status', page:'bay-status' },
+      ]},
+      { label: 'Growth', items: [
+        { ico:'📊', name:'My Performance', page:'performance' },
+        { ico:'🎓', name:'Training', page:'training' },
+        { ico:'💰', name:'Earnings', page:'earnings' },
+      ]},
+    ],
+  };
+  return menus[portal] || [];
+}
+
+function updateSidebarActive(pageKey) {
+  document.querySelectorAll('.sb-item').forEach(el => {
+    el.classList.toggle('active', el.id === `sb-${pageKey}`);
+  });
+}
+
+// ── Page loader ──
+function loadPage(key) {
+  currentPage = key;
+  updateSidebarActive(key);
+  const content = document.getElementById('page-content');
+  content.innerHTML = `<div class="page-section">${getPage(key)}</div>`;
+
+  // Sync tab
+  const cfg = PORTALS[currentPortal];
+  if (cfg) {
+    const idx = cfg.pages.indexOf(key);
+    if (idx >= 0) {
+      document.querySelectorAll('.pbar-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+    }
+  }
+}
+
+// ═══════════════════════════════════════════
+// PAGE TEMPLATES
+// ═══════════════════════════════════════════
+function getPage(key) {
+  const pages = {
+    // ─────────── SUPER ADMIN ───────────
+    'overview': pageSuperOverview(),
+    'dealers': pageDealers(),
+    'revenue': pageSuperRevenue(),
+    'whitelabel': pageWhiteLabel(),
+    'system': pageSystem(),
+    'ai-monitor': pageAIMonitor(),
+    'users': pageUsers(),
+    'compliance': pageCompliance(),
+    'sa-analytics': pageSAAnalytics(),
+    'sa-alerts': pageSAAlerts(),
+
+    // ─────────── DEALER ───────────
+    'dealer-dash': pageDealerDash(),
+    'kpi': pageKPI(),
+    'service': pageService(),
+    'sales': pageSales(),
+    'finance': pageFinance(),
+    'insurance': pageInsurance(),
+    'fleet': pageFleet(),
+    'workforce': pageWorkforce(),
+    'bookings': pageBookings(),
+    'jobcards': pageJobCards(),
+    'inventory': pageInventory(),
+    'reports': pageReports(),
+    'dealer-settings': pageDealerSettings(),
+
+    // ─────────── CUSTOMER ───────────
+    'my-vehicle': pageMyVehicle(),
+    'book-service': pageBookService(),
+    'history': pageHistory(),
+    'cust-alerts': pageCustAlerts(),
+    'cust-finance': pageCustFinance(),
+    'cust-insurance': pageCustInsurance(),
+    'support': pageSupport(),
+    'rewards': pageRewards(),
+
+    // ─────────── TECHNICIAN ───────────
+    'my-jobs': pageMyJobs(),
+    'job-card': pageJobCard(),
+    'bay-status': pageBayStatus(),
+    'performance': pageTechPerformance(),
+    'training': pageTraining(),
+    'earnings': pageEarnings(),
+  };
+  return pages[key] || `<div class="empty"><div class="empty-ico">🚧</div><div class="empty-txt">Page "${key}" coming soon</div></div>`;
+}
+
+// ─────────────────────────────────
+// SUPER ADMIN PAGES
+// ─────────────────────────────────
+function pageSuperOverview() {
+  return `
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div>
+        <div class="page-title">Platform Overview</div>
+        <div class="page-sub">AUTOERA HQ · All dealers · Live as of today</div>
+      </div>
+      <div class="hdr-actions">
+        <button class="btn btn-ghost btn-sm">📊 Export Report</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal('Add New Dealer','${addDealerForm()}')">+ Add Dealer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row kpi-4">
+    ${kpi('Total Dealers','142','↑ 18 this month','up','#818CF8','🏢')}
+    ${kpi('Monthly ARR','₹4.8 Cr','↑ 34% vs last month','up','#06D6A0','💰')}
+    ${kpi('Active AI Models','65','Across 6 engines','flat','#38BDF8','🤖')}
+    ${kpi('Platform Uptime','99.97%','Last 30 days','up','#22C55E','⚡')}
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">📈 ARR Growth — 6 Months</div><span class="tag tag-green">+163%</span></div>
+      <div class="card-body">
+        <div class="bar-chart">
+          ${[['Oct','₹1.2Cr',40],['Nov','₹1.8Cr',56],['Dec','₹2.4Cr',72],['Jan','₹3.1Cr',83],['Feb','₹3.9Cr',90],['Mar','₹4.8Cr',100]].map(([m,v,h])=>`
+          <div class="bc-col">
+            <div class="bc-bar" style="height:${h}%;background:linear-gradient(180deg,#06D6A0,#00B4D8);border-radius:4px 4px 0 0"
+              title="${m}: ${v}"></div>
+            <div class="bc-x">${m}</div>
+          </div>`).join('')}
+        </div>
+        <div class="sep"></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px">
+          <span style="color:var(--t3)">Current ARR</span><span style="font-weight:700;color:var(--cyan)">₹4.8 Crores/month</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:6px">
+          <span style="color:var(--t3)">Year 1 Target</span><span style="font-weight:700;color:var(--amber)">₹40 Crores</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">🏢 Dealers by Tier</div></div>
+      <div class="card-body">
+        ${[['Enterprise ₹1.5L/mo','12 dealers',80,'#818CF8'],['Professional ₹40K/mo','68 dealers',68,'#06D6A0'],['Starter ₹20K/mo','62 dealers',62,'#38BDF8']].map(([lbl,sub,pct,c])=>`
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+            <span style="font-weight:600">${lbl}</span><span style="color:var(--t3)">${sub}</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div>
+        </div>`).join('')}
+        <div class="sep"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center">
+          <div><div style="font-family:var(--fh);font-size:22px;font-weight:800;color:var(--cyan)">43:1</div><div style="font-size:10px;color:var(--t3)">LTV:CAC Ratio</div></div>
+          <div><div style="font-family:var(--fh);font-size:22px;font-weight:800;color:var(--success)">95%</div><div style="font-size:10px;color:var(--t3)">Annual Retention</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🌏 Dealer Cities</div></div>
+      <div class="card-body">
+        ${[['Chennai','38','#06D6A0'],['Mumbai','28','#38BDF8'],['Bangalore','24','#818CF8'],['Delhi','22','#F59E0B'],['Hyderabad','18','#34D399'],['Others','12','#64748B']].map(([city,n,c])=>`
+        <div class="hbar">
+          <div class="hbar-lbl">${city}</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:${parseInt(n)/38*100}%;background:${c}"></div></div>
+          <div class="hbar-val">${n} dealers</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">🤖 AI Engine Usage</div></div>
+      <div class="card-body">
+        ${[['Service Engine','142/142','100%','#06D6A0'],['Sales Engine','138/142','97%','#38BDF8'],['Finance Engine','126/142','89%','#818CF8'],['Insurance Engine','108/142','76%','#F59E0B'],['Fleet & EV Engine','64/142','45%','#34D399'],['Workforce Engine','118/142','83%','#FB7185']].map(([e,n,p,c])=>`
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px">
+            <span>${e}</span><span style="color:${c};font-weight:700;font-family:var(--fm)">${p}</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" style="width:${p};background:${c}"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">🚨 Platform Alerts</div><span class="tag tag-red">5 Active</span></div>
+      <div class="card-body">
+        <div class="ai-alert critical"><div class="ai-alert-ico">🚨</div><div><div class="ai-alert-title">Dealer TN-042 API limit exceeded</div><div class="ai-alert-txt">Rate limit hit 3 times today. Upgrade recommended.</div></div></div>
+        <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">ML model retrain due</div><div class="ai-alert-txt">PredictiveMaintenance model last trained 8 days ago.</div></div></div>
+        <div class="ai-alert info"><div class="ai-alert-ico">💡</div><div><div class="ai-alert-title">3 dealers inactive 7+ days</div><div class="ai-alert-txt">Auto-reminder sent. CS team follow-up needed.</div></div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageDealers() {
+  const dealers = [
+    ['TN-001','Kumaran Honda','Chennai','Professional','₹40,000','Active','142',true],
+    ['TN-002','Sundar Maruti','Chennai','Enterprise','₹1,50,000','Active','98',true],
+    ['MH-001','Citywide Honda','Mumbai','Professional','₹40,000','Active','87',true],
+    ['KA-001','Prestige Hyundai','Bangalore','Enterprise','₹80,000','Active','203',false],
+    ['DL-001','Capitol Toyota','Delhi','Starter','₹20,000','Active','44',false],
+    ['TN-003','EV Motors','Chennai','Professional','₹40,000','Trial','12',false],
+    ['KA-002','Namma Kia','Bangalore','Starter','₹20,000','Inactive','0',false],
+    ['MH-002','Powertrain VW','Pune','Enterprise','₹80,000','Active','156',true],
+  ];
+  return `
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title">All Dealers</div><div class="page-sub">142 active tenants across India</div></div>
+      <div class="hdr-actions">
+        <input style="width:200px;padding:7px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--rim);color:var(--t1);font-family:var(--fb);font-size:12px;outline:none" placeholder="Search dealers...">
+        <button class="btn btn-primary btn-sm" onclick="openModal('Add New Dealer','${addDealerForm()}')">+ Add Dealer</button>
+      </div>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Dealer ID</th><th>Name</th><th>City</th><th>Plan</th><th>MRR</th><th>AI Models</th><th>Status</th><th>WhiteLabel</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${dealers.map(([id,name,city,plan,mrr,status,models,wl])=>`
+        <tr>
+          <td><span style="font-family:var(--fm);font-size:11px">${id}</span></td>
+          <td class="strong">${name}</td>
+          <td>${city}</td>
+          <td><span class="tag ${plan==='Enterprise'?'tag-violet':plan==='Professional'?'tag-cyan':'tag-sky'}">${plan}</span></td>
+          <td style="font-family:var(--fm);color:var(--success)">${mrr}</td>
+          <td><div class="prog" style="max-width:100px"><div class="prog-track"><div class="prog-fill" style="width:${parseInt(models)/65*100}%;background:var(--cyan)"></div></div><span class="prog-lbl">${models}/65</span></div></td>
+          <td><span class="tag ${status==='Active'?'tag-green':status==='Trial'?'tag-amber':'tag-red'}">${status}</span></td>
+          <td>${wl?'<span class="tag tag-green">✓ Live</span>':'<span class="tag tag-amber">Pending</span>'}</td>
+          <td>
+            <div class="btn-group">
+              <button class="btn btn-ghost btn-xs" onclick="toast('Opening ${name} portal...','info')">View</button>
+              <button class="btn btn-secondary btn-xs" onclick="toast('White-label config for ${name}','info')">Config</button>
+            </div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function addDealerForm() {
+  return `<div class='form-grid'>
+    <div class='fg'><label>Dealer Name</label><input placeholder='e.g. Kumaran Honda'></div>
+    <div class='fg'><label>City</label><input placeholder='Chennai'></div>
+    <div class='fg'><label>Contact Person</label><input placeholder='Full name'></div>
+    <div class='fg'><label>Phone</label><input placeholder='+91 98410 00000'></div>
+    <div class='fg'><label>Plan</label><select><option>Starter ₹20K</option><option>Professional ₹40K</option><option>Enterprise ₹80K</option><option>Custom</option></select></div>
+    <div class='fg'><label>Brand</label><select><option>Honda</option><option>Maruti</option><option>Tata</option><option>Hyundai</option><option>Kia</option><option>Other</option></select></div>
+    <div class='fg fg-full'><label>White-label Domain</label><input placeholder='honda.autoera.in'></div>
+  </div>`;
+}
+
+function pageSuperRevenue() {
+  return `
+  <div class="page-hdr"><div class="page-title">Revenue Intelligence</div><div class="page-sub">Subscription + Transaction fees · All dealers</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Monthly Revenue','₹4.8 Cr','↑ 34% vs Feb','up','#06D6A0','💰')}
+    ${kpi('Annual Run Rate','₹57.6 Cr','On track for ₹100Cr','up','#818CF8','📈')}
+    ${kpi('Transaction Fees','₹36L','Loans + Insurance + Service','up','#F59E0B','⚡')}
+    ${kpi('Avg Revenue/Dealer','₹33,800','vs ₹28K last month','up','#38BDF8','📊')}
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">💰 Revenue by Stream</div></div>
+      <div class="card-body">
+        ${[['Subscription Fees','₹3.84 Cr',80,'#06D6A0'],['Transaction Fees (Service)','₹48L',10,'#38BDF8'],['Transaction Fees (Finance)','₹29L',6,'#818CF8'],['Transaction Fees (Insurance)','₹19L',4,'#F59E0B']].map(([lbl,val,pct,c])=>`
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px">
+            <span>${lbl}</span><span style="font-weight:700;font-family:var(--fm);color:${c}">${val}</span>
+          </div>
+          <div class="prog-track" style="height:7px"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">📊 Top 5 Revenue Dealers</div></div>
+      <div class="card-body">
+        ${[['Powertrain VW, Pune','₹1,50,000','Enterprise'],['Sundar Maruti, Chennai','₹1,50,000','Enterprise'],['Prestige Hyundai, Bangalore','₹80,000','Enterprise'],['Kumaran Honda, Chennai','₹40,000','Professional'],['Citywide Honda, Mumbai','₹40,000','Professional']].map(([n,v,p],i)=>`
+        <div class="list-row">
+          <div style="font-family:var(--fm);font-size:13px;font-weight:700;color:var(--t4);width:20px">${i+1}</div>
+          <div class="list-body"><div class="list-title">${n}</div><div class="list-meta">${p}</div></div>
+          <div class="list-right"><div class="list-val" style="color:var(--success)">${v}</div><div class="list-time">/month</div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageWhiteLabel() {
+  return `
+  <div class="page-hdr"><div class="page-title">White-Label Configuration</div><div class="page-sub">Customise branding per dealer tenant</div></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🎨 Brand Configuration — Kumaran Honda</div><span class="tag tag-green">Live</span></div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div class="fg"><label>Brand Name</label><input value="Kumaran Honda"></div>
+          <div class="fg"><label>Subdomain</label><input value="kumaran-honda.autoera.in"></div>
+          <div class="fg"><label>Primary Color</label><input type="color" value="#CC0000" style="height:36px;padding:2px"></div>
+          <div class="fg"><label>Secondary Color</label><input type="color" value="#1A1A1A" style="height:36px;padding:2px"></div>
+          <div class="fg fg-full"><label>Logo URL</label><input placeholder="https://cdn.kumaran-honda.com/logo.png"></div>
+          <div class="fg"><label>Support Phone</label><input value="+91 44 2345 6789"></div>
+          <div class="fg"><label>WhatsApp Number</label><input value="+91 98410 00001"></div>
+        </div>
+        <div class="sep"></div>
+        <div style="font-size:12px;font-weight:700;margin-bottom:10px">Feature Toggles</div>
+        ${[['Finance Module','on'],['Insurance Module','on'],['Fleet & EV Module','off'],['Customer Portal','on'],['Technician App','on']].map(([f,s])=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--rim)">
+          <span style="font-size:12.5px">${f}</span>
+          <div style="width:36px;height:20px;border-radius:10px;background:${s==='on'?'var(--cyan)':'var(--rim)'};cursor:pointer;transition:background 0.2s;position:relative" onclick="this.style.background=this.style.background.includes('06D6A0')?'var(--rim)':'var(--cyan)'">
+            <div style="position:absolute;top:2px;${s==='on'?'right:2px':'left:2px'};width:16px;height:16px;border-radius:50%;background:white;transition:all 0.2s"></div>
+          </div>
+        </div>`).join('')}
+        <div style="margin-top:14px">
+          <button class="btn btn-primary" onclick="toast('White-label config saved & deployed!','success')">💾 Save & Deploy</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">👀 Live Preview</div></div>
+      <div class="card-body">
+        <div style="background:#CC0000;border-radius:10px 10px 0 0;padding:12px 16px;display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;background:white;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px">🚗</div>
+          <span style="font-family:var(--fh);font-weight:800;color:white;font-size:16px">KUMARAN HONDA</span>
+        </div>
+        <div style="background:#1A1A1A;padding:16px;border-radius:0 0 10px 10px;border:1px solid var(--rim);border-top:none">
+          <div style="color:#CC0000;font-size:11px;margin-bottom:8px;font-family:var(--fm)">HONDA SERVICE PORTAL · POWERED BY AUTOERA</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            ${[['📅','Book Service'],['🔧','Track Job'],['🛡️','Insurance'],['💰','Finance']].map(([i,l])=>`
+            <div style="background:#252525;border:1px solid #333;border-radius:8px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:20px;margin-bottom:4px">${i}</div>
+              <div style="font-size:11px;color:#aaa">${l}</div>
+            </div>`).join('')}
+          </div>
+          <div style="margin-top:10px;padding:8px;background:#CC000015;border:1px solid #CC000030;border-radius:8px;font-size:11px;color:#CC0000">✅ White-label branding active — AUTOERA hidden from customers</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageSystem() {
+  return `
+  <div class="page-hdr"><div class="page-title">System Health</div><div class="page-sub">Infrastructure · APIs · AI Model Status</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('API Uptime','99.97%','Last 30 days','up','#22C55E','⚡')}
+    ${kpi('Avg Response','187ms','P99: 420ms','up','#06D6A0','⏱️')}
+    ${kpi('Active Tenants','142','0 down','up','#38BDF8','🏢')}
+    ${kpi('AI Predictions/day','48,200','↑ 12% vs yesterday','up','#818CF8','🤖')}
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🟢 Service Status</div><span class="tag tag-green">All Systems Operational</span></div>
+      <div class="card-body">
+        ${[['Core API','Operational','99.99%'],['AI Inference Engine','Operational','99.95%'],['WhatsApp Gateway','Operational','99.91%'],['Razorpay Billing','Operational','100%'],['SMS Service','Degraded','97.2%'],['Email Service','Operational','99.8%'],['AWS S3 Storage','Operational','100%'],['Redis Cache','Operational','99.99%']].map(([s,st,up])=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(36,48,68,0.5)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:8px;height:8px;border-radius:50%;background:${st==='Operational'?'var(--success)':'var(--amber)'}"></div>
+            <span style="font-size:12.5px">${s}</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span class="tag ${st==='Operational'?'tag-green':'tag-amber'}" style="font-size:10px">${st}</span>
+            <span style="font-size:11px;font-family:var(--fm);color:var(--t3)">${up}</span>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">🤖 AI Model Health</div></div>
+      <div class="card-body">
+        ${[['LeadScoringEngine','Sales','94%','2h ago'],['PredictiveMaintenance','Service','92%','4h ago'],['CreditScoringEngine','Finance','96%','1h ago'],['FraudDetectionEngine','Insurance','95%','3h ago'],['EVBatteryHealth','Fleet','90%','6h ago'],['HRAutomation','Workforce','88%','2h ago']].map(([m,e,acc,t])=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(36,48,68,0.5)">
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">${m}</div><div style="font-size:10px;color:var(--t3)">${e} Engine · Last: ${t}</div></div>
+          <div class="prog" style="width:120px"><div class="prog-track"><div class="prog-fill" style="width:${acc};background:var(--success)"></div></div><span class="prog-lbl" style="color:var(--success)">${acc}</span></div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageAIMonitor() {
+  return `
+  <div class="page-hdr"><div class="page-title">AI Model Monitor</div><div class="page-sub">All 65 models · Live accuracy · Drift detection</div></div>
+  <div class="kpi-row kpi-3">
+    ${kpi('Avg Accuracy','94.2%','Across all models','flat','#06D6A0','🤖')}
+    ${kpi('Models in Warning','3','Drift detected','dn','#F59E0B','⚠️')}
+    ${kpi('Total Predictions Today','48,200','↑ 12%','up','#38BDF8','📊')}
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-head-row"><div class="card-title">All 65 AI Models — Live Status</div></div>
+    <table>
+      <thead><tr><th>#</th><th>Model</th><th>Engine</th><th>Accuracy</th><th>Predictions/day</th><th>Last Trained</th><th>Status</th></tr></thead>
+      <tbody>
+        ${[
+          [1,'LeadScoringEngine','Sales','95%',4200,'2d ago','Healthy'],
+          [2,'CustomerBehaviorAnalysis','Sales','87%',1800,'5d ago','Healthy'],
+          [3,'SalesForecastingEngine','Sales','89%',340,'1d ago','Healthy'],
+          [4,'DynamicPricingEngine','Sales','91%',2100,'3d ago','Healthy'],
+          [5,'ChatbotAssistant','Sales','93%',8400,'1d ago','Healthy'],
+          [6,'PredictiveMaintenanceEngine','Service','94%',3600,'2d ago','Healthy'],
+          [7,'ServiceSchedulingEngine','Service','96%',2800,'1d ago','Healthy'],
+          [8,'PartsInventoryManagement','Service','91%',1200,'4d ago','Warning'],
+          [9,'TechnicianAllocationEngine','Service','88%',900,'3d ago','Healthy'],
+          [10,'DiagnosticEngine','Service','89%',2200,'2d ago','Healthy'],
+          [11,'CreditScoringEngine','Finance','96%',1600,'1d ago','Healthy'],
+          [12,'LoanApprovalEngine','Finance','94%',1400,'2d ago','Healthy'],
+          [13,'FraudDetectionFinance','Finance','92%',3800,'1d ago','Healthy'],
+          [14,'ClaimProcessingEngine','Insurance','91%',1100,'3d ago','Warning'],
+          [15,'FraudDetectionEngine','Insurance','95%',2600,'1d ago','Healthy'],
+          [16,'DamageAssessmentAI','Insurance','88%',480,'6d ago','Warning'],
+          [17,'EVBatteryHealthEngine','Fleet','90%',760,'2d ago','Healthy'],
+          [18,'FleetManagementEngine','Fleet','87%',1400,'3d ago','Healthy'],
+          [19,'HRAutomation','Workforce','88%',620,'2d ago','Healthy'],
+          [20,'PerformanceAnalytics','Workforce','91%',890,'1d ago','Healthy'],
+        ].map(([n,m,e,acc,pred,t,st])=>`
+        <tr>
+          <td style="font-family:var(--fm);font-size:10px;color:var(--t4)">${n}</td>
+          <td class="strong">${m}</td>
+          <td><span class="tag tag-sky" style="font-size:10px">${e}</span></td>
+          <td><div class="prog" style="max-width:120px"><div class="prog-track"><div class="prog-fill" style="width:${acc};background:${st==='Warning'?'var(--amber)':'var(--success)'}"></div></div><span class="prog-lbl" style="color:${st==='Warning'?'var(--amber)':'var(--success)'}">${acc}</span></div></td>
+          <td style="font-family:var(--fm)">${pred.toLocaleString()}</td>
+          <td style="color:var(--t3)">${t}</td>
+          <td><span class="tag ${st==='Healthy'?'tag-green':'tag-amber'}">${st}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function pageUsers() {
+  return `<div class="page-hdr"><div class="page-title">User Management</div><div class="page-sub">All platform users across portals</div></div>
+  <div class="kpi-row kpi-3">
+    ${kpi('Total Users','2,847','Across all dealers','flat','#06D6A0','👥')}
+    ${kpi('Dealer Admins','142','One per tenant','flat','#818CF8','🏢')}
+    ${kpi('Active Today','1,203','42% DAU','flat','#38BDF8','⚡')}
+  </div>
+  <div class="tbl-wrap">
+    <table><thead><tr><th>User</th><th>Role</th><th>Dealer</th><th>Last Active</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+      ${[['Rajesh Kumar','Dealer Admin','Kumaran Honda','2 mins ago','Active'],['Priya Rajan','Customer','Kumaran Honda','1 hour ago','Active'],['Rajan K.','Technician L5','Kumaran Honda','30 mins ago','Active'],['Suresh A.','Service Advisor','Kumaran Honda','45 mins ago','Active'],['Anbu M.','Sales Manager','Sundar Maruti','3 hours ago','Active'],['Deepa T.','HR Manager','Prestige Hyundai','Yesterday','Inactive']].map(([n,r,d,l,st])=>`
+      <tr>
+        <td class="strong">${n}</td>
+        <td><span class="tag tag-cyan">${r}</span></td>
+        <td style="color:var(--t3)">${d}</td>
+        <td style="color:var(--t3);font-size:11px">${l}</td>
+        <td><span class="tag ${st==='Active'?'tag-green':'tag-red'}">${st}</span></td>
+        <td><button class="btn btn-ghost btn-xs">Edit</button></td>
+      </tr>`).join('')}
+    </tbody></table>
+  </div>`;
+}
+
+function pageCompliance() {
+  return `<div class="page-hdr"><div class="page-title">Compliance & Regulatory</div><div class="page-sub">DPDP Act · IRDAI · RBI · GST</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">📋 Compliance Status</div></div><div class="card-body">
+      ${[['DPDP Act 2023','Data privacy compliance','Compliant','#22C55E'],['GST Filing','18% on SaaS services','Compliant','#22C55E'],['ISO 27001 Prep','Information security','In Progress','#F59E0B'],['PCI-DSS','Payment card data','Compliant','#22C55E'],['IRDAI Web Aggregator','Insurance module','Partnered','#38BDF8'],['RBI Guidelines','Finance module','Partnered','#38BDF8']].map(([t,d,s,c])=>`
+      <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--rim)">
+        <div style="width:10px;height:10px;border-radius:50%;background:${c};margin-top:4px;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${t}</div><div style="font-size:11px;color:var(--t3)">${d}</div></div>
+        <span class="tag" style="background:${c}20;color:${c};border:1px solid ${c}40">${s}</span>
+      </div>`).join('')}
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">🔐 Data Privacy</div></div><div class="card-body">
+      <div class="ai-alert info"><div class="ai-alert-ico">🔐</div><div><div class="ai-alert-title">DPDP Act 2023 — Fully Compliant</div><div class="ai-alert-txt">All customer data stored in AWS India regions (ap-south-1). Data residency, consent management, and right-to-erasure implemented.</div></div></div>
+      <div class="ai-alert info"><div class="ai-alert-ico">💳</div><div><div class="ai-alert-title">Payment Security — PCI-DSS Level 2</div><div class="ai-alert-txt">No card data stored. All payments via Razorpay. Annual penetration testing completed.</div></div></div>
+    </div></div>
+  </div>`;
+}
+
+function pageSAAnalytics() {
+  return `<div class="page-hdr"><div class="page-title">Platform Analytics</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('DAU','1,203','42% of total users','flat','#06D6A0','👥')}
+    ${kpi('MAU','2,614','92% of total','flat','#38BDF8','📊')}
+    ${kpi('Avg Session','18 min','↑ 3 min vs last month','up','#818CF8','⏱️')}
+    ${kpi('NPS Score','72','Industry avg: 35','up','#F59E0B','⭐')}
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title">📈 Feature Adoption by Engine</div></div><div class="card-body">
+    ${[['Service Booking AI','97%','#06D6A0'],['Lead Scoring','89%','#38BDF8'],['Predictive Maintenance Alerts','84%','#818CF8'],['Digital Job Cards','96%','#34D399'],['EMI Calculator','72%','#F59E0B'],['Insurance AI','68%','#FB7185'],['Fleet Management','45%','#00B4D8'],['HR Automation','79%','#FBBF24']].map(([f,p,c])=>`
+    <div class="hbar"><div class="hbar-lbl">${f}</div><div class="hbar-track"><div class="hbar-fill" style="width:${p};background:${c}"></div></div><div class="hbar-val">${p}</div></div>`).join('')}
+  </div></div>`;
+}
+
+function pageSAAlerts() {
+  return `<div class="page-hdr"><div class="page-title">Platform Alerts</div><div class="page-sub">5 active alerts requiring attention</div></div>
+  <div class="ai-alert critical"><div class="ai-alert-ico">🚨</div><div><div class="ai-alert-title">Dealer TN-042 API Rate Limit Exceeded</div><div class="ai-alert-txt">Rate limit hit 3× today. Current plan: Starter (1000 req/min). Upgrade to Professional recommended. Estimated revenue: ₹20,000/month upgrade.</div></div></div>
+  <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">PartsInventoryManagement model drift detected</div><div class="ai-alert-txt">Accuracy dropped from 91% to 84% over last 3 days. Retraining scheduled for tonight 2AM IST.</div></div></div>
+  <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">3 dealers inactive for 7+ days</div><div class="ai-alert-txt">KA-002, TN-008, MH-005 have not logged in. CS team auto-notified. Churn risk: High.</div></div></div>
+  <div class="ai-alert info"><div class="ai-alert-ico">💡</div><div><div class="ai-alert-title">DamageAssessmentAI retrain due</div><div class="ai-alert-txt">Last trained 6 days ago. 480 new claim photos available for training. Schedule retrain?</div></div></div>
+  <div class="ai-alert violet"><div class="ai-alert-ico">📋</div><div><div class="ai-alert-title">ISO 27001 audit in 14 days</div><div class="ai-alert-txt">Pre-audit checklist 78% complete. 12 items pending. Security team notified.</div></div></div>`;
+}
+
+// ─────────────────────────────────
+// DEALER ADMIN PAGES
+// ─────────────────────────────────
+function pageDealerDash() {
+  return `
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title">Dealer Dashboard</div><div class="page-sub">Kumaran Honda · Anna Salai, Chennai · All 6 AI Engines</div></div>
+      <div class="hdr-actions">
+        <button class="btn btn-ghost btn-sm">📊 MRM Report</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal('New Booking','${bookingFormHTML()}')">+ New Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row kpi-4">
+    ${kpi('Today Revenue','₹2.8L','↑ 34% vs yesterday','up','#06D6A0','💰')}
+    ${kpi('Active Jobs','24','5 bays running','flat','#38BDF8','🔧')}
+    ${kpi('Hot Leads','18','8 need follow-up','dn','#F59E0B','📈')}
+    ${kpi('AI Alerts','7','3 critical','dn','#EF4444','🤖')}
+  </div>
+
+  <div class="engine-pills">
+    ${[['🔧 Service','service'],['📈 Sales','sales'],['💰 Finance','finance'],['🛡️ Insurance','insurance'],['🚗 Fleet·EV','fleet'],['👥 Workforce','workforce']].map(([l,p],i)=>`
+    <div class="ep ${i===0?'active':''}" onclick="this.parentNode.querySelectorAll('.ep').forEach(e=>e.classList.remove('active'));this.classList.add('active');loadPage('${p}')">${l}</div>`).join('')}
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🤖 Live AI Alert Feed</div><span class="tag tag-red">7 Active</span></div>
+      <div class="card-body">
+        <div class="ai-alert critical"><div class="ai-alert-ico">🚨</div><div><div class="ai-alert-title">Engine failure risk — MH01BH9234</div><div class="ai-alert-txt">Honda City · 87% probability within 600km. WhatsApp alert sent to customer.</div></div></div>
+        <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">Lead cooling — 8 prospects idle 48h+</div><div class="ai-alert-txt">Sales AI: Follow-up now to prevent 60% conversion drop.</div></div></div>
+        <div class="ai-alert warn"><div class="ai-alert-ico">📦</div><div><div class="ai-alert-title">Brake pads critical — 4 units left</div><div class="ai-alert-txt">7 bookings need this today. Auto-reorder placed.</div></div></div>
+        <div class="ai-alert info"><div class="ai-alert-ico">💰</div><div><div class="ai-alert-title">Loan approval pending — Mohan Kumar</div><div class="ai-alert-txt">HDFC Bank approval expected in 2 hours. ₹6.5L City loan.</div></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">📊 Revenue by Engine — Today</div></div>
+      <div class="card-body">
+        ${[['Service Dept','₹1,40,000',50,'#06D6A0'],['Sales Dept','₹84,000',30,'#38BDF8'],['Finance Fees','₹28,000',10,'#818CF8'],['Insurance Fees','₹16,800',6,'#F59E0B'],['Fleet/EV','₹11,200',4,'#34D399']].map(([d,v,p,c])=>`
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+            <span>${d}</span><span style="font-weight:700;font-family:var(--fm);color:${c}">${v}</span>
+          </div>
+          <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:${p}%;background:${c}"></div></div>
+        </div>`).join('')}
+        <div class="sep"></div>
+        <div style="display:flex;justify-content:space-between">
+          <span style="color:var(--t3);font-size:12px">Total Today</span>
+          <span style="font-weight:800;color:var(--cyan);font-size:14px">₹2,80,000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🔧 Service — Live Bays</div></div>
+      <div class="card-body">
+        ${[['Bay 1','Rajan K.','Honda City — Full Service','In Progress','#22C55E'],['Bay 2','Suresh A.','Jazz — Brakes','Parts Wait','#F59E0B'],['Bay 3','Muthu S.','Amaze — AC','In Progress','#22C55E'],['Bay 4','Anbu K.','City — Warranty','On Hold','#EF4444'],['Bay 5','Karthik V.','WR-V — Oil Change','QC Check','#818CF8']].map(([bay,tech,job,st,c])=>`
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(36,48,68,0.5)">
+          <div style="width:8px;height:8px;border-radius:50%;background:${c};margin-top:5px;flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">${bay} · ${tech}</div><div style="font-size:11px;color:var(--t3)">${job}</div></div>
+          <span class="tag" style="font-size:10px;background:${c}15;color:${c};border:1px solid ${c}30">${st}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">📈 Sales — Lead Pipeline</div></div>
+      <div class="card-body">
+        ${[['New Leads Today','18 leads','#06D6A0'],['Hot (Score A)','6 leads','#38BDF8'],['Warm (Score B)','8 leads','#F59E0B'],['Cold (Score C)','4 leads','#EF4444'],['Test Drives Booked','3 today','#818CF8'],['Expected Closes Today','2-3','#22C55E']].map(([k,v,c])=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(36,48,68,0.5)">
+          <span style="font-size:12px">${k}</span>
+          <span style="font-weight:700;font-family:var(--fm);color:${c}">${v}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">👥 Workforce — Today</div></div>
+      <div class="card-body">
+        ${[['Present','28/32','#22C55E'],['On Leave','4','#F59E0B'],['Overtime Hours','14h total','#38BDF8'],['Payroll This Month','₹8.4L','#818CF8'],['Open Positions','3','#EF4444']].map(([k,v,c])=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(36,48,68,0.5)">
+          <span style="font-size:12px">${k}</span>
+          <span style="font-weight:700;font-family:var(--fm);color:${c}">${v}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageService() {
+  return `
+  <div class="page-hdr"><div class="page-title">🔧 Service AI Engine</div><div class="page-sub">13 AI models · Scheduling · Predictive · Inventory · Bays</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Today Bookings','24','↑ 6 vs yesterday','up','#06D6A0','📅')}
+    ${kpi('Bay Utilization','89%','vs 60% industry','up','#38BDF8','🏗️')}
+    ${kpi('No-Show Rate','5%','vs 40% pre-AI','up','#22C55E','✅')}
+    ${kpi('Avg TAT','2.8h','vs 8.7h manual','up','#F59E0B','⏱️')}
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab(this,'sv-bookings')">Bookings</div>
+    <div class="tab" onclick="switchTab(this,'sv-predictive')">Predictive AI</div>
+    <div class="tab" onclick="switchTab(this,'sv-inventory')">Parts Inventory</div>
+    <div class="tab" onclick="switchTab(this,'sv-techs')">Technicians</div>
+  </div>
+  <div id="sv-bookings">
+    <div class="tbl-wrap">
+      <div class="tbl-head-row"><div class="card-title">Today's Bookings</div><button class="btn btn-primary btn-sm" onclick="openModal('New Booking','${bookingFormHTML()}')">+ Book</button></div>
+      <table><thead><tr><th>ID</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Time</th><th>Bay/Tech</th><th>AI Score</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${[['#B1042','Priya Rajan','Honda City / TN09AB1234','Full Service','10:30 AM','Bay 2 / Rajan K.',92,'Confirmed'],['#B1043','Mohan Kumar','Honda Jazz / TN10CK5678','Warranty Repair','11:00 AM','Bay 1 / Suresh A.',78,'Arrived'],['#B1044','Kavitha S.','Honda Amaze / TN22DN9012','AC Service','11:30 AM','Bay 3 / Muthu S.',88,'In Progress'],['#B1045','Ramesh V.','Honda WR-V / TN07RP3456','Oil Change','12:00 PM','Bay 5 / Karthik V.',95,'Completed'],['#B1046','Anitha N.','Honda City / MH01BH9234','AI Alert — Engine','2:00 PM','TBD',87,'Pending']].map(([id,c,v,s,t,b,ai,st])=>`
+        <tr>
+          <td style="font-family:var(--fm);font-size:11px">${id}</td>
+          <td class="strong">${c}</td>
+          <td style="font-size:11.5px">${v}</td>
+          <td>${s}</td>
+          <td style="font-weight:600">${t}</td>
+          <td style="font-size:11.5px">${b}</td>
+          <td><div class="prog" style="max-width:80px"><div class="prog-track"><div class="prog-fill" style="width:${ai}%;background:${ai>90?'var(--success)':'var(--cyan)'}"></div></div><span class="prog-lbl">${ai}%</span></div></td>
+          <td><span class="tag ${st==='Confirmed'?'tag-cyan':st==='Arrived'?'tag-sky':st==='In Progress'?'tag-green':st==='Completed'?'tag-violet':'tag-amber'}">${st}</span></td>
+          <td><button class="btn btn-ghost btn-xs" onclick="toast('Opening job card...','info')">Job Card</button></td>
+        </tr>`).join('')}
+      </tbody></table>
+    </div>
+  </div>
+  <div id="sv-predictive" style="display:none">
+    <div class="kpi-row kpi-3">
+      ${kpi('Critical Alerts','3','Immediate action','dn','#EF4444','🚨')}
+      ${kpi('Warning Alerts','11','Within 30 days','flat','#F59E0B','⚠️')}
+      ${kpi('Alert→Revenue','₹4.2L','68% conversion','up','#22C55E','💰')}
+    </div>
+    <div class="tbl-wrap"><table><thead><tr><th>Priority</th><th>Vehicle</th><th>Owner</th><th>AI Prediction</th><th>Fail Prob.</th><th>Action</th></tr></thead><tbody>
+      ${[['CRITICAL','Honda City / MH01BH9234','Anitha Nair','Engine oil pressure anomaly — bearing wear',87,'#EF4444'],['CRITICAL','Honda Jazz / TN12KL3344','Senthil M.','Brake fluid contamination — moisture high',79,'#EF4444'],['CRITICAL','Honda Amaze / TN08PQ6677','Lakshmi R.','Timing belt worn — 94,200km (overdue at 80K)',91,'#EF4444'],['WARNING','Honda City / TN01AB2233','Rajesh P.','AC refrigerant low — 15% below safe level',62,'#F59E0B'],['WARNING','Honda WR-V / TN03CD4455','Pradeep S.','Tyre misalignment — front-left 60% worn',58,'#F59E0B']].map(([p,v,o,pred,prob,c])=>`
+      <tr>
+        <td><span class="tag" style="background:${c}15;color:${c};border:1px solid ${c}30">${p}</span></td>
+        <td class="strong">${v}</td>
+        <td>${o}</td>
+        <td style="font-size:11.5px">${pred}</td>
+        <td><div class="prog" style="max-width:80px"><div class="prog-track"><div class="prog-fill" style="width:${prob}%;background:${c}"></div></div><span class="prog-lbl" style="color:${c}">${prob}%</span></div></td>
+        <td><button class="btn btn-sm" style="background:${c}15;border:1px solid ${c}30;color:${c}" onclick="toast('WhatsApp alert sent!','warn')">📱 Alert</button></td>
+      </tr>`).join('')}
+    </tbody></table></div>
+  </div>
+  <div id="sv-inventory" style="display:none">
+    <div class="tbl-wrap"><div class="tbl-head-row"><div class="card-title">Parts Inventory — AI Managed</div><button class="btn btn-primary btn-sm">+ Add Part</button></div>
+    <table><thead><tr><th>Code</th><th>Part</th><th>Stock</th><th>Min Level</th><th>AI Forecast</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      ${[['BP-HC-F','Brake Pads Honda City','4 units','10 units','Need 7 today','CRITICAL'],['OIL-0W20','Engine Oil 0W-20 (1L)','6 bottles','20 bottles','Need 12 today','CRITICAL'],['AF-AM-R','Air Filter Amaze','12 units','15 units','18 this week','LOW'],['SP-NGK-5','Spark Plugs NGK','8 packs','12 packs','10 this week','LOW'],['CAF-HC-R','Cabin Air Filter','24 units','10 units','Stock OK','OK'],['AC-GAS-R','AC Refrigerant R134a','18 cans','8 cans','Stock OK','OK']].map(([c,n,s,m,f,st])=>`
+      <tr>
+        <td style="font-family:var(--fm);font-size:10.5px">${c}</td>
+        <td class="strong">${n}</td>
+        <td style="color:${st==='CRITICAL'?'var(--danger)':st==='LOW'?'var(--amber)':'var(--success)'};font-family:var(--fm)">${s}</td>
+        <td style="font-family:var(--fm);color:var(--t3)">${m}</td>
+        <td style="font-size:11.5px">${f}</td>
+        <td><span class="tag ${st==='CRITICAL'?'tag-red':st==='LOW'?'tag-amber':'tag-green'}">${st}</span></td>
+        <td><button class="btn btn-ghost btn-xs" onclick="toast('Reorder placed!','success')">Reorder</button></td>
+      </tr>`).join('')}
+    </tbody></table></div>
+  </div>
+  <div id="sv-techs" style="display:none">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      ${[['Rajan Kumar','Engine Specialist','Level 5','90%','busy','5 jobs today · ₹18,400'],['Suresh Arumugam','Brake & Suspension','Level 4','55%','warn','Parts wait · ₹9,200'],['Muthu Selvam','AC & Electrical','Level 4','70%','available','3 jobs · ₹14,800'],['Anbu Chelvan','Body & Paint','Level 3','30%','overload','On hold · ₹0'],['Karthik Vel','General Service','Level 3','60%','available','QC Check · ₹5,400'],['Dinesh Kumar','Engine & Gearbox','Level 5','0%','','Day off today']].map(([n,s,l,p,st,inf])=>`
+      <div class="tech-card ${st}">
+        <div style="font-size:28px">👨‍🔧</div>
+        <div style="font-size:13px;font-weight:700;margin:8px 0 3px">${n}</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">${s} · ${l}</div>
+        <div class="prog" style="margin-bottom:6px"><div class="prog-track"><div class="prog-fill" style="width:${p};background:${st==='available'?'var(--success)':st==='busy'||st==='warn'?'var(--amber)':'var(--danger)'}"></div></div><span class="prog-lbl">${p}</span></div>
+        <div style="font-size:11px;color:var(--t3)">${inf}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function pageSales() {
+  return `
+  <div class="page-hdr"><div class="page-title">📈 Sales AI Engine</div><div class="page-sub">12 AI models · Lead scoring · Pricing · Chatbot · Forecasting</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Leads Today','42','↑ from 28 yesterday','up','#06D6A0','📥')}
+    ${kpi('Conversion Rate','68%','vs 30% pre-AI','up','#38BDF8','🎯')}
+    ${kpi('Pipeline Value','₹2.8 Cr','18 hot prospects','up','#F59E0B','💰')}
+    ${kpi('Avg Sale Cycle','2.4 days','vs 12 days pre-AI','up','#22C55E','⏱️')}
+  </div>
+  <div class="grid-2-1">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🎯 Lead Scoring Dashboard — AI Powered</div></div>
+      <div class="card-body">
+        <table><thead><tr><th>Lead</th><th>Vehicle Interest</th><th>AI Score</th><th>Source</th><th>Status</th><th>Action</th></tr></thead><tbody>
+          ${[['Karan Mehta','Honda City Premium','A+ / 96%','WhatsApp','Hot 🔥'],['Divya Prakash','Honda Amaze S','A / 88%','Website','Warm'],['Suresh Nair','Honda City ZX','B / 74%','Facebook','Warm'],['Lakshmi D.','Honda WR-V V','A / 91%','Walk-in','Hot 🔥'],['Ravi Kumar','Honda Jazz V','B+ / 82%','Instagram','Warm'],['Anjali S.','Honda City VX','C / 54%','Cold Call','Cold']].map(([n,v,sc,src,st])=>`
+          <tr>
+            <td class="strong">${n}</td>
+            <td style="font-size:11.5px">${v}</td>
+            <td><span class="tag ${sc.startsWith('A')?'tag-green':'tag-amber'}">${sc}</span></td>
+            <td style="font-size:11px;color:var(--t3)">${src}</td>
+            <td>${st}</td>
+            <td><button class="btn btn-ghost btn-xs" onclick="toast('Opening lead profile...','info')">View</button></td>
+          </tr>`).join('')}
+        </tbody></table>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div class="card-title">💬 AI Chatbot</div><span class="tag tag-green">Live</span></div>
+        <div class="card-body">
+          <div style="background:var(--ink3);border-radius:8px;padding:12px;margin-bottom:10px;min-height:120px">
+            <div style="font-size:11.5px;color:var(--t3);margin-bottom:8px">Customer: <span style="color:var(--t1)">Interested in Honda City automatic</span></div>
+            <div style="background:rgba(6,214,160,0.1);border-radius:6px;padding:8px;font-size:11.5px;color:var(--cyan);margin-bottom:6px">🤖 AI: Great choice! The Honda City CVT starts at ₹13.78L. Would you like to book a test drive today? We have slots available at 3PM and 5PM.</div>
+            <div style="font-size:11.5px;color:var(--t3)">Customer: <span style="color:var(--t1)">Yes, 3PM works</span></div>
+            <div style="background:rgba(6,214,160,0.1);border-radius:6px;padding:8px;font-size:11.5px;color:var(--cyan);margin-top:6px">🤖 AI: Confirmed! Test drive booked for 3:00 PM today. Lead score upgraded to A+. Notifying sales team...</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3)">Today: <span style="color:var(--cyan);font-weight:700">84 chats · 62% qualified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">📊 Sales Forecast</div></div>
+        <div class="card-body">
+          ${[['This Week','8-10 units','₹1.4 Cr'],['This Month','28-34 units','₹4.8 Cr'],['Q2 (Apr-Jun)','90-110 units','₹16 Cr']].map(([p,u,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rim)">
+            <span style="font-size:12px">${p}</span>
+            <div style="text-align:right"><div style="font-weight:700;font-size:12.5px;color:var(--cyan)">${u}</div><div style="font-size:10px;color:var(--t3)">${v}</div></div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageFinance() {
+  return `
+  <div class="page-hdr"><div class="page-title">💰 Finance AI Engine</div><div class="page-sub">13 AI models · Credit scoring · Loan approval · EMI · Compliance</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Loans This Month','28','₹2.8 Cr disbursed','up','#06D6A0','💳')}
+    ${kpi('Approval Rate','82%','vs 58% manual','up','#38BDF8','✅')}
+    ${kpi('Avg Approval Time','4.2h','vs 5-7 days manual','up','#22C55E','⏱️')}
+    ${kpi('Transaction Fees','₹28L','0.5% per loan','up','#F59E0B','💰')}
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🏦 Active Loan Applications</div><span class="tag tag-cyan">15 Banks Connected</span></div>
+      <div class="card-body">
+        <table><thead><tr><th>Customer</th><th>Vehicle</th><th>Amount</th><th>CIBIL</th><th>Best Rate</th><th>Status</th></tr></thead><tbody>
+          ${[['Mohan Kumar','Honda City CVT','₹8.5L',740,'8.2% HDFC','Approved'],['Kavitha S.','Honda Amaze','₹6.2L',698,'8.9% SBI','Under Review'],['Ravi D.','Honda Jazz','₹7.8L',780,'7.9% ICICI','Approved'],['Anil P.','Honda WR-V','₹9.2L',620,'9.4% Axis','Rejected'],['Sunita R.','Honda City','₹11L',810,'7.6% HDFC','Approved']].map(([n,v,a,ci,r,st])=>`
+          <tr>
+            <td class="strong">${n}</td>
+            <td style="font-size:11.5px">${v}</td>
+            <td style="font-family:var(--fm);color:var(--cyan)">${a}</td>
+            <td><span class="tag ${ci>=750?'tag-green':ci>=700?'tag-amber':'tag-red'}">${ci}</span></td>
+            <td style="font-size:11.5px;color:var(--success)">${r}</td>
+            <td><span class="tag ${st==='Approved'?'tag-green':st==='Rejected'?'tag-red':'tag-amber'}">${st}</span></td>
+          </tr>`).join('')}
+        </tbody></table>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div class="card-title">📊 EMI Calculator AI</div></div>
+        <div class="card-body">
+          <div class="form-grid" style="gap:10px;margin-bottom:12px">
+            <div class="fg"><label>Loan Amount</label><input value="₹8,50,000"></div>
+            <div class="fg"><label>Tenure</label><select><option>60 months</option><option>48 months</option><option>36 months</option></select></div>
+          </div>
+          <div class="ai-box">
+            <div class="ai-box-title">🤖 AI Best Rate Analysis</div>
+            ${[['HDFC Bank','8.2%','₹17,420/mo','★ Best'],['ICICI Bank','8.4%','₹17,590/mo',''],['SBI','8.7%','₹17,840/mo',''],['Axis Bank','9.1%','₹18,220/mo','']].map(([b,r,e,tag])=>`
+            <div class="ai-row"><span class="ai-row-key">${b}${tag?` <span style="font-size:9px;background:var(--success)20;color:var(--success);padding:1px 5px;border-radius:4px">${tag}</span>`:''}</span><span class="ai-row-val" style="color:var(--cyan)">${r} · ${e}</span></div>`).join('')}
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%" onclick="toast('Best rate shared with customer via WhatsApp!','success')">Share Best Rate</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title">🔐 Compliance Monitor</div></div>
+        <div class="card-body">
+          ${[['KYC Checks','28/28 complete','#22C55E'],['AML Screening','All clear','#22C55E'],['RBI Guidelines','Compliant','#22C55E'],['NBFC Reporting','Auto-filed','#38BDF8']].map(([k,v,c])=>`
+          <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--rim)">
+            <span style="font-size:12px">${k}</span>
+            <span style="font-size:12px;font-weight:600;color:${c}">${v}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageInsurance() {
+  return `
+  <div class="page-hdr"><div class="page-title">🛡️ Insurance AI Engine</div><div class="page-sub">11 AI models · Claims · Fraud detection · Damage AI · Policy comparison</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Policies This Month','312','↑ 5x vs pre-AI','up','#06D6A0','🛡️')}
+    ${kpi('Claims Processed','48','2.1 day avg TAT','up','#38BDF8','⚡')}
+    ${kpi('Fraud Detected','₹8.4L','6 cases this month','up','#22C55E','🔍')}
+    ${kpi('Transaction Fees','₹19L','2.5% per policy','up','#F59E0B','💰')}
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab(this,'ins-claims')">Claims</div>
+    <div class="tab" onclick="switchTab(this,'ins-policies')">Policies</div>
+    <div class="tab" onclick="switchTab(this,'ins-fraud')">Fraud AI</div>
+  </div>
+  <div id="ins-claims">
+    <div class="tbl-wrap"><div class="tbl-head-row"><div class="card-title">Active Claims</div><button class="btn btn-primary btn-sm">+ New Claim</button></div>
+    <table><thead><tr><th>Claim ID</th><th>Customer</th><th>Vehicle</th><th>Type</th><th>AI Damage Est.</th><th>Fraud Score</th><th>Status</th></tr></thead><tbody>
+      ${[['#CL-0281','Rajesh P.','Honda City / TN01','Accident','₹42,000',12,'Processing'],['#CL-0282','Sunita R.','Honda Jazz / KA12','Theft','₹4,80,000',78,'🚨 Flagged'],['#CL-0283','Anil K.','Honda Amaze / MH04','Flood','₹1,28,000',8,'Approved'],['#CL-0284','Meena S.','Honda City / TN09','Accident','₹18,500',22,'Under Review']].map(([id,c,v,t,est,fraud,st])=>`
+      <tr>
+        <td style="font-family:var(--fm);font-size:11px">${id}</td>
+        <td class="strong">${c}</td>
+        <td style="font-size:11.5px">${v}</td>
+        <td><span class="tag tag-sky">${t}</span></td>
+        <td style="font-family:var(--fm);color:var(--amber)">${est}</td>
+        <td><div class="prog" style="max-width:80px"><div class="prog-track"><div class="prog-fill" style="width:${fraud}%;background:${fraud>50?'var(--danger)':'var(--success)'}"></div></div><span class="prog-lbl" style="color:${fraud>50?'var(--danger)':'var(--success)'}">${fraud}%</span></div></td>
+        <td><span class="tag ${st.includes('Flagged')?'tag-red':st==='Approved'?'tag-green':st==='Processing'?'tag-cyan':'tag-amber'}">${st}</span></td>
+      </tr>`).join('')}
+    </tbody></table></div>
+  </div>
+  <div id="ins-policies" style="display:none">
+    <div class="grid-2">
+      <div class="card"><div class="card-head"><div class="card-title">🛡️ Policy Recommendations AI</div></div><div class="card-body">
+        <div class="ai-box">
+          <div class="ai-box-title">🤖 AI — Best Policy for Priya Rajan · Honda City 2022</div>
+          ${[['HDFC ERGO Comprehensive','₹18,200/yr','Best overall — IDV: ₹7.8L','Recommended'],['Bajaj Allianz','₹16,400/yr','Good — lower add-ons','Option 2'],['Tata AIG','₹17,800/yr','Strong claim settlement','Option 3']].map(([p,v,d,t])=>`
+          <div style="padding:8px 0;border-bottom:1px solid var(--rim)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+              <span style="font-weight:600;font-size:12.5px">${p}</span>
+              <span style="font-family:var(--fm);color:var(--cyan)">${v}</span>
+            </div>
+            <div style="font-size:11px;color:var(--t3)">${d} ${t==='Recommended'?`<span style="background:var(--success)20;color:var(--success);padding:1px 6px;border-radius:4px;font-size:10px">★ Recommended</span>`:''}</div>
+          </div>`).join('')}
+        </div>
+        <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="toast('Policy comparison sent via WhatsApp!','success')">📱 Send to Customer</button>
+      </div></div>
+      <div class="card"><div class="card-head"><div class="card-title">📊 Insurance KPIs</div></div><div class="card-body">
+        ${[['Conversion Rate','80% (vs 40% pre-AI)','#06D6A0'],['Avg Processing Time','2-4 hours (vs 5-10 days)','#38BDF8'],['Customer Retention','94%','#22C55E'],['Renewals Automated','78%','#818CF8'],['Transaction Fees Today','₹62,000','#F59E0B']].map(([k,v,c])=>`
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rim)">
+          <span style="font-size:12px">${k}</span><span style="font-size:12px;font-weight:700;color:${c}">${v}</span>
+        </div>`).join('')}
+      </div></div>
+    </div>
+  </div>
+  <div id="ins-fraud" style="display:none">
+    <div class="kpi-row kpi-3">
+      ${kpi('Fraud Prevented','₹8.4L','6 cases this month','up','#22C55E','🔍')}
+      ${kpi('Detection Accuracy','95%','LSTM + Graph AI','flat','#06D6A0','🤖')}
+      ${kpi('False Positive Rate','2.1%','Industry avg: 8%','up','#38BDF8','✅')}
+    </div>
+    <div class="ai-alert critical"><div class="ai-alert-ico">🚨</div><div><div class="ai-alert-title">HIGH FRAUD RISK — Claim #CL-0282 · Sunita R. · Fraud Score: 78%</div><div class="ai-alert-txt">AI detected: Claim filed 3 days after policy inception. Vehicle reported stolen but GPS shows movement. Cross-referencing with industry fraud database. Human review required before processing.</div></div></div>
+    <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">MODERATE RISK — Claim #CL-0284 · Meena S. · Fraud Score: 22%</div><div class="ai-alert-txt">Anomaly: Damage photos show pre-existing rust inconsistent with recent accident claim. Additional documentation requested.</div></div></div>
+    <div class="ai-alert info"><div class="ai-alert-ico">✅</div><div><div class="ai-alert-title">CLEARED — Claim #CL-0283 · Anil K. · Flood Damage · Fraud Score: 8%</div><div class="ai-alert-txt">AI verified: Location cross-referenced with flood zone data. Photo damage consistent with water level records. Approved for settlement: ₹1,28,000.</div></div></div>
+  </div>`;
+}
+
+function pageFleet() {
+  return `
+  <div class="page-hdr"><div class="page-title">🚗 Fleet & EV AI Engine</div><div class="page-sub">11 AI models · Battery health · Charging · Range · Fleet management</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Fleet Vehicles','48','12 EV, 36 ICE','flat','#06D6A0','🚗')}
+    ${kpi('EV Battery Avg Health','87%','3 batteries flagged','flat','#38BDF8','🔋')}
+    ${kpi('Active Charging','8 EVs','3 stations live','flat','#22C55E','⚡')}
+    ${kpi('Fleet Cost Saved','₹2.8L','AI route optimisation','up','#F59E0B','💰')}
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div class="card-title">🔋 EV Battery Health Monitor</div><span class="tag tag-amber">3 Alerts</span></div>
+      <div class="card-body">
+        ${[['TN09EV001','Honda Nexon EV','92%','#22C55E','Healthy'],['TN09EV002','MG ZS EV','78%','#F59E0B','Monitor'],['TN09EV003','Tata Tigor EV','61%','#EF4444','⚠️ Replace Soon'],['TN09EV004','Hyundai Kona','88%','#22C55E','Healthy'],['TN09EV005','Tata Nexon EV','45%','#EF4444','🚨 Critical']].map(([id,v,h,c,st])=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rim)">
+          <div style="width:36px;height:36px;border-radius:9px;background:var(--ink3);display:flex;align-items:center;justify-content:center;font-size:16px">🔋</div>
+          <div style="flex:1">
+            <div style="font-size:12.5px;font-weight:600">${id} · ${v}</div>
+            <div class="prog" style="margin-top:4px"><div class="prog-track"><div class="prog-fill" style="width:${h};background:${c}"></div></div><span class="prog-lbl" style="color:${c}">${h}</span></div>
+          </div>
+          <span class="tag" style="background:${c}15;color:${c};border:1px solid ${c}30;font-size:10px">${st}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">⚡ Charging Station Status</div></div>
+      <div class="card-body">
+        ${[['Station A — Bay 6','Fast Charge 50kW','Charging TN09EV001','22% → 80%','38 min left','#22C55E'],['Station B — Bay 7','AC Charge 22kW','Charging TN09EV003','12% → 80%','4.2h left','#F59E0B'],['Station C — Bay 8','Fast Charge 50kW','Available','—','Ready','#38BDF8']].map(([st,t,v,prog,eta,c])=>`
+        <div style="background:var(--ink3);border:1px solid var(--rim);border-radius:10px;padding:12px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="font-weight:600;font-size:12.5px">${st}</span>
+            <span class="tag" style="background:${c}15;color:${c};border:1px solid ${c}30;font-size:10px">${eta}</span>
+          </div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${t} · ${v}</div>
+          ${prog !== '—' ? `<div class="prog-track"><div class="prog-fill" style="width:${prog.split('→')[0].replace('%','').trim()/80*100}%;background:${c}"></div></div><div style="font-size:10px;color:var(--t3);margin-top:3px">${prog}</div>` : ''}
+        </div>`).join('')}
+        <div class="ai-box" style="margin-top:4px">
+          <div class="ai-box-title">🤖 AI Charging Schedule</div>
+          <div class="ai-row"><span class="ai-row-key">Off-peak charging (11PM-6AM)</span><span class="ai-row-val" style="color:var(--success)">₹4.2/kWh</span></div>
+          <div class="ai-row"><span class="ai-row-key">Peak savings this month</span><span class="ai-row-val" style="color:var(--cyan)">₹18,400</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-title">🗺️ Fleet Route Optimisation</div><span class="tag tag-green">AI Active</span></div>
+    <div class="card-body">
+      <div class="map-placeholder">
+        <div style="font-size:36px">🗺️</div>
+        <div>Fleet Map — 12 EVs tracked · Anna Salai → Porur → Velachery → OMR</div>
+        <div style="font-size:11px;color:var(--t4)">Real-time GPS integration via Google Maps API</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px">
+        ${[['Total Fleet','48 vehicles','#06D6A0'],['On Route','22 active','#38BDF8'],['At Base','18 idle','#818CF8'],['Fuel/Charge Cost','₹38,200 today','#F59E0B']].map(([k,v,c])=>`
+        <div style="text-align:center;padding:12px;background:var(--ink3);border-radius:8px;border:1px solid var(--rim)">
+          <div style="font-family:var(--fh);font-size:18px;font-weight:800;color:${c}">${v}</div>
+          <div style="font-size:10.5px;color:var(--t3);margin-top:3px">${k}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function pageWorkforce() {
+  return `
+  <div class="page-hdr"><div class="page-title">👥 Workforce & HR AI Engine</div><div class="page-sub">10 AI models · Payroll · Performance · Training · MRM Reports</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Total Staff','32','28 present today','flat','#06D6A0','👥')}
+    ${kpi('Monthly Payroll','₹8.4L','On time · Auto-processed','flat','#38BDF8','💰')}
+    ${kpi('Avg Performance','84%','↑ 12% since AI','up','#22C55E','⭐')}
+    ${kpi('Open Positions','3','AI screening 48 apps','flat','#F59E0B','📋')}
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab(this,'wf-staff')">Staff</div>
+    <div class="tab" onclick="switchTab(this,'wf-payroll')">Payroll</div>
+    <div class="tab" onclick="switchTab(this,'wf-mrm')">MRM Reports</div>
+    <div class="tab" onclick="switchTab(this,'wf-recruit')">Recruitment</div>
+  </div>
+  <div id="wf-staff">
+    <div class="tbl-wrap"><table><thead><tr><th>Employee</th><th>Role</th><th>Dept</th><th>AI Performance</th><th>Attendance</th><th>Salary</th><th>Action</th></tr></thead><tbody>
+      ${[['Rajan Kumar','Tech Specialist L5','Service','94%',26,'₹48,000'],['Suresh A.','Service Advisor','Service','82%',24,'₹32,000'],['Muthu S.','AC Technician L4','Service','88%',25,'₹38,000'],['Preethi M.','Sales Executive','Sales','91%',26,'₹35,000'],['Arun S.','Finance Manager','Finance','87%',25,'₹55,000'],['Deepika R.','HR Manager','HR','90%',26,'₹42,000']].map(([n,r,d,p,att,sal])=>`
+      <tr>
+        <td class="strong">${n}</td>
+        <td style="font-size:11.5px">${r}</td>
+        <td><span class="tag tag-sky" style="font-size:10px">${d}</span></td>
+        <td><div class="prog" style="max-width:90px"><div class="prog-track"><div class="prog-fill" style="width:${p};background:var(--success)"></div></div><span class="prog-lbl" style="color:var(--success)">${p}</span></div></td>
+        <td style="font-family:var(--fm)">${att}/26 days</td>
+        <td style="font-family:var(--fm);color:var(--cyan)">${sal}</td>
+        <td><button class="btn btn-ghost btn-xs" onclick="toast('Opening employee profile...','info')">View</button></td>
+      </tr>`).join('')}
+    </tbody></table></div>
+  </div>
+  <div id="wf-payroll" style="display:none">
+    <div class="grid-2">
+      <div class="card"><div class="card-head"><div class="card-title">💰 Payroll — March 2026</div><span class="tag tag-green">Processed</span></div><div class="card-body">
+        <div class="ai-box" style="margin-bottom:14px">
+          <div class="ai-box-title">🤖 AI Payroll Summary</div>
+          ${[['Total Gross Payroll','₹8,40,000'],['PF Deductions','₹1,00,800'],['ESI Deductions','₹29,400'],['TDS','₹42,000'],['Net Payroll','₹7,67,800'],['Processing Time','4 seconds (vs 3 days)']].map(([k,v])=>`<div class="ai-row"><span class="ai-row-key">${k}</span><span class="ai-row-val" style="color:var(--cyan)">${v}</span></div>`).join('')}
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="toast('Payroll executed! 32 salary slips sent via email.','success')">▶ Execute Payroll</button>
+      </div></div>
+      <div class="card"><div class="card-head"><div class="card-title">📊 Department Costs</div></div><div class="card-body">
+        ${[['Service Dept','₹3,20,000',38,'#06D6A0'],['Sales Dept','₹2,10,000',25,'#38BDF8'],['Finance Dept','₹1,40,000',17,'#818CF8'],['HR & Admin','₹84,000',10,'#F59E0B'],['Management','₹86,000',10,'#34D399']].map(([d,v,p,c])=>`
+        <div style="margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${d}</span><span style="font-weight:700;font-family:var(--fm);color:${c}">${v}</span></div>
+          <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:${p}%;background:${c}"></div></div>
+        </div>`).join('')}
+      </div></div>
+    </div>
+  </div>
+  <div id="wf-mrm" style="display:none">
+    <div class="card"><div class="card-head"><div class="card-title">📋 AI-Generated MRM Report — March 2026</div><span class="tag tag-cyan">Auto-Generated</span></div><div class="card-body">
+      <div class="ai-box" style="margin-bottom:16px">
+        <div class="ai-box-title">🤖 Management Review Meeting — AI Auto-Report</div>
+        <div style="font-size:12px;line-height:1.8;color:var(--t2)">
+          <strong style="color:var(--t1)">Executive Summary:</strong> Kumaran Honda achieved ₹28.4L service revenue in March (↑34% MoM). 847 service jobs completed with 89% bay utilization. Predictive AI prevented 14 vehicle breakdowns generating ₹4.2L in proactive service revenue.<br><br>
+          <strong style="color:var(--t1)">Sales Performance:</strong> 32 vehicles sold (₹4.8Cr). Conversion rate improved to 68% from 30% pre-AI. Lead scoring accuracy: 94%. 3 salespeople exceeded targets.<br><br>
+          <strong style="color:var(--t1)">Finance:</strong> 28 loans processed (₹2.8Cr disbursed). Avg approval time: 4.2 hours. Zero compliance issues.<br><br>
+          <strong style="color:var(--t1)">HR:</strong> 96% attendance. Payroll error rate: 0%. 3 positions open — AI screening in progress.
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="toast('MRM Report emailed to GM & Principal!','success')">📧 Email to GM</button>
+      <button class="btn btn-secondary btn-sm" style="margin-left:8px" onclick="toast('PDF downloaded!','info')">📄 Download PDF</button>
+    </div></div>
+  </div>
+  <div id="wf-recruit" style="display:none">
+    <div class="kpi-row kpi-3">
+      ${kpi('Applications','48','3 open positions','flat','#06D6A0','📋')}
+      ${kpi('AI Shortlisted','12','25% shortlist rate','flat','#38BDF8','🤖')}
+      ${kpi('Interviews Scheduled','5','This week','flat','#F59E0B','📅')}
+    </div>
+    <div class="tbl-wrap"><table><thead><tr><th>Candidate</th><th>Role</th><th>AI Match Score</th><th>Experience</th><th>Status</th><th>Action</th></tr></thead><tbody>
+      ${[['Kiran T.','Senior Technician L4','92%','6 years Honda','Shortlisted'],['Priya M.','Sales Executive','87%','4 years auto','Interview Scheduled'],['Arun K.','Service Advisor','79%','3 years','Under Review'],['Deepa S.','Finance Exec','84%','5 years banking','Shortlisted'],['Raj N.','Senior Tech L5','95%','8 years Honda','★ Top Pick']].map(([n,r,sc,exp,st])=>`
+      <tr>
+        <td class="strong">${n}</td>
+        <td>${r}</td>
+        <td><span class="tag tag-green">${sc}</span></td>
+        <td style="font-size:11.5px;color:var(--t3)">${exp}</td>
+        <td><span class="tag ${st.includes('Top')?'tag-amber':st==='Shortlisted'?'tag-cyan':st.includes('Interview')?'tag-green':'tag-sky'}">${st}</span></td>
+        <td><button class="btn btn-ghost btn-xs" onclick="toast('Opening candidate profile...','info')">View</button></td>
+      </tr>`).join('')}
+    </tbody></table></div>
+  </div>`;
+}
+
+function pageBookings() {
+  return `<div class="page-hdr"><div class="page-title">Service Bookings</div><div class="page-sub">All bookings across service department</div></div>
+  <div class="tbl-wrap"><div class="tbl-head-row"><div class="card-title">All Bookings</div><button class="btn btn-primary btn-sm" onclick="openModal('New Booking','${bookingFormHTML()}')">+ New Booking</button></div>
+  <table><thead><tr><th>ID</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Date/Time</th><th>Bay</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    ${[['#B1042','Priya Rajan','Honda City','Full Service','Today 10:30 AM','Bay 2','Confirmed'],['#B1043','Mohan Kumar','Honda Jazz','Warranty','Today 11:00 AM','Bay 1','Arrived'],['#B1044','Kavitha S.','Honda Amaze','AC Service','Today 11:30 AM','Bay 3','In Progress'],['#B1045','Ramesh V.','WR-V','Oil Change','Today 12:00 PM','Bay 5','Completed'],['#B1046','Anitha N.','Honda City','AI Alert — Engine','Today 2:00 PM','TBD','Pending'],['#B1047','Vikram S.','Honda Jazz','Periodic','Today 3:00 PM','Bay 1','Confirmed'],['#B1048','Divya P.','Honda Amaze','Brake + Suspension','Tomorrow 9:00 AM','Bay 3','Scheduled']].map(([id,c,v,s,t,b,st])=>`
+    <tr>
+      <td style="font-family:var(--fm);font-size:11px">${id}</td>
+      <td class="strong">${c}</td>
+      <td style="font-size:11.5px">${v}</td>
+      <td>${s}</td>
+      <td style="font-weight:600;font-size:12px">${t}</td>
+      <td><span class="tag tag-cyan" style="font-size:10px">${b}</span></td>
+      <td><span class="tag ${st==='Confirmed'?'tag-cyan':st==='Arrived'?'tag-sky':st==='In Progress'?'tag-green':st==='Completed'?'tag-violet':'tag-amber'}">${st}</span></td>
+      <td><button class="btn btn-ghost btn-xs" onclick="toast('Opening booking...','info')">Open</button></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+function pageJobCards() {
+  return `<div class="page-hdr"><div class="page-title">Digital Job Cards</div><div class="page-sub">AI-powered digital job management</div></div>
+  <div class="grid-2-1">
+    <div class="tbl-wrap"><div class="tbl-head-row"><div class="card-title">Active Job Cards</div><button class="btn btn-primary btn-sm">+ New Job</button></div>
+    <table><thead><tr><th>Job ID</th><th>Vehicle</th><th>Services</th><th>Est. Cost</th><th>Status</th></tr></thead><tbody>
+      ${[['#J0091','City/TN09AB1234','Oil, Filter, Check','₹3,200','In Progress'],['#J0092','Jazz/TN10CK5678','Brake Pads','₹5,800','Parts Wait'],['#J0093','Amaze/TN22DN9012','AC Gas, Compressor','₹7,400','In Progress'],['#J0094','WR-V/TN07RP3456','Engine Oil','₹1,800','QC Check'],['#J0095','City/TN02AL7890','Warranty — Engine','₹0 (Warranty)','On Hold']].map(([id,v,s,c,st])=>`
+      <tr>
+        <td style="font-family:var(--fm);font-size:11px">${id}</td>
+        <td style="font-size:11.5px">${v}</td>
+        <td style="font-size:11.5px">${s}</td>
+        <td style="font-family:var(--fm);color:var(--cyan)">${c}</td>
+        <td><span class="tag ${st==='In Progress'?'tag-green':st.includes('Parts')?'tag-amber':st.includes('QC')?'tag-violet':st.includes('Hold')?'tag-red':'tag-sky'}">${st}</span></td>
+      </tr>`).join('')}
+    </tbody></table></div>
+    <div class="card"><div class="card-head"><div class="card-title">📋 Job #J0091 Detail</div></div><div class="card-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;font-size:12px">
+        <div><span style="color:var(--t3)">Customer</span><div style="font-weight:600">Priya Rajan</div></div>
+        <div><span style="color:var(--t3)">Vehicle</span><div style="font-weight:600">Honda City 2022</div></div>
+        <div><span style="color:var(--t3)">Reg.</span><div style="font-family:var(--fm)">TN 09 AB 1234</div></div>
+        <div><span style="color:var(--t3)">Odometer</span><div style="font-family:var(--fm)">24,820 km</div></div>
+      </div>
+      ${[['✅ Engine Oil Change (0W-20, 4L)','₹1,200',true],['✅ Oil Filter','₹350',true],['⏳ Air Filter Cleaning','₹200',false],['⏳ Wheel Alignment','₹800',false],['⏳ Multi-Point Inspection','₹500',false]].map(([s,p,done])=>`
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rim);font-size:12px">
+        <span style="color:${done?'var(--t1)':'var(--t3)'}">${s}</span>
+        <span style="font-family:var(--fm)">${p}</span>
+      </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;padding:8px 0;font-weight:700">
+        <span>Total</span><span style="color:var(--cyan);font-family:var(--fm)">₹3,050</span>
+      </div>
+      <div class="ai-box" style="margin-top:8px">
+        <div class="ai-box-title">🤖 AI Upsell</div>
+        <div class="ai-row"><span class="ai-row-key">Brake pad wear detected</span><span class="ai-row-val" style="color:var(--amber)">Replace Soon</span></div>
+        <div class="ai-row"><span class="ai-row-key">Upsell probability</span><span class="ai-row-val" style="color:var(--success)">74%</span></div>
+        <div class="ai-row"><span class="ai-row-key">Upsell value</span><span class="ai-row-val" style="color:var(--cyan)">₹1,800</span></div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%" onclick="toast('Customer notified via WhatsApp!','success')">📱 Update Customer</button>
+    </div></div>
+  </div>`;
+}
+
+function pageInventory() {
+  return `<div class="page-hdr"><div class="page-title">Parts Inventory</div><div class="page-sub">AI demand forecast · Auto-reorder · 197 SKUs</div></div>
+  <div class="kpi-row kpi-3">
+    ${kpi('Critical Stock Items','5','Need immediate reorder','dn','#EF4444','🚨')}
+    ${kpi('Low Stock Items','8','Reorder within 3 days','dn','#F59E0B','⚠️')}
+    ${kpi('AI Savings This Month','₹18,400','Demand forecasting','up','#06D6A0','💰')}
+  </div>
+  <div class="tbl-wrap"><div class="tbl-head-row"><div class="card-title">All Parts</div><button class="btn btn-primary btn-sm">+ Add Part</button></div>
+  <table><thead><tr><th>Code</th><th>Part Name</th><th>Stock</th><th>Min Level</th><th>AI Forecast (7 days)</th><th>Status</th><th>Action</th></tr></thead><tbody>
+    ${[['BP-HC-F','Brake Pads Honda City Front','4 units','10','Need 7 today — Reordered','CRITICAL'],['OIL-0W20','Engine Oil 0W-20 (1L)','6 bottles','20','Need 12 today — Reordered','CRITICAL'],['AF-AM-R','Air Filter Amaze','12 units','15','18 needed this week','LOW'],['SP-NGK-5','Spark Plugs NGK Pack','8 packs','12','10 this week','LOW'],['CAF-HC-R','Cabin Air Filter Honda City/Jazz','24 units','10','Stock adequate 3 weeks','OK'],['AC-GAS-R','AC Refrigerant R134a 500g','18 cans','8','Stock adequate 2 weeks','OK'],['BF-DOT4','Brake Fluid DOT4 500ml','32 bottles','8','Stock adequate','OK']].map(([c,n,s,m,f,st])=>`
+    <tr>
+      <td style="font-family:var(--fm);font-size:10.5px">${c}</td>
+      <td class="strong">${n}</td>
+      <td style="font-family:var(--fm);color:${st==='CRITICAL'?'var(--danger)':st==='LOW'?'var(--amber)':'var(--success)'};font-weight:700">${s}</td>
+      <td style="font-family:var(--fm);color:var(--t3)">${m}</td>
+      <td style="font-size:11.5px">${f}</td>
+      <td><span class="tag ${st==='CRITICAL'?'tag-red':st==='LOW'?'tag-amber':'tag-green'}">${st}</span></td>
+      <td><button class="btn btn-ghost btn-xs" onclick="toast('Reorder placed!','success')">Reorder</button></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+function pageReports() {
+  return `<div class="page-hdr"><div class="page-title">AI Reports</div><div class="page-sub">Auto-generated reports across all 6 engines</div></div>
+  <div class="grid-3">
+    ${[['📊 Daily MRM Report','Auto-generated every 6PM','Download PDF / Email to GM'],['📈 Weekly Sales Report','Lead conversion, pipeline, revenue','Auto-emailed Monday 8AM'],['🔧 Service Performance','Bay utilization, TAT, satisfaction','Real-time dashboard'],['💰 Finance Summary','Loans, EMI collections, compliance','Monthly auto-report'],['🛡️ Insurance Claims Report','Claim status, fraud alerts, revenue','Weekly summary'],['👥 HR & Payroll Report','Attendance, performance, salary','Monthly payslip auto-sent']].map(([t,d,s])=>`
+    <div class="card"><div class="card-body" style="text-align:center;padding:24px 16px">
+      <div style="font-size:32px;margin-bottom:12px">${t.split(' ')[0]}</div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px">${t.slice(2)}</div>
+      <div style="font-size:11.5px;color:var(--t3);margin-bottom:6px">${d}</div>
+      <div style="font-size:11px;color:var(--cyan);margin-bottom:14px">${s}</div>
+      <button class="btn btn-secondary btn-sm" onclick="toast('Generating report...','info')">Generate Now</button>
+    </div></div>`).join('')}
+  </div>`;
+}
+
+function pageDealerSettings() {
+  return `<div class="page-hdr"><div class="page-title">Dealer Settings</div><div class="page-sub">White-label, integrations, AI configuration</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">🎨 Branding</div></div><div class="card-body">
+      <div class="form-grid">
+        <div class="fg"><label>Dealer Name</label><input value="Kumaran Honda"></div>
+        <div class="fg"><label>City</label><input value="Chennai"></div>
+        <div class="fg"><label>WhatsApp Number</label><input value="+91 98410 00001"></div>
+        <div class="fg"><label>Support Email</label><input value="service@kumaran-honda.in"></div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="toast('Settings saved!','success')">Save</button>
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">🔗 Integrations</div></div><div class="card-body">
+      ${[['Razorpay Billing','Connected','#22C55E'],['WhatsApp API (Twilio)','Connected','#22C55E'],['Google Maps API','Connected','#22C55E'],['CIBIL Credit Bureau','Connected','#22C55E'],['IRDAI INSPACe API','Pending setup','#F59E0B'],['Honda DMS (OEM)','Not connected','#EF4444']].map(([n,s,c])=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--rim)">
+        <span style="font-size:12.5px">${n}</span>
+        <span style="font-size:12px;font-weight:600;color:${c}">${s}</span>
+      </div>`).join('')}
+    </div></div>
+  </div>`;
+}
+
+function pageKPI() {
+  return `<div class="page-hdr"><div class="page-title">KPI Tracker</div><div class="page-sub">All key metrics vs targets</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Revenue vs Target','₹28.4L / ₹35L','81% achieved','flat','#06D6A0','💰')}
+    ${kpi('Leads vs Target','42 / 50 today','84% achieved','flat','#38BDF8','📈')}
+    ${kpi('NPS Score','4.7/5','Target: 4.5+','up','#22C55E','⭐')}
+    ${kpi('Churn Rate','2.1%','Target: <3%','up','#F59E0B','📊')}
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title">📊 All KPIs vs Targets</div></div><div class="card-body">
+    ${[['Bay Utilization','89%','75%','#22C55E'],['No-Show Rate','5%','10% target','#22C55E'],['Lead Conversion','68%','60% target','#22C55E'],['Loan Approval Rate','82%','75% target','#22C55E'],['Insurance Conversion','80%','70% target','#22C55E'],['HR Error Rate','0%','<1% target','#22C55E'],['AI Model Accuracy','94.2%','90% target','#22C55E'],['Platform Uptime','99.97%','99.9% target','#22C55E']].map(([k,v,t,c])=>`
+    <div style="display:flex;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--rim)">
+      <div style="width:180px;font-size:12.5px">${k}</div>
+      <div style="font-weight:700;font-size:13px;color:${c};width:60px">${v}</div>
+      <div style="font-size:11px;color:var(--t3)">${t}</div>
+      <span class="tag tag-green" style="margin-left:auto">✓ On Track</span>
+    </div>`).join('')}
+  </div></div>`;
+}
+
+// ─────────────────────────────────
+// CUSTOMER PORTAL PAGES
+// ─────────────────────────────────
+function pageMyVehicle() {
+  return `
+  <div class="page-hdr"><div class="page-title">My Vehicle</div><div class="page-sub">Honda City 2022 · AI Health Monitoring</div></div>
+  <div class="cust-hero">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center">
+      <div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:4px;font-family:var(--fm)">REGISTERED VEHICLE</div>
+        <div style="font-family:var(--fh);font-size:24px;font-weight:800;margin-bottom:4px">Honda City V CVT 2022</div>
+        <div style="font-family:var(--fm);font-size:13px;color:var(--cyan);margin-bottom:12px">TN 09 AB 1234</div>
+        <div style="display:flex;gap:14px">
+          <div><div style="font-size:10px;color:var(--t3)">Odometer</div><div style="font-weight:700">24,820 km</div></div>
+          <div><div style="font-size:10px;color:var(--t3)">Warranty</div><div style="font-weight:700">Valid till Dec 2024</div></div>
+          <div><div style="font-size:10px;color:var(--t3)">Insurance</div><div style="font-weight:700">HDFC ERGO</div></div>
+          <div><div style="font-size:10px;color:var(--t3)">Next Service</div><div style="font-weight:700;color:var(--amber)">30,000 km</div></div>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:var(--fh);font-size:48px;font-weight:900;color:var(--success)">86</div>
+        <div style="font-size:12px;color:var(--t3)">AI Health Score</div>
+        <div style="font-size:10px;color:var(--success)">Good Condition</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">🤖 AI Health Breakdown</div></div><div class="card-body">
+      ${[['Engine','94%','#22C55E'],['Brakes','71%','#F59E0B'],['Tyres','68%','#F59E0B'],['AC System','92%','#22C55E'],['Battery','88%','#22C55E'],['Suspension','85%','#22C55E']].map(([c,p,col])=>`
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${c}</span><span style="color:${col};font-weight:700">${p}</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:${p};background:${col}"></div></div>
+      </div>`).join('')}
+    </div></div>
+
+    <div class="card"><div class="card-head"><div class="card-title">⚠️ AI Maintenance Alerts</div></div><div class="card-body">
+      <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">Brake Pad Wear — Service Recommended</div><div class="ai-alert-txt">AI detected 71% wear. Recommend service within 2,000 km for safety.</div></div></div>
+      <div class="ai-alert warn"><div class="ai-alert-ico">🔄</div><div><div class="ai-alert-title">Tyre Rotation Due</div><div class="ai-alert-txt">Uneven wear pattern detected. Rotation recommended at next service.</div></div></div>
+      <div class="ai-alert info"><div class="ai-alert-ico">📅</div><div><div class="ai-alert-title">Next Service in 5,180 km</div><div class="ai-alert-txt">Full periodic service due at 30,000 km. Book in advance to get preferred slot.</div></div></div>
+      <button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="loadPage('book-service');toast('Opening booking...','info')">📅 Book Service Now</button>
+    </div></div>
+  </div>`;
+}
+
+function pageBookService() {
+  return `
+  <div class="page-hdr"><div class="page-title">Book a Service</div><div class="page-sub">Online booking · AI slot recommendation · WhatsApp confirmation</div></div>
+  <div class="grid-1-2">
+    <div class="card"><div class="card-head"><div class="card-title">📅 Available Slots</div></div><div class="card-body">
+      ${[['Today','10:30 AM','Bay 1','₹3,200','Full Service','Available'],['Today','3:00 PM','Bay 3','₹1,400','Oil Change','Available'],['Tomorrow','9:00 AM','Bay 2','₹7,400','AI Recommended','★ Best Slot'],['Tomorrow','11:30 AM','Bay 5','₹3,200','Full Service','Available'],['Mar 3','10:00 AM','Bay 1','₹3,200','Full Service','Available']].map(([d,t,b,p,s,tag])=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--rim);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--cyan)'" onmouseout="this.style.borderColor='var(--rim)'" onclick="toast('Slot selected: ${d} ${t}','info')">
+        <div style="text-align:center;background:var(--ink3);border-radius:8px;padding:8px 12px;flex-shrink:0">
+          <div style="font-size:10px;color:var(--t3)">${d}</div>
+          <div style="font-weight:700;font-size:13px">${t}</div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12.5px;font-weight:600">${s}</div>
+          <div style="font-size:11px;color:var(--t3)">${b} · ${p}</div>
+        </div>
+        ${tag.includes('★')?`<span class="tag tag-amber" style="font-size:10px">${tag}</span>`:`<span class="tag tag-cyan" style="font-size:10px">${tag}</span>`}
+      </div>`).join('')}
+    </div></div>
+
+    <div class="card"><div class="card-head"><div class="card-title">🔧 Configure Your Booking</div></div><div class="card-body">
+      <div class="form-grid">
+        <div class="fg fg-full"><label>Vehicle</label><input value="Honda City 2022 · TN09AB1234" readonly style="background:var(--ink)"></div>
+        <div class="fg"><label>Service Type</label><select onchange="custAIPred(this)"><option>Full Service Package</option><option>Oil & Filter Change</option><option>Brake Service</option><option>AC Service</option><option>Warranty Claim</option></select></div>
+        <div class="fg"><label>Preferred Date</label><input type="date"></div>
+        <div class="fg fg-full"><label>Your Complaint / Notes</label><textarea placeholder="Any sounds, issues or specific concerns?"></textarea></div>
+      </div>
+      <div class="ai-box" style="margin-bottom:14px" id="cust-ai-pred">
+        <div class="ai-box-title">🤖 AI Estimate</div>
+        <div class="ai-row"><span class="ai-row-key">Estimated Duration</span><span class="ai-row-val">3.5 – 4.0 hours</span></div>
+        <div class="ai-row"><span class="ai-row-key">Estimated Cost</span><span class="ai-row-val" style="color:var(--cyan)">₹3,200 – ₹3,800</span></div>
+        <div class="ai-row"><span class="ai-row-key">AI Recommendation</span><span class="ai-row-val" style="color:var(--amber)">Also check brake pads</span></div>
+        <div class="ai-row"><span class="ai-row-key">WhatsApp Updates</span><span class="ai-row-val" style="color:var(--success)">Auto-sent</span></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="toast('✅ Booking confirmed! WhatsApp confirmation sent to +91 98410 12345','success')">✅ Confirm Booking</button>
+    </div></div>
+  </div>`;
+}
+
+function pageHistory() {
+  return `<div class="page-hdr"><div class="page-title">Service History</div><div class="page-sub">Complete vehicle history · AI analysis</div></div>
+  <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Service</th><th>Odometer</th><th>Cost</th><th>Technician</th><th>Status</th><th>Invoice</th></tr></thead><tbody>
+    ${[['Feb 14, 2026','Full Service Package','22,840 km','₹3,420','Rajan Kumar','Completed'],['Jan 10, 2026','Brake Inspection','21,200 km','₹890','Suresh A.','Completed'],['Dec 5, 2025','Oil & Filter Change','19,600 km','₹1,400','Karthik V.','Completed'],['Nov 2, 2025','AC Service + Gas','18,100 km','₹4,200','Muthu Selvam','Completed'],['Sep 15, 2025','Full Service Package','16,200 km','₹3,200','Rajan Kumar','Completed']].map(([d,s,o,c,t,st])=>`
+    <tr>
+      <td style="font-size:12px">${d}</td>
+      <td class="strong">${s}</td>
+      <td style="font-family:var(--fm)">${o}</td>
+      <td style="font-family:var(--fm);color:var(--cyan)">${c}</td>
+      <td style="color:var(--t3)">${t}</td>
+      <td><span class="tag tag-green">${st}</span></td>
+      <td><button class="btn btn-ghost btn-xs" onclick="toast('Invoice downloaded!','info')">📄 PDF</button></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+function pageCustAlerts() {
+  return `<div class="page-hdr"><div class="page-title">AI Vehicle Alerts</div><div class="page-sub">Predictive maintenance · Your Honda City</div></div>
+  <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">Brake Pad Wear — Service Within 2,000 km</div><div class="ai-alert-txt">AI detected 71% wear based on driving patterns and mileage. Safe limit is 70%. Book brake service soon for safety. Estimated cost: ₹1,800.</div></div></div>
+  <div class="ai-alert warn"><div class="ai-alert-ico">🔄</div><div><div class="ai-alert-title">Tyre Rotation Recommended</div><div class="ai-alert-txt">Uneven wear detected. Front tyres wearing 18% faster than rear. Rotation will extend tyre life by ~8,000 km. Estimated cost: ₹400.</div></div></div>
+  <div class="ai-alert info"><div class="ai-alert-ico">📅</div><div><div class="ai-alert-title">Next Service Due — 30,000 km</div><div class="ai-alert-txt">You are 5,180 km away from scheduled periodic service. Book now to get your preferred time slot.</div></div></div>
+  <button class="btn btn-primary" onclick="loadPage('book-service');toast('Opening booking...','info')">📅 Book All Recommended Services</button>`;
+}
+
+function pageCustFinance() {
+  return `<div class="page-hdr"><div class="page-title">Finance & EMI</div><div class="page-sub">Your loan details and EMI schedule</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">💳 Active Loan — Honda City</div></div><div class="card-body">
+      <div class="ai-box">
+        <div class="ai-box-title">Loan Summary</div>
+        ${[['Loan Amount','₹8,50,000'],['Bank','HDFC Bank'],['Interest Rate','8.2% p.a.'],['Tenure','60 months'],['Monthly EMI','₹17,420'],['EMIs Paid','14/60'],['Outstanding','₹7,28,400'],['Foreclosure Amount','₹7,15,200']].map(([k,v])=>`<div class="ai-row"><span class="ai-row-key">${k}</span><span class="ai-row-val" style="color:var(--cyan)">${v}</span></div>`).join('')}
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="toast('EMI paid ₹17,420!','success')">Pay EMI Now</button>
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">📅 EMI Schedule</div></div><div class="card-body">
+      ${[['Mar 1, 2026','₹17,420','Paid ✅'],['Apr 1, 2026','₹17,420','Upcoming'],['May 1, 2026','₹17,420','Upcoming'],['Jun 1, 2026','₹17,420','Upcoming']].map(([d,a,s])=>`
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rim);font-size:12.5px">
+        <span>${d}</span>
+        <span style="font-family:var(--fm)">${a}</span>
+        <span style="color:${s.includes('Paid')?'var(--success)':'var(--t3)'}">${s}</span>
+      </div>`).join('')}
+    </div></div>
+  </div>`;
+}
+
+function pageCustInsurance() {
+  return `<div class="page-hdr"><div class="page-title">Insurance</div><div class="page-sub">Your Honda City insurance · HDFC ERGO</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">🛡️ Active Policy</div></div><div class="card-body">
+      <div class="ai-box">
+        <div class="ai-box-title">Policy Details</div>
+        ${[['Insurer','HDFC ERGO'],['Policy Number','HE-TN-2024-082341'],['Coverage','Comprehensive'],['IDV','₹7,80,000'],['Premium Paid','₹18,200/year'],['Valid Till','Oct 15, 2026'],['NCB Discount','20%'],['Add-ons','Zero Dep · PA Cover']].map(([k,v])=>`<div class="ai-row"><span class="ai-row-key">${k}</span><span class="ai-row-val" style="color:var(--cyan)">${v}</span></div>`).join('')}
+      </div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="toast('Claim form opened!','info')">+ File a Claim</button>
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">💡 AI Renewal Recommendation</div></div><div class="card-body">
+      <div class="ai-alert info"><div class="ai-alert-ico">🤖</div><div><div class="ai-alert-title">Renewal due in 7 months</div><div class="ai-alert-txt">AI found a better deal for your renewal: Bajaj Allianz offers similar coverage at ₹16,400/year (₹1,800 savings) with better claim settlement ratio.</div></div></div>
+      <button class="btn btn-secondary btn-sm" onclick="toast('Renewal options sent to WhatsApp!','success')">Compare Options</button>
+    </div></div>
+  </div>`;
+}
+
+function pageSupport() {
+  return `<div class="page-hdr"><div class="page-title">Customer Support</div><div class="page-sub">AI chatbot · Live support · 24/7</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">💬 AI Chat Support</div><span class="tag tag-green">Online</span></div><div class="card-body">
+      <div style="background:var(--ink3);border-radius:10px;padding:14px;min-height:200px;margin-bottom:12px">
+        <div style="font-size:12px;color:var(--t3);margin-bottom:10px;text-align:center">Chat started · Priya Rajan · Honda City</div>
+        <div style="background:rgba(6,214,160,0.1);border-radius:8px;padding:10px;font-size:12.5px;color:var(--cyan);margin-bottom:8px">🤖 Hi Priya! I'm your AUTOERA AI assistant. I can see your Honda City TN09AB1234 has an upcoming service due in 5,180 km. How can I help you today?</div>
+        <div style="text-align:right;font-size:12px;color:var(--t1);margin-bottom:8px">When is my next service? 💬</div>
+        <div style="background:rgba(6,214,160,0.1);border-radius:8px;padding:10px;font-size:12.5px;color:var(--cyan)">🤖 Your next periodic service is due at 30,000 km. You are currently at 24,820 km — that's approximately 5,180 km away. Would you like to pre-book a slot? We have availability this week!</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <input placeholder="Type your message..." style="flex:1">
+        <button class="btn btn-primary btn-sm" onclick="toast('Message sent!','info')">Send</button>
+      </div>
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">📞 Contact Dealer</div></div><div class="card-body">
+      <div class="list-row">
+        <div class="list-ico" style="background:rgba(6,214,160,0.1)">📞</div>
+        <div class="list-body"><div class="list-title">Service Department</div><div class="list-meta">Mon–Sat 8AM–7PM</div></div>
+        <button class="btn btn-secondary btn-xs" onclick="toast('Calling +91 44 2345 6789...','info')">Call</button>
+      </div>
+      <div class="list-row">
+        <div class="list-ico" style="background:rgba(56,189,248,0.1)">💬</div>
+        <div class="list-body"><div class="list-title">WhatsApp Support</div><div class="list-meta">24/7 AI + Human backup</div></div>
+        <button class="btn btn-secondary btn-xs" onclick="toast('Opening WhatsApp...','info')">Chat</button>
+      </div>
+      <div class="list-row">
+        <div class="list-ico" style="background:rgba(245,158,11,0.1)">📧</div>
+        <div class="list-body"><div class="list-title">Email Support</div><div class="list-meta">Reply within 4 hours</div></div>
+        <button class="btn btn-secondary btn-xs" onclick="toast('Opening email...','info')">Email</button>
+      </div>
+    </div></div>
+  </div>`;
+}
+
+function pageRewards() {
+  return `<div class="page-hdr"><div class="page-title">Loyalty Rewards</div><div class="page-sub">Earn points on every service · Redeem for discounts</div></div>
+  <div class="kpi-row kpi-3">
+    ${kpi('Total Points','2,840','= ₹2,840 discount','flat','#F59E0B','⭐')}
+    ${kpi('Tier','Gold Member','Next: Platinum at 5,000','flat','#FBBF24','🏆')}
+    ${kpi('Points Expiry','Dec 31, 2026','Valid for 12 months','flat','#38BDF8','📅')}
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title">📋 Points History</div></div><div class="card-body">
+    ${[['Feb 14, 2026','Full Service','+ 342 points','Earned'],['Jan 10, 2026','Brake Inspection','+ 89 points','Earned'],['Dec 25, 2025','Christmas Bonus','+ 200 points','Bonus'],['Dec 5, 2025','Oil Change','+ 140 points','Earned'],['Nov 2, 2025','AC Service','- 500 points','Redeemed (₹500 off)']].map(([d,s,p,t])=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--rim)">
+      <div><div style="font-size:12.5px;font-weight:600">${s}</div><div style="font-size:11px;color:var(--t3)">${d}</div></div>
+      <div style="text-align:right"><div style="font-weight:700;color:${p.startsWith('-')?'var(--danger)':'var(--success)'}">${p}</div><span class="tag ${t==='Redeemed'?'tag-violet':t==='Bonus'?'tag-amber':'tag-green'}" style="font-size:10px">${t}</span></div>
+    </div>`).join('')}
+  </div></div>`;
+}
+
+// ─────────────────────────────────
+// TECHNICIAN PAGES
+// ─────────────────────────────────
+function pageMyJobs() {
+  return `
+  <div class="page-hdr"><div class="page-title">My Job Queue</div><div class="page-sub">Rajan Kumar · Engine Specialist L5 · Bay 1</div></div>
+  <div class="kpi-row kpi-3">
+    ${kpi('Jobs Today','5','2 completed, 3 remaining','flat','#06D6A0','🔧')}
+    ${kpi('Today Revenue','₹18,400','My bay contribution','flat','#38BDF8','💰')}
+    ${kpi('Performance Score','94%','Rank #1 this month','up','#F59E0B','⭐')}
+  </div>
+
+  ${[{u:true,id:'#J0091',v:'Honda City · TN09AB1234',s:'Full Service Package',est:'3.5h',p:'₹3,200',status:'In Progress',color:'active'},{u:false,id:'#J0092',v:'Honda Jazz · TN14PQ2211',s:'Engine Diagnostics',est:'1.5h',p:'₹1,200',status:'Queued',color:''},{u:true,id:'#J0093',v:'Honda Amaze · KA04MN7890',s:'Engine Oil + Gasket',est:'2.0h',p:'₹2,800',status:'Urgent',color:'urgent'},{u:false,id:'#J0094',v:'Honda City · TN07RP3456',s:'Timing Belt Replacement',est:'4.0h',p:'₹8,200',status:'Scheduled 2PM',color:''}].map(j=>`
+  <div class="job-mobile-card ${j.color}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+          <span class="tag ${j.status==='In Progress'?'tag-green':j.status==='Urgent'?'tag-red':j.status.includes('Scheduled')?'tag-sky':'tag-amber'}">${j.status}</span>
+          <span style="font-family:var(--fm);font-size:11px;color:var(--t3)">${j.id}</span>
+        </div>
+        <div style="font-size:14px;font-weight:700">${j.v}</div>
+        <div style="font-size:12px;color:var(--t3)">${j.s}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--fh);font-size:18px;font-weight:800;color:var(--cyan)">${j.p}</div>
+        <div style="font-size:11px;color:var(--t3)">${j.est}</div>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary btn-sm" onclick="loadPage('job-card');toast('Opening job card for ${j.id}','info')">Open Job Card</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast('Customer notified via WhatsApp!','success')">📱 Update Customer</button>
+    </div>
+  </div>`).join('')}`;
+}
+
+function pageJobCard() {
+  return `
+  <div class="page-hdr"><div class="page-title">Active Job Card #J0091</div><div class="page-sub">Honda City · TN09AB1234 · Priya Rajan</div></div>
+  <div class="grid-2-1">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div class="card-title">✅ Service Checklist</div><span class="tag tag-cyan">In Progress</span></div>
+        <div class="card-body">
+          ${[['Engine Oil Change — 0W-20, 4L',true,'₹1,200'],['Oil Filter Replacement',true,'₹350'],['Air Filter Cleaning',false,'₹200'],['Tyre Pressure Check',false,'₹0'],['Wheel Alignment',false,'₹800'],['Multi-Point Safety Check',false,'₹500'],['Battery Voltage Test',false,'₹0'],['Fluid Level Top-up',false,'₹150']].map(([s,done,p])=>`
+          <div class="check-item ${done?'done':''}" onclick="this.classList.toggle('done');this.querySelector('.check-box').textContent=this.classList.contains('done')?'✓':''">
+            <div class="check-box">${done?'✓':''}</div>
+            <div style="flex:1;font-size:12.5px" class="check-lbl">${s}</div>
+            <div style="font-size:12px;font-family:var(--fm);color:var(--t3)">${p}</div>
+          </div>`).join('')}
+          <div class="sep"></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
+            <span>Total</span><span style="color:var(--cyan);font-family:var(--fm)">₹3,200</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">🤖 AI Upsell Suggestions</div></div>
+        <div class="card-body">
+          <div class="ai-alert warn"><div class="ai-alert-ico">⚠️</div><div><div class="ai-alert-title">Brake Pad Wear Detected</div><div class="ai-alert-txt">AI analysis shows 71% wear. Customer risk: High. Recommend replacement. Value: ₹1,800. Upsell probability: 74%.</div></div></div>
+          <div class="btn-group">
+            <button class="btn btn-amber btn-sm" onclick="toast('Upsell presented to customer!','success')">Present to Customer</button>
+            <button class="btn btn-ghost btn-sm">Skip</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><div class="card-title">📋 Vehicle Info</div></div>
+        <div class="card-body">
+          ${[['Customer','Priya Rajan'],['Phone','+91 98410 12345'],['Vehicle','Honda City V CVT 2022'],['Reg. No.','TN09AB1234'],['Odometer','24,820 km'],['Bay','Bay 1'],['Started','10:30 AM'],['Est. Complete','2:00 PM']].map(([k,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rim);font-size:12px">
+            <span style="color:var(--t3)">${k}</span><span style="font-weight:600">${v}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">📊 Job Timeline</div></div>
+        <div class="card-body">
+          <div class="vtl">
+            ${[['10:30 AM','Vehicle received','Customer signed in','#22C55E'],['10:35 AM','Job card opened','AI checklist loaded','#22C55E'],['10:40 AM','Oil drain started','Engine oil change in progress','#22C55E'],['11:00 AM','Filter replaced','Oil filter and air filter done','#22C55E'],['Now','Wheel alignment','In progress...','#F59E0B'],['Est. 1:00 PM','QC check','Quality inspection','#64748B'],['Est. 2:00 PM','Customer handover','Digital invoice sent','#64748B']].map(([t,e,d,c])=>`
+            <div class="vtl-item">
+              <div class="vtl-left"><div class="vtl-dot" style="background:${c}"></div><div class="vtl-line"></div></div>
+              <div style="padding-bottom:4px"><div class="vtl-title">${t} — ${e}</div><div class="vtl-meta">${d}</div></div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="toast('Job marked complete! Invoice auto-generated and sent.','success')">✅ Mark Job Complete</button>
+    <button class="btn btn-secondary" onclick="toast('Customer notified: Job 60% complete, ready by 2PM','success')">📱 Update Customer</button>
+    <button class="btn btn-ghost" onclick="toast('Supervisor notified!','warn')">⚠️ Escalate Issue</button>
+  </div>`;
+}
+
+function pageBayStatus() {
+  return `<div class="page-hdr"><div class="page-title">Bay Status</div><div class="page-sub">Live workshop floor view</div></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    ${[['Bay 1','Rajan Kumar','Honda City / TN09AB1234','Full Service','In Progress','#22C55E','🔧'],['Bay 2','Suresh A.','Honda Jazz / TN10CK5678','Brake Repair','⚠️ Parts Wait','#F59E0B','⚠️'],['Bay 3','Muthu Selvam','Honda Amaze / TN22DN','AC Service','In Progress','#22C55E','🔧'],['Bay 4','Anbu Chelvan','Honda City / TN02AL','Warranty Claim','🚨 On Hold','#EF4444','🚨'],['Bay 5','Karthik Vel','Honda WR-V / TN07RP','Oil Change','QC Check','#818CF8','🔍'],['Bay 6','—','Available','—','Free Slot','#64748B','✅']].map(([bay,tech,v,s,st,c,ico])=>`
+    <div style="background:var(--surface);border:1px solid ${c}40;border-radius:14px;padding:18px;position:relative">
+      <div style="position:absolute;top:12px;right:12px;font-size:20px;opacity:0.6">${ico}</div>
+      <div style="font-size:11px;color:var(--t3);font-family:var(--fm);margin-bottom:6px">${bay}</div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:3px">${tech}</div>
+      <div style="font-size:11.5px;color:var(--t3);margin-bottom:3px">${v}</div>
+      <div style="font-size:12px;margin-bottom:10px">${s}</div>
+      <span class="tag" style="background:${c}15;color:${c};border:1px solid ${c}30">${st}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+function pageTechPerformance() {
+  return `<div class="page-hdr"><div class="page-title">My Performance</div><div class="page-sub">Rajan Kumar · Engine Specialist L5 · March 2026</div></div>
+  <div class="kpi-row kpi-4">
+    ${kpi('Jobs This Month','142','Rank #1','up','#06D6A0','🏆')}
+    ${kpi('Quality Score','97%','Zero rework','up','#38BDF8','⭐')}
+    ${kpi('Revenue Generated','₹4.2L','My bay contribution','up','#F59E0B','💰')}
+    ${kpi('My Salary + Bonus','₹63,200','↑ 32% vs last month','up','#22C55E','💳')}
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">📊 Monthly Job Volume</div></div><div class="card-body">
+      <div class="bar-chart">
+        ${[['Oct',45,32],['Nov',58,41],['Dec',72,51],['Jan',98,69],['Feb',122,86],['Mar',142,100]].map(([m,n,h])=>`
+        <div class="bc-col">
+          <div class="bc-bar" style="height:${h}%;background:linear-gradient(180deg,#06D6A0,#00B4D8)" title="${m}: ${n} jobs"></div>
+          <div class="bc-x">${m}</div>
+        </div>`).join('')}
+      </div>
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">🤖 AI Skill Assessment</div></div><div class="card-body">
+      ${[['Engine Diagnostics','Level 5','Expert','#22C55E'],['Oil & Fluid Service','Level 5','Expert','#22C55E'],['Electrical Systems','Level 4','Advanced','#38BDF8'],['AC Systems','Level 3','Proficient','#818CF8'],['Brake & Suspension','Level 4','Advanced','#38BDF8'],['Body & Paint','Level 2','Basic','#F59E0B']].map(([s,l,t,c])=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--rim)">
+        <span style="font-size:12.5px">${s}</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:11px;color:var(--t3)">${l}</span>
+          <span class="tag" style="background:${c}15;color:${c};border:1px solid ${c}30;font-size:10px">${t}</span>
+        </div>
+      </div>`).join('')}
+    </div></div>
+  </div>`;
+}
+
+function pageTraining() {
+  return `<div class="page-hdr"><div class="page-title">Training & Certifications</div><div class="page-sub">AI-recommended learning path · Honda Certified</div></div>
+  <div class="grid-2">
+    <div class="card"><div class="card-head"><div class="card-title">🎓 My Certifications</div></div><div class="card-body">
+      ${[['Honda Engine Master Tech','Level 5','Completed Jun 2024','#22C55E'],['Honda Electrical Systems','Level 4','Completed Jan 2024','#22C55E'],['Honda EV Fundamentals','Level 2','In Progress — 60%','#F59E0B'],['Honda AC Specialist','Level 3','Completed Mar 2023','#22C55E']].map(([c,l,s,col])=>`
+      <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--rim)">
+        <div style="width:40px;height:40px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;font-size:18px">🏅</div>
+        <div><div style="font-weight:600;font-size:13px">${c}</div><div style="font-size:11px;color:var(--t3)">${l} · ${s}</div></div>
+        <span class="tag" style="margin-left:auto;background:${col}15;color:${col};border:1px solid ${col}30;align-self:center;font-size:10px">${s.includes('Progress')?'Active':'Done'}</span>
+      </div>`).join('')}
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">🤖 AI Recommended Next</div></div><div class="card-body">
+      <div class="ai-alert violet"><div class="ai-alert-ico">🎓</div><div><div class="ai-alert-title">Honda EV Master Tech — Level 5</div><div class="ai-alert-txt">AI recommends this based on your high AC job volume and EV market growth. Completing this adds ₹8,000/month to your salary potential.</div></div></div>
+      <div class="ai-alert info"><div class="ai-alert-ico">📚</div><div><div class="ai-alert-title">Advanced Diagnostics — OBD3 Systems</div><div class="ai-alert-txt">New Honda models use OBD3. AI predicts 40% of jobs next year will need this. 12-hour online course.</div></div></div>
+      <button class="btn btn-primary btn-sm" onclick="toast('Enrolled in Honda EV Master Tech!','success')">Enroll Now</button>
+    </div></div>
+  </div>`;
+}
+
+function pageEarnings() {
+  return `<div class="page-hdr"><div class="page-title">My Earnings</div><div class="page-sub">Salary + Bonus + Performance incentives</div></div>
+  <div class="kpi-row kpi-3">
+    ${kpi('Base Salary','₹48,000','+₹13,200 bonus this month','up','#06D6A0','💰')}
+    ${kpi('Performance Bonus','₹12,000','Based on 142 jobs + quality','up','#38BDF8','⭐')}
+    ${kpi('Total Take-Home','₹63,200','↑ 32% vs joining salary','up','#F59E0B','🏆')}
+  </div>
+  <div class="card"><div class="card-head"><div class="card-title">📊 Earnings History</div></div><div class="card-body">
+    ${[['March 2026','₹63,200','142 jobs · 97% quality','Processed'],['February 2026','₹58,400','122 jobs · 95% quality','Paid'],['January 2026','₹52,100','98 jobs · 94% quality','Paid'],['December 2025','₹47,600','72 jobs · 92% quality','Paid']].map(([m,s,d,st])=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--rim)">
+      <div><div style="font-weight:600">${m}</div><div style="font-size:11px;color:var(--t3)">${d}</div></div>
+      <div style="text-align:right"><div style="font-family:var(--fh);font-size:18px;font-weight:800;color:var(--cyan)">${s}</div><span class="tag ${st==='Processed'?'tag-amber':'tag-green'}">${st}</span></div>
+    </div>`).join('')}
+  </div></div>`;
+}
+
+// ─────────────────────────────────
+// HELPER FUNCTIONS
+// ─────────────────────────────────
+function kpi(label, value, change, dir, color, icon) {
+  return `
+  <div class="kpi">
+    <div class="kpi-glow" style="background:linear-gradient(90deg,${color},transparent)"></div>
+    <div class="kpi-ico">${icon}</div>
+    <div class="kpi-lbl">${label}</div>
+    <div class="kpi-val" style="color:${color}">${value}</div>
+    <div class="kpi-chg ${dir}">${dir==='up'?'↑':dir==='dn'?'↓':'→'} ${change}</div>
+  </div>`;
+}
+
+function switchTab(el, showId) {
+  const parent = el.parentNode;
+  parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  const section = el.closest('.page-section') || document.getElementById('page-content');
+  const allDivs = section.querySelectorAll('[id]');
+  allDivs.forEach(d => {
+    if (!d.classList.contains('tab-bar') && !d.classList.contains('tab')) {
+      d.style.display = d.id === showId ? '' : 'none';
+    }
+  });
+}
+
+function bookingFormHTML() {
+  return `<div class='form-grid'>
+    <div class='fg'><label>Customer Name</label><input placeholder='Full name'></div>
+    <div class='fg'><label>Phone</label><input placeholder='+91 98410 12345'></div>
+    <div class='fg'><label>Vehicle</label><select><option>Honda City</option><option>Honda Jazz</option><option>Honda Amaze</option><option>Honda WR-V</option></select></div>
+    <div class='fg'><label>Registration No.</label><input placeholder='TN 09 AB 1234'></div>
+    <div class='fg'><label>Service Type</label><select><option>Full Service</option><option>Oil Change</option><option>Brake Service</option><option>AC Service</option><option>Warranty</option></select></div>
+    <div class='fg'><label>Preferred Date</label><input type='date'></div>
+    <div class='fg'><label>Preferred Time</label><select><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>2:00 PM</option><option>3:00 PM</option></select></div>
+    <div class='fg'><label>Odometer (km)</label><input type='number' placeholder='24820'></div>
+    <div class='fg fg-full'><label>Notes / Complaint</label><textarea placeholder='Any specific issues?'></textarea></div>
+  </div>`;
+}
+
+function openModal(title, bodyHTML, footHTML) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = bodyHTML;
+  document.getElementById('modal-foot').innerHTML = footHTML || `
+    <button class='btn btn-ghost' onclick='closeModal()'>Cancel</button>
+    <button class='btn btn-primary' onclick='closeModal();toast("Saved successfully!","success")'>Save</button>`;
+  document.getElementById('global-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('global-modal').classList.remove('open');
+}
+
+document.getElementById('global-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('global-modal')) closeModal();
+});
+
+function toast(msg, type = 'info') {
+  const dock = document.getElementById('toast-dock');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = { success: '✅', warn: '⚠️', info: '💡', error: '❌' };
+  el.innerHTML = `<span style="font-size:15px">${icons[type]||'💡'}</span><span>${msg}</span>`;
+  dock.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(30px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(),320); }, 3500);
+}
+
+function custAIPred(sel) {
+  const box = document.getElementById('cust-ai-pred');
+  if (!box) return;
+  const preds = {
+    'Full Service Package': [['Est. Duration','3.5–4.0 hours'],['Est. Cost','₹3,200–₹3,800'],['AI Flag','Check brake pads'],['WhatsApp Updates','Auto-sent']],
+    'Oil & Filter Change': [['Est. Duration','45–60 minutes'],['Est. Cost','₹1,200–₹1,600'],['AI Flag','All clear'],['WhatsApp Updates','Auto-sent']],
+    'Brake Service': [['Est. Duration','2.0–3.0 hours'],['Est. Cost','₹3,500–₹6,000'],['AI Flag','Stock check needed'],['WhatsApp Updates','Auto-sent']],
+    'AC Service': [['Est. Duration','2.0–2.5 hours'],['Est. Cost','₹2,500–₹4,500'],['AI Flag','Refrigerant ok'],['WhatsApp Updates','Auto-sent']],
+    'Warranty Claim': [['Est. Duration','2–4 hours'],['Est. Cost','₹0 (under warranty)'],['AI Verification','Auto-verified'],['WhatsApp Updates','Auto-sent']],
+  };
+  const p = preds[sel.value] || [];
+  box.innerHTML = `<div class='ai-box-title'>🤖 AI Estimate</div>` + p.map(([k,v])=>`<div class='ai-row'><span class='ai-row-key'>${k}</span><span class='ai-row-val' style='color:var(--cyan)'>${v}</span></div>`).join('');
+}
+
+// Startup
+setTimeout(() => {
+  if (document.getElementById('login-screen').style.display !== 'none') {
+    // Nothing on login screen load
+  }
+}, 100);
+</script>
+</body>
+</html>

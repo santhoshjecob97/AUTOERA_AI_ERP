@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOERA — Service AI Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0E1A;
+  --bg2: #0F1525;
+  --bg3: #141B2E;
+  --card: #161D30;
+  --card2: #1C2438;
+  --border: #242D42;
+  --border2: #2D3850;
+  --accent: #2DD4BF;
+  --accent2: #38BDF8;
+  --accent3: #818CF8;
+  --warn: #FB923C;
+  --danger: #F87171;
+  --success: #4ADE80;
+  --gold: #FBBF24;
+  --text: #E2E8F0;
+  --text2: #94A3B8;
+  --text3: #64748B;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ── Layout ── */
+.shell { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px; min-width: 240px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 100;
+}
+
+.logo {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-mark {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+
+.logo-text {
+  font-family: var(--font-head);
+  font-size: 17px; font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font-size: 10px; color: var(--text3); letter-spacing: 0.12em;
+  text-transform: uppercase; margin-top: 3px; padding-left: 44px;
+}
+
+.nav { padding: 12px 0; flex: 1; overflow-y: auto; }
+
+.nav-section { padding: 12px 16px 4px; }
+.nav-section-label {
+  font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--text3); font-family: var(--font-mono);
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; margin: 1px 6px;
+  border-radius: 8px; cursor: pointer;
+  font-size: 13.5px; color: var(--text2);
+  transition: all 0.15s; position: relative;
+}
+
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(45,212,191,0.12), rgba(56,189,248,0.06));
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+  margin-left: 6px; padding-left: 14px;
+}
+
+.nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--danger); color: white;
+  font-size: 10px; font-weight: 700;
+  padding: 1px 6px; border-radius: 10px;
+  font-family: var(--font-mono);
+}
+
+.nav-badge.warn { background: var(--warn); }
+.nav-badge.info { background: var(--accent3); }
+
+.sidebar-bottom {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.dealer-badge {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.dealer-avatar {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, #334155, #1E293B);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+}
+
+.dealer-name { font-size: 12px; font-weight: 600; }
+.dealer-role { font-size: 10px; color: var(--text3); }
+
+/* ── Main ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Topbar ── */
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.page-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; }
+.page-sub { font-size: 12px; color: var(--text3); }
+
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.ai-status {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(45,212,191,0.1);
+  border: 1px solid rgba(45,212,191,0.25);
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 12px; color: var(--accent);
+}
+
+.ai-pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.topbar-btn {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  color: var(--text); padding: 7px 14px;
+  border-radius: 8px; cursor: pointer;
+  font-size: 13px; font-family: var(--font-body);
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.15s;
+}
+
+.topbar-btn:hover { background: var(--card2); border-color: var(--accent); color: var(--accent); }
+.topbar-btn.primary {
+  background: var(--accent); color: var(--bg);
+  border-color: var(--accent); font-weight: 600;
+}
+.topbar-btn.primary:hover { background: #26BAA8; color: var(--bg); }
+
+/* ── Content ── */
+.content { padding: 24px 28px; flex: 1; }
+
+/* ── Pages ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── KPI Grid ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.kpi-card:hover { border-color: var(--border2); }
+
+.kpi-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+
+.kpi-card.green::before { background: linear-gradient(90deg, var(--success), transparent); }
+.kpi-card.blue::before { background: linear-gradient(90deg, var(--accent2), transparent); }
+.kpi-card.teal::before { background: linear-gradient(90deg, var(--accent), transparent); }
+.kpi-card.orange::before { background: linear-gradient(90deg, var(--warn), transparent); }
+.kpi-card.purple::before { background: linear-gradient(90deg, var(--accent3), transparent); }
+.kpi-card.red::before { background: linear-gradient(90deg, var(--danger), transparent); }
+.kpi-card.gold::before { background: linear-gradient(90deg, var(--gold), transparent); }
+
+.kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.kpi-value { font-family: var(--font-head); font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+.kpi-delta {
+  font-size: 11.5px; display: flex; align-items: center; gap: 4px;
+}
+.kpi-delta.up { color: var(--success); }
+.kpi-delta.down { color: var(--danger); }
+.kpi-delta.neutral { color: var(--text3); }
+.kpi-icon {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 22px; opacity: 0.25;
+}
+
+/* ── Section header ── */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: 15px; font-weight: 700;
+}
+
+.section-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* ── Table ── */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--bg3);
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text3); font-family: var(--font-mono);
+  font-weight: 500; white-space: nowrap;
+}
+
+tbody tr {
+  border-top: 1px solid var(--border);
+  transition: background 0.12s;
+}
+
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+td {
+  padding: 11px 16px;
+  font-size: 13px; color: var(--text2);
+  vertical-align: middle;
+}
+
+td.bold { font-weight: 600; color: var(--text); }
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+  white-space: nowrap;
+}
+.badge-success { background: rgba(74,222,128,0.12); color: var(--success); border: 1px solid rgba(74,222,128,0.2); }
+.badge-warn { background: rgba(251,146,60,0.12); color: var(--warn); border: 1px solid rgba(251,146,60,0.2); }
+.badge-danger { background: rgba(248,113,113,0.12); color: var(--danger); border: 1px solid rgba(248,113,113,0.2); }
+.badge-info { background: rgba(56,189,248,0.12); color: var(--accent2); border: 1px solid rgba(56,189,248,0.2); }
+.badge-teal { background: rgba(45,212,191,0.12); color: var(--accent); border: 1px solid rgba(45,212,191,0.2); }
+.badge-purple { background: rgba(129,140,248,0.12); color: var(--accent3); border: 1px solid rgba(129,140,248,0.2); }
+.badge-gold { background: rgba(251,191,36,0.12); color: var(--gold); border: 1px solid rgba(251,191,36,0.2); }
+
+/* ── AI Score bar ── */
+.ai-bar { display: flex; align-items: center; gap: 8px; }
+.ai-bar-track {
+  flex: 1; height: 5px;
+  background: var(--border2); border-radius: 3px;
+  overflow: hidden;
+}
+.ai-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.ai-bar-label { font-size: 12px; font-family: var(--font-mono); color: var(--text2); min-width: 32px; }
+
+/* ── 2-col grid ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+/* ── Panel card ── */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.panel-title { font-size: 13.5px; font-weight: 600; }
+.panel-body { padding: 16px 18px; }
+
+/* ── List item ── */
+.list-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.list-item:last-child { border-bottom: none; }
+
+.list-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+
+.list-main { flex: 1; }
+.list-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.list-sub { font-size: 11.5px; color: var(--text3); }
+.list-right { text-align: right; flex-shrink: 0; }
+.list-value { font-size: 13px; font-weight: 700; }
+.list-time { font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+
+/* ── Timeline ── */
+.timeline-item {
+  display: flex; gap: 14px; padding: 8px 0;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 4px;
+  position: relative; z-index: 1;
+}
+
+.timeline-line {
+  position: absolute; left: 4px; top: 20px; bottom: -8px;
+  width: 2px; background: var(--border);
+}
+
+.timeline-item:last-child .timeline-line { display: none; }
+
+.timeline-content { flex: 1; }
+.timeline-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+.timeline-meta { font-size: 11px; color: var(--text3); }
+
+/* ── Progress ring ── */
+.ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ring-label { font-size: 11px; color: var(--text3); text-align: center; }
+.ring-value { font-family: var(--font-head); font-size: 22px; font-weight: 800; text-align: center; }
+
+/* ── AI Alert ── */
+.ai-alert {
+  display: flex; gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-left: 3px solid;
+}
+
+.ai-alert.critical {
+  background: rgba(248,113,113,0.08);
+  border-color: var(--danger);
+}
+.ai-alert.warning {
+  background: rgba(251,146,60,0.08);
+  border-color: var(--warn);
+}
+.ai-alert.info {
+  background: rgba(45,212,191,0.08);
+  border-color: var(--accent);
+}
+
+.ai-alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.ai-alert-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.ai-alert-text { font-size: 12px; color: var(--text3); line-height: 1.5; }
+
+/* ── Chart bars ── */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar { width: 100%; border-radius: 4px 4px 0 0; transition: opacity 0.2s; cursor: pointer; }
+.bar:hover { opacity: 0.8; }
+.bar-x { font-size: 9.5px; color: var(--text3); font-family: var(--font-mono); }
+
+/* ── Booking Form ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+
+label { font-size: 12px; color: var(--text3); font-weight: 500; }
+
+input, select, textarea {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(45,212,191,0.08);
+}
+
+select option { background: var(--bg3); }
+textarea { resize: vertical; min-height: 70px; }
+
+/* ── AI Prediction Panel ── */
+.ai-prediction {
+  background: linear-gradient(135deg, rgba(45,212,191,0.06), rgba(56,189,248,0.04));
+  border: 1px solid rgba(45,212,191,0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 14px;
+}
+
+.ai-prediction-title {
+  font-size: 12px; color: var(--accent);
+  font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.1em; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 7px;
+}
+
+.pred-items { display: flex; flex-direction: column; gap: 8px; }
+.pred-item {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+}
+.pred-item-label { color: var(--text2); }
+.pred-item-value { font-weight: 700; font-family: var(--font-mono); }
+
+/* ── Btn group ── */
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn {
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-family: var(--font-body); font-weight: 500;
+  cursor: pointer; border: none; transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+.btn-primary { background: var(--accent); color: var(--bg); font-weight: 600; }
+.btn-primary:hover { background: #26BAA8; }
+.btn-secondary { background: var(--card2); border: 1px solid var(--border2); color: var(--text); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-danger { background: rgba(248,113,113,0.15); border: 1px solid rgba(248,113,113,0.3); color: var(--danger); }
+.btn-danger:hover { background: rgba(248,113,113,0.25); }
+.btn-warn { background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.3); color: var(--warn); }
+.btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--text3); }
+.btn-ghost:hover { border-color: var(--text2); color: var(--text); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  width: 560px; max-width: 90vw;
+  max-height: 85vh; overflow-y: auto;
+  animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-head {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.modal-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; }
+.modal-close { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 20px; line-height: 1; }
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 20px 22px; }
+.modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ── Toast ── */
+.toast-wrap {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 300; display: flex; flex-direction: column; gap: 8px;
+}
+
+.toast {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; min-width: 260px;
+  animation: toastIn 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.toast.success { border-left: 3px solid var(--success); }
+.toast.warn { border-left: 3px solid var(--warn); }
+.toast.info { border-left: 3px solid var(--accent); }
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex; gap: 2px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 18px;
+}
+
+.tab {
+  padding: 7px 16px; border-radius: 7px;
+  font-size: 13px; cursor: pointer;
+  color: var(--text3); transition: all 0.15s;
+  font-weight: 500;
+}
+
+.tab.active {
+  background: var(--card2);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.tab:hover:not(.active) { color: var(--text2); }
+
+/* ── Vehicle card ── */
+.vehicle-card {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex; gap: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  margin-bottom: 10px;
+}
+.vehicle-card:hover { border-color: var(--border2); }
+.vehicle-card.selected { border-color: var(--accent); background: rgba(45,212,191,0.05); }
+
+.vehicle-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+
+.vehicle-info { flex: 1; }
+.vehicle-name { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
+.vehicle-meta { font-size: 11.5px; color: var(--text3); font-family: var(--font-mono); }
+
+.vehicle-health {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+}
+
+/* ── Inventory ── */
+.inv-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.inv-item:last-child { border-bottom: none; }
+
+.inv-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.inv-name { flex: 1; font-size: 13px; }
+.inv-qty { font-family: var(--font-mono); font-size: 12px; text-align: right; }
+.inv-status { font-size: 11px; margin-top: 2px; }
+
+/* ── Tech grid ── */
+.tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tech-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tech-card:hover { border-color: var(--border2); }
+.tech-card.busy { border-color: rgba(251,146,60,0.3); }
+.tech-card.available { border-color: rgba(74,222,128,0.3); }
+.tech-card.break { border-color: var(--border); opacity: 0.6; }
+
+.tech-name { font-size: 13px; font-weight: 600; margin: 8px 0 4px; }
+.tech-skill { font-size: 11px; color: var(--text3); margin-bottom: 8px; }
+.tech-load { font-size: 11.5px; }
+
+/* ── Revenue chart ── */
+.mini-chart { margin-top: 8px; }
+
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page.active { animation: fadeIn 0.25s ease; }
+
+/* ── Responsive tabs for content ── */
+.content-tabs { display: none; }
+.content-tabs.active { display: block; }
+
+/* ── Filter row ── */
+.filter-row {
+  display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1; min-width: 200px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px; color: var(--text);
+  font-family: var(--font-body);
+  outline: none;
+}
+
+.search-box:focus { border-color: var(--accent); }
+.search-box::placeholder { color: var(--text3); }
+
+.filter-select {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  outline: none; cursor: pointer;
+}
+
+/* ── Day schedule ── */
+.day-grid {
+  display: grid;
+  grid-template-columns: 70px repeat(4, 1fr);
+  gap: 2px;
+}
+
+.day-slot {
+  padding: 4px 6px; border-radius: 5px;
+  font-size: 11px; min-height: 28px;
+  display: flex; align-items: center;
+}
+
+.day-time { color: var(--text3); font-family: var(--font-mono); font-size: 10.5px; }
+
+.slot-booked {
+  background: rgba(45,212,191,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(45,212,191,0.2);
+  cursor: pointer;
+}
+
+.slot-busy {
+  background: rgba(251,146,60,0.12);
+  color: var(--warn);
+  border: 1px solid rgba(251,146,60,0.2);
+}
+
+.slot-free {
+  background: var(--bg3);
+  color: var(--text3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.slot-free:hover { border-color: var(--accent); color: var(--accent); }
+
+.slot-label { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── Separator ── */
+.sep { height: 1px; background: var(--border); margin: 16px 0; }
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center; padding: 40px 20px; color: var(--text3);
+}
+.empty-state-icon { font-size: 36px; margin-bottom: 10px; }
+.empty-state-text { font-size: 13px; }
+
+/* action dot */
+.action-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  display: inline-block; margin-right: 6px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🔧</div>
+      <div class="logo-text">AUTOERA</div>
+    </div>
+    <div class="logo-sub">Service AI Engine · MVP</div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-section"><span class="nav-section-label">Overview</span></div>
+    <div class="nav-item active" onclick="nav('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </div>
+
+    <div class="nav-section"><span class="nav-section-label">Operations</span></div>
+    <div class="nav-item" onclick="nav('bookings')">
+      <span class="nav-icon">📅</span> Bookings
+      <span class="nav-badge warn">7</span>
+    </div>
+    <div class="nav-item" onclick="nav('jobcards')">
+      <span class="nav-icon">🗂️</span> Job Cards
+      <span class="nav-badge info">12</span>
+    </div>
+    <div class="nav-item" onclick="nav('schedule')">
+      <span class="nav-icon">🏗️</span> Bay Schedule
+    </div>
+
+    <div class="nav-section"><span class="nav-section-label">AI Engines</span></div>
+    <div class="nav-item" onclick="nav('predictive')">
+      <span class="nav-icon">🤖</span> Predictive AI
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="nav('inventory')">
+      <span class="nav-icon">📦</span> Parts Inventory
+      <span class="nav-badge warn">5</span>
+    </div>
+    <div class="nav-item" onclick="nav('technicians')">
+      <span class="nav-icon">👨‍🔧</span> Technicians
+    </div>
+
+    <div class="nav-section"><span class="nav-section-label">Analytics</span></div>
+    <div class="nav-item" onclick="nav('analytics')">
+      <span class="nav-icon">📈</span> Revenue Analytics
+    </div>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="dealer-badge">
+      <div class="dealer-avatar">🏪</div>
+      <div>
+        <div class="dealer-name">Kumaran Honda</div>
+        <div class="dealer-role">Chennai — Anna Salai</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="page-title" id="topbar-title">Service Dashboard</div>
+        <div class="page-sub" id="topbar-sub">Today — Sunday, 1 March 2026</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="ai-status">
+        <div class="ai-pulse"></div>
+        AI Active — 13 Models Running
+      </div>
+      <button class="topbar-btn primary" onclick="openBookingModal()">+ New Booking</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ══ PAGE: DASHBOARD ══ -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card teal">
+          <div class="kpi-icon">📅</div>
+          <div class="kpi-label">Today's Bookings</div>
+          <div class="kpi-value" style="color:var(--accent)">24</div>
+          <div class="kpi-delta up">↑ 6 more than yesterday</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-label">Jobs Completed</div>
+          <div class="kpi-value" style="color:var(--success)">18</div>
+          <div class="kpi-delta neutral">75% completion rate</div>
+        </div>
+        <div class="kpi-card orange">
+          <div class="kpi-icon">⏳</div>
+          <div class="kpi-label">Avg TAT (Hours)</div>
+          <div class="kpi-value" style="color:var(--warn)">2.8h</div>
+          <div class="kpi-delta up">↓ 68% vs manual (8.7h)</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-label">Today's Revenue</div>
+          <div class="kpi-value" style="color:var(--accent2)">₹1.4L</div>
+          <div class="kpi-delta up">↑ 34% vs last Sunday</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+
+        <!-- AI Alerts -->
+        <div>
+          <div class="section-header">
+            <div>
+              <div class="section-title">🤖 AI Alert Feed</div>
+              <div class="section-sub">Real-time predictive insights</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="nav('predictive')">View All</button>
+          </div>
+
+          <div class="ai-alert critical">
+            <div class="ai-alert-icon">🚨</div>
+            <div>
+              <div class="ai-alert-title">Engine Failure Risk — MH01 BH 9234</div>
+              <div class="ai-alert-text">Honda City — Oil pressure anomaly detected. 87% failure probability within 600km. Customer notified via WhatsApp. Urgent slot recommended.</div>
+            </div>
+          </div>
+
+          <div class="ai-alert warning">
+            <div class="ai-alert-icon">⚠️</div>
+            <div>
+              <div class="ai-alert-title">Parts Stock Critical — Brake Pads Honda City</div>
+              <div class="ai-alert-text">Current stock: 4 units. 7 bookings need this part today. Auto-reorder placed with SRP Agencies — ETA 2 hours.</div>
+            </div>
+          </div>
+
+          <div class="ai-alert warning">
+            <div class="ai-alert-icon">👨‍🔧</div>
+            <div>
+              <div class="ai-alert-title">Bay 3 Overload — Rajan has 6 jobs queued</div>
+              <div class="ai-alert-text">AI recommends reassigning 2 routine jobs to Muthu (Bay 5) who has capacity. Estimated 1.4h time savings.</div>
+            </div>
+          </div>
+
+          <div class="ai-alert info">
+            <div class="ai-alert-icon">📊</div>
+            <div>
+              <div class="ai-alert-title">Peak Load Predicted — 2PM to 4PM Today</div>
+              <div class="ai-alert-text">Based on historical patterns, expect 8 walk-ins between 2-4 PM. Bay 4 currently free — prepare it as overflow bay.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Schedule -->
+        <div>
+          <div class="section-header">
+            <div>
+              <div class="section-title">📅 Live Job Tracker</div>
+              <div class="section-sub">Active jobs right now</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="nav('jobcards')">All Jobs</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Vehicle</th>
+                  <th>Job</th>
+                  <th>Bay</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="bold">TN 09 AB 1234<br><span style="font-size:11px;color:var(--text3)">Honda City</span></td>
+                  <td>Full Service</td>
+                  <td><span class="badge badge-teal">Bay 1</span></td>
+                  <td><span class="badge badge-success">● In Progress</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">TN 10 CK 5678<br><span style="font-size:11px;color:var(--text3)">Jazz</span></td>
+                  <td>Brake Repair</td>
+                  <td><span class="badge badge-info">Bay 2</span></td>
+                  <td><span class="badge badge-warn">● Waiting Parts</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">TN 22 DN 9012<br><span style="font-size:11px;color:var(--text3)">Amaze</span></td>
+                  <td>AC Service</td>
+                  <td><span class="badge badge-teal">Bay 3</span></td>
+                  <td><span class="badge badge-success">● In Progress</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">TN 07 RP 3456<br><span style="font-size:11px;color:var(--text3)">WR-V</span></td>
+                  <td>Oil Change</td>
+                  <td><span class="badge badge-purple">Bay 5</span></td>
+                  <td><span class="badge badge-info">● QC Check</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">TN 02 AL 7890<br><span style="font-size:11px;color:var(--text3)">City</span></td>
+                  <td>Warranty Claim</td>
+                  <td><span class="badge badge-gold">Bay 4</span></td>
+                  <td><span class="badge badge-danger">● On Hold</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">🏗️ Bay Utilization — AI Optimized</div>
+              <span class="badge badge-teal">89% Today</span>
+            </div>
+            <div class="panel-body">
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+                    <span>Bay 1 — Rajan Kumar</span><span style="color:var(--success);font-weight:700;">ACTIVE</span>
+                  </div>
+                  <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:90%;background:var(--success)"></div></div><span class="ai-bar-label">90%</span></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+                    <span>Bay 2 — Suresh A.</span><span style="color:var(--warn);font-weight:700;">PARTS WAIT</span>
+                  </div>
+                  <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:55%;background:var(--warn)"></div></div><span class="ai-bar-label">55%</span></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+                    <span>Bay 3 — Muthu S.</span><span style="color:var(--success);font-weight:700;">ACTIVE</span>
+                  </div>
+                  <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:95%;background:var(--success)"></div></div><span class="ai-bar-label">95%</span></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+                    <span>Bay 4 — Anbu K.</span><span style="color:var(--danger);font-weight:700;">ON HOLD</span>
+                  </div>
+                  <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:30%;background:var(--danger)"></div></div><span class="ai-bar-label">30%</span></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+                    <span>Bay 5 — Karthik V.</span><span style="color:var(--accent3);font-weight:700;">QC CHECK</span>
+                  </div>
+                  <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:80%;background:var(--accent3)"></div></div><span class="ai-bar-label">80%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom row -->
+      <div class="three-col">
+        <!-- Upcoming -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">⏰ Next 3 Arrivals</div>
+            <span style="font-size:11px;color:var(--text3)">AI-confirmed</span>
+          </div>
+          <div class="panel-body">
+            <div class="list-item">
+              <div class="list-icon" style="background:rgba(45,212,191,0.1)">🚗</div>
+              <div class="list-main">
+                <div class="list-title">Priya Rajan — City</div>
+                <div class="list-sub">Full Service + Wheel Alignment</div>
+              </div>
+              <div class="list-right">
+                <div class="list-value" style="color:var(--accent)">10:30 AM</div>
+                <div class="list-time">Bay 2</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-icon" style="background:rgba(56,189,248,0.1)">🚗</div>
+              <div class="list-main">
+                <div class="list-title">Mohan Kumar — Jazz</div>
+                <div class="list-sub">Warranty — Electrical Issue</div>
+              </div>
+              <div class="list-right">
+                <div class="list-value" style="color:var(--accent2)">11:00 AM</div>
+                <div class="list-time">Bay 1</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-icon" style="background:rgba(251,146,60,0.1)">🚗</div>
+              <div class="list-main">
+                <div class="list-title">Kavitha S. — Amaze</div>
+                <div class="list-sub">AI Alert — Coolant Check</div>
+              </div>
+              <div class="list-right">
+                <div class="list-value" style="color:var(--warn)">11:30 AM</div>
+                <div class="list-time">Bay 3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parts low -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">📦 Low Stock Alerts</div>
+            <span class="badge badge-warn">5 Critical</span>
+          </div>
+          <div class="panel-body">
+            <div class="inv-item">
+              <div class="inv-dot" style="background:var(--danger)"></div>
+              <div class="inv-name">Brake Pads — Honda City</div>
+              <div>
+                <div class="inv-qty" style="color:var(--danger)">4 left</div>
+                <div class="inv-status" style="color:var(--text3)">Reorder placed</div>
+              </div>
+            </div>
+            <div class="inv-item">
+              <div class="inv-dot" style="background:var(--danger)"></div>
+              <div class="inv-name">Engine Oil 0W-20</div>
+              <div>
+                <div class="inv-qty" style="color:var(--danger)">6 bottles</div>
+                <div class="inv-status" style="color:var(--text3)">Reorder placed</div>
+              </div>
+            </div>
+            <div class="inv-item">
+              <div class="inv-dot" style="background:var(--warn)"></div>
+              <div class="inv-name">Air Filter — Amaze</div>
+              <div>
+                <div class="inv-qty" style="color:var(--warn)">12 left</div>
+                <div class="inv-status" style="color:var(--text3)">Order needed</div>
+              </div>
+            </div>
+            <div class="inv-item">
+              <div class="inv-dot" style="background:var(--warn)"></div>
+              <div class="inv-name">Spark Plugs (NGK)</div>
+              <div>
+                <div class="inv-qty" style="color:var(--warn)">8 left</div>
+                <div class="inv-status" style="color:var(--text3)">Monitor</div>
+              </div>
+            </div>
+            <div class="inv-item">
+              <div class="inv-dot" style="background:var(--success)"></div>
+              <div class="inv-name">Cabin Air Filter</div>
+              <div>
+                <div class="inv-qty" style="color:var(--success)">24 left</div>
+                <div class="inv-status" style="color:var(--text3)">OK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI performance -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">🤖 AI Model Performance</div>
+            <span class="badge badge-teal">Live</span>
+          </div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:4px;">PredictiveMaintenance</div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:94%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">94%</span></div>
+              </div>
+              <div>
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:4px;">ServiceScheduling</div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:96%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">96%</span></div>
+              </div>
+              <div>
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:4px;">PartsInventory AI</div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:91%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">91%</span></div>
+              </div>
+              <div>
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:4px;">TechnicianMatch</div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:88%;background:var(--accent)"></div></div><span class="ai-bar-label" style="color:var(--accent)">88%</span></div>
+              </div>
+              <div>
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:4px;">CustomerSentiment</div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:82%;background:var(--accent3)"></div></div><span class="ai-bar-label" style="color:var(--accent3)">82%</span></div>
+              </div>
+              <div>
+                <div style="font-size:11.5px;color:var(--text2);margin-bottom:4px;">DiagnosticEngine</div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:89%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">89%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: BOOKINGS ══ -->
+    <div class="page" id="page-bookings">
+      <div class="filter-row">
+        <input class="search-box" type="text" placeholder="Search by name, vehicle, reg number...">
+        <select class="filter-select">
+          <option>All Status</option>
+          <option>Confirmed</option>
+          <option>Pending</option>
+          <option>Arrived</option>
+          <option>Cancelled</option>
+        </select>
+        <select class="filter-select">
+          <option>Today</option>
+          <option>This Week</option>
+          <option>This Month</option>
+        </select>
+        <button class="btn btn-primary" onclick="openBookingModal()">+ New Booking</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Customer</th>
+              <th>Vehicle</th>
+              <th>Service Type</th>
+              <th>Date & Time</th>
+              <th>Bay / Tech</th>
+              <th>AI Score</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody">
+            <tr>
+              <td class="bold">#B1042</td>
+              <td><div style="font-weight:600">Priya Rajan</div><div style="font-size:11px;color:var(--text3)">+91 98410 12345</div></td>
+              <td>Honda City<br><span class="badge badge-teal" style="font-size:10px">TN09AB1234</span></td>
+              <td>Full Service</td>
+              <td><div style="font-weight:600">Today 10:30 AM</div><div style="font-size:11px;color:var(--text3)">Est. 3.5h</div></td>
+              <td>Bay 2 / Rajan K.</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:92%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">92%</span></div></td>
+              <td><span class="badge badge-success">Confirmed</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="openJobModal('B1042')">Open Job</button></td>
+            </tr>
+            <tr>
+              <td class="bold">#B1043</td>
+              <td><div style="font-weight:600">Mohan Kumar</div><div style="font-size:11px;color:var(--text3)">+91 99401 67890</div></td>
+              <td>Honda Jazz<br><span class="badge badge-info" style="font-size:10px">TN10CK5678</span></td>
+              <td>Warranty Repair</td>
+              <td><div style="font-weight:600">Today 11:00 AM</div><div style="font-size:11px;color:var(--text3)">Est. 2.0h</div></td>
+              <td>Bay 1 / Suresh A.</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:78%;background:var(--accent)"></div></div><span class="ai-bar-label" style="color:var(--accent)">78%</span></div></td>
+              <td><span class="badge badge-success">Confirmed</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="openJobModal('B1043')">Open Job</button></td>
+            </tr>
+            <tr>
+              <td class="bold">#B1044</td>
+              <td><div style="font-weight:600">Kavitha Sundar</div><div style="font-size:11px;color:var(--text3)">+91 90000 22222</div></td>
+              <td>Honda Amaze<br><span class="badge badge-purple" style="font-size:10px">TN22DN9012</span></td>
+              <td>AC Service + Diag.</td>
+              <td><div style="font-weight:600">Today 11:30 AM</div><div style="font-size:11px;color:var(--text3)">Est. 2.5h</div></td>
+              <td>Bay 3 / Muthu S.</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:88%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">88%</span></div></td>
+              <td><span class="badge badge-info">Arrived</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="openJobModal('B1044')">Open Job</button></td>
+            </tr>
+            <tr>
+              <td class="bold">#B1045</td>
+              <td><div style="font-weight:600">Ramesh V.</div><div style="font-size:11px;color:var(--text3)">+91 87000 55555</div></td>
+              <td>Honda WR-V<br><span class="badge badge-gold" style="font-size:10px">TN07RP3456</span></td>
+              <td>Oil Change</td>
+              <td><div style="font-weight:600">Today 12:00 PM</div><div style="font-size:11px;color:var(--text3)">Est. 1.0h</div></td>
+              <td>Bay 5 / Karthik V.</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:95%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">95%</span></div></td>
+              <td><span class="badge badge-success">Confirmed</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="openJobModal('B1045')">Open Job</button></td>
+            </tr>
+            <tr>
+              <td class="bold">#B1046</td>
+              <td><div style="font-weight:600">Anitha Nair</div><div style="font-size:11px;color:var(--text3)">+91 76000 44444</div></td>
+              <td>Honda City<br><span class="badge badge-danger" style="font-size:10px">MH01BH9234</span></td>
+              <td>AI Alert — Engine</td>
+              <td><div style="font-weight:600">Today 2:00 PM</div><div style="font-size:11px;color:var(--text3)">Urgent referral</div></td>
+              <td>TBD</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:87%;background:var(--danger)"></div></div><span class="ai-bar-label" style="color:var(--danger)">87%</span></div></td>
+              <td><span class="badge badge-warn">Pending</span></td>
+              <td><button class="btn btn-warn btn-sm">Assign Bay</button></td>
+            </tr>
+            <tr>
+              <td class="bold">#B1047</td>
+              <td><div style="font-weight:600">Vikram S.</div><div style="font-size:11px;color:var(--text3)">+91 98765 11111</div></td>
+              <td>Honda Jazz<br><span class="badge badge-teal" style="font-size:10px">TN15MK2301</span></td>
+              <td>Periodic Service</td>
+              <td><div style="font-weight:600">Today 3:00 PM</div><div style="font-size:11px;color:var(--text3)">Est. 2.5h</div></td>
+              <td>Bay 1 / Rajan K.</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:74%;background:var(--accent)"></div></div><span class="ai-bar-label" style="color:var(--accent)">74%</span></div></td>
+              <td><span class="badge badge-success">Confirmed</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="openJobModal('B1047')">Open Job</button></td>
+            </tr>
+            <tr>
+              <td class="bold">#B1048</td>
+              <td><div style="font-weight:600">Divya Prakash</div><div style="font-size:11px;color:var(--text3)">+91 94444 99999</div></td>
+              <td>Honda Amaze<br><span class="badge badge-info" style="font-size:10px">TN04XY8900</span></td>
+              <td>Brake + Suspension</td>
+              <td><div style="font-weight:600">Tomorrow 9:00 AM</div><div style="font-size:11px;color:var(--text3)">Est. 4.0h</div></td>
+              <td>Bay 3 / Muthu S.</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:83%;background:var(--success)"></div></div><span class="ai-bar-label" style="color:var(--success)">83%</span></div></td>
+              <td><span class="badge badge-teal">Scheduled</span></td>
+              <td><button class="btn btn-secondary btn-sm">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: JOB CARDS ══ -->
+    <div class="page" id="page-jobcards">
+
+      <div class="filter-row">
+        <input class="search-box" type="text" placeholder="Search job cards...">
+        <select class="filter-select">
+          <option>All Jobs</option>
+          <option>In Progress</option>
+          <option>QC Pending</option>
+          <option>Complete</option>
+        </select>
+        <button class="btn btn-primary">+ Create Job Card</button>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-title" style="margin-bottom:12px">🔧 Active Job Cards</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Job ID</th><th>Vehicle</th><th>Services</th><th>AI Est.</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="bold">#J0091</td>
+                  <td>City / TN09AB1234</td>
+                  <td>Oil, Filter, Check</td>
+                  <td style="font-family:var(--font-mono)">₹3,200</td>
+                  <td><span class="badge badge-success">In Progress</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">#J0092</td>
+                  <td>Jazz / TN10CK5678</td>
+                  <td>Brake Pads</td>
+                  <td style="font-family:var(--font-mono)">₹5,800</td>
+                  <td><span class="badge badge-warn">Parts Wait</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">#J0093</td>
+                  <td>Amaze / TN22DN9012</td>
+                  <td>AC Gas, Compressor</td>
+                  <td style="font-family:var(--font-mono)">₹7,400</td>
+                  <td><span class="badge badge-success">In Progress</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">#J0094</td>
+                  <td>WR-V / TN07RP3456</td>
+                  <td>Engine Oil 0W20</td>
+                  <td style="font-family:var(--font-mono)">₹1,800</td>
+                  <td><span class="badge badge-info">QC Check</span></td>
+                </tr>
+                <tr>
+                  <td class="bold">#J0095</td>
+                  <td>City / TN02AL7890</td>
+                  <td>Warranty — Engine</td>
+                  <td style="font-family:var(--font-mono)">₹0 (Warranty)</td>
+                  <td><span class="badge badge-danger">On Hold</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Job Card Detail -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">📋 Job Card #J0091 — Detail</div>
+            <span class="badge badge-success">In Progress</span>
+          </div>
+          <div class="panel-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+              <div><div style="font-size:11px;color:var(--text3)">Customer</div><div style="font-weight:600;font-size:13px">Priya Rajan</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Vehicle</div><div style="font-weight:600;font-size:13px">Honda City 2022</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Reg. No.</div><div style="font-family:var(--font-mono);font-size:13px">TN 09 AB 1234</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Odometer</div><div style="font-family:var(--font-mono);font-size:13px">24,820 km</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Technician</div><div style="font-size:13px">Rajan Kumar</div></div>
+              <div><div style="font-size:11px;color:var(--text3)">Bay</div><div style="font-size:13px">Bay 2</div></div>
+            </div>
+
+            <div style="font-size:12px;font-weight:600;margin-bottom:8px">Services Requested</div>
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+              <div style="display:flex;justify-content:space-between;font-size:12.5px">
+                <span>✅ Engine Oil Change (0W-20, 4L)</span><span style="font-family:var(--font-mono)">₹1,200</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px">
+                <span>✅ Oil Filter</span><span style="font-family:var(--font-mono)">₹350</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px">
+                <span>⏳ Air Filter Cleaning</span><span style="font-family:var(--font-mono)">₹200</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px">
+                <span>⏳ Wheel Alignment</span><span style="font-family:var(--font-mono)">₹800</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px">
+                <span>⏳ Multi-Point Inspection</span><span style="font-family:var(--font-mono)">₹500</span>
+              </div>
+              <div class="sep"></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
+                <span>Total Estimate</span><span style="font-family:var(--font-mono);color:var(--accent)">₹3,050</span>
+              </div>
+            </div>
+
+            <div class="ai-prediction">
+              <div class="ai-prediction-title">🤖 AI Recommendations</div>
+              <div class="pred-items">
+                <div class="pred-item">
+                  <span class="pred-item-label">Brake pads wear (AI detected)</span>
+                  <span class="pred-item-value" style="color:var(--warn)">Replace Soon</span>
+                </div>
+                <div class="pred-item">
+                  <span class="pred-item-label">Upsell Probability</span>
+                  <span class="pred-item-value" style="color:var(--success)">74%</span>
+                </div>
+                <div class="pred-item">
+                  <span class="pred-item-label">Est. Upsell Value</span>
+                  <span class="pred-item-value" style="color:var(--accent2)">₹1,800</span>
+                </div>
+                <div class="pred-item">
+                  <span class="pred-item-label">Next Service Due</span>
+                  <span class="pred-item-value">30,000 km</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px">
+              <div class="btn-group">
+                <button class="btn btn-primary">📱 Update Customer</button>
+                <button class="btn btn-secondary">🖨️ Print Job Card</button>
+                <button class="btn btn-ghost">Mark Complete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: SCHEDULE ══ -->
+    <div class="page" id="page-schedule">
+      <div style="margin-bottom:16px">
+        <div class="section-title">🏗️ Bay Schedule — Today, 1 March 2026</div>
+        <div class="section-sub">AI-optimized allocation · Drag jobs to reassign bays</div>
+      </div>
+
+      <!-- Schedule grid -->
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-head">
+          <div class="panel-title">Time-Bay Grid</div>
+          <div style="display:flex;gap:10px;font-size:12px">
+            <span style="color:var(--accent)">■</span> Booked
+            <span style="color:var(--warn)">■</span> Parts Wait
+            <span style="color:var(--text3)">■</span> Free
+          </div>
+        </div>
+        <div class="panel-body" style="overflow-x:auto">
+          <div class="day-grid" style="min-width:600px">
+            <!-- Headers -->
+            <div class="day-slot day-time"></div>
+            <div class="day-slot" style="background:var(--bg3);font-weight:700;font-size:12px">Bay 1 — Rajan K.</div>
+            <div class="day-slot" style="background:var(--bg3);font-weight:700;font-size:12px">Bay 2 — Suresh A.</div>
+            <div class="day-slot" style="background:var(--bg3);font-weight:700;font-size:12px">Bay 3 — Muthu S.</div>
+            <div class="day-slot" style="background:var(--bg3);font-weight:700;font-size:12px">Bay 5 — Karthik V.</div>
+
+            <!-- 9am -->
+            <div class="day-slot day-time">9:00</div>
+            <div class="day-slot slot-booked"><span class="slot-label">Full Service — Priya</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">AC Service — Kavitha</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+
+            <div class="day-slot day-time">10:00</div>
+            <div class="day-slot slot-booked"><span class="slot-label">Full Service</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Warranty — Mohan</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">AC Service</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Oil Change — Ramesh</span></div>
+
+            <div class="day-slot day-time">11:00</div>
+            <div class="day-slot slot-booked"><span class="slot-label">Full Service</span></div>
+            <div class="day-slot slot-busy"><span class="slot-label">⚠️ Parts Wait</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">AC Service</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">QC Check</span></div>
+
+            <div class="day-slot day-time">12:00</div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Brake Repair</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+
+            <div class="day-slot day-time">1:00 PM</div>
+            <div class="day-slot slot-free"><span class="slot-label">Lunch Break</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Lunch Break</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Lunch Break</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Lunch Break</span></div>
+
+            <div class="day-slot day-time">2:00 PM</div>
+            <div class="day-slot slot-booked"><span class="slot-label">Periodic — Vikram</span></div>
+            <div class="day-slot slot-busy"><span class="slot-label">⚠️ AI ALERT Job</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Engine Diag.</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+
+            <div class="day-slot day-time">3:00 PM</div>
+            <div class="day-slot slot-booked"><span class="slot-label">Periodic — Vikram</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Suspension Check</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+
+            <div class="day-slot day-time">4:00 PM</div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Body Inspection</span></div>
+            <div class="day-slot slot-free"><span class="slot-label">Available</span></div>
+            <div class="day-slot slot-booked"><span class="slot-label">Delivery Check</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">🤖 AI Scheduling Insights</div>
+          </div>
+          <div class="panel-body">
+            <div class="ai-alert info">
+              <div class="ai-alert-icon">💡</div>
+              <div>
+                <div class="ai-alert-title">Optimization Opportunity — 12:00-1:00 PM</div>
+                <div class="ai-alert-text">Bays 1, 3, and 5 are free. AI recommends 3 walk-in slots for quick jobs (oil change, filter). Estimated ₹5,400 additional revenue.</div>
+              </div>
+            </div>
+            <div class="ai-alert warning">
+              <div class="ai-alert-icon">⚠️</div>
+              <div>
+                <div class="ai-alert-title">Bay 2 Delay Risk — Brake Job</div>
+                <div class="ai-alert-text">Parts ETA 2 hours. AI suggests moving Bay 2's 11AM slot to 1PM to prevent customer wait. Notify Suresh now.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-title">📊 Today's Bay Efficiency</div>
+          </div>
+          <div class="panel-body">
+            <div style="display:flex;justify-content:space-around;text-align:center;padding:10px 0">
+              <div>
+                <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--accent)">89%</div>
+                <div style="font-size:11px;color:var(--text3)">Bay Utilization</div>
+                <div style="font-size:11px;color:var(--success)">vs 60% industry avg</div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--success)">5%</div>
+                <div style="font-size:11px;color:var(--text3)">No-Show Rate</div>
+                <div style="font-size:11px;color:var(--success)">vs 40% without AI</div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--accent2)">2.8h</div>
+                <div style="font-size:11px;color:var(--text3)">Avg Turnaround</div>
+                <div style="font-size:11px;color:var(--success)">vs 7h manual</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PREDICTIVE AI ══ -->
+    <div class="page" id="page-predictive">
+      <div class="section-header">
+        <div>
+          <div class="section-title">🤖 Predictive Maintenance AI Engine</div>
+          <div class="section-sub">13 AI models running — 94% average accuracy</div>
+        </div>
+        <span class="badge badge-success">All Models Healthy</span>
+      </div>
+
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi-card red">
+          <div class="kpi-icon">🚨</div>
+          <div class="kpi-label">Critical Alerts</div>
+          <div class="kpi-value" style="color:var(--danger)">3</div>
+          <div class="kpi-delta down">Immediate action needed</div>
+        </div>
+        <div class="kpi-card orange">
+          <div class="kpi-icon">⚠️</div>
+          <div class="kpi-label">Warning Alerts</div>
+          <div class="kpi-value" style="color:var(--warn)">11</div>
+          <div class="kpi-delta neutral">Due within 30 days</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-label">Vehicles Healthy</div>
+          <div class="kpi-value" style="color:var(--success)">147</div>
+          <div class="kpi-delta up">No action needed</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Priority</th><th>Vehicle</th><th>Owner</th><th>AI Prediction</th><th>Failure Prob.</th><th>Action</th><th>Revenue</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-danger">🚨 CRITICAL</span></td>
+              <td>Honda City<br><span style="font-size:11px;font-family:var(--font-mono);color:var(--text3)">MH01BH9234</span></td>
+              <td>Anitha Nair<br><span style="font-size:11px;color:var(--text3)">+91 76000 44444</span></td>
+              <td>Engine oil pressure anomaly — bearing wear detected via vibration pattern</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:87%;background:var(--danger)"></div></div><span class="ai-bar-label" style="color:var(--danger)">87%</span></div></td>
+              <td><button class="btn btn-danger btn-sm" onclick="showToast('WhatsApp alert sent to Anitha Nair','warn')">📱 Alert Customer</button></td>
+              <td style="font-family:var(--font-mono);color:var(--success)">₹12,000</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-danger">🚨 CRITICAL</span></td>
+              <td>Honda Jazz<br><span style="font-size:11px;font-family:var(--font-mono);color:var(--text3)">TN12KL3344</span></td>
+              <td>Senthil M.<br><span style="font-size:11px;color:var(--text3)">+91 98765 33333</span></td>
+              <td>Brake fluid contamination — moisture content above safe threshold</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:79%;background:var(--danger)"></div></div><span class="ai-bar-label" style="color:var(--danger)">79%</span></div></td>
+              <td><button class="btn btn-danger btn-sm" onclick="showToast('Alert sent to Senthil M.','warn')">📱 Alert Customer</button></td>
+              <td style="font-family:var(--font-mono);color:var(--success)">₹3,500</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-danger">🚨 CRITICAL</span></td>
+              <td>Honda Amaze<br><span style="font-size:11px;font-family:var(--font-mono);color:var(--text3)">TN08PQ6677</span></td>
+              <td>Lakshmi R.<br><span style="font-size:11px;color:var(--text3)">+91 91111 77777</span></td>
+              <td>Timing belt wear — 94,200km. Replacement overdue (recommended at 80,000km)</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:91%;background:var(--danger)"></div></div><span class="ai-bar-label" style="color:var(--danger)">91%</span></div></td>
+              <td><button class="btn btn-danger btn-sm" onclick="showToast('Alert sent to Lakshmi R.','warn')">📱 Alert Customer</button></td>
+              <td style="font-family:var(--font-mono);color:var(--success)">₹8,000</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-warn">⚠️ WARNING</span></td>
+              <td>Honda City<br><span style="font-size:11px;font-family:var(--font-mono);color:var(--text3)">TN01AB2233</span></td>
+              <td>Rajesh P.<br><span style="font-size:11px;color:var(--text3)">+91 88888 22222</span></td>
+              <td>AC performance degradation — refrigerant level low (estimated -15%)</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:62%;background:var(--warn)"></div></div><span class="ai-bar-label" style="color:var(--warn)">62%</span></div></td>
+              <td><button class="btn btn-warn btn-sm" onclick="showToast('Reminder sent to Rajesh P.','info')">📅 Schedule</button></td>
+              <td style="font-family:var(--font-mono);color:var(--success)">₹4,500</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-warn">⚠️ WARNING</span></td>
+              <td>Honda WR-V<br><span style="font-size:11px;font-family:var(--font-mono);color:var(--text3)">TN03CD4455</span></td>
+              <td>Pradeep S.<br><span style="font-size:11px;color:var(--text3)">+91 77777 33333</span></td>
+              <td>Tyre wear pattern suggests misalignment — front-left 60% worn</td>
+              <td><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:58%;background:var(--warn)"></div></div><span class="ai-bar-label" style="color:var(--warn)">58%</span></div></td>
+              <td><button class="btn btn-warn btn-sm" onclick="showToast('Reminder sent to Pradeep S.','info')">📅 Schedule</button></td>
+              <td style="font-family:var(--font-mono);color:var(--success)">₹2,800</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">📊 AI Alert to Revenue Conversion</div></div>
+          <div class="panel-body">
+            <div style="display:flex;justify-content:space-around;text-align:center;padding:16px 0">
+              <div>
+                <div style="font-family:var(--font-head);font-size:34px;font-weight:800;color:var(--accent)">68%</div>
+                <div style="font-size:11.5px;color:var(--text3)">Alerts converted<br>to service bookings</div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-head);font-size:34px;font-weight:800;color:var(--success)">₹4.2L</div>
+                <div style="font-size:11.5px;color:var(--text3)">Revenue from<br>AI alerts this month</div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-head);font-size:34px;font-weight:800;color:var(--warn)">14</div>
+                <div style="font-size:11.5px;color:var(--text3)">Breakdowns<br>prevented this month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">🔬 Model Accuracy — Live</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div>
+                <div style="font-size:12px;margin-bottom:4px;display:flex;justify-content:space-between"><span>LSTM Engine Failure Model</span><span style="color:var(--success);font-weight:700">94%</span></div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:94%;background:var(--success)"></div></div></div>
+              </div>
+              <div>
+                <div style="font-size:12px;margin-bottom:4px;display:flex;justify-content:space-between"><span>Brake System Predictor</span><span style="color:var(--success);font-weight:700">91%</span></div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:91%;background:var(--success)"></div></div></div>
+              </div>
+              <div>
+                <div style="font-size:12px;margin-bottom:4px;display:flex;justify-content:space-between"><span>AC Performance Model</span><span style="color:var(--accent);font-weight:700">87%</span></div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:87%;background:var(--accent)"></div></div></div>
+              </div>
+              <div>
+                <div style="font-size:12px;margin-bottom:4px;display:flex;justify-content:space-between"><span>Tyre Wear Analysis</span><span style="color:var(--accent);font-weight:700">83%</span></div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:83%;background:var(--accent)"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: INVENTORY ══ -->
+    <div class="page" id="page-inventory">
+      <div class="filter-row">
+        <input class="search-box" type="text" placeholder="Search parts...">
+        <select class="filter-select">
+          <option>All Status</option>
+          <option>Critical</option>
+          <option>Low Stock</option>
+          <option>OK</option>
+        </select>
+        <select class="filter-select">
+          <option>All Categories</option>
+          <option>Engine</option>
+          <option>Brakes</option>
+          <option>Filters</option>
+          <option>AC</option>
+        </select>
+        <button class="btn btn-primary">+ Add Part</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Part Code</th><th>Part Name</th><th>Category</th><th>In Stock</th><th>Min Level</th><th>AI Forecast</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">BP-HC-F</td>
+              <td class="bold">Brake Pads — Honda City Front</td>
+              <td>Brakes</td>
+              <td style="font-family:var(--font-mono);color:var(--danger);font-weight:700">4 units</td>
+              <td style="font-family:var(--font-mono)">10 units</td>
+              <td>Need 7 today — AI reordered 20</td>
+              <td><span class="badge badge-danger">CRITICAL</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="showToast('Reorder placed: 20x Brake Pads Honda City','success')">Reorder Now</button></td>
+            </tr>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">OIL-0W20</td>
+              <td class="bold">Engine Oil 0W-20 (1L)</td>
+              <td>Engine</td>
+              <td style="font-family:var(--font-mono);color:var(--danger);font-weight:700">6 bottles</td>
+              <td style="font-family:var(--font-mono)">20 bottles</td>
+              <td>Need 12 today — AI reordered 48</td>
+              <td><span class="badge badge-danger">CRITICAL</span></td>
+              <td><button class="btn btn-secondary btn-sm" onclick="showToast('Reorder placed: 48x Engine Oil','success')">Reorder Now</button></td>
+            </tr>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">AF-AM-R</td>
+              <td class="bold">Air Filter — Amaze</td>
+              <td>Filters</td>
+              <td style="font-family:var(--font-mono);color:var(--warn);font-weight:700">12 units</td>
+              <td style="font-family:var(--font-mono)">15 units</td>
+              <td>Need 18 this week</td>
+              <td><span class="badge badge-warn">LOW</span></td>
+              <td><button class="btn btn-ghost btn-sm">Order</button></td>
+            </tr>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">SP-NGK-5</td>
+              <td class="bold">Spark Plugs NGK (Pack)</td>
+              <td>Engine</td>
+              <td style="font-family:var(--font-mono);color:var(--warn);font-weight:700">8 packs</td>
+              <td style="font-family:var(--font-mono)">12 packs</td>
+              <td>Need 10 this week</td>
+              <td><span class="badge badge-warn">LOW</span></td>
+              <td><button class="btn btn-ghost btn-sm">Order</button></td>
+            </tr>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">CAF-HC-R</td>
+              <td class="bold">Cabin Air Filter — Honda City/Jazz</td>
+              <td>Filters</td>
+              <td style="font-family:var(--font-mono);color:var(--success)">24 units</td>
+              <td style="font-family:var(--font-mono)">10 units</td>
+              <td>Stock adequate for 3 weeks</td>
+              <td><span class="badge badge-success">OK</span></td>
+              <td><button class="btn btn-ghost btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">AC-GAS-R</td>
+              <td class="bold">AC Refrigerant R134a (500g)</td>
+              <td>AC System</td>
+              <td style="font-family:var(--font-mono);color:var(--success)">18 cans</td>
+              <td style="font-family:var(--font-mono)">8 cans</td>
+              <td>Stock adequate for 2 weeks</td>
+              <td><span class="badge badge-success">OK</span></td>
+              <td><button class="btn btn-ghost btn-sm">View</button></td>
+            </tr>
+            <tr>
+              <td class="bold" style="font-family:var(--font-mono)">BF-DOT4</td>
+              <td class="bold">Brake Fluid DOT4 (500ml)</td>
+              <td>Brakes</td>
+              <td style="font-family:var(--font-mono);color:var(--success)">32 bottles</td>
+              <td style="font-family:var(--font-mono)">8 bottles</td>
+              <td>Stock adequate</td>
+              <td><span class="badge badge-success">OK</span></td>
+              <td><button class="btn btn-ghost btn-sm">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">🤖 AI Demand Forecast — Next 7 Days</div></div>
+          <div class="panel-body">
+            <div class="ai-prediction">
+              <div class="ai-prediction-title">📊 AI Inventory Intelligence</div>
+              <div class="pred-items">
+                <div class="pred-item"><span class="pred-item-label">Total parts predicted this week</span><span class="pred-item-value" style="color:var(--accent)">247 items</span></div>
+                <div class="pred-item"><span class="pred-item-label">Parts procurement savings (AI)</span><span class="pred-item-value" style="color:var(--success)">₹18,400</span></div>
+                <div class="pred-item"><span class="pred-item-label">Dead stock identified</span><span class="pred-item-value" style="color:var(--warn)">14 SKUs</span></div>
+                <div class="pred-item"><span class="pred-item-label">Auto-reorders placed today</span><span class="pred-item-value">2</span></div>
+                <div class="pred-item"><span class="pred-item-label">Forecast accuracy</span><span class="pred-item-value" style="color:var(--success)">91%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">📦 Inventory Health</div></div>
+          <div class="panel-body" style="display:flex;justify-content:space-around;align-items:center;padding:24px 0">
+            <div style="text-align:center">
+              <div style="font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--danger)">5</div>
+              <div style="font-size:12px;color:var(--text3)">Critical Items</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--warn)">8</div>
+              <div style="font-size:12px;color:var(--text3)">Low Stock</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:var(--font-head);font-size:38px;font-weight:800;color:var(--success)">184</div>
+              <div style="font-size:12px;color:var(--text3)">SKUs OK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: TECHNICIANS ══ -->
+    <div class="page" id="page-technicians">
+      <div class="section-header">
+        <div class="section-title">👨‍🔧 Technician Management — AI Skill Matching</div>
+      </div>
+
+      <div class="tech-grid" style="margin-bottom:20px">
+        <div class="tech-card busy">
+          <div style="font-size:28px">👨‍🔧</div>
+          <div class="tech-name">Rajan Kumar</div>
+          <div class="tech-skill">Engine Specialist — Level 5</div>
+          <div style="margin-bottom:8px">
+            <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:90%;background:var(--warn)"></div></div><span class="ai-bar-label" style="font-size:10px">90%</span></div>
+          </div>
+          <div class="tech-load" style="color:var(--warn)">⚠️ High Load — 5 jobs today</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Bay 1 · Today ₹18,400</div>
+        </div>
+        <div class="tech-card busy">
+          <div style="font-size:28px">👨‍🔧</div>
+          <div class="tech-name">Suresh Arumugam</div>
+          <div class="tech-skill">Brake & Suspension — Level 4</div>
+          <div style="margin-bottom:8px">
+            <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:55%;background:var(--warn)"></div></div><span class="ai-bar-label" style="font-size:10px">55%</span></div>
+          </div>
+          <div class="tech-load" style="color:var(--warn)">Parts wait — 1 job on hold</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Bay 2 · Today ₹9,200</div>
+        </div>
+        <div class="tech-card available">
+          <div style="font-size:28px">👨‍🔧</div>
+          <div class="tech-name">Muthu Selvam</div>
+          <div class="tech-skill">AC & Electrical — Level 4</div>
+          <div style="margin-bottom:8px">
+            <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:70%;background:var(--success)"></div></div><span class="ai-bar-label" style="font-size:10px">70%</span></div>
+          </div>
+          <div class="tech-load" style="color:var(--success)">✅ Active — 3 jobs today</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Bay 3 · Today ₹14,800</div>
+        </div>
+        <div class="tech-card busy">
+          <div style="font-size:28px">👨‍🔧</div>
+          <div class="tech-name">Anbu Chelvan</div>
+          <div class="tech-skill">Body & Paint — Level 3</div>
+          <div style="margin-bottom:8px">
+            <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:30%;background:var(--danger)"></div></div><span class="ai-bar-label" style="font-size:10px">30%</span></div>
+          </div>
+          <div class="tech-load" style="color:var(--danger)">🚨 Job on hold — warranty</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Bay 4 · Today ₹0</div>
+        </div>
+        <div class="tech-card available">
+          <div style="font-size:28px">👨‍🔧</div>
+          <div class="tech-name">Karthik Vel</div>
+          <div class="tech-skill">General Service — Level 3</div>
+          <div style="margin-bottom:8px">
+            <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:60%;background:var(--success)"></div></div><span class="ai-bar-label" style="font-size:10px">60%</span></div>
+          </div>
+          <div class="tech-load" style="color:var(--accent3)">🔍 QC Check in progress</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Bay 5 · Today ₹5,400</div>
+        </div>
+        <div class="tech-card break">
+          <div style="font-size:28px">👨‍🔧</div>
+          <div class="tech-name">Dinesh Kumar</div>
+          <div class="tech-skill">Engine & Gearbox — Level 5</div>
+          <div style="margin-bottom:8px">
+            <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:0%;background:var(--text3)"></div></div><span class="ai-bar-label" style="font-size:10px">OFF</span></div>
+          </div>
+          <div class="tech-load" style="color:var(--text3)">Day off today</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Resuming tomorrow</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">🤖 AI Skill Matching — Technician Recommendations</div>
+          <span class="badge badge-info">3 Suggestions</span>
+        </div>
+        <div class="panel-body">
+          <div class="ai-alert warning">
+            <div class="ai-alert-icon">⚠️</div>
+            <div>
+              <div class="ai-alert-title">Rajan Kumar Overloaded — Reassign 2 Jobs</div>
+              <div class="ai-alert-text">Rajan has 5 jobs today (90% load). AI recommends reassigning Job #J0096 (Oil Change) and #J0097 (Filter Service) to Karthik Vel. These are Level 2 tasks within Karthik's skill range. Estimated time savings: 2.1 hours.</div>
+            </div>
+          </div>
+          <div class="ai-alert info">
+            <div class="ai-alert-icon">💡</div>
+            <div>
+              <div class="ai-alert-title">Engine Alert Job — Assign to Rajan Kumar (Engine Specialist)</div>
+              <div class="ai-alert-text">The critical engine job for MH01BH9234 requires Engine Level 4+ skill. Only Rajan Kumar and Dinesh Kumar (day off) qualify. AI recommends scheduling this for Rajan's next available slot: 3:30 PM today.</div>
+            </div>
+          </div>
+          <div class="ai-alert info">
+            <div class="ai-alert-icon">📚</div>
+            <div>
+              <div class="ai-alert-title">Training Recommendation — Muthu Selvam</div>
+              <div class="ai-alert-text">Muthu has completed 23 AC service jobs this month (high volume, 97% quality score). AI recommends enrolling in Honda AC Master Technician Level 5 certification to maximize his value and salary progression.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: ANALYTICS ══ -->
+    <div class="page" id="page-analytics">
+      <div class="kpi-grid">
+        <div class="kpi-card green">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-label">This Month Revenue</div>
+          <div class="kpi-value" style="color:var(--success)">₹28.4L</div>
+          <div class="kpi-delta up">↑ 34% vs last month</div>
+        </div>
+        <div class="kpi-card teal">
+          <div class="kpi-icon">🔧</div>
+          <div class="kpi-label">Jobs This Month</div>
+          <div class="kpi-value" style="color:var(--accent)">847</div>
+          <div class="kpi-delta up">↑ 5x vs pre-AI (165/month)</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-icon">⭐</div>
+          <div class="kpi-label">Customer Satisfaction</div>
+          <div class="kpi-value" style="color:var(--accent3)">4.7/5</div>
+          <div class="kpi-delta up">↑ from 3.9/5 pre-AI</div>
+        </div>
+        <div class="kpi-card gold">
+          <div class="kpi-icon">🔄</div>
+          <div class="kpi-label">Repeat Customer Rate</div>
+          <div class="kpi-value" style="color:var(--gold)">74%</div>
+          <div class="kpi-delta up">↑ from 52% pre-AI</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">📊 Monthly Revenue Trend</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;color:var(--text3);width:32px;font-family:var(--font-mono)">Oct</span>
+                <div style="flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden">
+                  <div style="width:38%;height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent2));border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:white;font-weight:600">₹10.8L</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;color:var(--text3);width:32px;font-family:var(--font-mono)">Nov</span>
+                <div style="flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden">
+                  <div style="width:50%;height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent2));border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:white;font-weight:600">₹14.2L</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;color:var(--text3);width:32px;font-family:var(--font-mono)">Dec</span>
+                <div style="flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden">
+                  <div style="width:60%;height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent2));border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:white;font-weight:600">₹17.1L</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;color:var(--text3);width:32px;font-family:var(--font-mono)">Jan</span>
+                <div style="flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden">
+                  <div style="width:74%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:var(--bg);font-weight:600">₹21.2L</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;color:var(--text3);width:32px;font-family:var(--font-mono)">Feb</span>
+                <div style="flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden">
+                  <div style="width:84%;height:100%;background:linear-gradient(90deg,var(--accent),var(--success));border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:var(--bg);font-weight:600">₹23.9L</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:11px;color:var(--accent);width:32px;font-family:var(--font-mono);font-weight:700">Mar</span>
+                <div style="flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden">
+                  <div style="width:100%;height:100%;background:linear-gradient(90deg,var(--success),var(--accent));border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;color:var(--bg);font-weight:700">₹28.4L (MTD)</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:14px;padding:10px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);border-radius:8px">
+              <div style="font-size:12px;color:var(--success);font-weight:600">📈 163% Revenue Growth Since AI Deployment (Oct 2025)</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:3px">Pre-AI baseline: ₹9.2L/month average → Now: ₹28.4L → Target: ₹35L by June</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">📊 Revenue by Service Type</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">
+                  <span>Full Service Package</span><span style="font-weight:700;font-family:var(--font-mono)">₹9.2L (32%)</span>
+                </div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:100%;background:var(--accent)"></div></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">
+                  <span>Predictive Maintenance (AI)</span><span style="font-weight:700;font-family:var(--font-mono)">₹5.7L (20%)</span>
+                </div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:63%;background:var(--success)"></div></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">
+                  <span>Brake & Suspension</span><span style="font-weight:700;font-family:var(--font-mono)">₹4.8L (17%)</span>
+                </div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:52%;background:var(--accent2)"></div></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">
+                  <span>AC Service</span><span style="font-weight:700;font-family:var(--font-mono)">₹3.4L (12%)</span>
+                </div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:37%;background:var(--accent3)"></div></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">
+                  <span>Warranty Claims</span><span style="font-weight:700;font-family:var(--font-mono)">₹2.1L (7%)</span>
+                </div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:23%;background:var(--gold)"></div></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">
+                  <span>Other Services</span><span style="font-weight:700;font-family:var(--font-mono)">₹3.2L (12%)</span>
+                </div>
+                <div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:35%;background:var(--text3)"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">⭐ Customer Feedback</div></div>
+          <div class="panel-body">
+            <div style="text-align:center;margin-bottom:14px">
+              <div style="font-family:var(--font-head);font-size:48px;font-weight:800;color:var(--gold)">4.7</div>
+              <div style="font-size:22px;margin-bottom:4px">⭐⭐⭐⭐⭐</div>
+              <div style="font-size:12px;color:var(--text3)">Based on 847 reviews this month</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="ai-bar"><span style="font-size:11px;width:16px">5★</span><div class="ai-bar-track"><div class="ai-bar-fill" style="width:72%;background:var(--gold)"></div></div><span class="ai-bar-label" style="font-size:11px">72%</span></div>
+              <div class="ai-bar"><span style="font-size:11px;width:16px">4★</span><div class="ai-bar-track"><div class="ai-bar-fill" style="width:18%;background:var(--success)"></div></div><span class="ai-bar-label" style="font-size:11px">18%</span></div>
+              <div class="ai-bar"><span style="font-size:11px;width:16px">3★</span><div class="ai-bar-track"><div class="ai-bar-fill" style="width:7%;background:var(--accent)"></div></div><span class="ai-bar-label" style="font-size:11px">7%</span></div>
+              <div class="ai-bar"><span style="font-size:11px;width:16px">2★</span><div class="ai-bar-track"><div class="ai-bar-fill" style="width:2%;background:var(--warn)"></div></div><span class="ai-bar-label" style="font-size:11px">2%</span></div>
+              <div class="ai-bar"><span style="font-size:11px;width:16px">1★</span><div class="ai-bar-track"><div class="ai-bar-fill" style="width:1%;background:var(--danger)"></div></div><span class="ai-bar-label" style="font-size:11px">1%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">📊 KPI vs Industry</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Bay Utilization</span></div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Industry Avg</div><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:60%;background:var(--text3)"></div></div><span class="ai-bar-label" style="font-size:10px">60%</span></div></div>
+                  <div style="flex:1"><div style="font-size:10px;color:var(--accent);margin-bottom:2px">AUTOERA AI</div><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:89%;background:var(--success)"></div></div><span class="ai-bar-label" style="font-size:10px;color:var(--success)">89%</span></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>No-Show Rate</span></div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Industry</div><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:40%;background:var(--danger)"></div></div><span class="ai-bar-label" style="font-size:10px;color:var(--danger)">40%</span></div></div>
+                  <div style="flex:1"><div style="font-size:10px;color:var(--accent);margin-bottom:2px">AUTOERA</div><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:5%;background:var(--success)"></div></div><span class="ai-bar-label" style="font-size:10px;color:var(--success)">5%</span></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>Avg Turnaround</span></div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Industry 8.7h</div><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:87%;background:var(--warn)"></div></div></div></div>
+                  <div style="flex:1"><div style="font-size:10px;color:var(--accent);margin-bottom:2px">AUTOERA 2.8h</div><div class="ai-bar"><div class="ai-bar-track"><div class="ai-bar-fill" style="width:28%;background:var(--success)"></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">💡 AI Revenue Impact</div></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="ai-alert info" style="margin:0">
+                <div>
+                  <div class="ai-alert-title">AI Upsell Revenue</div>
+                  <div class="ai-alert-text">₹6.2L this month from AI-recommended add-ons</div>
+                </div>
+              </div>
+              <div class="ai-alert info" style="margin:0">
+                <div>
+                  <div class="ai-alert-title">Predictive Alert Revenue</div>
+                  <div class="ai-alert-text">₹4.2L from customers responding to maintenance alerts</div>
+                </div>
+              </div>
+              <div class="ai-alert info" style="margin:0">
+                <div>
+                  <div class="ai-alert-title">No-Show Reduction</div>
+                  <div class="ai-alert-text">₹2.8L recovered — 35% fewer empty bay hours</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ══════════════ BOOKING MODAL ══════════════ -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">📅 New Service Booking</div>
+      <button class="modal-close" onclick="closeModal('booking-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Customer Name *</label>
+          <input type="text" placeholder="e.g. Priya Rajan" id="cust-name">
+        </div>
+        <div class="form-group">
+          <label>Mobile Number *</label>
+          <input type="tel" placeholder="+91 98410 12345" id="cust-phone">
+        </div>
+        <div class="form-group">
+          <label>Vehicle Model *</label>
+          <select id="cust-vehicle">
+            <option value="">Select vehicle</option>
+            <option>Honda City</option>
+            <option>Honda Jazz</option>
+            <option>Honda Amaze</option>
+            <option>Honda WR-V</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Registration Number *</label>
+          <input type="text" placeholder="TN 09 AB 1234" id="cust-reg" style="text-transform:uppercase">
+        </div>
+        <div class="form-group">
+          <label>Service Type *</label>
+          <select id="service-type" onchange="updateAIPrediction()">
+            <option value="">Select service</option>
+            <option value="full">Full Service Package</option>
+            <option value="oil">Oil & Filter Change</option>
+            <option value="brake">Brake Inspection / Repair</option>
+            <option value="ac">AC Service</option>
+            <option value="periodic">Periodic Maintenance</option>
+            <option value="warranty">Warranty Claim</option>
+            <option value="diagnostic">Diagnostic Check</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preferred Date</label>
+          <input type="date" id="booking-date">
+        </div>
+        <div class="form-group">
+          <label>Preferred Time</label>
+          <select id="booking-time">
+            <option>9:00 AM</option><option>9:30 AM</option><option>10:00 AM</option>
+            <option>10:30 AM</option><option>11:00 AM</option><option>11:30 AM</option>
+            <option>12:00 PM</option><option>2:00 PM</option><option>2:30 PM</option>
+            <option>3:00 PM</option><option>3:30 PM</option><option>4:00 PM</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Odometer Reading</label>
+          <input type="number" placeholder="e.g. 24820" id="cust-odo">
+        </div>
+        <div class="form-group full">
+          <label>Customer Notes / Complaint</label>
+          <textarea placeholder="Describe any issues, sounds, or specific requests..." id="cust-notes"></textarea>
+        </div>
+      </div>
+
+      <div class="ai-prediction" id="ai-prediction-box" style="display:none">
+        <div class="ai-prediction-title">🤖 AI Auto-Analysis</div>
+        <div class="pred-items" id="ai-pred-items"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('booking-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmBooking()">✅ Confirm Booking + Send WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ JOB MODAL ══════════════ -->
+<div class="modal-overlay" id="job-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="job-modal-title">Job Card Details</div>
+      <button class="modal-close" onclick="closeModal('job-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div><div style="font-size:11px;color:var(--text3)">Vehicle</div><div style="font-weight:600">Honda City 2022</div></div>
+        <div><div style="font-size:11px;color:var(--text3)">Registration</div><div style="font-family:var(--font-mono)">TN 09 AB 1234</div></div>
+        <div><div style="font-size:11px;color:var(--text3)">Odometer</div><div style="font-family:var(--font-mono)">24,820 km</div></div>
+        <div><div style="font-size:11px;color:var(--text3)">Technician</div><div>Rajan Kumar</div></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px">Service Checklist</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)"><input type="checkbox" checked style="accent-color:var(--accent)"> Engine Oil Change</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)"><input type="checkbox" checked style="accent-color:var(--accent)"> Oil Filter Replacement</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)"><input type="checkbox" style="accent-color:var(--accent)"> Air Filter Cleaning</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)"><input type="checkbox" style="accent-color:var(--accent)"> Wheel Alignment</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)"><input type="checkbox" style="accent-color:var(--accent)"> Multi-Point Safety Inspection</label>
+        </div>
+      </div>
+      <div class="ai-prediction">
+        <div class="ai-prediction-title">🤖 AI Upsell Recommendations</div>
+        <div style="font-size:12.5px;color:var(--text2);margin-bottom:8px">AI detected wear patterns suggesting these additional services. Present to customer for approval:</div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--warn);margin-bottom:6px"><input type="checkbox" style="accent-color:var(--warn)"> ⚠️ Brake Pad Replacement (detected wear) — ₹1,800</label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--accent)"><input type="checkbox" style="accent-color:var(--accent)"> 💡 Coolant Top-Up Recommended — ₹400</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('job-modal')">Close</button>
+      <button class="btn btn-secondary" onclick="showToast('Job card updated','success');closeModal('job-modal')">💾 Save Progress</button>
+      <button class="btn btn-primary" onclick="showToast('Job marked complete! Invoice sent to customer via WhatsApp','success');closeModal('job-modal')">✅ Mark Complete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TOAST ══════════════ -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+// ── Navigation ──
+const pages = {
+  dashboard: { title: "Service Dashboard", sub: "Today — Sunday, 1 March 2026" },
+  bookings: { title: "Service Bookings", sub: "Manage & schedule all customer bookings" },
+  jobcards: { title: "Job Cards", sub: "Digital job cards with AI diagnostics" },
+  schedule: { title: "Bay Schedule", sub: "AI-optimized bay & technician allocation" },
+  predictive: { title: "Predictive AI Engine", sub: "13 AI models · Maintenance forecasting" },
+  inventory: { title: "Parts Inventory", sub: "AI demand forecasting & auto-reorder" },
+  technicians: { title: "Technician Management", sub: "AI skill matching & performance" },
+  analytics: { title: "Revenue Analytics", sub: "Business intelligence & KPIs" }
+};
+
+function nav(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') === `nav('${id}')`) n.classList.add('active');
+  });
+
+  const info = pages[id] || { title: id, sub: '' };
+  document.getElementById('topbar-title').textContent = info.title;
+  document.getElementById('topbar-sub').textContent = info.sub;
+}
+
+// ── Modals ──
+function openBookingModal() {
+  document.getElementById('booking-modal').classList.add('open');
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('booking-date').value = today;
+}
+
+function openJobModal(id) {
+  document.getElementById('job-modal-title').textContent = `Job Card #${id} — Details`;
+  document.getElementById('job-modal').classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Close modal on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => {
+    if (e.target === o) o.classList.remove('open');
+  });
+});
+
+// ── AI Prediction in booking form ──
+function updateAIPrediction() {
+  const service = document.getElementById('service-type').value;
+  const box = document.getElementById('ai-prediction-box');
+  const items = document.getElementById('ai-pred-items');
+
+  if (!service) { box.style.display = 'none'; return; }
+
+  const predictions = {
+    full: [
+      ['Estimated Duration', '3.5 – 4.0 hours'],
+      ['Recommended Technician', 'Rajan Kumar (Engine L5)'],
+      ['Parts Needed (AI)', 'Oil ×4L, Filter, Air Filter'],
+      ['Estimated Cost', '₹3,200 – ₹3,800'],
+      ['Upsell Probability', '74% → Brake pads detected'],
+      ['Upsell Revenue Potential', '₹1,800']
+    ],
+    oil: [
+      ['Estimated Duration', '45 – 60 minutes'],
+      ['Recommended Bay', 'Bay 5 (next available)'],
+      ['Parts Needed', 'Engine Oil 0W-20 ×4L, Filter'],
+      ['Estimated Cost', '₹1,400 – ₹1,800'],
+      ['Upsell Probability', '48% → Air filter cleaning'],
+    ],
+    brake: [
+      ['Estimated Duration', '2.0 – 3.0 hours'],
+      ['Recommended Technician', 'Suresh Arumugam (Brake L4)'],
+      ['Parts Needed (AI)', 'Brake Pads, Brake Fluid'],
+      ['Estimated Cost', '₹3,500 – ₹6,000'],
+      ['⚠️ Parts Warning', 'Brake pads CRITICAL stock — only 4 left'],
+    ],
+    ac: [
+      ['Estimated Duration', '2.0 – 2.5 hours'],
+      ['Recommended Technician', 'Muthu Selvam (AC L4)'],
+      ['Parts Needed', 'Refrigerant R134a, AC Filter'],
+      ['Estimated Cost', '₹2,500 – ₹4,500'],
+      ['Last AC Service', 'Check service history'],
+    ],
+    diagnostic: [
+      ['Estimated Duration', '1.0 – 1.5 hours'],
+      ['AI Diagnostic Depth', 'OBD2 scan + multi-system check'],
+      ['Estimated Cost', '₹800 – ₹1,200'],
+      ['AI Pre-Alert', 'No critical alerts on this vehicle'],
+    ],
+    periodic: [
+      ['Estimated Duration', '2.5 – 3.5 hours'],
+      ['Schedule Compliance', 'Check if due — input odometer'],
+      ['Estimated Cost', '₹2,800 – ₹4,200'],
+      ['AI Recommendation', 'Include timing belt inspection'],
+    ],
+    warranty: [
+      ['Claim Type', 'Requires OEM authorization'],
+      ['Processing Time', '2–4 hours + OEM approval'],
+      ['Cost to Customer', '₹0 (if valid warranty)'],
+      ['AI Fraud Check', 'Auto-verification active'],
+    ]
+  };
+
+  const preds = predictions[service] || [];
+  items.innerHTML = preds.map(([label, value]) =>
+    `<div class="pred-item"><span class="pred-item-label">${label}</span><span class="pred-item-value">${value}</span></div>`
+  ).join('');
+
+  box.style.display = 'block';
+}
+
+// ── Confirm Booking ──
+function confirmBooking() {
+  const name = document.getElementById('cust-name').value;
+  const phone = document.getElementById('cust-phone').value;
+  const vehicle = document.getElementById('cust-vehicle').value;
+
+  if (!name || !vehicle) {
+    showToast('Please fill in required fields', 'warn');
+    return;
+  }
+
+  closeModal('booking-modal');
+  showToast(`✅ Booking confirmed for ${name}! WhatsApp confirmation sent.`, 'success');
+  setTimeout(() => showToast('📱 AI technician assigned — Rajan Kumar · Bay 2', 'info'), 1200);
+  setTimeout(() => showToast('📦 Parts availability checked — all items in stock', 'info'), 2400);
+}
+
+// ── Toast ──
+function showToast(msg, type = 'info') {
+  const wrap = document.getElementById('toast-wrap');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icons = { success: '✅', warn: '⚠️', info: '💡' };
+  toast.innerHTML = `<span>${icons[type] || '💡'}</span><span>${msg}</span>`;
+  wrap.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(30px)'; toast.style.transition = 'all 0.3s'; setTimeout(() => toast.remove(), 300); }, 3500);
+}
+
+// ── Live clock ──
+function updateClock() {
+  const now = new Date();
+  const sub = document.getElementById('topbar-sub');
+  const current = sub.textContent;
+  if (current.includes('Today') || current.includes('Sunday')) {
+    const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('topbar-sub').textContent = `Sunday, 1 March 2026 · ${timeStr}`;
+  }
+}
+setInterval(updateClock, 10000);
+updateClock();
+
+// ── Greeting toast on load ──
+setTimeout(() => showToast('🤖 AUTOERA AI Engine active — 13 models running', 'success'), 800);
+setTimeout(() => showToast('🚨 3 critical maintenance alerts require attention', 'warn'), 2200);
+</script>
+
+</body>
+</html>

@@ -27,8 +27,11 @@ PROMPT_INJECTION_PATTERNS = [
 
 class ModelGateway:
     """
-    Stage 6D.1 Production Model Gateway for AutoEra AI:
-    - Real Google Generative AI (Gemini 1.5 Flash) integration
+    Stage 6D.1 & Section 07 Production Multi-Model Gateway for AutoEra AI:
+    - Multi-model routing:
+        * Reasoning Tier: Claude 3.5 Sonnet / GPT-4o
+        * Fast Tier: Google Gemini 1.5 Flash
+        * Offline / Airgap: AutoEra Local Domain Engine
     - Exponential backoff retry mechanism (up to 3 attempts)
     - Timeout & Rate-limit (429) backoff handling
     - Adversarial Prompt Injection Defense
@@ -37,28 +40,36 @@ class ModelGateway:
     - Safe Deterministic Domain Fallback Strategy
     """
 
-    GEMINI_INPUT_COST_PER_M = Decimal('0.075')  # $0.075 per 1M tokens
-    GEMINI_OUTPUT_COST_PER_M = Decimal('0.300') # $0.300 per 1M tokens
+    GEMINI_INPUT_COST_PER_M = Decimal('0.075')
+    GEMINI_OUTPUT_COST_PER_M = Decimal('0.300')
+    CLAUDE_INPUT_COST_PER_M = Decimal('3.000')
+    CLAUDE_OUTPUT_COST_PER_M = Decimal('15.000')
+    GPT4O_INPUT_COST_PER_M = Decimal('2.500')
+    GPT4O_OUTPUT_COST_PER_M = Decimal('10.000')
 
     def __init__(self, max_retries: int = 3, timeout_seconds: int = 10):
-        self.api_key = getattr(settings, 'GEMINI_API_KEY', '') or os.environ.get('GEMINI_API_KEY', '')
+        self.gemini_key = getattr(settings, 'GEMINI_API_KEY', '') or os.environ.get('GEMINI_API_KEY', '')
+        self.anthropic_key = getattr(settings, 'ANTHROPIC_API_KEY', '') or os.environ.get('ANTHROPIC_API_KEY', '')
+        self.openai_key = getattr(settings, 'OPENAI_API_KEY', '') or os.environ.get('OPENAI_API_KEY', '')
+        self.api_key = self.gemini_key
         self.max_retries = max_retries
         self.timeout_seconds = timeout_seconds
-        self._client_initialized = False
-        self._initialize_client()
+        self._gemini_initialized = False
+        self._initialize_clients()
 
-    def _initialize_client(self):
-        """Initializes or re-initializes the Google GenAI SDK client."""
-        self.api_key = getattr(settings, 'GEMINI_API_KEY', '') or os.environ.get('GEMINI_API_KEY', '')
-        if self.api_key:
+    def _initialize_clients(self):
+        """Initializes available LLM SDK clients."""
+        self.gemini_key = getattr(settings, 'GEMINI_API_KEY', '') or os.environ.get('GEMINI_API_KEY', '')
+        if self.gemini_key:
             try:
                 import google.generativeai as genai
-                genai.configure(api_key=self.api_key)
-                self._client_initialized = True
-                logger.info("Google Generative AI SDK client successfully initialized.")
+                genai.configure(api_key=self.gemini_key)
+                self._gemini_initialized = True
+                logger.info("Google Generative AI SDK client initialized.")
             except Exception as e:
-                logger.error(f"Failed to initialize Google GenAI SDK: {e}")
-                self._client_initialized = False
+                logger.warning(f"Google GenAI SDK init skipped: {e}")
+                self._gemini_initialized = False
+
 
     def sanitize_and_check_injection(self, prompt: str) -> bool:
         """Returns True if prompt is safe, False if injection/exfiltration detected."""
@@ -108,12 +119,13 @@ class ModelGateway:
         output_cost = (Decimal(str(output_tokens)) / Decimal('1000000')) * self.GEMINI_OUTPUT_COST_PER_M
         return round(input_cost + output_cost, 6)
 
-    def generate_response(self, prompt: str, context: dict = None) -> dict:
+    def generate_response(self, prompt: str, context: dict = None, tier: str = None) -> dict:
         """
         Executes real LLM call with retry, timeout, rate-limiting, and safe deterministic fallback.
         """
         start_time = time.time()
         context = context or {}
+        tier = tier or context.get('tier', 'FAST')
 
         # 1. Prompt Injection Defense
         if not self.sanitize_and_check_injection(prompt):
@@ -130,15 +142,81 @@ class ModelGateway:
                 'status': 'INJECTION_BLOCKED'
             }
 
-        # 2. Re-check API key if client was not previously initialized
-        if not self._client_initialized:
-            self._initialize_client()
+        # 2. Check Reasoning Tier (Claude 3.5 Sonnet or GPT-4o)
+        system_instruction = self.build_system_context(context)
 
-        # 3. Real Gemini Execution with Retry Loop
-        if self._client_initialized and self.api_key:
+        # 2A. Claude 3.5 Sonnet (Reasoning Tier)
+        if tier == 'REASONING' and self.anthropic_key:
+            try:
+                import anthropic
+                client = anthropic.Anthropic(api_key=self.anthropic_key)
+                claude_resp = client.messages.create(
+                    model="claude-3-5-sonnet-20241022",
+                    max_tokens=1024,
+                    system=system_instruction,
+                    messages=[{"role": "user", "content": prompt}]
+                )
+                resp_text = claude_resp.content[0].text
+                input_tokens = claude_resp.usage.input_tokens
+                output_tokens = claude_resp.usage.output_tokens
+                cost = (Decimal(str(input_tokens)) / Decimal('1000000')) * self.CLAUDE_INPUT_COST_PER_M + \
+                       (Decimal(str(output_tokens)) / Decimal('1000000')) * self.CLAUDE_OUTPUT_COST_PER_M
+
+                return {
+                    'response': resp_text,
+                    'provider': 'anthropic',
+                    'model': 'claude-3-5-sonnet',
+                    'tokens': input_tokens + output_tokens,
+                    'input_tokens': input_tokens,
+                    'output_tokens': output_tokens,
+                    'cost_usd': round(cost, 6),
+                    'latency_ms': int((time.time() - start_time) * 1000),
+                    'status': 'SUCCESS'
+                }
+            except Exception as e:
+                logger.warning(f"Claude invocation skipped/failed: {e}. Falling back to Gemini.")
+
+        # 2B. OpenAI GPT-4o (Reasoning Tier)
+        if tier == 'REASONING' and self.openai_key:
+            try:
+                import openai
+                client = openai.OpenAI(api_key=self.openai_key)
+                gpt_resp = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {"role": "system", "content": system_instruction},
+                        {"role": "user", "content": prompt}
+                    ],
+                    max_tokens=1024
+                )
+                resp_text = gpt_resp.choices[0].message.content
+                input_tokens = gpt_resp.usage.prompt_tokens
+                output_tokens = gpt_resp.usage.completion_tokens
+                cost = (Decimal(str(input_tokens)) / Decimal('1000000')) * self.GPT4O_INPUT_COST_PER_M + \
+                       (Decimal(str(output_tokens)) / Decimal('1000000')) * self.GPT4O_OUTPUT_COST_PER_M
+
+                return {
+                    'response': resp_text,
+                    'provider': 'openai',
+                    'model': 'gpt-4o',
+                    'tokens': input_tokens + output_tokens,
+                    'input_tokens': input_tokens,
+                    'output_tokens': output_tokens,
+                    'cost_usd': round(cost, 6),
+                    'latency_ms': int((time.time() - start_time) * 1000),
+                    'status': 'SUCCESS'
+                }
+            except Exception as e:
+                logger.warning(f"OpenAI GPT-4o invocation skipped/failed: {e}. Falling back to Gemini.")
+
+        # 3. Real Gemini Execution with Retry Loop (Fast Tier / Default)
+        if not self._gemini_initialized and self.gemini_key:
+            self._initialize_clients()
+
+        if self._gemini_initialized and self.gemini_key:
             import google.generativeai as genai
-            system_instruction = self.build_system_context(context)
             target_model = context.get('model_name') or getattr(settings, 'GEMINI_MODEL_NAME', 'gemini-3.6-flash')
+
 
             for attempt in range(1, self.max_retries + 1):
                 try:
@@ -235,4 +313,97 @@ class ModelGateway:
 
 
 gateway = ModelGateway()
+
+
+class AIModelStackRouter:
+    """
+    AI Model Stack Decision Matrix (Section 11 Master Specification).
+    Routes distinct automotive use-cases to optimal primary and fallback AI models.
+    """
+    DECISION_MATRIX = {
+        'COMPLEX_REASONING': {
+            'description': 'Diagnosis, complex objection handling, root cause analysis',
+            'primary_model': 'Claude Sonnet 4',
+            'fallback_model': 'GPT-4o',
+            'rationale': 'Best long-context reasoning, safest outputs, strong Tamil & regional nuance understanding',
+            'est_cost_per_m_inr': 240.0,
+            'target_latency_ms': 1200
+        },
+        'HIGH_VOLUME_SIMPLE': {
+            'description': 'Policy renewal reminders, repair status updates, slot confirmations',
+            'primary_model': 'Gemini 1.5 Flash',
+            'fallback_model': 'DeepSeek V3',
+            'rationale': 'Lowest cost per token, sub-second latency, adequate quality at massive volume',
+            'est_cost_per_m_inr': 6.0,
+            'target_latency_ms': 350
+        },
+        'VISION_TASKS': {
+            'description': 'Accident damage assessment, odometer OCR, document verification',
+            'primary_model': 'GPT-4o Vision',
+            'fallback_model': 'Gemini 1.5 Pro Vision',
+            'rationale': 'Best multimodal precision for automotive scratch, dent, and panel damage photography',
+            'est_cost_per_m_inr': 200.0,
+            'target_latency_ms': 1800
+        },
+        'TIME_SERIES': {
+            'description': 'Component failure prediction, battery RUL, workshop demand forecasting',
+            'primary_model': 'Custom LSTM (self-hosted)',
+            'fallback_model': 'Prophet (Facebook)',
+            'rationale': 'Domain-specific accuracy, proprietary IP protection, zero API cost at inference scale',
+            'est_cost_per_m_inr': 0.0,
+            'target_latency_ms': 80
+        },
+        'NLP_CLASSIFICATION': {
+            'description': 'Customer intent routing, entity extraction, complaint sentiment',
+            'primary_model': 'Fine-tuned BERT-Tamil',
+            'fallback_model': 'GPT-4o mini',
+            'rationale': 'Tamil and regional dialect accuracy critical; extreme throughput efficiency',
+            'est_cost_per_m_inr': 12.0,
+            'target_latency_ms': 150
+        },
+        'VOICE_AI': {
+            'description': 'Outbound customer follow-up calls, Tamil & English speech recognition',
+            'primary_model': 'Sarvam AI (Indian languages)',
+            'fallback_model': 'Whisper + Claude',
+            'rationale': 'Best Indian language ASR/TTS with natural regional accent and telephony adaptation',
+            'est_cost_per_m_inr': 180.0,
+            'target_latency_ms': 450
+        },
+        'BATCH_DOCUMENT': {
+            'description': 'Bulk invoice extraction, supplier catalogs, RC book ingestion',
+            'primary_model': 'DeepSeek V3',
+            'fallback_model': 'Llama 3.1 (self-hosted)',
+            'rationale': 'Lowest cost for non-PII bulk document analysis and tabular structure recognition at scale',
+            'est_cost_per_m_inr': 18.0,
+            'target_latency_ms': 900
+        },
+        'CODE_GENERATION': {
+            'description': 'Custom BI reports, Excel formula generation, workflow automation scripts',
+            'primary_model': 'Claude Sonnet 4',
+            'fallback_model': 'GPT-4o',
+            'rationale': 'Best code quality, type-safety, and explanatory commentary for business logic generation',
+            'est_cost_per_m_inr': 240.0,
+            'target_latency_ms': 1400
+        }
+    }
+
+    @classmethod
+    def get_matrix(cls) -> Dict[str, Any]:
+        return cls.DECISION_MATRIX
+
+    @classmethod
+    def route_use_case(cls, use_case: str, prompt: str, context: dict = None) -> Dict[str, Any]:
+        spec = cls.DECISION_MATRIX.get(use_case.upper(), cls.DECISION_MATRIX['HIGH_VOLUME_SIMPLE'])
+        tier = 'REASONING' if 'Claude' in spec['primary_model'] or 'GPT-4o' in spec['primary_model'] else 'FAST'
+        result = gateway.generate_response(prompt=prompt, context=context, tier=tier)
+        return {
+            'use_case': use_case.upper(),
+            'specification': spec,
+            'routed_primary_model': spec['primary_model'],
+            'routed_fallback_model': spec['fallback_model'],
+            'execution_result': result
+        }
+
+
+model_stack_router = AIModelStackRouter()
 

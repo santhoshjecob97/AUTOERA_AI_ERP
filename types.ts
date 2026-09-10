@@ -1,20 +1,32 @@
 import React from 'react';
 
-export type ViewState = 'dashboard' | 'sales' | 'service' | 'finance' | 'insurance' | 'workforce' | 'fleet' | 'ev' | 'plans' | 'service-ai' | 'sales-ai' | 'finance-ai' | 'insurance-ai' | 'fleet-ai' | 'workforce-ai' | 'ev-ai' | 'voice-ai';
+export type ViewState = 'dashboard' | 'sales' | 'service' | 'finance' | 'insurance' | 'workforce' | 'fleet' | 'ev' | 'oem' | 'developer' | 'plans' | 'service-ai' | 'sales-ai' | 'finance-ai' | 'insurance-ai' | 'fleet-ai' | 'workforce-ai' | 'ev-ai' | 'voice-ai' | 'ai-os' | 'database-arch' | 'backend-arch' | 'tech-stack' | 'security' | 'mobile-app';
 
 export type UserRole = 
+  // L0 — Platform
   | 'Super Admin' 
+  // L1 — Enterprise
   | 'Enterprise Admin' 
+  // L2 — Dealer
   | 'Dealer Principal' 
+  // L3 — General / OEM
   | 'General Manager' 
-  | 'Service Manager' 
-  | 'Service Advisor' 
-  | 'Technician' 
+  | 'OEM User'
+  // L4 — Department Managers
   | 'Sales Manager' 
+  | 'Service Manager' 
+  | 'Fleet Manager'
+  | 'Parts Manager'
+  // L5 — Executives / Advisors
   | 'Sales Executive' 
-  | 'Parts Manager' 
+  | 'CRM Executive'
+  | 'Service Advisor' 
+  | 'Insurance Executive'
   | 'Finance Officer' 
-  | 'Insurance Officer';
+  // L6 — Specialists
+  | 'Technician' 
+  // L7 — External
+  | 'Vehicle Owner';
 
 export interface User {
   id: string;

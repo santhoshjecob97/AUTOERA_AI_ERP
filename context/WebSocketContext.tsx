@@ -47,13 +47,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
   );
 };
 
-// Custom hook to use WebSocket context
+const fallbackWebSocketContext: WebSocketContextType = {
+  isConnected: false,
+  subscribe: () => () => {},
+  unsubscribe: () => {},
+  emit: () => {},
+};
+
+// Custom hook to use WebSocket context with safe fallback
 export const useWebSocket = (): WebSocketContextType => {
   const context = useContext(WebSocketContext);
-  if (!context) {
-    throw new Error('useWebSocket must be used within a WebSocketProvider');
-  }
-  return context;
+  return context || fallbackWebSocketContext;
 };
 
 // Export channel constants for convenience

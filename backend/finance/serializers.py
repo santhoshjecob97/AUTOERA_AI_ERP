@@ -27,3 +27,18 @@ class FinanceApplicationSerializer(TenantScopedSerializer):
     class Meta(TenantScopedSerializer.Meta):
         model = FinanceApplication
         fields = '__all__'
+
+
+class SubventionSchemeSerializer(TenantScopedSerializer):
+    class Meta(TenantScopedSerializer.Meta):
+        from .models import SubventionScheme
+        model = SubventionScheme
+        fields = '__all__'
+
+
+class NACHMandateSerializer(TenantScopedSerializer):
+    class Meta(TenantScopedSerializer.Meta):
+        from .models import NACHMandate
+        model = NACHMandate
+        fields = '__all__'
+

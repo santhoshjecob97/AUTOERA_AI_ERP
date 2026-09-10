@@ -1,3 +1,4 @@
+import uuid
 from decimal import Decimal
 from django.utils import timezone
 from rest_framework import status
@@ -16,9 +17,11 @@ from .serializers import (
     ActionProposalSerializer, PromptTemplateSerializer,
     VoiceSessionSerializer, VoiceTranscriptSerializer
 )
-from .agents import supervisor
+from .agents import (
+    supervisor, SPECIALIST_AGENTS_ROSTER, CustomerKnowledgeGraph, IntentRouter
+)
 from .rag import HybridRetriever, RAGContextBuilder, RAGPromptEngine
-from .gateway import gateway
+from .gateway import gateway, model_stack_router
 from .ingestion import pipeline
 from .service_advisor import service_advisor_engine
 
@@ -463,5 +466,162 @@ class VoiceWebhookAPIView(APIView):
             VoiceSession.objects.filter(provider_call_id=call_id).update(status=call_status.upper())
 
         return Response({'status': 'RECEIVED', 'event': event_type}, status=status.HTTP_200_OK)
+
+
+class SpecialistAgentsRosterAPIView(APIView):
+    """
+    Returns the complete 10-Agent Specialist Network specification (Section 11).
+    GET /api/v1/ai/agents/roster/
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            'total_agents': len(SPECIALIST_AGENTS_ROSTER),
+            'agents': SPECIALIST_AGENTS_ROSTER
+        }, status=status.HTTP_200_OK)
+
+
+class SupervisorAgentDispatchAPIView(APIView):
+    """
+    Dispatches a prompt through the Supervisor Agent for intent classification and specialist execution.
+    POST /api/v1/ai/agents/dispatch/
+    Body: { "prompt": "Customer needs loan approval for Nexon EV" }
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        prompt = request.data.get('prompt', '')
+        if not prompt:
+            return Response({'error': 'Prompt is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        org_id = getattr(request, 'organization_id', None) or (user.organization.id if getattr(user, 'organization', None) else None)
+        branch_id = getattr(request, 'branch_id', None) or (user.branch.id if getattr(user, 'branch', None) else None)
+
+        user_context = {
+            'user_id': str(user.id),
+            'user_name': f"{user.first_name} {user.last_name}".strip() or user.username,
+            'email': user.email or user.username,
+            'role': getattr(user, 'role', 'STAFF'),
+            'organization_id': org_id,
+            'organization_name': user.organization.name if getattr(user, 'organization', None) else 'AutoEra Dealership',
+            'branch_id': branch_id
+        }
+
+        result = supervisor.route_and_execute(prompt, user_context=user_context)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class RAGPipelineQueryAPIView(APIView):
+    """
+    Executes the complete 6-stage RAG Pipeline (Top-20 hybrid -> Cohere Rerank Top-5 -> Context -> Citations).
+    POST /api/v1/ai/rag/pipeline/query/
+    Body: { "query": "What is the warranty period on EV battery pack?" }
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        query = request.data.get('query', '')
+        if not query:
+            return Response({'error': 'Query is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        org_id = getattr(request, 'organization_id', None) or (request.user.organization.id if getattr(request.user, 'organization', None) else None)
+        branch_id = getattr(request, 'branch_id', None) or (request.user.branch.id if getattr(request.user, 'branch', None) else None)
+
+        retriever = HybridRetriever()
+        result = retriever.execute_rag_pipeline(
+            query=query,
+            organization_id=org_id,
+            branch_id=branch_id
+        )
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class CustomerKnowledgeGraphAPIView(APIView):
+    """
+    Traverses the Customer Knowledge Graph for a 360-degree relationship view.
+    GET /api/v1/ai/knowledge-graph/<str:customer_id>/
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, customer_id):
+        org_id = getattr(request, 'organization_id', None) or (request.user.organization.id if getattr(request.user, 'organization', None) else None)
+        graph = CustomerKnowledgeGraph.traverse_customer_360(
+            customer_identifier=customer_id,
+            organization_id=str(org_id) if org_id else None
+        )
+        return Response(graph, status=status.HTTP_200_OK)
+
+
+class ModelStackRouterAPIView(APIView):
+    """
+    AI Model Stack Decision Matrix evaluation & routing.
+    GET: Returns the full decision matrix.
+    POST: Routes a query according to its automotive use-case.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            'decision_matrix': model_stack_router.get_matrix()
+        }, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        use_case = request.data.get('use_case', 'COMPLEX_REASONING')
+        prompt = request.data.get('prompt', 'Perform diagnosis on engine knock symptom')
+        user = request.user
+        org_id = getattr(request, 'organization_id', None) or (user.organization.id if getattr(user, 'organization', None) else None)
+
+        context = {
+            'organization_id': org_id,
+            'organization_name': user.organization.name if getattr(user, 'organization', None) else 'AutoEra Dealership',
+            'role': getattr(user, 'role', 'STAFF')
+        }
+
+        result = model_stack_router.route_use_case(
+            use_case=use_case,
+            prompt=prompt,
+            context=context
+        )
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class VoiceAISimulateAPIView(APIView):
+    """
+    Simulates bilingual (Tamil / English) Sarvam AI telephony voice interaction.
+    POST /api/v1/ai/voice/simulate/
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        customer_name = request.data.get('customer_name', 'Sundaram')
+        language = request.data.get('language', 'ta-IN')
+        scenario = request.data.get('scenario', 'SERVICE_REMINDER')
+
+        if language == 'ta-IN':
+            sample_dialogue = [
+                {'speaker': 'AI_AGENT', 'text': f'வணக்கம் {customer_name} அவர்களே! AutoEra மோட்டார்ஸ் சர்வீஸ் மையத்திலிருந்து அழைக்கிறோம்.', 'tamil_transliteration': 'Vanakkam, AutoEra Motors service center-ilirundhu azhaikirom.'},
+                {'speaker': 'CUSTOMER', 'text': 'ஆமாம், என் காரின் 30,000 கி.மீ சர்வீஸ் வரப்போகிறது.', 'tamil_transliteration': 'Aamam, en kaarin 30000 km service varapogiradhu.'},
+                {'speaker': 'AI_AGENT', 'text': 'நாளை காலை 10 மணிக்கு எக்ஸ்பிரஸ் பேயில் ஸ்லாட் முன்பதிவு செய்யலாமா?', 'tamil_transliteration': 'Naalai kaalai 10 manikku Express Bay-il slot munpadhivu seyyalaama?'}
+            ]
+        else:
+            sample_dialogue = [
+                {'speaker': 'AI_AGENT', 'text': f'Good afternoon Mr. {customer_name}! Calling from AutoEra Motors regarding your scheduled periodic service.'},
+                {'speaker': 'CUSTOMER', 'text': 'Yes, can we schedule it for this Saturday morning at 9:30 AM?'},
+                {'speaker': 'AI_AGENT', 'text': 'Confirmed! Reserved Express Bay #2 for Saturday 9:30 AM. Digital appointment card dispatched to your WhatsApp.'}
+            ]
+
+        return Response({
+            'session_id': str(uuid.uuid4()),
+            'telephony_provider': 'Sarvam AI (Indian Languages ASR/TTS) + Twilio Voice',
+            'customer_name': customer_name,
+            'language': language,
+            'scenario': scenario,
+            'asr_confidence': 0.965,
+            'tts_latency_ms': 320,
+            'sample_dialogue': sample_dialogue,
+            'booking_action': 'APPOINTMENT_RESERVED_SATURDAY_0930'
+        }, status=status.HTTP_200_OK)
 
 

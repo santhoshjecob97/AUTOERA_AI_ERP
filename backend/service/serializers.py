@@ -56,3 +56,25 @@ class JobCardSerializer(TenantScopedSerializer):
     class Meta(TenantScopedSerializer.Meta):
         model = JobCard
         fields = '__all__'
+
+
+class ServiceAppointmentScheduleSerializer(TenantScopedSerializer):
+    class Meta(TenantScopedSerializer.Meta):
+        from .models import ServiceAppointmentSchedule
+        model = ServiceAppointmentSchedule
+        fields = '__all__'
+
+
+class WarrantyClaimSerializer(TenantScopedSerializer):
+    class Meta(TenantScopedSerializer.Meta):
+        from .models import WarrantyClaim
+        model = WarrantyClaim
+        fields = '__all__'
+
+
+class QualityChecklistSerializer(TenantScopedSerializer):
+    class Meta(TenantScopedSerializer.Meta):
+        from .models import QualityChecklist
+        model = QualityChecklist
+        fields = '__all__'
+

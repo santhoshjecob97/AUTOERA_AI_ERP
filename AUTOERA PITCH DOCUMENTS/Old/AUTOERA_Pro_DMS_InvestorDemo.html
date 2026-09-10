@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOERA — Pro DMS · Investor Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   AUTOERA PRO — INVESTOR-GRADE DESIGN SYSTEM
+   Aesthetic: Tesla Cockpit × Bloomberg Terminal
+   Fonts: Syne (display) + DM Sans (body) + JetBrains Mono (data)
+═══════════════════════════════════════════════ */
+:root {
+  --void: #050709;
+  --deep: #080C12;
+  --base: #0C1118;
+  --raised: #111822;
+  --panel: #162030;
+  --border: #1E2D40;
+  --border2: #253548;
+
+  --gold: #F0A500;
+  --gold2: #FFB830;
+  --gold3: #FFC84A;
+  --amber: #FF8C00;
+  --ice: #E8F4FF;
+  --blue: #3B82F6;
+  --cyan: #06D6A0;
+  --red: #FF3B3B;
+  --green: #22C55E;
+  --violet: #7C3AED;
+
+  --t0: #FFFFFF;
+  --t1: #EDF2F7;
+  --t2: #94A3B8;
+  --t3: #4A5568;
+  --t4: #2D3748;
+
+  --fh: 'Syne', sans-serif;
+  --fb: 'DM Sans', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+
+  --r: 12px;
+  --r2: 16px;
+  --r3: 20px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--void);
+  color: var(--t1);
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* Animated canvas background */
+#bg-canvas {
+  position: fixed; inset: 0;
+  z-index: 0; pointer-events: none;
+  opacity: 0.35;
+}
+
+/* ── INTRO SPLASH ── */
+#splash {
+  position: fixed; inset: 0;
+  background: var(--void);
+  z-index: 9999;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+}
+
+.splash-logo {
+  font-family: var(--fh);
+  font-size: 72px; font-weight: 900;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, var(--gold3) 0%, var(--gold) 40%, var(--amber) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: logoIn 1s cubic-bezier(0.16,1,0.3,1) forwards;
+  opacity: 0;
+}
+
+.splash-sub {
+  font-family: var(--fm);
+  font-size: 12px; letter-spacing: 0.3em;
+  color: var(--t3); text-transform: uppercase;
+  margin-top: 12px;
+  animation: fadeUp 1s 0.4s ease forwards; opacity: 0;
+}
+
+.splash-tagline {
+  font-family: var(--fb);
+  font-size: 16px; color: var(--t2);
+  margin-top: 20px; max-width: 400px; text-align: center; line-height: 1.6;
+  animation: fadeUp 1s 0.7s ease forwards; opacity: 0;
+}
+
+.splash-enter {
+  margin-top: 48px;
+  background: var(--gold);
+  color: var(--void);
+  border: none; border-radius: 10px;
+  padding: 14px 40px;
+  font-family: var(--fh); font-size: 15px; font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: fadeUp 1s 1s ease forwards; opacity: 0;
+  position: relative; overflow: hidden;
+}
+
+.splash-enter::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.splash-enter:hover::after { transform: translateX(100%); }
+.splash-enter:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(240,165,0,0.4); }
+
+.splash-metrics {
+  display: flex; gap: 40px; margin-top: 32px;
+  animation: fadeUp 1s 0.9s ease forwards; opacity: 0;
+}
+
+.sm { text-align: center; }
+.sm-val { font-family: var(--fh); font-size: 24px; font-weight: 800; color: var(--gold); }
+.sm-lbl { font-size: 11px; color: var(--t3); margin-top: 2px; font-family: var(--fm); }
+
+@keyframes logoIn {
+  from { opacity:0; transform: scale(0.8) translateY(20px); }
+  to { opacity:1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(16px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* ── APP SHELL ── */
+#app { display: none; position: relative; z-index: 1; min-height: 100vh; flex-direction: column; }
+#app.show { display: flex; animation: appIn 0.6s ease forwards; }
+@keyframes appIn { from{opacity:0;transform:scale(0.98)} to{opacity:1;transform:scale(1)} }
+
+/* ── TOP NAV ── */
+.topnav {
+  height: 54px; display: flex; align-items: center;
+  padding: 0 24px; gap: 0;
+  background: rgba(8,12,18,0.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 100;
+}
+
+.nav-brand {
+  display: flex; align-items: center; gap: 10px; margin-right: 32px;
+}
+
+.nav-logo {
+  font-family: var(--fh); font-size: 22px; font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, var(--gold3), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.nav-badge {
+  font-family: var(--fm); font-size: 9px; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px;
+  background: rgba(240,165,0,0.12);
+  border: 1px solid rgba(240,165,0,0.25);
+  color: var(--gold); letter-spacing: 0.1em;
+}
+
+.nav-links { display: flex; gap: 2px; flex: 1; }
+
+.nl {
+  padding: 6px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  color: var(--t3); transition: all 0.15s;
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap;
+}
+
+.nl:hover { color: var(--t1); background: var(--raised); }
+.nl.active { color: var(--gold2); background: rgba(240,165,0,0.08); }
+.nl .nl-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0; transition: opacity 0.15s; }
+.nl.active .nl-dot { opacity: 1; }
+
+.nav-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+.live-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.2);
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 11px; color: var(--green); font-family: var(--fm);
+}
+
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+.nav-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--raised); border: 1px solid var(--border);
+  cursor: pointer; font-size: 15px; position: relative;
+  transition: all 0.15s;
+}
+.nav-btn:hover { border-color: var(--gold); }
+
+.notif-count {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--red); color: white;
+  font-size: 9px; font-family: var(--fm); font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--deep);
+}
+
+.voice-nav-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px 14px; border-radius: 8px;
+  background: rgba(240,165,0,0.1);
+  border: 1px solid rgba(240,165,0,0.3);
+  color: var(--gold2); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: var(--fm);
+}
+.voice-nav-btn:hover { background: rgba(240,165,0,0.18); }
+.voice-nav-btn.recording { background: rgba(255,59,59,0.15); border-color: var(--red); color: var(--red); animation: recordPulse 1s infinite; }
+@keyframes recordPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,59,59,0.4)} 50%{box-shadow:0 0 0 8px rgba(255,59,59,0)} }
+
+/* ── LAYOUT ── */
+.shell { display: flex; flex: 1; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 224px; min-width: 224px;
+  background: rgba(8,12,18,0.8);
+  border-right: 1px solid var(--border);
+  position: sticky; top: 54px;
+  height: calc(100vh - 54px);
+  overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+  padding: 12px 0;
+}
+
+.sb-sect { padding: 14px 12px 4px; }
+.sb-lbl {
+  font-size: 9px; text-transform: uppercase;
+  letter-spacing: 0.2em; color: var(--t4);
+  font-family: var(--fm); padding-left: 10px;
+}
+
+.sb-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; margin: 1px 8px;
+  border-radius: 10px; cursor: pointer;
+  font-size: 12.5px; color: var(--t3);
+  transition: all 0.12s; position: relative;
+}
+
+.sb-item:hover { background: var(--raised); color: var(--t1); }
+.sb-item.active {
+  background: linear-gradient(90deg, rgba(240,165,0,0.1), rgba(240,165,0,0.03));
+  color: var(--gold2);
+  border: 1px solid rgba(240,165,0,0.15);
+}
+
+.sb-ico { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+
+.sb-item.active .sb-ico { background: rgba(240,165,0,0.15); }
+.sb-item:not(.active) .sb-ico { background: var(--raised); }
+
+.sb-badge {
+  margin-left: auto; font-size: 9px; font-family: var(--fm); font-weight: 700;
+  padding: 2px 6px; border-radius: 8px; letter-spacing: 0.05em;
+}
+
+.sbg-red { background: rgba(255,59,59,0.15); color: var(--red); }
+.sbg-gold { background: rgba(240,165,0,0.15); color: var(--gold); }
+.sbg-green { background: rgba(34,197,94,0.12); color: var(--green); }
+.sbg-blue { background: rgba(59,130,246,0.12); color: var(--blue); }
+
+.sb-divider { height: 1px; background: var(--border); margin: 8px 12px; }
+
+.sb-bottom { margin-top: auto; padding: 12px; }
+
+.user-pill {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--raised); border: 1px solid var(--border);
+  border-radius: 12px; padding: 10px 12px;
+}
+
+.user-av {
+  width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(240,165,0,0.3), rgba(240,165,0,0.1));
+  border: 1px solid rgba(240,165,0,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+
+.user-name { font-size: 12px; font-weight: 600; }
+.user-role { font-size: 10px; color: var(--t3); font-family: var(--fm); }
+
+/* ── MAIN ── */
+.main {
+  flex: 1; overflow-y: auto;
+  background: transparent;
+  padding: 28px 32px;
+}
+
+/* ── PAGE HEADER ── */
+.ph { margin-bottom: 28px; }
+.ph-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.ph-eyebrow {
+  font-family: var(--fm); font-size: 10px; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 6px;
+}
+.ph-title { font-family: var(--fh); font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.ph-sub { font-size: 13px; color: var(--t2); margin-top: 5px; }
+.ph-actions { display: flex; gap: 8px; align-items: center; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; font-family: var(--fb);
+  cursor: pointer; border: none; transition: all 0.15s;
+  white-space: nowrap; letter-spacing: 0.01em;
+}
+
+.btn-gold { background: var(--gold); color: var(--void); }
+.btn-gold:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(240,165,0,0.3); }
+.btn-ghost { background: var(--raised); border: 1px solid var(--border2); color: var(--t1); }
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn-outline { background: transparent; border: 1px solid var(--border2); color: var(--t2); }
+.btn-outline:hover { border-color: var(--border2); color: var(--t1); background: var(--raised); }
+.btn-red { background: rgba(255,59,59,0.12); border: 1px solid rgba(255,59,59,0.25); color: var(--red); }
+.btn-green { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: var(--green); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-xs { padding: 4px 9px; font-size: 11px; }
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* ── KPI CARDS ── */
+.kpi-grid { display: grid; gap: 14px; margin-bottom: 26px; }
+.kg-4 { grid-template-columns: repeat(4,1fr); }
+.kg-3 { grid-template-columns: repeat(3,1fr); }
+.kg-6 { grid-template-columns: repeat(6,1fr); }
+
+.kpi {
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 20px 22px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: default;
+}
+
+.kpi:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+.kpi-shine {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(240,165,0,0.6), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.kpi:hover .kpi-shine { opacity: 1; }
+
+.kpi-accent { position: absolute; top: 0; left: 0; width: 3px; height: 100%; border-radius: 16px 0 0 16px; }
+.kpi-icon { position: absolute; top: 18px; right: 18px; font-size: 22px; opacity: 0.12; }
+.kpi-lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--t3); font-family: var(--fm); margin-bottom: 8px; }
+.kpi-val { font-family: var(--fh); font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; margin-bottom: 7px; }
+.kpi-trend { font-size: 11.5px; display: flex; align-items: center; gap: 4px; }
+.trend-up { color: var(--green); }
+.trend-dn { color: var(--red); }
+.trend-flat { color: var(--t3); }
+.trend-gold { color: var(--gold); }
+
+/* ── GRID LAYOUTS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.g21 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 20px; }
+.g12 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 20px; }
+.g32 { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-bottom: 20px; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+
+.card-hd {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.card-title { font-family: var(--fh); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.card-sub { font-size: 11.5px; color: var(--t3); margin-top: 2px; }
+.card-bd { padding: 18px 20px; }
+.card-ft { padding: 12px 20px; border-top: 1px solid var(--border); }
+
+/* Gold-accent card */
+.card-gold { border-color: rgba(240,165,0,0.2); background: linear-gradient(135deg, rgba(240,165,0,0.04), var(--raised)); }
+.card-gold .card-hd { border-color: rgba(240,165,0,0.15); }
+
+/* ── TAGS / BADGES ── */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 10.5px; font-weight: 600; font-family: var(--fm);
+  white-space: nowrap; letter-spacing: 0.03em;
+}
+
+.t-green { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.t-gold { background: rgba(240,165,0,0.12); color: var(--gold2); border: 1px solid rgba(240,165,0,0.25); }
+.t-red { background: rgba(255,59,59,0.1); color: var(--red); border: 1px solid rgba(255,59,59,0.2); }
+.t-blue { background: rgba(59,130,246,0.1); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+.t-cyan { background: rgba(6,214,160,0.1); color: var(--cyan); border: 1px solid rgba(6,214,160,0.2); }
+.t-gray { background: rgba(74,85,104,0.3); color: var(--t2); border: 1px solid var(--border2); }
+.t-violet { background: rgba(124,58,237,0.1); color: #A78BFA; border: 1px solid rgba(124,58,237,0.2); }
+
+/* ── TABLES ── */
+.tbl-card { background: var(--raised); border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; margin-bottom: 20px; }
+.tbl-hdr { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+
+table { width: 100%; border-collapse: collapse; }
+thead tr { border-bottom: 1px solid var(--border); }
+thead th { padding: 10px 16px; text-align: left; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--t4); font-family: var(--fm); font-weight: 500; background: var(--base); white-space: nowrap; }
+tbody tr { border-top: 1px solid rgba(30,45,64,0.6); transition: background 0.1s; }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+td { padding: 11px 16px; font-size: 12.5px; color: var(--t2); vertical-align: middle; }
+td.bold { font-weight: 600; color: var(--t1); }
+td.mono { font-family: var(--fm); font-size: 11.5px; }
+
+/* ── PROGRESS ── */
+.prog { display: flex; align-items: center; gap: 8px; }
+.prog-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 2px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+.prog-val { font-size: 11px; font-family: var(--fm); min-width: 32px; text-align: right; }
+
+/* ── ALERTS ── */
+.alert {
+  display: flex; gap: 12px; padding: 13px 16px;
+  border-radius: 10px; margin-bottom: 10px; border-left: 3px solid;
+}
+.alert-critical { background: rgba(255,59,59,0.06); border-color: var(--red); }
+.alert-warn { background: rgba(240,165,0,0.06); border-color: var(--gold); }
+.alert-info { background: rgba(6,214,160,0.06); border-color: var(--cyan); }
+.alert-violet { background: rgba(124,58,237,0.06); border-color: #7C3AED; }
+
+.alert-ico { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.alert-title { font-size: 12.5px; font-weight: 700; margin-bottom: 3px; }
+.alert-txt { font-size: 11.5px; color: var(--t3); line-height: 1.5; }
+
+/* ── TABS ── */
+.tab-bar { display: flex; gap: 2px; background: var(--base); border: 1px solid var(--border); border-radius: 10px; padding: 3px; margin-bottom: 20px; }
+.tab { padding: 7px 16px; border-radius: 7px; font-size: 12.5px; cursor: pointer; color: var(--t3); transition: all 0.15s; font-weight: 500; white-space: nowrap; }
+.tab.active { background: var(--panel); color: var(--t1); box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+.tab:hover:not(.active) { color: var(--t2); }
+
+/* ── MODAL ── */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 500; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+.modal-bg.open { display: flex; }
+.modal { background: var(--panel); border: 1px solid var(--border2); border-radius: 20px; width: 600px; max-width: 94vw; max-height: 88vh; overflow-y: auto; animation: mIn 0.25s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
+@keyframes mIn { from{opacity:0;transform:translateY(28px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+.modal-hd { padding: 22px 26px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-family: var(--fh); font-size: 19px; font-weight: 800; }
+.modal-close { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 24px; line-height: 1; transition: color 0.15s; }
+.modal-close:hover { color: var(--t1); }
+.modal-bd { padding: 22px 26px; }
+.modal-ft { padding: 14px 26px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ── TOAST ── */
+.toast-dock { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: var(--panel); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; font-size: 13px; min-width: 300px; animation: tIn 0.28s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+@keyframes tIn { from{opacity:0;transform:translateX(32px) scale(0.95)} to{opacity:1;transform:translateX(0) scale(1)} }
+.toast.success { border-left: 3px solid var(--green); }
+.toast.warn { border-left: 3px solid var(--gold); }
+.toast.info { border-left: 3px solid var(--blue); }
+.toast.error { border-left: 3px solid var(--red); }
+.toast.voice { border-left: 3px solid var(--gold); background: rgba(240,165,0,0.08); }
+
+/* ── FORM ── */
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fgrid-full { grid-column: 1/-1; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+label { font-size: 10.5px; color: var(--t3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; font-family: var(--fm); }
+input, select, textarea {
+  background: var(--base); border: 1px solid var(--border2); color: var(--t1);
+  padding: 9px 13px; border-radius: 9px; font-size: 13px; font-family: var(--fb);
+  outline: none; transition: border-color 0.15s; width: 100%;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240,165,0,0.08); }
+select option { background: var(--base); }
+textarea { resize: vertical; min-height: 80px; }
+
+/* ── SPECIAL COMPONENTS ── */
+
+/* Voice AI Panel */
+.voice-panel {
+  background: linear-gradient(135deg, rgba(240,165,0,0.08), rgba(240,165,0,0.02));
+  border: 1px solid rgba(240,165,0,0.2);
+  border-radius: var(--r2); overflow: hidden;
+}
+
+.voice-orb-wrap {
+  display: flex; flex-direction: column; align-items: center; padding: 28px 20px 20px;
+}
+
+.voice-orb {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,165,0,0.4), rgba(240,165,0,0.05));
+  border: 2px solid rgba(240,165,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; cursor: pointer; transition: all 0.3s; position: relative;
+}
+
+.voice-orb.idle { animation: orbFloat 3s ease-in-out infinite; }
+.voice-orb.listening { animation: orbPulse 0.8s ease-in-out infinite; border-color: var(--red); background: radial-gradient(circle, rgba(255,59,59,0.4), rgba(255,59,59,0.05)); }
+.voice-orb.processing { animation: orbSpin 1.5s linear infinite; border-color: var(--blue); }
+
+@keyframes orbFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes orbPulse { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,59,59,0.4)} 50%{transform:scale(1.05);box-shadow:0 0 0 16px rgba(255,59,59,0)} }
+@keyframes orbSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+.voice-wave {
+  display: flex; align-items: center; gap: 3px; height: 24px; margin-top: 12px;
+}
+
+.voice-bar {
+  width: 3px; border-radius: 2px; background: var(--gold);
+  animation: waveBar 0.8s ease-in-out infinite;
+}
+.voice-bar:nth-child(1) { animation-delay: 0s; height: 6px; }
+.voice-bar:nth-child(2) { animation-delay: 0.1s; height: 14px; }
+.voice-bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
+.voice-bar:nth-child(4) { animation-delay: 0.3s; height: 12px; }
+.voice-bar:nth-child(5) { animation-delay: 0.4s; height: 18px; }
+.voice-bar:nth-child(6) { animation-delay: 0.5s; height: 8px; }
+.voice-bar:nth-child(7) { animation-delay: 0.6s; height: 16px; }
+
+@keyframes waveBar { 0%,100%{transform:scaleY(0.4);opacity:0.4} 50%{transform:scaleY(1);opacity:1} }
+
+/* OBD2 Dashboard */
+.obd-gauge {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--base); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 12px; text-align: center;
+}
+
+.gauge-ring {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; margin-bottom: 8px;
+}
+
+.gauge-val { font-family: var(--fh); font-size: 18px; font-weight: 800; }
+.gauge-lbl { font-size: 10px; color: var(--t3); font-family: var(--fm); }
+.gauge-unit { font-size: 9px; color: var(--t4); font-family: var(--fm); }
+
+/* Marketplace */
+.part-card {
+  background: var(--base); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px; transition: all 0.2s; cursor: pointer;
+}
+.part-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+
+/* Hbar */
+.hbar { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.hbar-lbl { font-size: 12px; color: var(--t2); width: 140px; flex-shrink: 0; }
+.hbar-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: 3px; }
+.hbar-val { font-size: 11.5px; font-family: var(--fm); color: var(--t2); min-width: 44px; text-align: right; }
+
+/* Map placeholder */
+.map-box {
+  background: var(--base); border: 1px solid var(--border);
+  border-radius: 12px; height: 220px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--t4); font-size: 12px; font-family: var(--fm);
+  position: relative; overflow: hidden;
+}
+.map-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 40% 50%, rgba(240,165,0,0.04) 0%, transparent 60%);
+}
+
+/* Bar chart */
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+.bc-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.bc-bar { width: 100%; border-radius: 4px 4px 0 0; cursor: pointer; transition: opacity 0.2s; }
+.bc-bar:hover { opacity: 0.8; }
+.bc-x { font-size: 9px; color: var(--t4); font-family: var(--fm); }
+
+/* Review card */
+.review-card {
+  background: var(--base); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--base); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Ticker */
+.ticker-wrap {
+  background: var(--base); border-bottom: 1px solid var(--border);
+  padding: 8px 0; overflow: hidden; position: relative;
+}
+.ticker { display: flex; gap: 40px; white-space: nowrap; animation: ticker 30s linear infinite; }
+.ticker-item { font-size: 11px; font-family: var(--fm); color: var(--t3); display: flex; align-items: center; gap: 8px; }
+.ticker-item .dot { width: 6px; height: 6px; border-radius: 50%; }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* Separator */
+.sep { height: 1px; background: var(--border); margin: 14px 0; }
+
+/* Stats */
+.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(30,45,64,0.6); }
+.stat-row:last-child { border-bottom: none; }
+.stat-key { font-size: 12.5px; color: var(--t2); }
+.stat-val { font-size: 13px; font-weight: 700; font-family: var(--fm); }
+
+/* AI Insight box */
+.ai-insight {
+  background: linear-gradient(135deg, rgba(240,165,0,0.06), rgba(240,165,0,0.02));
+  border: 1px solid rgba(240,165,0,0.15); border-radius: 12px; padding: 14px 16px;
+}
+.ai-insight-hd { font-size: 9.5px; color: var(--gold); font-family: var(--fm); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.ai-insight-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 7px; }
+.ai-insight-row:last-child { margin-bottom: 0; }
+.air-key { color: var(--t2); }
+.air-val { font-weight: 700; font-family: var(--fm); }
+
+/* Page content */
+.page-content { animation: pgIn 0.2s ease; }
+@keyframes pgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* Investment highlight */
+.inv-stat {
+  text-align: center; padding: 20px 16px;
+  background: var(--raised); border: 1px solid var(--border);
+  border-radius: var(--r); transition: all 0.2s;
+}
+.inv-stat:hover { border-color: rgba(240,165,0,0.3); }
+.inv-val { font-family: var(--fh); font-size: 32px; font-weight: 900; letter-spacing: -0.03em; }
+.inv-lbl { font-size: 11px; color: var(--t3); margin-top: 5px; }
+
+/* Checklist */
+.chk-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(30,45,64,0.5); cursor: pointer; }
+.chk-item:last-child { border-bottom: none; }
+.chk-box { width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 10px; }
+.chk-item.done .chk-box { background: var(--gold); border-color: var(--gold); color: var(--void); }
+.chk-lbl { font-size: 12.5px; }
+.chk-item.done .chk-lbl { color: var(--t3); text-decoration: line-through; }
+
+/* Location dot */
+.loc-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* Recall badge */
+.recall-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,59,59,0.1); border: 1px solid rgba(255,59,59,0.3);
+  color: var(--red); border-radius: 6px; padding: 4px 10px;
+  font-size: 10.5px; font-family: var(--fm); font-weight: 600;
+  animation: recallPulse 2s ease-in-out infinite;
+}
+@keyframes recallPulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ CANVAS BACKGROUND ═══════════════ -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ═══════════════ INTRO SPLASH ═══════════════ -->
+<div id="splash">
+  <div class="splash-logo">AUTOERA</div>
+  <div class="splash-sub">Pro DMS · Investor Edition · v3.0</div>
+  <div class="splash-tagline">India's first AI-native Automotive Dealer Management System with Voice AI, OBD2 Diagnostics & Parts Marketplace</div>
+  <div class="splash-metrics">
+    <div class="sm"><div class="sm-val">₹3,200 Cr</div><div class="sm-lbl">TAM · India Auto DMS</div></div>
+    <div class="sm"><div class="sm-val">48,000+</div><div class="sm-lbl">Target Dealerships</div></div>
+    <div class="sm"><div class="sm-val">₹40K–1.5L</div><div class="sm-lbl">MRR Per Dealer</div></div>
+    <div class="sm"><div class="sm-val">₹5,000 Cr</div><div class="sm-lbl">Vision Valuation</div></div>
+  </div>
+  <button class="splash-enter" onclick="enterApp()">Enter Platform Demo →</button>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app">
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker" id="ticker">
+      <div class="ticker-item"><div class="dot" style="background:var(--green)"></div>142 Dealers Online</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--gold)"></div>ARR ₹4.8 Cr/month ↑34%</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--red)"></div>🚨 RECALL: Honda City 2020-22 — Airbag ECU — 1,284 vehicles</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--blue)"></div>OBD2 Live: 847 vehicles connected</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--cyan)"></div>Parts Marketplace: 4 orders placed in last 10 mins</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--green)"></div>AI Voice: 23 job cards updated hands-free today</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--gold)"></div>Google Reviews: ⭐ 4.7 avg · 847 reviews generated this month</div>
+      <!-- duplicate for seamless loop -->
+      <div class="ticker-item"><div class="dot" style="background:var(--green)"></div>142 Dealers Online</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--gold)"></div>ARR ₹4.8 Cr/month ↑34%</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--red)"></div>🚨 RECALL: Honda City 2020-22 — Airbag ECU — 1,284 vehicles</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--blue)"></div>OBD2 Live: 847 vehicles connected</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--cyan)"></div>Parts Marketplace: 4 orders placed in last 10 mins</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--green)"></div>AI Voice: 23 job cards updated hands-free today</div>
+      <div class="ticker-item"><div class="dot" style="background:var(--gold)"></div>Google Reviews: ⭐ 4.7 avg · 847 reviews generated this month</div>
+    </div>
+  </div>
+
+  <!-- Top Nav -->
+  <nav class="topnav">
+    <div class="nav-brand">
+      <div class="nav-logo">AUTOERA</div>
+      <div class="nav-badge">PRO DMS</div>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <div class="nl active" onclick="nav('overview')"><div class="nl-dot"></div>Command Centre</div>
+      <div class="nl" onclick="nav('multi-location')"><div class="nl-dot"></div>Multi-Location</div>
+      <div class="nl" onclick="nav('obd2')"><div class="nl-dot"></div>OBD2 Diagnostics</div>
+      <div class="nl" onclick="nav('marketplace')"><div class="nl-dot"></div>Parts Marketplace</div>
+      <div class="nl" onclick="nav('oem-recalls')"><div class="nl-dot"></div>OEM + Recalls</div>
+      <div class="nl" onclick="nav('reviews')"><div class="nl-dot"></div>Reviews AI</div>
+      <div class="nl" onclick="nav('investor')"><div class="nl-dot"></div>Investor Deck</div>
+    </div>
+    <div class="nav-right">
+      <div class="live-pill"><div class="live-dot"></div>Live Demo</div>
+      <button class="voice-nav-btn" id="voice-nav-btn" onclick="toggleVoiceAI()">🎤 Voice AI</button>
+      <div class="nav-btn">🔔<div class="notif-count">7</div></div>
+      <div class="nav-btn">⚙️</div>
+    </div>
+  </nav>
+
+  <!-- Shell -->
+  <div class="shell">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sb-sect"><div class="sb-lbl">Command</div></div>
+      <div class="sb-item active" onclick="nav('overview')" id="sb-overview"><div class="sb-ico">🏠</div><span>Command Centre</span></div>
+      <div class="sb-item" onclick="nav('multi-location')" id="sb-multi-location"><div class="sb-ico">🌐</div><span>Multi-Location</span><span class="sb-badge sbg-blue">8</span></div>
+      <div class="sb-divider"></div>
+      <div class="sb-sect"><div class="sb-lbl">AI Features</div></div>
+      <div class="sb-item" onclick="nav('voice-ai')" id="sb-voice-ai"><div class="sb-ico">🎤</div><span>Voice AI</span><span class="sb-badge sbg-gold">NEW</span></div>
+      <div class="sb-item" onclick="nav('obd2')" id="sb-obd2"><div class="sb-ico">📱</div><span>OBD2 Diagnostics</span><span class="sb-badge sbg-red">3</span></div>
+      <div class="sb-divider"></div>
+      <div class="sb-sect"><div class="sb-lbl">Revenue</div></div>
+      <div class="sb-item" onclick="nav('marketplace')" id="sb-marketplace"><div class="sb-ico">🛒</div><span>Parts Marketplace</span><span class="sb-badge sbg-green">12</span></div>
+      <div class="sb-item" onclick="nav('oem-recalls')" id="sb-oem-recalls"><div class="sb-ico">🔴</div><span>OEM + Recalls</span><span class="sb-badge sbg-red">LIVE</span></div>
+      <div class="sb-item" onclick="nav('reviews')" id="sb-reviews"><div class="sb-ico">⭐</div><span>Reviews AI</span><span class="sb-badge sbg-gold">4.7★</span></div>
+      <div class="sb-divider"></div>
+      <div class="sb-sect"><div class="sb-lbl">Business</div></div>
+      <div class="sb-item" onclick="nav('investor')" id="sb-investor"><div class="sb-ico">📊</div><span>Investor Deck</span><span class="sb-badge sbg-gold">DEMO</span></div>
+
+      <div class="sb-bottom">
+        <div class="user-pill">
+          <div class="user-av">👤</div>
+          <div>
+            <div class="user-name">Arjun Mehta</div>
+            <div class="user-role">AUTOERA · CEO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="main" id="main">
+      <div class="page-content" id="page-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Global Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal">
+    <div class="modal-hd">
+      <div class="modal-title" id="modal-title">—</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-bd" id="modal-body"></div>
+    <div class="modal-ft" id="modal-foot"></div>
+  </div>
+</div>
+
+<!-- Toast Dock -->
+<div class="toast-dock" id="toast-dock"></div>
+
+<script>
+/* ════════════════════════════════════════════
+   AUTOERA PRO DMS — JAVASCRIPT ENGINE
+════════════════════════════════════════════ */
+
+// ── Canvas particle grid ──
+(function initCanvas() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initDots() {
+    dots = [];
+    const n = Math.floor((W * H) / 14000);
+    for (let i = 0; i < n; i++) {
+      dots.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.2 + 0.3
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(240,165,0,0.45)';
+    dots.forEach(d => {
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0 || d.x > W) d.vx *= -1;
+      if (d.y < 0 || d.y > H) d.vy *= -1;
+      ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+    });
+    // draw lines
+    ctx.strokeStyle = 'rgba(240,165,0,0.06)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = i + 1; j < dots.length; j++) {
+        const dx = dots[i].x - dots[j].x, dy = dots[i].y - dots[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 100) {
+          ctx.globalAlpha = 1 - dist / 100;
+          ctx.beginPath(); ctx.moveTo(dots[i].x, dots[i].y); ctx.lineTo(dots[j].x, dots[j].y); ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  resize(); initDots(); draw();
+  window.addEventListener('resize', () => { resize(); initDots(); });
+})();
+
+// ── Splash ──
+function enterApp() {
+  document.getElementById('splash').style.opacity = '0';
+  document.getElementById('splash').style.transform = 'scale(1.05)';
+  document.getElementById('splash').style.transition = 'all 0.5s ease';
+  setTimeout(() => {
+    document.getElementById('splash').style.display = 'none';
+    const app = document.getElementById('app');
+    app.classList.add('show');
+    loadPage('overview');
+    setTimeout(() => toast('🚀 AUTOERA Pro DMS loaded · All systems operational', 'info'), 400);
+    setTimeout(() => toast('🚨 Active Recall Alert: Honda City 2020-22 · 1,284 vehicles', 'warn'), 1600);
+  }, 500);
+}
+
+// ── Nav ──
+function nav(page) {
+  document.querySelectorAll('.nl').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  const nlMap = { 'overview':'Command Centre','multi-location':'Multi-Location','obd2':'OBD2 Diagnostics','marketplace':'Parts Marketplace','oem-recalls':'OEM + Recalls','reviews':'Reviews AI','investor':'Investor Deck','voice-ai':'Voice AI' };
+  document.querySelectorAll('.nl').forEach(el => { if (el.textContent.trim() === (nlMap[page]||'')) el.classList.add('active'); });
+  const sbEl = document.getElementById('sb-' + page);
+  if (sbEl) sbEl.classList.add('active');
+  loadPage(page);
+}
+
+function loadPage(key) {
+  const el = document.getElementById('page-content');
+  el.innerHTML = '<div class="page-content">' + getPage(key) + '</div>';
+}
+
+// ═══════════════════════════════
+// PAGE DEFINITIONS
+// ═══════════════════════════════
+
+function getPage(key) {
+  const pages = {
+    'overview': pageOverview(),
+    'multi-location': pageMultiLocation(),
+    'obd2': pageOBD2(),
+    'marketplace': pageMarketplace(),
+    'oem-recalls': pageOEMRecalls(),
+    'reviews': pageReviews(),
+    'investor': pageInvestor(),
+    'voice-ai': pageVoiceAI(),
+  };
+  return pages[key] || `<div style="text-align:center;padding:60px;color:var(--t3)">Page coming soon</div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: COMMAND CENTRE (OVERVIEW)
+// ─────────────────────────────────────
+function pageOverview() {
+  return `
+  <div class="ph">
+    <div class="ph-top">
+      <div>
+        <div class="ph-eyebrow">⚡ AUTOERA COMMAND CENTRE</div>
+        <div class="ph-title">Platform Intelligence</div>
+        <div class="ph-sub">142 dealers · 8 cities · All 65 AI models active · Live as of <span style="font-family:var(--fm);color:var(--gold)" id="live-clock">—</span></div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn btn-ghost btn-sm" onclick="nav('investor')">📊 Investor View</button>
+        <button class="btn btn-gold btn-sm" onclick="openModal('Add New Dealer Tenant', dealerForm())">+ Onboard Dealer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-grid kg-4">
+    ${K('Active Dealers','142','↑ 18 this month','trend-gold','#F0A500','🏢')}
+    ${K('Monthly ARR','₹4.8 Cr','↑ 34% vs February','trend-up','#22C55E','💰')}
+    ${K('AI Predictions Today','48,200','94.2% avg accuracy','trend-gold','#3B82F6','🤖')}
+    ${K('OBD2 Vehicles Live','847','Real-time diagnostics','trend-up','#06D6A0','📡')}
+  </div>
+
+  <div class="g32">
+    <div>
+      <div class="kpi-grid kg-3" style="margin-bottom:16px">
+        ${K('Platform Uptime','99.97%','Last 30 days','trend-up','#22C55E','⚡')}
+        ${K('Voice AI Jobs','23','Hands-free today','trend-gold','#F0A500','🎤')}
+        ${K('Recall Alerts Sent','1,284','Honda City airbag','trend-gold','#FF3B3B','🚨')}
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div><div class="card-title">📈 ARR Growth — Oct 2025 → Mar 2026</div><div class="card-sub">163% growth since launch</div></div><span class="tag t-green">On Track ₹100Cr Year 1</span></div>
+        <div class="card-bd">
+          <div class="bar-chart">
+            ${[['Oct','₹1.2Cr',25],['Nov','₹1.8Cr',37],['Dec','₹2.4Cr',50],['Jan','₹3.1Cr',65],['Feb','₹3.9Cr',81],['Mar','₹4.8Cr',100]].map(([m,v,h])=>`
+            <div class="bc-col" title="${m}: ${v}">
+              <div style="font-size:9px;color:var(--gold);font-family:var(--fm);margin-bottom:2px">${v}</div>
+              <div class="bc-bar" style="height:${h}%;background:linear-gradient(180deg,var(--gold2),var(--amber));min-height:4px"></div>
+              <div class="bc-x">${m}</div>
+            </div>`).join('')}
+          </div>
+          <div class="sep"></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+            <div><div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--gold)">₹57.6 Cr</div><div style="font-size:10.5px;color:var(--t3)">Annual Run Rate</div></div>
+            <div><div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--green)">43:1</div><div style="font-size:10.5px;color:var(--t3)">LTV:CAC Ratio</div></div>
+            <div><div style="font-family:var(--fh);font-size:20px;font-weight:800;color:var(--blue)">95%</div><div style="font-size:10.5px;color:var(--t3)">Annual Retention</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd"><div class="card-title">🌐 Revenue by Feature</div></div>
+          <div class="card-bd">
+            ${[['Subscriptions','₹3.84 Cr',80,'var(--gold)'],['Service Transactions','₹48L',10,'var(--green)'],['Parts Marketplace','₹29L',6,'var(--blue)'],['Insurance + Finance','₹19L',4,'var(--cyan)']].map(([l,v,p,c])=>`
+            <div style="margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${l}</span><span style="font-family:var(--fm);font-weight:700;color:${c}">${v}</span></div>
+              <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:${p}%;background:${c}"></div></div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd"><div class="card-title">🤖 AI Engine Status</div><span class="tag t-green">All Active</span></div>
+          <div class="card-bd">
+            ${[['Service AI','13 models','94%','var(--green)'],['Sales AI','12 models','91%','var(--blue)'],['Finance AI','13 models','96%','var(--gold)'],['Insurance AI','11 models','95%','var(--cyan)'],['Fleet & EV','11 models','90%','var(--violet)'],['Workforce AI','10 models','88%','var(--red)']].map(([e,m,a,c])=>`
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(30,45,64,0.5)">
+              <div style="width:7px;height:7px;border-radius:50%;background:${c};flex-shrink:0"></div>
+              <div style="flex:1;font-size:12px">${e} <span style="color:var(--t3);font-size:10.5px">${m}</span></div>
+              <span style="font-family:var(--fm);font-size:11.5px;color:${c};font-weight:700">${a}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">🚨 Live Alert Feed</div><span class="tag t-red">7 Active</span></div>
+        <div class="card-bd" style="padding:14px 16px">
+          <div class="alert alert-critical"><div class="alert-ico">🚨</div><div><div class="alert-title">OEM RECALL — Honda City 2020-22</div><div class="alert-txt">Airbag ECU defect. 1,284 affected vehicles across 8 dealers. Auto-alerts sent.</div></div></div>
+          <div class="alert alert-warn"><div class="alert-ico">⚠️</div><div><div class="alert-title">Dealer TN-042 API throttled</div><div class="alert-txt">Rate limit exceeded 3×. Upgrade to Enterprise plan.</div></div></div>
+          <div class="alert alert-warn"><div class="alert-ico">🔋</div><div><div class="alert-title">OBD2: 3 critical engine alerts</div><div class="alert-txt">Live diagnostics flagged imminent failures. Dealers notified.</div></div></div>
+          <div class="alert alert-info"><div class="alert-ico">⭐</div><div><div class="alert-title">Reviews AI: 23 new 5-star reviews</div><div class="alert-txt">Google Reviews automation generated 847 reviews this month.</div></div></div>
+          <div class="alert alert-violet"><div class="alert-ico">🛒</div><div><div class="alert-title">Parts Marketplace: Low stock alert</div><div class="alert-txt">Brake pads Honda City — 4 dealers critically low. Auto-reorder placed.</div></div></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <div class="card-hd"><div class="card-title">🎤 Voice AI — Today</div><span class="tag t-gold">LIVE</span></div>
+        <div class="card-bd">
+          <div style="text-align:center;padding:12px 0 8px">
+            <div style="font-family:var(--fh);font-size:36px;font-weight:900;color:var(--gold)">23</div>
+            <div style="font-size:11.5px;color:var(--t3)">Job cards updated hands-free</div>
+          </div>
+          <div class="sep"></div>
+          ${[['Accuracy','97.3%','var(--green)'],['Avg command time','2.4 sec','var(--gold)'],['Languages','EN · Tamil · Hindi','var(--blue)'],['Time saved today','38 minutes','var(--cyan)']].map(([k,v,c])=>`
+          <div class="stat-row"><span class="stat-key">${k}</span><span class="stat-val" style="color:${c}">${v}</span></div>`).join('')}
+          <button class="btn btn-gold btn-sm" style="width:100%;margin-top:12px;justify-content:center" onclick="nav('voice-ai')">🎤 Try Voice AI Demo</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: MULTI-LOCATION
+// ─────────────────────────────────────
+function pageMultiLocation() {
+  return `
+  <div class="ph">
+    <div class="ph-eyebrow">🌐 MULTI-LOCATION DASHBOARD</div>
+    <div class="ph-title">Dealer Group Intelligence</div>
+    <div class="ph-sub">8 locations · Single command centre · Comparative analytics</div>
+  </div>
+
+  <div class="kpi-grid kg-4">
+    ${K('Total Group Revenue','₹2.8 Cr','This month across 8 locations','trend-up','#22C55E','💰')}
+    ${K('Best Location','Anna Salai','₹64L this month','trend-gold','#F0A500','🏆')}
+    ${K('Underperforming','Porur Branch','62% of target','trend-dn','#FF3B3B','⚠️')}
+    ${K('Total Jobs','847','↑ 23% vs last month','trend-up','#3B82F6','🔧')}
+  </div>
+
+  <div class="g21">
+    <div class="tbl-card">
+      <div class="tbl-hdr"><div class="card-title">📍 All Locations — Performance Matrix</div><button class="btn btn-ghost btn-sm" onclick="toast('Report exported!','info')">Export</button></div>
+      <table>
+        <thead><tr><th>#</th><th>Location</th><th>City</th><th>Revenue</th><th>Jobs</th><th>Bay Util.</th><th>NPS</th><th>AI Score</th><th>Status</th></tr></thead>
+        <tbody>
+          ${[
+            [1,'Anna Salai','Chennai','₹64L',218,'91%','4.8★',96,'Leader'],
+            [2,'Velachery','Chennai','₹48L',167,'84%','4.7★',92,'On Track'],
+            [3,'OMR Branch','Chennai','₹42L',144,'78%','4.6★',88,'On Track'],
+            [4,'Porur','Chennai','₹28L',96,'61%','4.3★',71,'⚠️ Below'],
+            [5,'Coimbatore','Coimbatore','₹38L',138,'80%','4.7★',87,'On Track'],
+            [6,'Madurai','Madurai','₹31L',108,'74%','4.5★',82,'On Track'],
+            [7,'Trichy','Trichy','₹24L',86,'69%','4.4★',78,'Monitor'],
+            [8,'Salem','Salem','₹18L',64,'62%','4.2★',70,'⚠️ Below'],
+          ].map(([n,loc,city,rev,jobs,util,nps,ai,st])=>`
+          <tr>
+            <td class="mono" style="color:var(--t4)">${n}</td>
+            <td class="bold">${loc}</td>
+            <td style="color:var(--t3)">${city}</td>
+            <td class="mono" style="color:var(--green);font-weight:700">${rev}</td>
+            <td class="mono">${jobs}</td>
+            <td>
+              <div class="prog" style="min-width:80px">
+                <div class="prog-track"><div class="prog-fill" style="width:${util};background:${parseInt(util)>80?'var(--green)':parseInt(util)>70?'var(--gold)':'var(--red)'}"></div></div>
+                <span class="prog-val" style="color:${parseInt(util)>80?'var(--green)':parseInt(util)>70?'var(--gold)':'var(--red)'}">${util}</span>
+              </div>
+            </td>
+            <td style="color:var(--gold)">${nps}</td>
+            <td>
+              <div class="prog" style="min-width:80px">
+                <div class="prog-track"><div class="prog-fill" style="width:${ai}%;background:${ai>85?'var(--green)':ai>75?'var(--gold)':'var(--red)'}"></div></div>
+                <span class="prog-val">${ai}</span>
+              </div>
+            </td>
+            <td><span class="tag ${st==='Leader'?'t-gold':st==='On Track'?'t-green':st==='Monitor'?'t-blue':'t-red'}">${st}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">🤖 AI Group Insights</div></div>
+        <div class="card-bd">
+          <div class="ai-insight">
+            <div class="ai-insight-hd">🤖 GROUP AI ANALYSIS</div>
+            <div class="ai-insight-row"><span class="air-key">Top opportunity</span><span class="air-val" style="color:var(--gold)">Porur needs bay staff</span></div>
+            <div class="ai-insight-row"><span class="air-key">Transfer recommendation</span><span class="air-val" style="color:var(--cyan)">2 techs: Salem → Anna Salai</span></div>
+            <div class="ai-insight-row"><span class="air-key">Revenue unlock</span><span class="air-val" style="color:var(--green)">₹8L/month if Porur hits 80%</span></div>
+            <div class="ai-insight-row"><span class="air-key">Best practice to replicate</span><span class="air-val" style="color:var(--blue)">Anna Salai WhatsApp flow</span></div>
+          </div>
+          <div class="sep"></div>
+          <div style="font-size:12px;font-weight:700;margin-bottom:10px">Cross-Location Parts Pool</div>
+          <div class="alert alert-info"><div class="alert-ico">🛒</div><div><div class="alert-title">Brake pads available at Velachery</div><div class="alert-txt">Porur needs 8 units urgently. Velachery has 22. AI suggesting inter-branch transfer.</div></div></div>
+          <button class="btn btn-gold btn-sm" style="width:100%" onclick="toast('Transfer order created: Velachery → Porur, 8× Brake Pads','success')">Transfer Parts Now</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 Group vs Individual</div></div>
+        <div class="card-bd">
+          ${[['Best location','₹64L','Anna Salai'],['Avg per location','₹35L','—'],['Group total','₹2.8 Cr','All 8'],['Group target','₹3.5 Cr','Monthly'],['Target gap','₹70L','20% gap']].map(([k,v,n])=>`
+          <div class="stat-row"><span class="stat-key">${k}</span><div style="text-align:right"><div class="stat-val" style="color:var(--gold)">${v}</div><div style="font-size:10px;color:var(--t4)">${n}</div></div></div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><div class="card-title">🗺️ Location Map — Tamil Nadu Network</div><span class="tag t-green">8 Locations Active</span></div>
+    <div class="card-bd">
+      <div class="map-box">
+        <div style="font-size:48px">🗺️</div>
+        <div style="font-weight:700;font-size:14px">Tamil Nadu Dealer Network</div>
+        <div style="font-size:12px">Chennai (4) · Coimbatore · Madurai · Trichy · Salem</div>
+        <div style="font-size:11px;color:var(--t4)">Google Maps API integration · Real-time job counts per pin</div>
+        <div style="display:flex;gap:20px;margin-top:12px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px"><div class="loc-dot" style="background:var(--green)"></div>Leader</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px"><div class="loc-dot" style="background:var(--gold)"></div>On Track</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px"><div class="loc-dot" style="background:var(--red)"></div>Below Target</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: VOICE AI
+// ─────────────────────────────────────
+function pageVoiceAI() {
+  let voiceState = 'idle';
+  const voiceCommands = [
+    { cmd: '"Update job card J0091 — oil change done"', result: '✅ Oil change marked complete on J0091', type: 'success' },
+    { cmd: '"Add brake pad replacement to job J0091, cost 1800"', result: '✅ Added: Brake pad replacement ₹1,800 to J0091', type: 'success' },
+    { cmd: '"Alert customer Priya Rajan — car ready at 2PM"', result: '✅ WhatsApp sent to Priya Rajan: Ready at 2PM', type: 'success' },
+    { cmd: '"Book Honda City full service tomorrow 10AM"', result: '✅ Booking created: Full service, tomorrow 10:00 AM', type: 'success' },
+    { cmd: '"Reorder brake pads Honda City — 20 units"', result: '✅ Reorder placed: 20× Brake Pads Honda City via Marketplace', type: 'success' },
+    { cmd: '"What is today\'s revenue?"', result: '💡 Today\'s revenue: ₹2.84L across all departments', type: 'info' },
+    { cmd: '"How many jobs are pending?"', result: '💡 12 active jobs · 3 in QC · 2 awaiting parts', type: 'info' },
+  ];
+
+  return `
+  <div class="ph">
+    <div class="ph-eyebrow">🎤 VOICE AI ENGINE</div>
+    <div class="ph-title">Hands-Free DMS Control</div>
+    <div class="ph-sub">Speak to update job cards, alert customers, book services · Works in English, Tamil & Hindi</div>
+  </div>
+
+  <div class="g12">
+    <div>
+      <div class="voice-panel" style="margin-bottom:16px">
+        <div class="voice-orb-wrap">
+          <div class="voice-orb idle" id="voice-orb" onclick="demoVoiceClick()">🎤</div>
+          <div class="voice-wave" id="voice-wave" style="opacity:0.3">
+            <div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div>
+            <div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+          </div>
+          <div style="margin-top:10px;font-size:13px;font-weight:600;color:var(--gold)" id="voice-status">Tap orb to start demo</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px" id="voice-hint">Simulated demo — real product uses Web Speech API</div>
+        </div>
+        <div class="card-bd" style="border-top:1px solid rgba(240,165,0,0.15);padding:14px 20px">
+          <div style="font-size:11px;color:var(--gold);font-family:var(--fm);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.15em">🤖 AI Transcript</div>
+          <div id="voice-transcript" style="font-size:12.5px;color:var(--t2);min-height:60px;font-family:var(--fm);line-height:1.8">
+            <span style="color:var(--t4)">Voice transcript will appear here...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📋 Demo Voice Commands</div><div class="card-sub">Click any to simulate</div></div>
+        <div class="card-bd" style="padding:10px 16px">
+          ${voiceCommands.map((c,i) => `
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background 0.15s;margin-bottom:4px" onmouseover="this.style.background='rgba(240,165,0,0.06)'" onmouseout="this.style.background=''" onclick="simulateVoiceCommand(${i})">
+            <div style="font-size:16px">🎤</div>
+            <div style="flex:1;font-size:12px;color:var(--t2);font-style:italic">${c.cmd}</div>
+            <div style="font-size:10px;color:var(--t4)">→</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="kpi-grid kg-3" style="margin-bottom:16px">
+        ${K('Accuracy','97.3%','Live recognition rate','trend-up','#22C55E','🎯')}
+        ${K('Commands Today','23','Job cards updated','trend-gold','#F0A500','⚡')}
+        ${K('Time Saved','38 min','vs manual entry','trend-up','#06D6A0','⏱️')}
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">🌐 Language Support</div></div>
+        <div class="card-bd">
+          ${[['English (Indian)','Primary','97%','var(--green)'],['Tamil','Active','93%','var(--gold)'],['Hindi','Active','91%','var(--blue)'],['Telugu','Beta','78%','var(--cyan)'],['Kannada','Beta','74%','var(--violet)']].map(([l,st,acc,c])=>`
+          <div class="stat-row">
+            <div><div style="font-size:12.5px;font-weight:600">${l}</div><span class="tag ${st==='Primary'?'t-gold':st==='Active'?'t-green':'t-blue'}" style="font-size:9.5px">${st}</span></div>
+            <div class="prog" style="width:140px"><div class="prog-track"><div class="prog-fill" style="width:${acc};background:${c}"></div></div><span class="prog-val" style="color:${c}">${acc}</span></div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">⚡ Voice Command Types</div></div>
+        <div class="card-bd">
+          ${[['Job Card Updates','45%','var(--gold)'],['Customer Alerts','22%','var(--green)'],['Parts Reorder','16%','var(--blue)'],['Bookings','11%','var(--cyan)'],['Data Queries','6%','var(--violet)']].map(([t,p,c])=>`
+          <div class="hbar"><div class="hbar-lbl">${t}</div><div class="hbar-track"><div class="hbar-fill" style="width:${p};background:${c}"></div></div><div class="hbar-val">${p}</div></div>`).join('')}
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <div class="card-hd"><div class="card-title">💡 Why Voice AI Wins</div></div>
+        <div class="card-bd">
+          <div style="font-size:12.5px;line-height:1.8;color:var(--t2)">
+            A technician with hands under a car bonnet <span style="color:var(--gold);font-weight:700">cannot type</span>. They need to update job progress, flag parts, alert customers — all without putting tools down.<br><br>
+            <span style="color:var(--t1);font-weight:700">No competitor offers this.</span> This single feature creates a switching cost that keeps technicians on AUTOERA forever.
+          </div>
+          <div class="sep"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="text-align:center;background:var(--base);border-radius:10px;padding:12px">
+              <div style="font-family:var(--fh);font-size:22px;font-weight:800;color:var(--red)">8.7 min</div>
+              <div style="font-size:10.5px;color:var(--t3)">Manual job card update</div>
+            </div>
+            <div style="text-align:center;background:var(--base);border-radius:10px;padding:12px">
+              <div style="font-family:var(--fh);font-size:22px;font-weight:800;color:var(--green)">2.4 sec</div>
+              <div style="font-size:10.5px;color:var(--t3)">Voice AI update</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const voiceDemoCommands = ${JSON.stringify(voiceCommands)};
+  let vIdx = 0;
+  
+  function demoVoiceClick() {
+    simulateVoiceCommand(vIdx);
+    vIdx = (vIdx + 1) % voiceDemoCommands.length;
+  }
+
+  function simulateVoiceCommand(i) {
+    const orb = document.getElementById('voice-orb');
+    const wave = document.getElementById('voice-wave');
+    const status = document.getElementById('voice-status');
+    const transcript = document.getElementById('voice-transcript');
+    const cmd = voiceDemoCommands[i];
+
+    orb.className = 'voice-orb listening';
+    wave.style.opacity = '1';
+    status.textContent = 'Listening...';
+    status.style.color = 'var(--red)';
+    transcript.innerHTML = '<span style="color:var(--gold)">🎤 Hearing: </span><span style="color:var(--t1)">' + cmd.cmd + '</span>';
+
+    setTimeout(() => {
+      orb.className = 'voice-orb processing';
+      orb.textContent = '⚙️';
+      status.textContent = 'Processing...';
+      status.style.color = 'var(--blue)';
+      transcript.innerHTML += '<br><span style="color:var(--blue)">🤖 Processing NLP...</span>';
+    }, 1200);
+
+    setTimeout(() => {
+      orb.className = 'voice-orb idle';
+      orb.textContent = '🎤';
+      wave.style.opacity = '0.3';
+      status.textContent = 'Command executed ✓';
+      status.style.color = 'var(--green)';
+      transcript.innerHTML += '<br><span style="color:var(--green)">' + cmd.result + '</span>';
+      showToast(cmd.result, cmd.type);
+    }, 2400);
+  }
+
+  function showToast(msg, type) {
+    const dock = document.getElementById('toast-dock');
+    const el = document.createElement('div');
+    el.className = 'toast voice';
+    el.innerHTML = '<span style="font-size:16px">🎤</span><span>' + msg + '</span>';
+    dock.appendChild(el);
+    setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(30px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(),320); }, 3500);
+  }
+  </script>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: OBD2 DIAGNOSTICS
+// ─────────────────────────────────────
+function pageOBD2() {
+  return `
+  <div class="ph">
+    <div class="ph-eyebrow">📱 OBD2 LIVE DIAGNOSTICS</div>
+    <div class="ph-title">Real-Time Vehicle Intelligence</div>
+    <div class="ph-sub">847 vehicles connected · Plug a ₹800 OBD2 dongle → live data flows to your dashboard</div>
+  </div>
+
+  <div class="kpi-grid kg-4">
+    ${K('Vehicles Connected','847','Live OBD2 streams','trend-up','#06D6A0','📡')}
+    ${K('Critical Alerts','3','Immediate service needed','trend-dn','#FF3B3B','🚨')}
+    ${K('Breakdowns Prevented','14','This month via OBD2','trend-up','#22C55E','🛡️')}
+    ${K('OBD2 Revenue','₹6.2L','Proactive upsell this month','trend-up','#F0A500','💰')}
+  </div>
+
+  <div class="g21">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">🚨 Live Critical Alerts</div><span class="tag t-red">3 Critical Now</span></div>
+        <div class="card-bd">
+          <div class="alert alert-critical" style="margin-bottom:12px">
+            <div class="alert-ico">🚨</div>
+            <div style="flex:1">
+              <div class="alert-title">MH01BH9234 — Honda City · Anitha Nair</div>
+              <div class="alert-txt">Engine oil pressure critically low. Bearing wear detected. Failure probability: <strong style="color:var(--red)">87%</strong> within 600km. WhatsApp alert auto-sent.</div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn btn-red btn-xs" onclick="toast('📱 Alert sent to Anitha Nair: Urgent service required!','warn')">Alert Customer</button>
+                <button class="btn btn-ghost btn-xs" onclick="toast('Service booking created for tomorrow 9AM','success')">Book Urgent Service</button>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-critical" style="margin-bottom:12px">
+            <div class="alert-ico">⚠️</div>
+            <div style="flex:1">
+              <div class="alert-title">TN12KL3344 — Honda Jazz · Senthil M.</div>
+              <div class="alert-txt">Timing belt: 94,200km (overdue at 80K). Catastrophic failure risk: <strong style="color:var(--red)">91%</strong>. Revenue potential: ₹8,200.</div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn btn-red btn-xs" onclick="toast('Alert sent to Senthil M. via WhatsApp!','warn')">Alert Customer</button>
+                <button class="btn btn-ghost btn-xs">Book Service</button>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warn">
+            <div class="alert-ico">🔋</div>
+            <div style="flex:1">
+              <div class="alert-title">TN08PQ6677 — Honda Amaze · Lakshmi R.</div>
+              <div class="alert-txt">Brake fluid moisture: 74% (replace above 60%). Brake performance reduced 22%. Safe to drive but urgent.</div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn btn-gold btn-xs" onclick="toast('Reminder sent to Lakshmi R.','info')">Send Reminder</button>
+                <button class="btn btn-ghost btn-xs">Book Service</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live OBD2 Gauges -->
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 Live OBD2 — TN09AB1234 · Honda City</div><span class="tag t-green">● Live Stream</span></div>
+        <div class="card-bd">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+            ${[
+              ['Engine Temp','91','°C','border:2px solid var(--green)','var(--green)'],
+              ['RPM','2,400','rpm','border:2px solid var(--gold)','var(--gold)'],
+              ['Battery','12.8','V','border:2px solid var(--green)','var(--green)'],
+              ['Fuel Level','68','%','border:2px solid var(--gold)','var(--gold)'],
+            ].map(([l,v,u,border,c])=>`
+            <div class="obd-gauge">
+              <div class="gauge-ring" style="${border};background:radial-gradient(circle,${c}20,transparent)">
+                <div>
+                  <div class="gauge-val" style="color:${c}">${v}</div>
+                  <div class="gauge-unit">${u}</div>
+                </div>
+              </div>
+              <div class="gauge-lbl">${l}</div>
+            </div>`).join('')}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            ${[
+              ['Oil Pressure','Normal','var(--green)'],
+              ['Check Engine','Clear','var(--green)'],
+              ['ABS','Active','var(--green)'],
+              ['Throttle Pos.','18%','var(--gold)'],
+              ['MAF Sensor','Normal','var(--green)'],
+              ['O2 Sensor','14.7 λ','var(--green)'],
+            ].map(([l,v,c])=>`
+            <div style="background:var(--base);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+              <div style="font-size:11px;color:var(--t3);margin-bottom:4px;font-family:var(--fm)">${l}</div>
+              <div style="font-size:13px;font-weight:700;color:${c}">${v}</div>
+            </div>`).join('')}
+          </div>
+          <div class="sep"></div>
+          <div class="ai-insight">
+            <div class="ai-insight-hd">🤖 AI DIAGNOSIS</div>
+            <div class="ai-insight-row"><span class="air-key">Overall Health</span><span class="air-val" style="color:var(--green)">86/100 — Good</span></div>
+            <div class="ai-insight-row"><span class="air-key">Predicted next issue</span><span class="air-val" style="color:var(--gold)">Brake pads · ~2,000km</span></div>
+            <div class="ai-insight-row"><span class="air-key">Next service due</span><span class="air-val" style="color:var(--blue)">30,000km (in 5,180km)</span></div>
+            <div class="ai-insight-row"><span class="air-key">Fuel economy (30-day avg)</span><span class="air-val" style="color:var(--cyan)">16.2 km/L</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">💡 Why OBD2 is Your Moat</div></div>
+        <div class="card-bd">
+          <div style="font-size:12.5px;line-height:1.8;color:var(--t2)">
+            When a customer plugs your ₹800 OBD2 dongle into their car, <span style="color:var(--gold);font-weight:700">you own that vehicle's data forever</span>. Every trip, every fault code, every degrading component flows to AUTOERA in real time.
+          </div>
+          <div class="sep"></div>
+          ${[['OBD2 hardware cost','₹800 (dealer provides)'],['Revenue per proactive alert','₹2,000–15,000'],['Customer retention increase','+38%'],['Industry average with OBD2','Only 3% of DMS players'],['AUTOERA competitive moat','Strong']].map(([k,v])=>`
+          <div class="stat-row"><span class="stat-key">${k}</span><span class="stat-val" style="color:var(--gold)">${v}</span></div>`).join('')}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 OBD2 Impact — This Month</div></div>
+        <div class="card-bd">
+          ${[['Breakdowns prevented','14','var(--green)'],['Proactive service revenue','₹6.2L','var(--gold)'],['Alert-to-booking conversion','68%','var(--blue)'],['Avg revenue per alert','₹4,429','var(--cyan)'],['Customer trust score impact','+0.4 NPS pts','var(--green)']].map(([k,v,c])=>`
+          <div class="stat-row"><span class="stat-key">${k}</span><span class="stat-val" style="color:${c}">${v}</span></div>`).join('')}
+          <div class="sep"></div>
+          <button class="btn btn-gold btn-sm" style="width:100%;justify-content:center" onclick="toast('OBD2 setup guide sent to dealer','info')">📱 Setup OBD2 for New Vehicle</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: PARTS MARKETPLACE
+// ─────────────────────────────────────
+function pageMarketplace() {
+  return `
+  <div class="ph">
+    <div class="ph-eyebrow">🛒 PARTS MARKETPLACE</div>
+    <div class="ph-title">B2B Automotive Parts Exchange</div>
+    <div class="ph-sub">142 dealers · 2,400 SKUs · Verified suppliers · AI demand forecasting · Same-day delivery Chennai</div>
+  </div>
+
+  <div class="kpi-grid kg-4">
+    ${K('GMV This Month','₹48L','↑ 120% vs last month','trend-up','#22C55E','💰')}
+    ${K('Active Suppliers','38','Verified & rated','trend-gold','#F0A500','🏭')}
+    ${K('Avg Delivery Time','4.2 hrs','Chennai metro same-day','trend-up','#06D6A0','🚚')}
+    ${K('Platform Take Rate','3%','₹1.44L fees this month','trend-gold','#3B82F6','💳')}
+  </div>
+
+  <div class="tab-bar" id="mkt-tabs">
+    <div class="tab active" onclick="switchMktTab(this,'mkt-urgent')">🚨 Urgent Needs (7)</div>
+    <div class="tab" onclick="switchMktTab(this,'mkt-browse')">Browse Catalogue</div>
+    <div class="tab" onclick="switchMktTab(this,'mkt-orders')">My Orders</div>
+    <div class="tab" onclick="switchMktTab(this,'mkt-suppliers')">Suppliers</div>
+  </div>
+
+  <div id="mkt-urgent">
+    <div class="alert alert-critical" style="margin-bottom:16px"><div class="alert-ico">🤖</div><div><div class="alert-title">AI Demand Forecast — Order Now to Prevent Stockout</div><div class="alert-txt">Based on bookings for next 7 days, these 7 parts will run out. AI has pre-filled order quantities. One-click order all.</div></div></div>
+    <div class="tbl-card">
+      <div class="tbl-hdr"><div class="card-title">Urgent Parts — AI Flagged</div><button class="btn btn-gold btn-sm" onclick="toast('✅ All 7 parts ordered! Delivery by 4PM today','success')">⚡ Order All — ₹28,400</button></div>
+      <table>
+        <thead><tr><th>Part</th><th>Current Stock</th><th>Need (7 days)</th><th>Best Supplier</th><th>Price</th><th>Delivery</th><th>Action</th></tr></thead>
+        <tbody>
+          ${[
+            ['Brake Pads Honda City (Front)','4 units','18 units','AutoParts India ★4.9','₹320/pair','2-3 hrs'],
+            ['Engine Oil 0W-20 1L','6 bottles','32 bottles','Motul Official ★4.8','₹480/L','Same day'],
+            ['Air Filter Honda City','8 units','22 units','Genuine Honda ★5.0','₹280/unit','4-6 hrs'],
+            ['Cabin Air Filter Jazz','3 units','14 units','AutoParts India ★4.9','₹240/unit','Same day'],
+            ['Spark Plugs NGK (set 4)','2 sets','12 sets','NGK Direct ★4.7','₹1,200/set','Next day'],
+            ['Timing Belt Kit City','1 kit','6 kits','Genuine Honda ★5.0','₹3,200/kit','4-6 hrs'],
+            ['AC Refrigerant R134a','4 cans','16 cans','Honeywell Dist. ★4.6','₹480/can','Same day'],
+          ].map(([p,cur,need,sup,price,del])=>`
+          <tr>
+            <td class="bold">${p}</td>
+            <td class="mono" style="color:var(--red)">${cur}</td>
+            <td class="mono" style="color:var(--gold)">${need}</td>
+            <td style="font-size:12px">${sup}</td>
+            <td class="mono" style="color:var(--green)">${price}</td>
+            <td><span class="tag t-green" style="font-size:10px">${del}</span></td>
+            <td><button class="btn btn-gold btn-xs" onclick="toast('Ordered! Delivery confirmation sent','success')">Order</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="mkt-browse" style="display:none">
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <input placeholder="Search 2,400 parts..." style="flex:1;max-width:320px">
+      <select style="width:160px"><option>All Categories</option><option>Engine</option><option>Brakes</option><option>AC</option><option>Electrical</option><option>Body</option></select>
+      <select style="width:140px"><option>All Brands</option><option>Honda</option><option>Maruti</option><option>Hyundai</option><option>Tata</option></select>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      ${[
+        ['🔧','Brake Pads Honda City Front','Genuine Honda','₹320/pair','In Stock · 142 units','★ 4.9 (38 orders)'],
+        ['🛢️','Engine Oil 0W-20 (1L)','Motul Official','₹480/litre','In Stock · 800+ units','★ 4.8 (124 orders)'],
+        ['🌀','Air Filter City/Amaze','Genuine Honda','₹280/unit','In Stock · 64 units','★ 5.0 (52 orders)'],
+        ['⚡','Alternator Belt Set','AutoParts India','₹1,200/set','In Stock · 18 sets','★ 4.7 (21 orders)'],
+        ['💧','Brake Fluid DOT4 (500ml)','Castrol','₹180/bottle','In Stock · 200+ units','★ 4.6 (87 orders)'],
+        ['❄️','AC Compressor Honda City','Denso Original','₹12,400/unit','3 available · Order fast','★ 4.9 (14 orders)'],
+      ].map(([ico,n,sup,price,stock,rating])=>`
+      <div class="part-card">
+        <div style="font-size:32px;margin-bottom:10px">${ico}</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px">${n}</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:6px">${sup}</div>
+        <div style="font-size:11px;color:var(--gold);margin-bottom:3px">${rating}</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:10px">${stock}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:var(--fh);font-size:17px;font-weight:800;color:var(--green)">${price}</span>
+          <button class="btn btn-gold btn-xs" onclick="toast('Added to cart: ${n}','success')">Add to Cart</button>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <div id="mkt-orders" style="display:none">
+    <div class="tbl-card">
+      <div class="tbl-hdr"><div class="card-title">Recent Orders</div></div>
+      <table><thead><tr><th>Order ID</th><th>Parts</th><th>Supplier</th><th>Amount</th><th>Ordered</th><th>Status</th><th>ETA</th></tr></thead>
+      <tbody>
+        ${[['#ORD-2281','Brake Pads Honda City × 20','AutoParts India','₹6,400','2 hrs ago','Out for Delivery','Today 3PM'],
+           ['#ORD-2280','Engine Oil 0W-20 × 48L','Motul Official','₹23,040','Yesterday','Delivered ✅','—'],
+           ['#ORD-2279','Air Filter × 30','Genuine Honda','₹8,400','2 days ago','Delivered ✅','—'],
+           ['#ORD-2278','Timing Belt Kit × 4','Genuine Honda','₹12,800','3 days ago','Delivered ✅','—']].map(([id,p,s,amt,t,st,eta])=>`
+        <tr>
+          <td class="mono" style="font-size:10.5px">${id}</td>
+          <td class="bold">${p}</td>
+          <td style="color:var(--t3)">${s}</td>
+          <td class="mono" style="color:var(--green)">${amt}</td>
+          <td style="color:var(--t3);font-size:12px">${t}</td>
+          <td><span class="tag ${st.includes('Delivered')?'t-green':st.includes('Out')?'t-gold':'t-blue'}">${st}</span></td>
+          <td style="color:var(--t3);font-size:12px">${eta}</td>
+        </tr>`).join('')}
+      </tbody></table>
+    </div>
+  </div>
+
+  <div id="mkt-suppliers" style="display:none">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      ${[['AutoParts India','Mumbai','2,100 SKUs','★ 4.9','₹14.2L GMV','Preferred','#22C55E'],['Genuine Honda Parts','Chennai','480 SKUs','★ 5.0','₹8.8L GMV','OEM Partner','#F0A500'],['Motul India','Bangalore','120 SKUs','★ 4.8','₹6.1L GMV','Premium','#3B82F6'],['Denso India','Chennai','340 SKUs','★ 4.9','₹4.4L GMV','Preferred','#06D6A0'],['NGK Direct','Mumbai','80 SKUs','★ 4.7','₹2.8L GMV','Verified','#22C55E'],['Castrol Dist.','Chennai','200 SKUs','★ 4.6','₹3.2L GMV','Verified','#22C55E']].map(([n,city,skus,rat,gmv,tag,c])=>`
+      <div class="card"><div class="card-bd">
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px">${n}</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:10px">${city} · ${skus}</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px">
+          <span style="color:var(--gold)">${rat}</span>
+          <span class="tag" style="background:${c}15;color:${c};border:1px solid ${c}30;font-size:10px">${tag}</span>
+        </div>
+        <div style="font-size:11px;color:var(--t3)">GMV: <span style="color:var(--green);font-weight:700">${gmv}/month</span></div>
+      </div></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: OEM + RECALLS
+// ─────────────────────────────────────
+function pageOEMRecalls() {
+  return `
+  <div class="ph">
+    <div class="ph-top">
+      <div>
+        <div class="ph-eyebrow">📊 OEM INTEGRATION + RECALL MANAGEMENT</div>
+        <div class="ph-title">Live OEM Data + Recall Alerts</div>
+        <div class="ph-sub">Honda · Maruti · Tata · Hyundai APIs · Auto-match affected vehicles · Mass notification engine</div>
+      </div>
+      <div class="ph-actions">
+        <div class="recall-badge">🔴 ACTIVE RECALL: Honda City 2020-22</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-critical" style="margin-bottom:24px">
+    <div class="alert-ico" style="font-size:24px">🚨</div>
+    <div style="flex:1">
+      <div class="alert-title" style="font-size:15px">ACTIVE OEM RECALL — Honda City 2020-2022 · Airbag ECU Software Defect</div>
+      <div class="alert-txt" style="font-size:13px;margin-top:4px">Honda India issued recall ref: HIN-2026-R04. Affected component: Airbag ECU firmware v2.1.4. Risk: Airbag may not deploy in collision. <strong style="color:var(--red)">1,284 vehicles affected</strong> across your dealer network. AUTOERA auto-matched all VINs. WhatsApp alerts sent to all owners.</div>
+      <div class="btn-group" style="margin-top:12px">
+        <button class="btn btn-red btn-sm" onclick="openRecallModal()">📋 View All Affected Vehicles</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Mass WhatsApp sent to 1,284 owners','warn')">📱 Resend All Alerts</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Recall tracking report downloaded','info')">📊 Download Report</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-grid kg-4">
+    ${K('Vehicles Affected','1,284','Across 8 locations','trend-dn','#FF3B3B','🚨')}
+    ${K('Owners Notified','1,284','Auto-matched via VIN','trend-gold','#F0A500','📱')}
+    ${K('Bookings Created','384','30% conversion so far','trend-up','#22C55E','📅')}
+    ${K('Recall Revenue','₹38.4L','384 × ₹0 repair + paid checks','trend-up','#3B82F6','💰')}
+  </div>
+
+  <div class="g21">
+    <div>
+      <div class="tbl-card" style="margin-bottom:16px">
+        <div class="tbl-hdr"><div class="card-title">📍 Recall Status by Location</div></div>
+        <table>
+          <thead><tr><th>Location</th><th>Affected</th><th>Notified</th><th>Booked</th><th>Completed</th><th>Conversion</th></tr></thead>
+          <tbody>
+            ${[['Anna Salai','284','284','98','42','35%'],['Velachery','198','198','71','28','36%'],['OMR Branch','172','172','54','22','31%'],['Porur','126','126','32','11','25%'],['Coimbatore','184','184','62','24','34%'],['Madurai','148','148','44','18','30%'],['Trichy','106','106','18','8','17%'],['Salem','66','66','5','2','8%']].map(([loc,aff,not,bkd,comp,conv])=>`
+            <tr>
+              <td class="bold">${loc}</td>
+              <td class="mono" style="color:var(--red)">${aff}</td>
+              <td class="mono" style="color:var(--gold)">${not}</td>
+              <td class="mono" style="color:var(--blue)">${bkd}</td>
+              <td class="mono" style="color:var(--green)">${comp}</td>
+              <td><span class="tag ${parseInt(conv)>30?'t-green':parseInt(conv)>20?'t-gold':'t-red'}">${conv}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">🔗 OEM API Connections</div></div>
+        <div class="card-bd">
+          ${[['Honda India API','Connected','VINs + Recalls + TSBs + Service Manuals','var(--green)'],['Maruti Suzuki Connect','Connected','Dealer management + recalls','var(--green)'],['Tata Motors API','Connected','EV battery data + recalls','var(--green)'],['Hyundai BlueLink','Partial','Recalls only — full API pending','var(--gold)'],['Kia Connect','Pending','Integration in progress','var(--red)'],['Toyota TechStream','Pending','Scheduled Q2 2026','var(--red)']].map(([api,st,desc,c])=>`
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(30,45,64,0.5)">
+            <div style="width:8px;height:8px;border-radius:50%;background:${c};margin-top:5px;flex-shrink:0"></div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600">${api}</div>
+              <div style="font-size:11px;color:var(--t3)">${desc}</div>
+            </div>
+            <span class="tag ${st==='Connected'?'t-green':st==='Partial'?'t-gold':'t-red'}">${st}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">💡 Why OEM Recall = Revenue</div></div>
+        <div class="card-bd">
+          <div style="font-size:12.5px;line-height:1.8;color:var(--t2);margin-bottom:12px">
+            When Honda issues a recall, <span style="color:var(--gold);font-weight:700">every affected vehicle must come to a Honda dealer</span>. AUTOERA auto-identifies which vehicles in your database are affected, sends WhatsApp alerts, and books them in — automatically.
+          </div>
+          <div class="ai-insight">
+            <div class="ai-insight-hd">🤖 RECALL REVENUE INTELLIGENCE</div>
+            <div class="ai-insight-row"><span class="air-key">Recall booking conversion</span><span class="air-val" style="color:var(--gold)">30% → paid service upsell</span></div>
+            <div class="ai-insight-row"><span class="air-key">Avg upsell per recall visit</span><span class="air-val" style="color:var(--green)">₹1,800 (service + check)</span></div>
+            <div class="ai-insight-row"><span class="air-key">This recall revenue potential</span><span class="air-val" style="color:var(--cyan)">₹38.4L across network</span></div>
+            <div class="ai-insight-row"><span class="air-key">Competitor capability</span><span class="air-val" style="color:var(--red)">Manual — 2-3 week delay</span></div>
+            <div class="ai-insight-row"><span class="air-key">AUTOERA response</span><span class="air-val" style="color:var(--green)">Automated in 4 minutes</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 Recall History</div></div>
+        <div class="card-bd">
+          ${[['Jan 2026','Maruti Swift EPS','342 vehicles','98% complete'],['Nov 2025','Hyundai i20 ABS','218 vehicles','100% complete'],['Sep 2025','Tata Nexon Brake','164 vehicles','100% complete'],['Jul 2025','Honda City Fuel Pump','428 vehicles','100% complete']].map(([d,r,v,st])=>`
+          <div class="stat-row"><div><div style="font-size:12.5px;font-weight:600">${r}</div><div style="font-size:11px;color:var(--t3)">${d} · ${v}</div></div><span class="tag ${st==='100% complete'?'t-green':'t-gold'}">${st}</span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: REVIEWS AI
+// ─────────────────────────────────────
+function pageReviews() {
+  return `
+  <div class="ph">
+    <div class="ph-eyebrow">⭐ GOOGLE REVIEWS AI ENGINE</div>
+    <div class="ph-title">Automated Reputation Management</div>
+    <div class="ph-sub">Auto-request · AI response generation · Sentiment analysis · 847 reviews this month</div>
+  </div>
+
+  <div class="kpi-grid kg-4">
+    ${K('Google Rating','4.7 ★','Was 3.9 before AUTOERA','trend-up','#F0A500','⭐')}
+    ${K('Reviews This Month','847','4.8× more than before AI','trend-up','#22C55E','📝')}
+    ${K('Response Rate','98%','AI auto-responds in 2 min','trend-up','#06D6A0','💬')}
+    ${K('5-Star Rate','72%','↑ from 38% pre-AI','trend-up','#3B82F6','🏆')}
+  </div>
+
+  <div class="g21">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">⚡ Review Request Automation Flow</div></div>
+        <div class="card-bd">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 0">
+            ${['Job Complete','→','AI checks NPS (>7?)','→','WhatsApp sent (2 hrs later)','→','1-click Google link','→','AI tracks & follows up'].map((step,i)=>
+              step === '→' ? `<div style="color:var(--gold);font-size:18px;font-weight:700">→</div>` :
+              `<div style="background:var(--base);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600">${step}</div>`
+            ).join('')}
+          </div>
+          <div class="sep"></div>
+          <div class="ai-insight">
+            <div class="ai-insight-hd">🤖 THIS MONTH'S AUTOMATION STATS</div>
+            <div class="ai-insight-row"><span class="air-key">Review requests sent</span><span class="air-val" style="color:var(--gold)">1,178 WhatsApp messages</span></div>
+            <div class="ai-insight-row"><span class="air-key">Conversion rate</span><span class="air-val" style="color:var(--green)">71.9% (847/1,178)</span></div>
+            <div class="ai-insight-row"><span class="air-key">AI auto-responses sent</span><span class="air-val" style="color:var(--blue)">831 (98% of reviews)</span></div>
+            <div class="ai-insight-row"><span class="air-key">Avg response time</span><span class="air-val" style="color:var(--cyan)">1 min 48 sec</span></div>
+            <div class="ai-insight-row"><span class="air-key">Revenue from 5★ (SEO lift est.)</span><span class="air-val" style="color:var(--green)">₹2.4L/month</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 Rating Distribution</div></div>
+        <div class="card-bd">
+          ${[['5 ★',609,72,'var(--green)'],['4 ★',169,20,'var(--gold)'],['3 ★',42,5,'var(--blue)'],['2 ★',17,2,'var(--red)'],['1 ★',10,1,'var(--red)']].map(([s,n,p,c])=>`
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="font-size:12px;font-weight:700;width:28px">${s}</div>
+            <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+              <div style="height:100%;background:${c};width:${p}%;border-radius:4px;transition:width 0.8s"></div>
+            </div>
+            <div style="font-size:11.5px;font-family:var(--fm);width:48px;text-align:right;color:${c}">${n} (${p}%)</div>
+          </div>`).join('')}
+          <div class="sep"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center">
+            <div style="background:var(--base);border-radius:8px;padding:12px"><div style="font-family:var(--fh);font-size:28px;font-weight:900;color:var(--gold)">4.7</div><div style="font-size:10.5px;color:var(--t3)">Google Rating (was 3.9)</div></div>
+            <div style="background:var(--base);border-radius:8px;padding:12px"><div style="font-family:var(--fh);font-size:28px;font-weight:900;color:var(--green)">847</div><div style="font-size:10.5px;color:var(--t3)">Reviews This Month</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">🤖 AI Auto-Responses (Live)</div><span class="tag t-green">2 min response time</span></div>
+        <div class="card-bd" style="padding:12px 16px">
+          <div class="review-card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-weight:700;font-size:12.5px">Priya Rajan</span>
+              <span style="color:var(--gold)">★★★★★</span>
+            </div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:8px">"Excellent service! The AI diagnostic predicted my brake issue before I even noticed it. Very impressed!"</div>
+            <div style="background:rgba(240,165,0,0.06);border-left:2px solid var(--gold);padding:8px 10px;border-radius:0 6px 6px 0;font-size:11.5px;color:var(--t2)">
+              <span style="color:var(--gold);font-weight:700">🤖 AI Response (auto-sent 1m 42s ago):</span> "Thank you Priya! We're so glad our AI diagnostics helped catch the issue early. Your safety is our priority. See you at your next service! 🙏"
+            </div>
+          </div>
+          <div class="review-card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-weight:700;font-size:12.5px">Mohan Kumar</span>
+              <span style="color:var(--gold)">★★★★</span>
+            </div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:8px">"Good service overall. Waiting time was a bit long but the staff was helpful."</div>
+            <div style="background:rgba(240,165,0,0.06);border-left:2px solid var(--gold);padding:8px 10px;border-radius:0 6px 6px 0;font-size:11.5px;color:var(--t2)">
+              <span style="color:var(--gold);font-weight:700">🤖 AI Response:</span> "Thank you Mohan! We appreciate your feedback. We're working on reducing wait times — we've added a new bay this month. Looking forward to serving you faster next time!"
+            </div>
+          </div>
+          <div class="review-card" style="border-color:rgba(255,59,59,0.3)">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-weight:700;font-size:12.5px">Angry Customer</span>
+              <span style="color:var(--red)">★★☆☆☆</span>
+            </div>
+            <div style="font-size:12px;color:var(--t2);margin-bottom:8px">"Had to wait 3 hours for a simple oil change. Not acceptable."</div>
+            <div style="background:rgba(255,59,59,0.04);border-left:2px solid var(--red);padding:8px 10px;border-radius:0 6px 6px 0;font-size:11.5px;color:var(--t2)">
+              <span style="color:var(--red);font-weight:700">🤖 AI: Human handover triggered.</span> Negative review detected (2★). Service Manager Rajesh Kumar alerted via WhatsApp. Personal call scheduled within 30 min.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div class="card-title">📊 Competitor Benchmarking</div></div>
+        <div class="card-bd">
+          ${[['Kumaran Honda (AUTOERA)','4.7 ★','847 reviews','var(--green)'],['Nearby Competitor A','3.8 ★','12 reviews','var(--red)'],['Nearby Competitor B','4.1 ★','34 reviews','var(--gold)'],['Nearby Competitor C','3.6 ★','8 reviews','var(--red)']].map(([name,rat,rev,c])=>`
+          <div class="stat-row"><span class="stat-key">${name}</span><div style="text-align:right"><div style="font-weight:700;color:${c}">${rat}</div><div style="font-size:10.5px;color:var(--t4)">${rev}</div></div></div>`).join('')}
+          <div class="sep"></div>
+          <div style="text-align:center;padding:8px">
+            <div style="font-family:var(--fh);font-size:22px;font-weight:800;color:var(--gold)">+0.9 stars above</div>
+            <div style="font-size:11px;color:var(--t3)">average competitor rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─────────────────────────────────────
+// PAGE: INVESTOR DECK
+// ─────────────────────────────────────
+function pageInvestor() {
+  return `
+  <div class="ph">
+    <div class="ph-eyebrow">📊 INVESTOR MATERIALS · SEED ROUND</div>
+    <div class="ph-title">AUTOERA — The Investment Case</div>
+    <div class="ph-sub">India's AI-native Automotive DMS · Seed Round · ₹1–3 Cr ask · ₹10–15 Cr valuation</div>
+  </div>
+
+  <!-- Hero Stats -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px">
+    ${[['₹3,200 Cr','TAM — India Auto DMS'],['48,000+','Target Dealerships'],['₹40K–1.5L','MRR Per Dealer'],['95%','Annual Retention Rate'],['₹5,000 Cr','10-Year Vision Valuation']].map(([v,l])=>`
+    <div class="inv-stat">
+      <div class="inv-val" style="background:linear-gradient(135deg,var(--gold3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">${v}</div>
+      <div class="inv-lbl">${l}</div>
+    </div>`).join('')}
+  </div>
+
+  <div class="g2" style="margin-bottom:20px">
+    <div class="card card-gold">
+      <div class="card-hd"><div class="card-title">🎯 The Problem — ₹3,200 Cr Opportunity</div></div>
+      <div class="card-bd">
+        <div style="font-size:13px;line-height:1.9;color:var(--t2)">
+          India has <strong style="color:var(--t1)">48,000+ car dealerships</strong> generating ₹4.5 lakh crore revenue annually. Yet <strong style="color:var(--gold)">73% still use Excel, paper job cards, and WhatsApp messages</strong> to manage their entire business.<br><br>
+          The 27% using software pay ₹80K–3L/month for outdated, complex Western products built for US dealers — <strong style="color:var(--t1)">not India's WhatsApp-first, multi-brand, family-owned dealerships</strong>.
+        </div>
+        <div class="sep"></div>
+        ${[['Bay utilisation (manual)','60%','var(--red)'],['Bay utilisation (AUTOERA)','89%','var(--green)'],['Lead conversion (manual)','30%','var(--red)'],['Lead conversion (AUTOERA)','68%','var(--green)'],['Customer no-show (manual)','40%','var(--red)'],['Customer no-show (AUTOERA)','5%','var(--green)']].map(([k,v,c])=>`
+        <div class="stat-row"><span class="stat-key">${k}</span><span class="stat-val" style="color:${c}">${v}</span></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><div class="card-title">💰 Unit Economics</div></div>
+      <div class="card-bd">
+        <div class="ai-insight" style="margin-bottom:14px">
+          <div class="ai-insight-hd">💰 PER-DEALER ECONOMICS</div>
+          ${[['Starter Plan MRR','₹20,000/mo'],['Professional Plan MRR','₹40,000/mo'],['Enterprise Plan MRR','₹80,000–1.5L/mo'],['Avg dealer MRR (current)','₹33,800/mo'],['Annual contract value (avg)','₹4.06L'],['Churn rate','5%/year'],['LTV (20yr avg lifespan)','₹68L'],['CAC (avg)','₹1.6L'],['LTV:CAC ratio','43:1 ★★★★★']].map(([k,v])=>`<div class="ai-insight-row"><span class="air-key">${k}</span><span class="air-val" style="color:var(--gold)">${v}</span></div>`).join('')}
+        </div>
+        <div class="alert alert-info"><div class="alert-ico">💡</div><div><div class="alert-title">Transaction Revenue (additional)</div><div class="alert-txt">0.5% on finance loans + 2.5% on insurance policies + 3% on marketplace GMV. Currently ₹76L/month and growing faster than subscriptions.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:20px">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">🗺️ 5-Year Revenue Roadmap</div></div>
+      <div class="card-bd">
+        ${[
+          ['Year 1 (2026)','₹40 Cr ARR','300 dealers · 6 cities','var(--gold)','→ Raise Series A ₹20 Cr'],
+          ['Year 2 (2027)','₹120 Cr ARR','800 dealers · 12 cities','var(--green)','→ Expand Maharashtra + Karnataka'],
+          ['Year 3 (2028)','₹280 Cr ARR','2,000 dealers · Pan-India','var(--blue)','→ Launch UAE + Sri Lanka'],
+          ['Year 4 (2029)','₹600 Cr ARR','5,000 dealers · 3 countries','var(--cyan)','→ Series B ₹100 Cr · OEM partnerships'],
+          ['Year 5 (2030)','₹1,200 Cr ARR','12,000 dealers · 6 countries','var(--violet)','→ Pre-IPO or strategic exit'],
+        ].map(([yr,rev,scale,c,note])=>`
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(30,45,64,0.5)">
+          <div style="width:8px;height:8px;border-radius:50%;background:${c};margin-top:6px;flex-shrink:0"></div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+              <span style="font-weight:700;font-size:13px">${yr}</span>
+              <span style="font-family:var(--fh);font-weight:800;color:${c};font-size:15px">${rev}</span>
+            </div>
+            <div style="font-size:11px;color:var(--t3)">${scale}</div>
+            <div style="font-size:11px;color:${c};margin-top:2px">${note}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hd"><div class="card-title">🏆 Competitive Moat — Why We Win</div></div>
+        <div class="card-bd">
+          ${[
+            ['🎤','Voice AI (Indian languages)','Zero competitors have this'],
+            ['📡','OBD2 live diagnostics','3% of DMS players globally'],
+            ['🛒','B2B Parts Marketplace','New revenue stream, zero competitors in India'],
+            ['🚨','OEM Recall automation','Honda/Maruti APIs — 4-min response vs weeks'],
+            ['📱','WhatsApp-first design','Built for India, not adapted from US'],
+            ['⭐','Google Reviews AI','4.7★ vs competitor average 3.7★'],
+          ].map(([ico,feat,why])=>`
+          <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(30,45,64,0.5)">
+            <div style="font-size:18px;flex-shrink:0">${ico}</div>
+            <div><div style="font-size:12.5px;font-weight:700">${feat}</div><div style="font-size:11px;color:var(--gold)">${why}</div></div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <div class="card-hd"><div class="card-title">📋 Use of Seed Funds (₹1–3 Cr)</div></div>
+        <div class="card-bd">
+          ${[['Product Engineering (2 engineers)','40%','var(--gold)'],['Sales & Customer Success','25%','var(--green)'],['Marketing & Events (FADA, SIAM)','15%','var(--blue)'],['Infrastructure & AI APIs','12%','var(--cyan)'],['Legal & Compliance (IRDAI, RBI)','8%','var(--violet)']].map(([k,p,c])=>`
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>${k}</span><span style="font-weight:700;font-family:var(--fm);color:${c}">${p}</span></div>
+            <div class="prog-track" style="height:6px"><div class="prog-fill" style="width:${p};background:${c}"></div></div>
+          </div>`).join('')}
+          <div class="sep"></div>
+          <div style="text-align:center">
+            <button class="btn btn-gold" style="width:100%;justify-content:center" onclick="toast('📧 Investor deck PDF sent to your email!','success')">📊 Download Full Pitch Deck</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-gold">
+    <div class="card-hd"><div class="card-title">🧑‍💼 Why Now? Why AUTOERA?</div></div>
+    <div class="card-bd">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        ${[
+          ['📱','WhatsApp Business API matured','2024 saw mass adoption of WhatsApp for B2B. India\'s 500M WhatsApp users mean dealers can reach every customer instantly. AUTOERA is built on this.'],
+          ['🤖','OpenAI APIs now affordable','GPT-4 API costs dropped 90% in 2 years. What cost ₹50L to build in 2022 costs ₹2L today. AI-native DMS is now viable at Indian price points.'],
+          ['🚗','EV wave creates urgency','Honda, Tata, Hyundai are all going EV. Dealers need new software that handles battery diagnostics, charging management — legacy DMS providers are not ready.'],
+        ].map(([ico,title,desc])=>`
+        <div>
+          <div style="font-size:28px;margin-bottom:10px">${ico}</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--gold)">${title}</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.7">${desc}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════
+// HELPER FUNCTIONS
+// ═══════════════════════════════
+function K(label, value, change, trendClass, color, icon) {
+  return `
+  <div class="kpi">
+    <div class="kpi-shine"></div>
+    <div class="kpi-accent" style="background:${color}"></div>
+    <div class="kpi-icon">${icon}</div>
+    <div class="kpi-lbl">${label}</div>
+    <div class="kpi-val" style="color:${color}">${value}</div>
+    <div class="kpi-trend ${trendClass}">
+      ${trendClass==='trend-up'?'↑':trendClass==='trend-dn'?'↓':'→'} ${change}
+    </div>
+  </div>`;
+}
+
+function switchMktTab(el, showId) {
+  document.querySelectorAll('#mkt-tabs .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['mkt-urgent','mkt-browse','mkt-orders','mkt-suppliers'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === showId ? '' : 'none';
+  });
+}
+
+function openRecallModal() {
+  openModal('Recall HIN-2026-R04 — Affected Vehicles (Top 20)', `
+    <div style="margin-bottom:12px;font-size:12.5px;color:var(--t2)">Honda City 2020-2022 · Airbag ECU v2.1.4 · 1,284 total affected across network</div>
+    <table>
+      <thead><tr><th>VIN</th><th>Owner</th><th>Location</th><th>Alert Status</th><th>Booking</th></tr></thead>
+      <tbody>
+        ${[['TN09AB1234','Priya Rajan','Anna Salai','✅ Sent','Booked Mar 15'],['TN10CK5678','Mohan Kumar','Anna Salai','✅ Sent','Booked Mar 14'],['KA12PQ8901','Ravi S.','Bangalore','✅ Sent','Not yet'],['MH01BH9234','Anitha N.','Mumbai','✅ Sent','Not yet'],['TN22DN9012','Kavitha S.','Velachery','✅ Sent','Booked Mar 18'],['DL01AB4321','Ramesh V.','Delhi','✅ Sent','Not yet']].map(([vin,own,loc,al,bk])=>`
+        <tr>
+          <td class="mono" style="font-size:10.5px">${vin}</td>
+          <td class="bold">${own}</td>
+          <td style="font-size:11.5px;color:var(--t3)">${loc}</td>
+          <td style="color:var(--green)">${al}</td>
+          <td class="mono" style="font-size:11px">${bk}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    <div style="margin-top:12px;color:var(--t3);font-size:11.5px">Showing 6 of 1,284 · All 1,284 have been automatically notified via WhatsApp</div>
+  `);
+}
+
+function openModal(title, body) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-foot').innerHTML = `<button class="btn btn-ghost" onclick="closeModal()">Close</button>`;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === document.getElementById('modal-bg')) closeModal(); });
+
+let voiceActive = false;
+function toggleVoiceAI() {
+  const btn = document.getElementById('voice-nav-btn');
+  voiceActive = !voiceActive;
+  if (voiceActive) {
+    btn.textContent = '⏹ Stop Voice';
+    btn.classList.add('recording');
+    toast('🎤 Voice AI activated — speak a command', 'voice');
+    nav('voice-ai');
+  } else {
+    btn.textContent = '🎤 Voice AI';
+    btn.classList.remove('recording');
+    toast('Voice AI deactivated', 'info');
+  }
+}
+
+function toast(msg, type='info') {
+  const dock = document.getElementById('toast-dock');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = { success:'✅', warn:'⚠️', info:'💡', error:'❌', voice:'🎤' };
+  el.innerHTML = `<span style="font-size:16px">${icons[type]||'💡'}</span><span style="flex:1">${msg}</span>`;
+  dock.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(32px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(),320); }, 4000);
+}
+
+// Live clock
+setInterval(() => {
+  const el = document.getElementById('live-clock');
+  if (el) el.textContent = new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}, 1000);
+
+// Tab switcher for generic tabs
+function switchTab(el, showId) {
+  el.parentNode.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function dealerForm() {
+  return `<div class="fgrid">
+    <div class="fg"><label>Dealer Name</label><input placeholder="e.g. Kumaran Honda"></div>
+    <div class="fg"><label>City</label><input placeholder="Chennai"></div>
+    <div class="fg"><label>Contact</label><input placeholder="GM / Dealer Principal name"></div>
+    <div class="fg"><label>Phone</label><input placeholder="+91 98410 00000"></div>
+    <div class="fg"><label>Plan</label><select><option>Starter ₹20,000</option><option>Professional ₹40,000</option><option>Enterprise ₹80,000</option></select></div>
+    <div class="fg"><label>Brand</label><select><option>Honda</option><option>Maruti</option><option>Tata</option><option>Hyundai</option><option>Kia</option></select></div>
+    <div class="fg fgrid-full"><label>White-label Domain</label><input placeholder="honda.autoera.in"></div>
+  </div>`;
+}
+</script>
+</body>
+</html>

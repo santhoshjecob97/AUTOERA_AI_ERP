@@ -14,6 +14,7 @@ import VoiceCallButton from '../components/voice/VoiceCallButton';
 import VoiceCallModal from '../components/voice/VoiceCallModal';
 import UniversalVoiceCampaignSection from '../components/voice/UniversalVoiceCampaignSection';
 import PageNavigation from '../components/common/PageNavigation';
+import Section08FinanceWorkspace from '../components/finance/Section08FinanceWorkspace';
 
 const initialLoans: LoanApplication[] = [
   { id: 'LN-2024-001', applicantName: 'Arjun Mehta', vehicle: 'Hyundai Creta', creditScore: 780, loanAmount: '₹12.5L', tenure: 60, status: 'Approved', riskLevel: 'Low', interestRate: 9.2, monthlyEMI: '₹26,050', aiProbability: 95 },
@@ -254,6 +255,9 @@ const FinanceEngine: React.FC = () => {
             <StatCard title="Fraud Prevented" value="₹12.5L" trend="4 Cases" icon={<ShieldAlert size={24}/>} color="indigo" />
             <StatCard title="Pending Disbursals" value="₹45L" trend="8 Apps" trendUp={false} icon={<CreditCard size={24}/>} color="orange" />
           </div>
+          
+          {/* Section 08: Finance Module Master Architecture Workspace */}
+          <Section08FinanceWorkspace />
 
           {/* Enterprise Analytics Dashboard */}
           <FinanceDashboard />

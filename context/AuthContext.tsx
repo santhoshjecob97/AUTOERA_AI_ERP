@@ -3,21 +3,33 @@ import { User as AppUser, UserRole, ViewState } from '../types';
 import apiService from '../services/api';
 
 /**
- * Role to ViewState Permissions Mapping
+ * Role to ViewState Permissions Mapping — 16 Roles (Section 02)
  */
 const ROLE_PERMISSIONS_MAP: Record<string, ViewState[]> = {
-  SUPER_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
-  ENTERPRISE_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
-  DEALER_PRINCIPAL: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
-  GENERAL_MANAGER: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
-  SERVICE_MANAGER: ['dashboard', 'service', 'service-ai', 'workforce', 'plans'],
-  SERVICE_ADVISOR: ['dashboard', 'service', 'service-ai', 'plans'],
-  TECHNICIAN: ['dashboard', 'service', 'service-ai'],
+  // L0 — Platform Super Admin (All modules + Platform Admin + OEM + Developer)
+  SUPER_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
+  // L1 — Enterprise Admin (All dealer modules + OEM + Developer)
+  ENTERPRISE_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
+  // L2 — Dealer Principal (All dealer modules + Executive Reports + Developer)
+  DEALER_PRINCIPAL: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
+  // L3 — General / OEM
+  GENERAL_MANAGER: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
+  OEM_USER: ['dashboard', 'oem', 'sales', 'service', 'fleet', 'ev', 'plans'],
+  // L4 — Department Managers
   SALES_MANAGER: ['dashboard', 'sales', 'sales-ai', 'workforce', 'plans'],
-  SALES_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans'],
+  SERVICE_MANAGER: ['dashboard', 'service', 'service-ai', 'workforce', 'plans'],
+  FLEET_MANAGER: ['dashboard', 'fleet', 'fleet-ai', 'ev', 'plans'],
   PARTS_MANAGER: ['dashboard', 'service', 'service-ai', 'plans'],
+  // L5 — Executives / Advisors
+  SALES_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans'],
+  CRM_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans'],
+  SERVICE_ADVISOR: ['dashboard', 'service', 'service-ai', 'plans'],
+  INSURANCE_EXECUTIVE: ['dashboard', 'insurance', 'insurance-ai', 'plans'],
   FINANCE_OFFICER: ['dashboard', 'finance', 'finance-ai', 'plans'],
-  INSURANCE_OFFICER: ['dashboard', 'insurance', 'insurance-ai', 'plans'],
+  // L6 — Specialists
+  TECHNICIAN: ['dashboard', 'service', 'service-ai'],
+  // L7 — External
+  VEHICLE_OWNER: ['dashboard', 'ev', 'plans'],
 };
 
 const ROLE_DISPLAY_MAP: Record<string, UserRole> = {
@@ -25,14 +37,18 @@ const ROLE_DISPLAY_MAP: Record<string, UserRole> = {
   ENTERPRISE_ADMIN: 'Enterprise Admin',
   DEALER_PRINCIPAL: 'Dealer Principal',
   GENERAL_MANAGER: 'General Manager',
-  SERVICE_MANAGER: 'Service Manager',
-  SERVICE_ADVISOR: 'Service Advisor',
-  TECHNICIAN: 'Technician',
+  OEM_USER: 'OEM User',
   SALES_MANAGER: 'Sales Manager',
-  SALES_EXECUTIVE: 'Sales Executive',
+  SERVICE_MANAGER: 'Service Manager',
+  FLEET_MANAGER: 'Fleet Manager',
   PARTS_MANAGER: 'Parts Manager',
+  SALES_EXECUTIVE: 'Sales Executive',
+  CRM_EXECUTIVE: 'CRM Executive',
+  SERVICE_ADVISOR: 'Service Advisor',
+  INSURANCE_EXECUTIVE: 'Insurance Executive',
   FINANCE_OFFICER: 'Finance Officer',
-  INSURANCE_OFFICER: 'Insurance Officer',
+  TECHNICIAN: 'Technician',
+  VEHICLE_OWNER: 'Vehicle Owner',
 };
 
 // Map Django user response to frontend AppUser

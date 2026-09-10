@@ -183,3 +183,43 @@ class CustomerTimelineViewSet(TenantScopedViewSet):
     permission_classes = [IsSalesRole | IsServiceRole]
     filterset_fields = ['event_type']
     ordering = ['-created_at']
+
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from .compliance import DPDPComplianceEngine
+
+
+class DPDPExportView(APIView):
+    """
+    DPDP Act 2023 Section 11 Data Portability Export API.
+    Returns complete, tamper-evident JSON dossier for a customer.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        org_id = getattr(request.user, 'organization_id', None) or request.headers.get('X-Organization-ID', 'default-org')
+        result = DPDPComplianceEngine.export_customer_dossier(
+            customer_id=str(id),
+            organization_id=str(org_id)
+        )
+        return Response(result, status=status.HTTP_200_OK)
+
+
+class DPDPEraseView(APIView):
+    """
+    DPDP Act 2023 Section 12 Right to Erasure / Forgotten API.
+    Irreversibly anonymizes customer PII while retaining ledger audit history.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        org_id = getattr(request.user, 'organization_id', None) or request.headers.get('X-Organization-ID', 'default-org')
+        reason = request.data.get('reason', 'Customer Erasure Request per DPDP Act Section 12')
+        result = DPDPComplianceEngine.anonymize_customer_pii(
+            customer_id=str(id),
+            organization_id=str(org_id),
+            reason=reason
+        )
+        return Response(result, status=status.HTTP_200_OK)
+

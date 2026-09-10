@@ -2,9 +2,9 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from core.views import TenantScopedViewSet
-from core.permissions import IsSalesRole, IsServiceRole
-from .models import Vehicle, VehicleStock
-from .serializers import VehicleSerializer, VehicleStockSerializer
+from core.permissions import IsSalesRole, IsServiceRole, IsFleetRole
+from .models import Vehicle, VehicleStock, VehicleHealth
+from .serializers import VehicleSerializer, VehicleStockSerializer, VehicleHealthSerializer
 
 
 class VehicleViewSet(TenantScopedViewSet):
@@ -114,3 +114,15 @@ class VehicleStockViewSet(TenantScopedViewSet):
     filterset_fields = ['status', 'make', 'fuel_type']
     ordering_fields = ['arrival_date', 'selling_price', 'created_at']
     ordering = ['-created_at']
+
+
+class VehicleHealthViewSet(TenantScopedViewSet):
+    """Vehicle Telemetry and Health Scoring per Section 03/09."""
+    queryset = VehicleHealth.objects.select_related('vehicle').all()
+    serializer_class = VehicleHealthSerializer
+    permission_classes = [IsServiceRole | IsFleetRole]
+    search_fields = ['vehicle__vin', 'vehicle__registration_number']
+    filterset_fields = ['risk_level', 'overall_score']
+    ordering_fields = ['overall_score', 'last_telemetry_at']
+    ordering = ['overall_score']
+

@@ -2,7 +2,8 @@ import { User } from '../types';
 
 /**
  * Centralized Dealership Role-Based Dashboard Routing Algorithm
- * Determines the authoritative initial landing page for each authenticated user
+ * Determines the authoritative initial landing page for each authenticated user.
+ * Covers all 16 roles per Master Architecture Section 02 (L0–L7 hierarchy).
  */
 export const getDashboardForUser = (user: User | null): string => {
   if (!user) return '/';
@@ -10,7 +11,7 @@ export const getDashboardForUser = (user: User | null): string => {
   const role = user.role;
   const dept = user.department || '';
 
-  // 1. Executive Management
+  // L0–L3: Executive Management — Full dashboard
   if (
     role === 'General Manager' ||
     role === 'Super Admin' ||
@@ -20,32 +21,49 @@ export const getDashboardForUser = (user: User | null): string => {
     return '/';
   }
 
-  // 2. Service & Workshop
+  // L3: OEM User — Network overview
+  if (role === 'OEM User') {
+    return '/';
+  }
+
+  // L4: Service & Workshop Management
   if (role === 'Service Manager' || role === 'Service Advisor') {
     return '/service';
   }
 
-  if (role === 'Technician') {
-    return '/service/bays';
+  // L4: Fleet Management
+  if (role === 'Fleet Manager') {
+    return '/fleet';
   }
 
+  // L4: Parts Manager
   if (role === 'Parts Manager') {
     return '/service/inventory';
   }
 
-  // 3. Sales & Showroom
-  if (role === 'Sales Manager' || role === 'Sales Executive') {
+  // L6: Technician — Direct to bays
+  if (role === 'Technician') {
+    return '/service/bays';
+  }
+
+  // L4–L5: Sales & CRM
+  if (role === 'Sales Manager' || role === 'Sales Executive' || role === 'CRM Executive') {
     return '/sales';
   }
 
-  // 4. Finance & Accounts
+  // L5: Finance
   if (role === 'Finance Officer') {
     return '/finance';
   }
 
-  // 5. Insurance & Claims
-  if (role === 'Insurance Officer') {
+  // L5: Insurance
+  if (role === 'Insurance Executive') {
     return '/insurance';
+  }
+
+  // L7: Vehicle Owner — Customer portal
+  if (role === 'Vehicle Owner') {
+    return '/ev';
   }
 
   // Department fallback
@@ -53,6 +71,7 @@ export const getDashboardForUser = (user: User | null): string => {
   if (dept.includes('Sales')) return '/sales';
   if (dept.includes('Finance')) return '/finance';
   if (dept.includes('Insurance')) return '/insurance';
+  if (dept.includes('Fleet')) return '/fleet';
 
   return '/';
 };

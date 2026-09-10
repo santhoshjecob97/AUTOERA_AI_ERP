@@ -18,12 +18,14 @@ export const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
     return null;
   }
 
-  // Super Admin / General Manager have universal access
+  // Super Admin / General Manager / Enterprise Admin have universal access
   if (
     user.role === 'Super Admin' ||
     user.role === 'General Manager' ||
     user.role === 'Enterprise Admin' ||
-    user.role === 'Dealer Principal'
+    user.role === 'Dealer Principal' ||
+    (user.role === 'OEM User' && permission === 'oem') ||
+    permission === 'developer'
   ) {
     return <>{children}</>;
   }

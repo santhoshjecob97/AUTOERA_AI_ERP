@@ -8,6 +8,8 @@
 credentials*.json
 service-account*.json
 *.secret
+.github/
+
 
 # Logs
 logs
@@ -30,6 +32,9 @@ __pycache__/
 *$py.class
 *.sqlite3
 db.sqlite3
+staticfiles/
+backend/staticfiles/
+
 .pytest_cache/
 .coverage
 htmlcov/

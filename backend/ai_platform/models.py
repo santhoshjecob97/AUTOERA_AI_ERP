@@ -271,3 +271,42 @@ class VoiceTranscript(TenantScopedModel):
         return f"[{self.speaker}] {self.text[:40]}"
 
 
+class AIPrediction(TenantScopedModel):
+    """
+    ML Predictions & Prescriptive Outputs Audit Log (Section 03 & Section 07).
+    Stores inferencing outputs for Lead Scoring, Battery Health LSTM,
+    Predictive Failure, Fraud Detection, and Dynamic Pricing.
+    """
+    PREDICTION_TYPES = [
+        ('LEAD_SCORE', 'Sales Lead Scoring & Conversion Probability'),
+        ('CHURN_RISK', 'Customer Churn Prediction'),
+        ('BATTERY_HEALTH', 'EV Battery Health & RUL Degradation Prediction'),
+        ('COMPONENT_FAILURE', 'IoT/OBD-II Predictive Maintenance Alert'),
+        ('INSURANCE_FRAUD', 'Insurance Claim Anomaly & Fraud Probability'),
+        ('CREDIT_DEFAULT', 'EMI / Finance Default Risk Scoring'),
+        ('MARGIN_GUARD', 'Discount / Price Optimization Advice'),
+        ('SERVICE_RECOMMENDATION', 'AI Service Advisor Prescriptive Diagnosis'),
+    ]
+
+    prediction_type = models.CharField(max_length=60, choices=PREDICTION_TYPES)
+    entity_type = models.CharField(max_length=60, help_text="e.g. Lead, Vehicle, Customer, Claim")
+    entity_id = models.CharField(max_length=64, db_index=True)
+    confidence_score = models.FloatField(default=0.0)
+    prediction_data = models.JSONField(default=dict, help_text="Features, weights, SHAP explanations, outputs")
+    model_name = models.CharField(max_length=100)
+    model_version = models.CharField(max_length=50, default='v1.0')
+    is_validated = models.BooleanField(null=True, blank=True, help_text="Ground truth feedback")
+    actual_outcome = models.JSONField(null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['organization_id', 'prediction_type']),
+            models.Index(fields=['organization_id', 'entity_type', 'entity_id']),
+            models.Index(fields=['organization_id', 'confidence_score']),
+        ]
+
+    def __str__(self):
+        return f"[{self.get_prediction_type_display()}] {self.entity_type}#{self.entity_id} ({self.confidence_score:.2f})"
+
+
+

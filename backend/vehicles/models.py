@@ -70,3 +70,41 @@ class VehicleStock(TenantScopedModel):
 
     def __str__(self):
         return f"{self.make} {self.model} - {self.vin} ({self.get_status_display()})"
+
+
+class VehicleHealth(TenantScopedModel):
+    """
+    Vehicle Health & Telemetry Scoring (Section 03 / 09 - Master Architecture)
+    Real-time & periodic health score index per vehicle.
+    """
+    RISK_LEVELS = [
+        ('LOW', 'Low Risk - Optimal Operation'),
+        ('MEDIUM', 'Medium Risk - Service Attention Recommended'),
+        ('HIGH', 'High Risk - Service Required Soon'),
+        ('CRITICAL', 'Critical Risk - Immediate Workshop Visit Needed'),
+    ]
+
+    vehicle = models.OneToOneField(Vehicle, on_delete=models.CASCADE, related_name='health_record')
+    overall_score = models.IntegerField(default=100, help_text="Aggregate health score 0-100")
+    engine_score = models.IntegerField(default=100)
+    transmission_score = models.IntegerField(default=100)
+    brake_score = models.IntegerField(default=100)
+    battery_score = models.IntegerField(default=100)
+    electrical_score = models.IntegerField(default=100)
+    
+    risk_level = models.CharField(max_length=20, choices=RISK_LEVELS, default='LOW')
+    active_dtc_codes = models.JSONField(default=list, blank=True, help_text="Array of active OBD-II Diagnostic Trouble Codes")
+    last_telemetry_at = models.DateTimeField(null=True, blank=True)
+    next_service_due_km = models.IntegerField(null=True, blank=True)
+    next_service_due_date = models.DateField(null=True, blank=True)
+    recommended_actions = models.JSONField(default=list, blank=True, help_text="Prescriptive AI maintenance actions")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['organization_id', 'risk_level']),
+            models.Index(fields=['organization_id', 'overall_score']),
+        ]
+
+    def __str__(self):
+        return f"Health Score {self.overall_score}/100 - {self.vehicle} [{self.risk_level}]"
+

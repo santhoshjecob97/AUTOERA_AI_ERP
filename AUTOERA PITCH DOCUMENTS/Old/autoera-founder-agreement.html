@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autoera AI Founder Agreement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f4ef;
+      --paper: #fffdfa;
+      --ink: #1f1b16;
+      --muted: #6e655c;
+      --line: #d9cfc3;
+      --accent: #ef5b1f;
+      --accent-soft: #fff1ea;
+      --shadow: 0 20px 50px rgba(31, 27, 22, 0.08);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, sans-serif;
+      background: linear-gradient(180deg, #fbf8f4 0%, #f5efe7 100%);
+      color: var(--ink);
+      padding: 32px;
+    }
+    .page { max-width: 1080px; margin: 0 auto; }
+    .hero { margin-bottom: 24px; }
+    .hero-index {
+      color: var(--accent);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700;
+      display: inline-block;
+      margin-right: 12px;
+      vertical-align: top;
+    }
+    .hero h1 {
+      display: inline-block;
+      margin: 0;
+      font-size: clamp(42px, 6vw, 78px);
+      line-height: 0.98;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+    .hero p {
+      margin: 18px 0 0 0;
+      color: #81786f;
+      font-size: clamp(19px, 2vw, 26px);
+      max-width: 780px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+    .sheet {
+      background: var(--paper);
+      border: 1px solid rgba(217, 207, 195, 0.7);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 44px;
+      position: relative;
+    }
+    .stamp {
+      position: absolute;
+      top: 38px;
+      right: 42px;
+      border: 3px solid var(--accent);
+      color: var(--accent);
+      padding: 10px 16px;
+      transform: rotate(-8deg);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .agreement-title {
+      text-align: center;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 56px;
+      margin: 0 0 12px;
+      letter-spacing: 0.02em;
+    }
+    .intro {
+      max-width: 880px;
+      margin: 0 auto 24px;
+      text-align: center;
+      color: #40372f;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 28px;
+      margin-bottom: 18px;
+    }
+    .line-field {
+      display: flex;
+      align-items: end;
+      gap: 12px;
+      font-weight: 700;
+    }
+    .line-field span:last-child {
+      flex: 1;
+      border-bottom: 2px solid #8c8379;
+      min-height: 28px;
+    }
+    .divider {
+      position: relative;
+      border-top: 2px solid #efc9b8;
+      margin: 22px 0 26px;
+    }
+    .divider::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: absolute;
+      left: 50%;
+      top: -6px;
+      transform: translateX(-50%);
+    }
+    .section-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .n { color: var(--accent); font-family: Inter, sans-serif; font-size: 28px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 15px;
+    }
+    th, td {
+      border: 1px solid #cfc5b9;
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th { background: #fcf7f2; font-weight: 700; }
+    .fill-line {
+      display: inline-block;
+      width: 100%;
+      border-bottom: 1.8px solid #8e857d;
+      height: 18px;
+      vertical-align: bottom;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 0.92fr;
+      gap: 34px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+    .right-col { border-left: 2px solid #f0d1c3; padding-left: 34px; }
+    .role-block { margin-bottom: 18px; }
+    .role-label { font-weight: 700; margin-bottom: 6px; }
+    .write-line { border-bottom: 1.7px solid #938980; height: 20px; margin: 7px 0; }
+    .mini-section { margin-bottom: 18px; }
+    .check-grid { display: grid; gap: 8px; margin-top: 8px; }
+    .check { display: flex; align-items: center; gap: 10px; }
+    .box {
+      width: 16px; height: 16px; border: 1.6px solid #7d736b; border-radius: 2px; display: inline-block;
+    }
+    .inline-fill { display: inline-block; min-width: 110px; border-bottom: 1.6px solid #8f867e; height: 18px; vertical-align: middle; }
+    .muted { color: var(--muted); }
+    .signatures {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      border-top: 2px solid #efc9b8;
+      padding-top: 22px;
+    }
+    .sig {
+      padding-right: 18px;
+      border-right: 2px solid #f0d1c3;
+    }
+    .sig:last-child { border-right: none; padding-right: 0; }
+    .sig strong { display: block; margin-bottom: 20px; }
+    .footer-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .top-note {
+      background: var(--accent-soft);
+      border: 1px solid #ffd2bf;
+      color: #6d3c28;
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      body { padding: 18px; }
+      .sheet { padding: 24px; }
+      .meta, .two-col, .signatures { grid-template-columns: 1fr; }
+      .right-col { border-left: none; padding-left: 0; border-top: 2px solid #f0d1c3; padding-top: 20px; }
+      .sig { border-right: none; border-bottom: 2px solid #f0d1c3; padding-bottom: 18px; }
+      .sig:last-child { border-bottom: none; }
+      .stamp { position: static; display: inline-block; margin-bottom: 16px; }
+      .agreement-title { font-size: 40px; }
+    }
+    @media print {
+      body { padding: 0; background: white; }
+      .hero { display: none; }
+      .page { max-width: none; }
+      .sheet { box-shadow: none; border: none; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <span class="hero-index">1.</span>
+      <h1>Founder Agreement</h1>
+      <p>Establish clear terms for ownership, responsibilities, and the foundation of Autoera AI.</p>
+    </section>
+
+    <main class="sheet">
+      <div class="stamp">CONFIDENTIAL</div>
+      <div class="top-note">This template is a practical founder worksheet for Autoera AI and should be reviewed by a qualified lawyer before signature.</div>
+      <h2 class="agreement-title">FOUNDER AGREEMENT</h2>
+      <p class="intro">This Founder Agreement is entered into by and between the founders listed below for the purpose of establishing ownership, responsibilities, operating principles, and core protections for Autoera AI.</p>
+
+      <div class="meta">
+        <div class="line-field"><span>Company Name:</span><span>Autoera AI</span></div>
+        <div class="line-field"><span>Date:</span><span></span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <section>
+        <h3 class="section-title"><span class="n">1.</span> FOUNDER DETAILS</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%;">Founder</th>
+              <th>Name</th>
+              <th style="width: 28%;">Equity Ownership</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Founder 1</td><td><span class="fill-line"></span></td><td><span class="fill-line"></span></td></tr>
+            <tr><td>Founder 2</td><td><span class="fill-line"></span></td><td><span class="fill-line"></span></td></tr>
+            <tr><td>Founder 3</td><td><span class="fill-line"></span></td><td><span class="fill-line"></span></td></tr>
+            <tr><td>Founder 4</td><td><span class="fill-line"></span></td><td><span class="fill-line"></span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="two-col">
+        <section>
+          <h3 class="section-title"><span class="n">2.</span> ROLES & RESPONSIBILITIES</h3>
+
+          <div class="role-block">
+            <div class="role-label">Founder 1 (Role): <span class="inline-fill"></span></div>
+            <div>Responsibilities:</div>
+            <div class="write-line"></div><div class="write-line"></div><div class="write-line"></div>
+          </div>
+
+          <div class="role-block">
+            <div class="role-label">Founder 2 (Role): <span class="inline-fill"></span></div>
+            <div>Responsibilities:</div>
+            <div class="write-line"></div><div class="write-line"></div><div class="write-line"></div>
+          </div>
+
+          <div class="role-block">
+            <div class="role-label">Founder 3 (Role): <span class="inline-fill"></span></div>
+            <div>Responsibilities:</div>
+            <div class="write-line"></div><div class="write-line"></div><div class="write-line"></div>
+          </div>
+
+          <div class="role-block">
+            <div class="role-label">Founder 4 (Role): <span class="inline-fill"></span></div>
+            <div>Responsibilities:</div>
+            <div class="write-line"></div><div class="write-line"></div><div class="write-line"></div>
+          </div>
+        </section>
+
+        <section class="right-col">
+          <div class="mini-section">
+            <h3 class="section-title"><span class="n">3.</span> DECISION MAKING</h3>
+            <div>Major business decisions require approval from:</div>
+            <div class="check-grid">
+              <div class="check"><span class="box"></span> Simple Majority</div>
+              <div class="check"><span class="box"></span> Unanimous Consent</div>
+              <div class="check"><span class="box"></span> CEO Approval</div>
+            </div>
+          </div>
+
+          <div class="mini-section">
+            <h3 class="section-title"><span class="n">4.</span> VESTING SCHEDULE</h3>
+            <div class="check" style="margin-bottom:8px;"><span>Founder equity shall vest over:</span></div>
+            <div class="check-grid">
+              <div class="check"><span class="box"></span> 4 Years <span class="muted">or</span> Other: <span class="inline-fill"></span></div>
+              <div class="check"><span>Cliff Period:</span> <span class="box"></span> 1 Year <span class="muted">or</span> Other: <span class="inline-fill"></span></div>
+            </div>
+          </div>
+
+          <div class="mini-section">
+            <h3 class="section-title"><span class="n">5.</span> FOUNDER EXIT CLAUSE</h3>
+            <div>If a founder leaves before vesting is complete, unvested shares shall return to the company unless otherwise agreed in writing.</div>
+          </div>
+
+          <div class="mini-section">
+            <h3 class="section-title"><span class="n">6.</span> CONFIDENTIALITY</h3>
+            <div>All founders agree to maintain confidentiality regarding company information, intellectual property, product strategy, business plans, customer information, and financial records.</div>
+          </div>
+        </section>
+      </div>
+
+      <section>
+        <h3 class="section-title"><span class="n">7.</span> SIGNATURES</h3>
+        <div class="signatures">
+          <div class="sig">
+            <strong>Founder 1</strong>
+            <div class="write-line"></div>
+            <div style="margin-top:12px;">Date: <span class="inline-fill" style="min-width:140px;"></span></div>
+          </div>
+          <div class="sig">
+            <strong>Founder 2</strong>
+            <div class="write-line"></div>
+            <div style="margin-top:12px;">Date: <span class="inline-fill" style="min-width:140px;"></span></div>
+          </div>
+          <div class="sig">
+            <strong>Founder 3</strong>
+            <div class="write-line"></div>
+            <div style="margin-top:12px;">Date: <span class="inline-fill" style="min-width:140px;"></span></div>
+          </div>
+          <div class="sig">
+            <strong>Founder 4</strong>
+            <div class="write-line"></div>
+            <div style="margin-top:12px;">Date: <span class="inline-fill" style="min-width:140px;"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <p class="footer-note">Recommended legal additions before final execution: IP assignment, non-compete/non-solicit where valid, deadlock resolution, founder removal, capital contributions, dispute resolution, governing law, and expense approvals.</p>
+    </main>
+  </div>
+</body>
+</html>

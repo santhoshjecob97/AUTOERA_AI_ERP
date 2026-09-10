@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" width="480" height="160">
+  <defs>
+    <!-- Brand gradient: deep orange to ember -->
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B2B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CC4500;stop-opacity:1" />
+    </linearGradient>
+    <!-- Icon glow -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Subtle drop shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#CC4500" flood-opacity="0.25"/>
+    </filter>
+    <!-- Icon clip -->
+    <clipPath id="iconClip">
+      <rect x="0" y="0" width="120" height="120" rx="22"/>
+    </clipPath>
+  </defs>
+
+  <!-- ═══ ICON MARK ═══ -->
+  <g transform="translate(16, 20)">
+    <!-- Icon background: dark navy with subtle rounding -->
+    <rect x="0" y="0" width="120" height="120" rx="22" fill="#0A1628"/>
+    <!-- Subtle inner border -->
+    <rect x="1" y="1" width="118" height="118" rx="21" fill="none" stroke="#1A3A5C" stroke-width="1.5"/>
+
+    <!-- Road / circuit hybrid: the letter A skeleton -->
+    <!-- Left leg of A -->
+    <path d="M20 95 L52 25" stroke="url(#brandGrad)" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <!-- Right leg of A -->
+    <path d="M100 95 L52 25" stroke="url(#brandGrad)" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <!-- Crossbar of A — styled as a circuit trace with nodes -->
+    <line x1="33" y1="68" x2="71" y2="68" stroke="#1A3A5C" stroke-width="8" stroke-linecap="round"/>
+    <line x1="33" y1="68" x2="71" y2="68" stroke="url(#brandGrad)" stroke-width="4" stroke-linecap="round"/>
+    <!-- Circuit nodes on crossbar -->
+    <circle cx="33" cy="68" r="4.5" fill="#CC4500"/>
+    <circle cx="52" cy="68" r="3.5" fill="#FF6B2B"/>
+    <circle cx="71" cy="68" r="4.5" fill="#CC4500"/>
+
+    <!-- Road perspective lines at base — vanishing point horizon -->
+    <path d="M10 100 Q60 88 110 100" stroke="#1A3A5C" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+
+    <!-- Apex dot — AI signal -->
+    <circle cx="52" cy="25" r="6" fill="#0A1628" filter="url(#glow)"/>
+    <circle cx="52" cy="25" r="4.5" fill="url(#brandGrad)"/>
+    <circle cx="52" cy="25" r="2" fill="#FFFFFF" opacity="0.9"/>
+
+    <!-- Speed lines: right side -->
+    <line x1="82" y1="46" x2="102" y2="46" stroke="#CC4500" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="86" y1="54" x2="102" y2="54" stroke="#CC4500" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+    <line x1="90" y1="62" x2="102" y2="62" stroke="#CC4500" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+  </g>
+
+  <!-- ═══ WORDMARK ═══ -->
+  <g transform="translate(152, 20)">
+    <!-- AUTOERA -->
+    <text x="0" y="62"
+      font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+      font-size="48"
+      font-weight="900"
+      letter-spacing="-1"
+      fill="#0A1628">AUTO</text>
+    <text x="116" y="62"
+      font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+      font-size="48"
+      font-weight="900"
+      letter-spacing="-1"
+      fill="url(#brandGrad)">ERA</text>
+
+    <!-- Thin separator line -->
+    <line x1="0" y1="72" x2="312" y2="72" stroke="#E5E7EB" stroke-width="1"/>
+
+    <!-- AI badge -->
+    <rect x="0" y="80" width="38" height="22" rx="4" fill="url(#brandGrad)"/>
+    <text x="19" y="96"
+      font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+      font-size="13"
+      font-weight="900"
+      fill="#FFFFFF"
+      text-anchor="middle"
+      letter-spacing="1">AI</text>
+
+    <!-- Tagline -->
+    <text x="48" y="96"
+      font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+      font-size="12.5"
+      font-weight="400"
+      fill="#6B7280"
+      letter-spacing="2.5">THE INTELLIGENCE BEHIND EVERY DRIVE</text>
+  </g>
+</svg>

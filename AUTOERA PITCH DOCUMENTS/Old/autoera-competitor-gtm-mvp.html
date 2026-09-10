@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoEra AI — Competitive Strategy & MVP Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090F;
+  --surface: #0D1117;
+  --surface2: #131920;
+  --border: rgba(255,255,255,0.07);
+  --orange: #FF5C1A;
+  --orange2: #FF8C50;
+  --orange-glow: rgba(255,92,26,0.12);
+  --cyan: #00D4FF;
+  --cyan-dim: rgba(0,212,255,0.1);
+  --green: #00E87A;
+  --green-dim: rgba(0,232,122,0.1);
+  --red: #FF3B5C;
+  --red-dim: rgba(255,59,92,0.1);
+  --gold: #FFD166;
+  --text: #E8EDF5;
+  --muted: #5A6478;
+  --label: #8896AB;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Lato', sans-serif;
+  overflow-x: hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+
+/* NAV */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7,9,15,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--orange);
+}
+.nav-logo span { color: var(--text); opacity: 0.5; }
+.nav-links {
+  display: flex;
+  gap: 6px;
+}
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.nav-links a:hover {
+  color: var(--orange);
+  border-color: rgba(255,92,26,0.3);
+}
+
+/* CONTAINER */
+.c { max-width: 1020px; margin: 0 auto; padding: 0 28px; }
+
+/* HERO */
+.hero {
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -120px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,92,26,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: var(--orange);
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 6vw, 68px);
+  line-height: 1.0;
+  margin-bottom: 12px;
+}
+.hero h1 .accent { color: var(--orange); }
+.hero h1 .dim { color: var(--muted); }
+.hero-desc {
+  font-size: 15px;
+  color: var(--label);
+  max-width: 580px;
+  line-height: 1.65;
+  margin-top: 16px;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: 48px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.stat-box {
+  background: var(--surface);
+  padding: 20px 18px;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--orange);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+  line-height: 1.3;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.3px;
+}
+
+/* SECTION */
+.section {
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+}
+.section-header {
+  margin-bottom: 36px;
+}
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.section-tag::after {
+  content: '';
+  flex: 1;
+  max-width: 40px;
+  height: 1px;
+  background: var(--orange);
+  opacity: 0.4;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 4vw, 38px);
+  line-height: 1.1;
+  color: var(--text);
+}
+.section-title .o { color: var(--orange); }
+
+/* MARKET TREND CARDS */
+.trend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.trend-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.trend-card:hover { border-color: rgba(255,92,26,0.35); }
+.trend-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.trend-card:hover::after { transform: scaleX(1); }
+.trend-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+.trend-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 7px;
+}
+.trend-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.trend-badge {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 3px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+.badge-hot { background: var(--orange-glow); color: var(--orange2); border: 1px solid rgba(255,92,26,0.3); }
+.badge-rising { background: var(--cyan-dim); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+.badge-gap { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,59,92,0.2); }
+
+/* COMPETITOR TABLE */
+.comp-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+table.comp {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+table.comp thead tr {
+  background: var(--surface2);
+}
+table.comp th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--label);
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+table.comp td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--label);
+  vertical-align: top;
+  line-height: 1.45;
+}
+table.comp tr:last-child td { border-bottom: none; }
+table.comp tr:hover td { background: rgba(255,255,255,0.015); }
+table.comp td.name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--text);
+  font-size: 13px;
+}
+table.comp td.win {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}
+table.comp td.lose {
+  color: var(--red);
+}
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.dot-yes { background: var(--green); }
+.dot-no { background: var(--red); }
+.dot-partial { background: var(--gold); }
+.autoera-row td { background: rgba(255,92,26,0.04) !important; }
+.autoera-row td.name { color: var(--orange) !important; }
+
+/* RADAR / POSITIONING */
+.position-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.pos-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+}
+.pos-card-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pos-card-title .dot-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--orange);
+  border: 1px solid rgba(255,92,26,0.3);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.score-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 32px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.score-bar-label {
+  font-size: 11px;
+  color: var(--label);
+  font-family: 'JetBrains Mono', monospace;
+}
+.score-bar-track {
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+.score-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* AI DIFF SECTION */
+.ai-diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.ai-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+}
+.ai-card.featured {
+  border-color: rgba(255,92,26,0.4);
+  background: linear-gradient(135deg, rgba(255,92,26,0.06) 0%, var(--surface) 60%);
+}
+.ai-card.featured::before {
+  content: 'AI SUPERPOWER';
+  position: absolute;
+  top: -1px; right: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  background: var(--orange);
+  color: var(--bg);
+  padding: 3px 7px;
+  border-radius: 0 0 4px 4px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.ai-num {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 38px;
+  color: rgba(255,92,26,0.15);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.ai-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 7px;
+  line-height: 1.3;
+}
+.ai-vs {
+  font-size: 11px;
+  color: var(--red);
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.ai-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.ai-result {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--green);
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ai-result::before { content: '→'; }
+
+/* MVP PRODUCT UI */
+.mvp-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.mvp-topbar {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mvp-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.mvp-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--orange);
+  letter-spacing: 0.5px;
+}
+.mvp-tabs {
+  display: flex;
+  gap: 2px;
+}
+.mvp-tab {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: var(--muted);
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.mvp-tab.active {
+  background: var(--orange-glow);
+  color: var(--orange);
+  border-color: rgba(255,92,26,0.25);
+}
+.mvp-tab:hover:not(.active) { color: var(--label); }
+.mvp-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+}
+.pulse {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* DASHBOARD PANELS */
+.mvp-content { display: none; }
+.mvp-content.active { display: block; }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.kpi-box {
+  background: var(--surface);
+  padding: 16px 18px;
+}
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.kpi-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+}
+.kpi-change {
+  font-size: 10px;
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.up { color: var(--green); }
+.down { color: var(--red); }
+
+.dash-body {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 0;
+}
+.dash-main { padding: 18px; border-right: 1px solid var(--border); }
+.dash-side { padding: 18px; }
+.panel-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--label);
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* LEAD PIPELINE */
+.pipeline {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  height: 120px;
+  margin-bottom: 14px;
+}
+.pipe-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.pipe-bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  min-height: 8px;
+  transition: height 0.5s ease;
+}
+.pipe-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.2;
+}
+.pipe-count {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text);
+}
+
+/* ALERT CARDS */
+.alert-list { display: flex; flex-direction: column; gap: 6px; }
+.alert-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.alert-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.alert-body { flex: 1; }
+.alert-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.alert-sub {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* JOB CARD TABLE */
+.job-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.job-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+}
+.job-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--label);
+}
+.job-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 3px 7px;
+  border-radius: 20px;
+}
+.s-inprogress { background: rgba(255,209,102,0.12); color: var(--gold); border: 1px solid rgba(255,209,102,0.2); }
+.s-waiting { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,59,92,0.2); }
+.s-done { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,232,122,0.2); }
+.s-pending { background: var(--cyan-dim); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+
+/* AI INSIGHT CARD */
+.ai-insight {
+  background: linear-gradient(135deg, rgba(255,92,26,0.08), rgba(0,212,255,0.04));
+  border: 1px solid rgba(255,92,26,0.2);
+  border-radius: 9px;
+  padding: 14px;
+  margin-top: 14px;
+}
+.ai-insight-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+.ai-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  background: var(--orange);
+  color: var(--bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.ai-insight-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+}
+.ai-insight-body {
+  font-size: 11px;
+  color: var(--label);
+  line-height: 1.5;
+}
+.ai-insight-body strong { color: var(--orange); }
+
+/* GTM SECTION */
+.gtm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.gtm-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+}
+.gtm-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 300;
+  color: rgba(255,92,26,0.2);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.gtm-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.gtm-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+.gtm-meta {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gtm-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--label);
+  letter-spacing: 0.5px;
+}
+
+/* MVP ROADMAP */
+.mvp-phases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.mvp-phase {
+  padding: 22px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.mvp-phase:last-child { border-right: none; }
+.phase-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.phase-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.phase-items { display: flex; flex-direction: column; gap: 5px; }
+.phase-item {
+  font-size: 12px;
+  color: var(--muted);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.4;
+}
+.phase-item::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  font-size: 8px;
+  top: 3px;
+}
+.phase-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+}
+.phase-focus {
+  font-size: 11px;
+  color: var(--label);
+  margin-top: 3px;
+}
+
+/* PRICING */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+  text-align: center;
+}
+.price-card.featured {
+  border-color: rgba(255,92,26,0.4);
+  background: linear-gradient(160deg, rgba(255,92,26,0.07), var(--surface));
+  position: relative;
+}
+.price-card.featured::before {
+  content: 'BEST FIT';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  background: var(--orange);
+  color: var(--bg);
+  padding: 3px 10px;
+  border-radius: 0 0 6px 6px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.price-tier {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--label);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.price-amount {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  color: var(--orange);
+  line-height: 1;
+}
+.price-period {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  margin-bottom: 14px;
+}
+.price-features {
+  list-style: none;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.price-features li {
+  font-size: 12px;
+  color: var(--label);
+  padding-left: 14px;
+  position: relative;
+}
+.price-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-size: 10px;
+}
+.price-btn {
+  width: 100%;
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--label);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.15s;
+}
+.price-btn:hover, .price-card.featured .price-btn {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--bg);
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 0;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+footer p { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+@media (max-width: 768px) {
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .trend-grid, .ai-diff-grid, .mvp-phases, .pricing-grid { grid-template-columns: 1fr; }
+  .position-grid, .gtm-grid { grid-template-columns: 1fr; }
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-body { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .mvp-tabs { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AUTOERA <span>/ AI</span></div>
+  <div class="nav-links">
+    <a href="#market">Market</a>
+    <a href="#competitors">Competitors</a>
+    <a href="#ai-diff">AI Edge</a>
+    <a href="#mvp">MVP</a>
+    <a href="#gtm">GTM</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+</nav>
+
+<div class="c">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">AutoEra AI · Strategic Intelligence Report · 2025</div>
+    <h1>
+      Competitors.<br>
+      <span class="accent">Market.</span> GTM.<br>
+      <span class="dim">Your unfair edge.</span>
+    </h1>
+    <p class="hero-desc">A complete battle-plan: who you're fighting, where the market is going, how AI makes you different, and exactly what to build first for fastest revenue.</p>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-num">$6.4B</div>
+        <div class="stat-label">Global DMS Market 2026</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">₹626Cr</div>
+        <div class="stat-label">India Market (2025)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">8.6%</div>
+        <div class="stat-label">India CAGR — Fastest Asia</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">80%</div>
+        <div class="stat-label">Dealers Still Not Digitised</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARKET TRENDS -->
+  <div class="section" id="market">
+    <div class="section-header">
+      <div class="section-tag">01 · Market Trends</div>
+      <div class="section-title">What's <span class="o">happening now</span> in the market</div>
+    </div>
+    <div class="trend-grid">
+      <div class="trend-card">
+        <div class="trend-icon">☁️</div>
+        <div class="trend-title">Cloud-First SaaS is Winning</div>
+        <div class="trend-desc">India dealers are rapidly moving from on-premise to cloud DMS. Tier 2/3 cities like Coimbatore, Madurai now adopting SaaS because they can't afford heavy IT infra.</div>
+        <div class="trend-badge badge-hot">🔥 DOMINANT TREND</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">📱</div>
+        <div class="trend-title">Mobile-First Operations</div>
+        <div class="trend-desc">Service advisors, sales staff, fleet managers — everyone works on phone. Dealers want apps, not desktop software. WhatsApp integration is now a must-have, not a nice-to-have.</div>
+        <div class="trend-badge badge-hot">🔥 TABLE STAKES</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">⚡</div>
+        <div class="trend-title">EV Dealership Explosion</div>
+        <div class="trend-desc">OLA Electric, Ather, Tata EV, VinFast — all rapidly expanding dealerships. These new-age EV dealers have zero legacy DMS. They are greenfield for a modern AI platform.</div>
+        <div class="trend-badge badge-rising">↑ RISING FAST</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">🤖</div>
+        <div class="trend-title">AI is the New Buzzword — But Rarely Real</div>
+        <div class="trend-desc">Everyone claims "AI-powered" but most just mean basic dashboards. True AI — predictive maintenance, lead scoring, parts demand forecasting — is still very rare in Indian auto SaaS.</div>
+        <div class="trend-badge badge-gap">⚡ YOUR OPPORTUNITY</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">🚛</div>
+        <div class="trend-title">Fleet & Logistics Boom</div>
+        <div class="trend-desc">Chennai-based logistics, e-commerce last-mile, school van fleets — all managing 20–200 vehicles with zero software. Predictive maintenance saves them ₹50,000+ per breakdown avoided.</div>
+        <div class="trend-badge badge-gap">⚡ UNTAPPED</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-icon">🔗</div>
+        <div class="trend-title">OEM Integration Pressure</div>
+        <div class="trend-desc">Maruti, Hyundai, TVS are mandating digital reporting from dealers. Dealers who can auto-sync data to OEM portals save hours daily. No current India DMS does this cleanly.</div>
+        <div class="trend-badge badge-gap">⚡ WHITE SPACE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPETITOR ANALYSIS -->
+  <div class="section" id="competitors">
+    <div class="section-header">
+      <div class="section-tag">02 · Competitor Deep-Dive</div>
+      <div class="section-title">Who you're <span class="o">competing against</span> — and their fatal gaps</div>
+    </div>
+    <div class="comp-wrapper">
+      <table class="comp">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Type</th>
+            <th>Pricing</th>
+            <th>AI Real?</th>
+            <th>EV Ready?</th>
+            <th>Fleet?</th>
+            <th>Insurance?</th>
+            <th>WhatsApp?</th>
+            <th>Their Fatal Weakness</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Excellon DMS</td>
+            <td>Enterprise DMS</td>
+            <td>₹2–5L/yr</td>
+            <td><span class="dot dot-partial"></span>Analytics only</td>
+            <td><span class="dot dot-yes"></span>Basic</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td class="lose">Too expensive for SME dealers. 6+ months to deploy. Targets large OEM networks. Ignores Chennai's mid-size 3–10 branch dealers entirely.</td>
+          </tr>
+          <tr>
+            <td class="name">Cogxim Autogenius</td>
+            <td>Billing + Stock</td>
+            <td>₹6,500 lifetime</td>
+            <td><span class="dot dot-no"></span>Zero</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-partial"></span>Reminders only</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td class="lose">One-time licence model, no SaaS. No AI, no fleet, no EV. Used by Hero, Honda 2W dealers but stuck in 2015-era feature set. Zero innovation pipeline.</td>
+          </tr>
+          <tr>
+            <td class="name">AutoBooom DMS</td>
+            <td>Sales + Service</td>
+            <td>₹22K licence</td>
+            <td><span class="dot dot-no"></span>Zero</td>
+            <td><span class="dot dot-partial"></span>Claims basic</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-partial"></span>Basic</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td class="lose">Not mobile app. Terrible customer support (users report calls not answered, being laughed at). No web-based access. Poor UI. No predictive features.</td>
+          </tr>
+          <tr>
+            <td class="name">Infoman eDMS</td>
+            <td>Vehicle DMS</td>
+            <td>Not public</td>
+            <td><span class="dot dot-no"></span>Zero</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td class="lose">Only 800 dealer sites after many years. Narrow focus on vehicle indenting/purchase flow. Zero customer engagement layer, no AI, no post-sale lifecycle.</td>
+          </tr>
+          <tr>
+            <td class="name">GaragePlug</td>
+            <td>Workshop Mgmt</td>
+            <td>₹1,500–3,000/mo</td>
+            <td><span class="dot dot-no"></span>Zero</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-partial"></span>Basic</td>
+            <td><span class="dot dot-partial"></span>Partial</td>
+            <td class="lose">Only workshop/service management. No sales module, no fleet, no EV, no finance integration. Targets independent garages not franchised dealers. Narrow moat.</td>
+          </tr>
+          <tr>
+            <td class="name">Marg ERP 9+</td>
+            <td>Generic ERP</td>
+            <td>₹8,000–15K</td>
+            <td><span class="dot dot-no"></span>Zero</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td><span class="dot dot-no"></span>No</td>
+            <td class="lose">Pure accounting/stock ERP. Not auto-specific. Dealers use it just for Tally-like accounting. Zero dealership intelligence, zero AI, zero customer engagement.</td>
+          </tr>
+          <tr class="autoera-row">
+            <td class="name">AutoEra AI ⚡</td>
+            <td>AI-Native Full-Cycle</td>
+            <td>₹8K–25K/mo SaaS</td>
+            <td><span class="dot dot-yes"></span>Real AI</td>
+            <td><span class="dot dot-yes"></span>Full</td>
+            <td><span class="dot dot-yes"></span>Full</td>
+            <td><span class="dot dot-yes"></span>Full</td>
+            <td><span class="dot dot-yes"></span>Native</td>
+            <td class="win">The ONLY platform combining AI prediction, full lifecycle (sales→service→finance→insurance→fleet→EV), WhatsApp-native, India-built, SME-priced.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- POSITIONING SCORES -->
+    <div class="position-grid" style="margin-top:16px;">
+      <div class="pos-card">
+        <div class="pos-card-title">Competitor Capability Scores <span class="dot-label">OUT OF 10</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Excellon DMS</span><div class="score-bar-track"><div class="score-bar-fill" style="width:65%;background:#FF5C1A;"></div></div><span class="score-val">6.5</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Cogxim</span><div class="score-bar-track"><div class="score-bar-fill" style="width:30%;background:#FF5C1A;"></div></div><span class="score-val">3.0</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">AutoBooom</span><div class="score-bar-track"><div class="score-bar-fill" style="width:35%;background:#FF5C1A;"></div></div><span class="score-val">3.5</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">GaragePlug</span><div class="score-bar-track"><div class="score-bar-fill" style="width:40%;background:#FF5C1A;"></div></div><span class="score-val">4.0</span></div>
+        <div class="score-bar-row"><span class="score-bar-label" style="color:var(--orange);">AutoEra AI</span><div class="score-bar-track"><div class="score-bar-fill" style="width:88%;background:var(--green);"></div></div><span class="score-val" style="color:var(--green);">8.8</span></div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-card-title">Your Unique Moats <span class="dot-label">AUTOERA AI</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">AI Prediction</span><div class="score-bar-track"><div class="score-bar-fill" style="width:90%;background:var(--cyan);"></div></div><span class="score-val" style="color:var(--cyan);">9/10</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">Full Lifecycle</span><div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:var(--cyan);"></div></div><span class="score-val" style="color:var(--cyan);">9.5</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">EV + Fleet</span><div class="score-bar-track"><div class="score-bar-fill" style="width:85%;background:var(--cyan);"></div></div><span class="score-val" style="color:var(--cyan);">8.5</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">India-First UX</span><div class="score-bar-track"><div class="score-bar-fill" style="width:90%;background:var(--cyan);"></div></div><span class="score-val" style="color:var(--cyan);">9/10</span></div>
+        <div class="score-bar-row"><span class="score-bar-label">SME Pricing</span><div class="score-bar-track"><div class="score-bar-fill" style="width:88%;background:var(--cyan);"></div></div><span class="score-val" style="color:var(--cyan);">8.8</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI DIFFERENTIATION -->
+  <div class="section" id="ai-diff">
+    <div class="section-header">
+      <div class="section-tag">03 · AI Differentiation</div>
+      <div class="section-title">How <span class="o">AI makes you</span> un-copyable</div>
+    </div>
+    <div class="ai-diff-grid">
+      <div class="ai-card featured">
+        <div class="ai-num">01</div>
+        <div class="ai-title">Lead Conversion AI — "Next Best Action"</div>
+        <div class="ai-vs">❌ Others: manual follow-up reminders</div>
+        <div class="ai-desc">Your AI scores every enquiry (hot/warm/cold), predicts which leads will convert, and tells the salesperson exactly what to say next — call, WhatsApp, or demo invite — based on behaviour patterns.</div>
+        <div class="ai-result">30% more conversions. Same staff.</div>
+      </div>
+      <div class="ai-card featured">
+        <div class="ai-num">02</div>
+        <div class="ai-title">Parts Demand Forecasting — Never Stockout Again</div>
+        <div class="ai-vs">❌ Others: manual stock review</div>
+        <div class="ai-desc">ML model trained on service history, seasonal patterns, and vehicle age data predicts which parts will run out in the next 14 days. Auto-raises purchase orders before the stockout happens.</div>
+        <div class="ai-result">Zero mid-repair stockouts. Faster bay.</div>
+      </div>
+      <div class="ai-card featured">
+        <div class="ai-num">03</div>
+        <div class="ai-title">Insurance Renewal Intelligence</div>
+        <div class="ai-vs">❌ Others: basic birthday SMS reminders</div>
+        <div class="ai-desc">AI identifies which customers are renewal risk (bought from competitor, complaint history, inactive), sends personalised offers via WhatsApp at the right time with the right insurer quote. Maximises renewal commission.</div>
+        <div class="ai-result">₹1.5L–3L recovered per month per dealership.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-num">04</div>
+        <div class="ai-title">Predictive Vehicle Maintenance (Fleet & EV)</div>
+        <div class="ai-vs">❌ Others: zero fleet intelligence</div>
+        <div class="ai-desc">OBD2 telematics data ingested. ML model predicts brake failure, battery degradation, service overdue — 7–14 days before breakdown. Fleet operator gets alert. Prevents costly roadside breakdowns.</div>
+        <div class="ai-result">Save ₹50K+ per avoided breakdown.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-num">05</div>
+        <div class="ai-title">Dealer Principal AI Morning Brief</div>
+        <div class="ai-vs">❌ Others: static monthly Excel reports</div>
+        <div class="ai-desc">Every morning at 8am, the Dealer Principal gets a WhatsApp/app notification with an AI-generated brief: yesterday's revenue, top 3 risks, top 3 opportunities, staff performance anomalies, parts to order.</div>
+        <div class="ai-result">Decision-making in 2 mins, not 2 hours.</div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-num">06</div>
+        <div class="ai-title">Staff Churn Risk Scoring</div>
+        <div class="ai-vs">❌ Others: zero workforce intelligence</div>
+        <div class="ai-desc">AI monitors login frequency, target attainment trends, and customer complaint patterns per staff member. Flags staff likely to quit in next 30 days so manager can intervene before losing the relationship.</div>
+        <div class="ai-result">Cut 80% attrition cost. Protect customer data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MVP PRODUCT UI MOCKUP -->
+  <div class="section" id="mvp">
+    <div class="section-header">
+      <div class="section-tag">04 · MVP Product Design</div>
+      <div class="section-title">What your <span class="o">product looks like</span> — Interactive Preview</div>
+    </div>
+    <div class="mvp-section">
+      <div class="mvp-topbar">
+        <div class="mvp-topbar-left">
+          <div class="mvp-logo">AutoEra AI</div>
+          <div class="mvp-tabs">
+            <div class="mvp-tab active" onclick="switchTab('dashboard')">Dashboard</div>
+            <div class="mvp-tab" onclick="switchTab('service')">Service Bay</div>
+            <div class="mvp-tab" onclick="switchTab('leads')">Lead Pipeline</div>
+            <div class="mvp-tab" onclick="switchTab('insurance')">Insurance</div>
+            <div class="mvp-tab" onclick="switchTab('fleet')">Fleet AI</div>
+          </div>
+        </div>
+        <div class="mvp-status"><div class="pulse"></div>Live — Valasaravakkam Branch</div>
+      </div>
+
+      <!-- DASHBOARD TAB -->
+      <div class="mvp-content active" id="tab-dashboard">
+        <div class="dash-grid">
+          <div class="kpi-box">
+            <div class="kpi-label">Today's Revenue</div>
+            <div class="kpi-val" style="color:var(--green);">₹2,47,800</div>
+            <div class="kpi-change up">↑ 14% vs yesterday</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Open Leads</div>
+            <div class="kpi-val" style="color:var(--cyan);">43</div>
+            <div class="kpi-change" style="color:var(--gold);">⚠ 12 follow-up overdue</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Bay Utilisation</div>
+            <div class="kpi-val" style="color:var(--gold);">68%</div>
+            <div class="kpi-change down">↓ 2 bays idle</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Renewals Due (30d)</div>
+            <div class="kpi-val" style="color:var(--orange);">29</div>
+            <div class="kpi-change up">₹87,000 potential</div>
+          </div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-main">
+            <div class="panel-title">Lead Pipeline — This Week</div>
+            <div class="pipeline">
+              <div class="pipe-stage">
+                <div class="pipe-count">84</div>
+                <div class="pipe-bar" style="height:100%; background:rgba(0,212,255,0.25);border:1px solid rgba(0,212,255,0.3);"></div>
+                <div class="pipe-label">Enquiry</div>
+              </div>
+              <div class="pipe-stage">
+                <div class="pipe-count">56</div>
+                <div class="pipe-bar" style="height:67%; background:rgba(255,209,102,0.25);border:1px solid rgba(255,209,102,0.3);"></div>
+                <div class="pipe-label">Test Drive</div>
+              </div>
+              <div class="pipe-stage">
+                <div class="pipe-count">31</div>
+                <div class="pipe-bar" style="height:37%; background:rgba(255,140,80,0.25);border:1px solid rgba(255,140,80,0.3);"></div>
+                <div class="pipe-label">Quoted</div>
+              </div>
+              <div class="pipe-stage">
+                <div class="pipe-count">18</div>
+                <div class="pipe-bar" style="height:21%; background:rgba(255,92,26,0.35);border:1px solid rgba(255,92,26,0.4);"></div>
+                <div class="pipe-label">Finance</div>
+              </div>
+              <div class="pipe-stage">
+                <div class="pipe-count">11</div>
+                <div class="pipe-bar" style="height:13%; background:rgba(0,232,122,0.35);border:1px solid rgba(0,232,122,0.4);"></div>
+                <div class="pipe-label">Closed</div>
+              </div>
+            </div>
+            <div class="ai-insight">
+              <div class="ai-insight-header"><span class="ai-badge">AI INSIGHT</span><span class="ai-insight-title">Conversion gap detected</span></div>
+              <div class="ai-insight-body">You're losing <strong>25 leads at the Quote stage</strong>. AI analysis shows these customers got competitor offers. Recommended action: <strong>WhatsApp a revised price within 2 hours</strong> — 68% of these leads are still active on competitors' sites.</div>
+            </div>
+          </div>
+          <div class="dash-side">
+            <div class="panel-title">AI Alerts — Action Now</div>
+            <div class="alert-list">
+              <div class="alert-item">
+                <div class="alert-dot" style="background:var(--red);"></div>
+                <div class="alert-body">
+                  <div class="alert-title">Parts Stockout Risk</div>
+                  <div class="alert-sub">Brake pads (SKF2234) — 3 units left. 8 service jobs pending. Order NOW.</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <div class="alert-dot" style="background:var(--orange);"></div>
+                <div class="alert-body">
+                  <div class="alert-title">Insurance Renewal</div>
+                  <div class="alert-sub">KA01-MJ-2341 expires in 4 days. Auto-quote sent via WhatsApp. ₹4,200 premium.</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <div class="alert-dot" style="background:var(--cyan);"></div>
+                <div class="alert-body">
+                  <div class="alert-title">Staff Anomaly</div>
+                  <div class="alert-sub">Rajan (Sales) — 0 follow-ups in 2 days. 6 hot leads assigned. Escalate.</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <div class="alert-dot" style="background:var(--green);"></div>
+                <div class="alert-body">
+                  <div class="alert-title">Fleet Vehicle</div>
+                  <div class="alert-sub">TN09-AB-7821 — Battery at 73% health. Schedule replacement in next 45 days.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE TAB -->
+      <div class="mvp-content" id="tab-service">
+        <div class="dash-grid">
+          <div class="kpi-box">
+            <div class="kpi-label">Open Job Cards</div>
+            <div class="kpi-val" style="color:var(--gold);">23</div>
+            <div class="kpi-change" style="color:var(--gold);">4 overdue</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Bay Occupancy</div>
+            <div class="kpi-val" style="color:var(--green);">8/12</div>
+            <div class="kpi-change up">4 bays free</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Avg Turnaround</div>
+            <div class="kpi-val" style="color:var(--cyan);">3.2h</div>
+            <div class="kpi-change up">↓ 40 mins vs last month</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Parts Fill Rate</div>
+            <div class="kpi-val" style="color:var(--orange);">89%</div>
+            <div class="kpi-change up">↑ 12% since AutoEra</div>
+          </div>
+        </div>
+        <div style="padding:18px;">
+          <div class="panel-title">Live Job Cards — Today</div>
+          <table class="job-table">
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Customer</th>
+                <th>Service Type</th>
+                <th>Technician</th>
+                <th>Status</th>
+                <th>ETA</th>
+                <th>WA Sent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">TN09-AB-1234</td>
+                <td>Rajesh Kumar</td>
+                <td>60K Service</td>
+                <td>Murugan</td>
+                <td><span class="job-status s-inprogress">● In Progress</span></td>
+                <td>2:30 PM</td>
+                <td style="color:var(--green);">✓ Sent</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">TN22-CD-5678</td>
+                <td>Priya S.</td>
+                <td>Brake Repair</td>
+                <td>Selvam</td>
+                <td><span class="job-status s-waiting">⚠ Parts Wait</span></td>
+                <td>Delayed</td>
+                <td style="color:var(--orange);">Apology sent</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">TN01-EF-9012</td>
+                <td>Karthik M.</td>
+                <td>A/C Repair</td>
+                <td>Ravi</td>
+                <td><span class="job-status s-done">✓ Ready</span></td>
+                <td>Done</td>
+                <td style="color:var(--green);">✓ Pick-up alert</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">TN18-GH-3456</td>
+                <td>Anitha V.</td>
+                <td>Tyre Change</td>
+                <td>Arun</td>
+                <td><span class="job-status s-pending">● Pending</span></td>
+                <td>4:00 PM</td>
+                <td style="color:var(--muted);">Queued</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="ai-insight" style="margin-top:16px;">
+            <div class="ai-insight-header"><span class="ai-badge">AI INSIGHT</span><span class="ai-insight-title">Parts Demand Forecast — Next 14 Days</span></div>
+            <div class="ai-insight-body">Based on service history, AI predicts <strong>high demand for: Oil Filters (×18), Brake Pads SKF2234 (×12), AC Gas refills (×7)</strong> in the next 14 days. Auto purchase order drafted — confirm to send to supplier. This prevents 3 potential job card delays.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEADS TAB -->
+      <div class="mvp-content" id="tab-leads">
+        <div class="dash-grid">
+          <div class="kpi-box">
+            <div class="kpi-label">Hot Leads (AI Scored)</div>
+            <div class="kpi-val" style="color:var(--red);">18</div>
+            <div class="kpi-change" style="color:var(--red);">Act within 24h</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Conversion Rate</div>
+            <div class="kpi-val" style="color:var(--green);">13.1%</div>
+            <div class="kpi-change up">↑ from 8.2% (pre-AutoEra)</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">WA Response Time</div>
+            <div class="kpi-val" style="color:var(--cyan);">4 min</div>
+            <div class="kpi-change up">Auto-reply enabled</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Leads from Walk-in</div>
+            <div class="kpi-val" style="color:var(--gold);">34%</div>
+            <div class="kpi-change">WA+Web: 66%</div>
+          </div>
+        </div>
+        <div style="padding:18px;">
+          <div class="panel-title">AI Lead Scoring — Top Prospects</div>
+          <table class="job-table">
+            <thead>
+              <tr><th>Name</th><th>Vehicle Interest</th><th>Source</th><th>AI Score</th><th>AI Action</th><th>Last Contact</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Sathish R.</td>
+                <td>Swift ZXi+</td>
+                <td>WhatsApp</td>
+                <td><span class="job-status" style="background:rgba(255,59,92,0.15);color:var(--red);border:1px solid rgba(255,59,92,0.2);">92 — HOT</span></td>
+                <td style="color:var(--orange);font-size:11px;">Call now. Seen 3 competitor sites.</td>
+                <td>2h ago</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Divya M.</td>
+                <td>Nexon EV Max</td>
+                <td>Instagram</td>
+                <td><span class="job-status" style="background:rgba(255,209,102,0.15);color:var(--gold);border:1px solid rgba(255,209,102,0.2);">76 — WARM</span></td>
+                <td style="color:var(--orange);font-size:11px;">Send EMI breakup + test drive invite</td>
+                <td>Yesterday</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Naveen K.</td>
+                <td>Creta 1.5 Turbo</td>
+                <td>Walk-in</td>
+                <td><span class="job-status" style="background:rgba(255,209,102,0.15);color:var(--gold);border:1px solid rgba(255,209,102,0.2);">68 — WARM</span></td>
+                <td style="color:var(--orange);font-size:11px;">WhatsApp "Festival offer" message</td>
+                <td>3 days ago</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Meena A.</td>
+                <td>Alto K10</td>
+                <td>Walk-in</td>
+                <td><span class="job-status" style="background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.2);">41 — COLD</span></td>
+                <td style="color:var(--muted);font-size:11px;">Add to 30-day nurture sequence</td>
+                <td>1 week ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- INSURANCE TAB -->
+      <div class="mvp-content" id="tab-insurance">
+        <div class="dash-grid">
+          <div class="kpi-box">
+            <div class="kpi-label">Expiring in 30 Days</div>
+            <div class="kpi-val" style="color:var(--red);">47</div>
+            <div class="kpi-change" style="color:var(--orange);">₹1.4L commission at risk</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Renewal Rate</div>
+            <div class="kpi-val" style="color:var(--green);">71%</div>
+            <div class="kpi-change up">↑ from 38% (before AutoEra)</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Commission YTD</div>
+            <div class="kpi-val" style="color:var(--cyan);">₹4.2L</div>
+            <div class="kpi-change up">New revenue stream</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">WA Reminders Sent</div>
+            <div class="kpi-val" style="color:var(--gold);">312</div>
+            <div class="kpi-change">Auto-sent this month</div>
+          </div>
+        </div>
+        <div style="padding:18px;">
+          <div class="ai-insight">
+            <div class="ai-insight-header"><span class="ai-badge">AI INSIGHT</span><span class="ai-insight-title">High-Risk Renewal Cluster Detected</span></div>
+            <div class="ai-insight-body"><strong>8 customers</strong> whose policies expire in 7 days have not responded to 2 reminders. AI suggests <strong>personal call from service advisor today</strong> — these customers had positive service experiences (rated 4+ stars) and have a <strong>73% chance of renewal</strong> if contacted by phone. Total commission: <strong>₹24,000</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLEET TAB -->
+      <div class="mvp-content" id="tab-fleet">
+        <div class="dash-grid">
+          <div class="kpi-box">
+            <div class="kpi-label">Fleet Vehicles Tracked</div>
+            <div class="kpi-val" style="color:var(--cyan);">84</div>
+            <div class="kpi-change">3 clients, Chennai</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Predicted Failures (14d)</div>
+            <div class="kpi-val" style="color:var(--red);">6</div>
+            <div class="kpi-change" style="color:var(--red);">Schedule service NOW</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">EV Battery Alerts</div>
+            <div class="kpi-val" style="color:var(--gold);">4</div>
+            <div class="kpi-change" style="color:var(--gold);">Below 75% health</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Breakdowns Prevented</div>
+            <div class="kpi-val" style="color:var(--green);">11</div>
+            <div class="kpi-change up">₹5.5L cost saved this month</div>
+          </div>
+        </div>
+        <div style="padding:18px;">
+          <div class="ai-insight">
+            <div class="ai-insight-header"><span class="ai-badge">AI PREDICTION</span><span class="ai-insight-title">Breakdown Risk — Vehicle TN09-XY-1122</span></div>
+            <div class="ai-insight-body">OBD2 data shows <strong>brake pad wear at 15%</strong>, engine temperature variance +8°C above normal over last 6 trips, and <strong>oil change overdue by 2,100km</strong>. AI predicts <strong>84% probability of service failure within 9 days</strong>. This vehicle operates Chennai→Bangalore route daily. Recommend scheduling for tomorrow's bay slot 09:00. Estimated repair: ₹8,200.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GTM STRATEGY -->
+  <div class="section" id="gtm">
+    <div class="section-header">
+      <div class="section-tag">05 · Go-To-Market Strategy</div>
+      <div class="section-title">How to <span class="o">get your first 10</span> paying customers fast</div>
+    </div>
+    <div class="gtm-grid">
+      <div class="gtm-card">
+        <div class="gtm-step">01</div>
+        <div class="gtm-title">The Neighbourhood Pilot (Month 1)</div>
+        <div class="gtm-desc">Pick 3 dealerships within 5km of Valasaravakkam. Offer the ServicePulse module FREE for 60 days. No contract, no payment. Just install, train staff in 1 day, and let results speak. Your gym network already knows these dealers.</div>
+        <div class="gtm-meta">
+          <span class="gtm-chip">ZERO COST TO ACQUIRE</span>
+          <span class="gtm-chip">60-DAY FREE PILOT</span>
+        </div>
+      </div>
+      <div class="gtm-card">
+        <div class="gtm-step">02</div>
+        <div class="gtm-title">Lead with the ₹ Loss Number (Pitch)</div>
+        <div class="gtm-desc">Walk in with a printed "Revenue Audit" — estimate their monthly loss: missed leads (×avg vehicle margin), missed renewals (×avg premium), parts delays (×hourly workshop rate). Show them ₹3–6L/month they're leaving on the table. Then price your solution at ₹15K/month. It's a 20x ROI conversation.</div>
+        <div class="gtm-meta">
+          <span class="gtm-chip">OUTCOME SELLING</span>
+          <span class="gtm-chip">ROI-FIRST PITCH</span>
+        </div>
+      </div>
+      <div class="gtm-card">
+        <div class="gtm-step">03</div>
+        <div class="gtm-title">FADA Tamil Nadu Chapter (Credibility)</div>
+        <div class="gtm-desc">Federation of Automobile Dealers Associations has a strong Chennai chapter. Become a technology partner. Present at one chapter meeting. One endorsement from FADA TN = instant credibility with 500+ dealers who trust the network over cold calls.</div>
+        <div class="gtm-meta">
+          <span class="gtm-chip">CHANNEL PARTNER</span>
+          <span class="gtm-chip">CREDIBILITY</span>
+        </div>
+      </div>
+      <div class="gtm-card">
+        <div class="gtm-step">04</div>
+        <div class="gtm-title">Land-and-Expand Module Strategy</div>
+        <div class="gtm-desc">Start with ServicePulse only (easiest to prove ROI in 2 weeks). Get paid. Month 3 — add InsureGuard (immediate new revenue for them). Month 6 — add SalesMind. Month 9 — Fleet module. Each module deepens lock-in. Churn becomes impossible when they've built workflows on you.</div>
+        <div class="gtm-meta">
+          <span class="gtm-chip">LAND + EXPAND</span>
+          <span class="gtm-chip">STICKINESS</span>
+        </div>
+      </div>
+      <div class="gtm-card">
+        <div class="gtm-step">05</div>
+        <div class="gtm-title">EV Dealers as Greenfield Targets</div>
+        <div class="gtm-desc">OLA Electric, Ather, and Tata EV showrooms opening in Chennai (Velachery, Guindy, OMR) have ZERO legacy DMS. They need to start from scratch. You offer them the full platform from Day 1. These are modern buyers — they appreciate AI, clean UX, and WhatsApp-native tools.</div>
+        <div class="gtm-meta">
+          <span class="gtm-chip">NO COMPETITION</span>
+          <span class="gtm-chip">FAST CLOSE</span>
+        </div>
+      </div>
+      <div class="gtm-card">
+        <div class="gtm-step">06</div>
+        <div class="gtm-title">LinkedIn + WhatsApp Content Engine</div>
+        <div class="gtm-desc">Post weekly on LinkedIn: "Chennai dealer saved ₹2.3L in one month using AI insurance renewal tracking." Real numbers. Real stories (with permission). 3 posts/week. Target: dealer principals, service managers, OEM regional heads. WhatsApp broadcast to dealer groups — Tamil content resonates strongly.</div>
+        <div class="gtm-meta">
+          <span class="gtm-chip">CONTENT-LED GTM</span>
+          <span class="gtm-chip">ZERO AD SPEND</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MVP BUILD PHASES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">06 · MVP Build Plan</div>
+      <div class="section-title">What to <span class="o">build first</span> — 90-day sprint</div>
+    </div>
+    <div class="mvp-phases">
+      <div class="mvp-phase">
+        <div class="phase-tag">PHASE 1 · Month 1–4</div>
+        <div class="phase-name">QUICK WIN MVP</div>
+        <div class="phase-items">
+          <span class="phase-item">Digital Job Card (mobile + web)</span>
+          <span class="phase-item">WhatsApp status auto-updates</span>
+          <span class="phase-item">Basic CRM + lead capture form</span>
+          <span class="phase-item">Service reminder scheduler</span>
+          <span class="phase-item">Insurance expiry tracker + WA alert</span>
+          <span class="phase-item">Dealer KPI dashboard</span>
+          <span class="phase-item">GST-compliant billing</span>
+        </div>
+        <div class="phase-footer">Target: 3 pilot customers
+          <div class="phase-focus" style="color:var(--green);">Revenue: ₹0 (free pilot)</div>
+        </div>
+      </div>
+      <div class="mvp-phase">
+        <div class="phase-tag">PHASE 2 · Month 5–8</div>
+        <div class="phase-name">AI LAYER</div>
+        <div class="phase-items">
+          <span class="phase-item">Lead scoring AI model</span>
+          <span class="phase-item">Parts demand forecasting ML</span>
+          <span class="phase-item">Insurance renewal intelligence</span>
+          <span class="phase-item">Multi-bank EMI calculator</span>
+          <span class="phase-item">Staff performance analytics</span>
+          <span class="phase-item">AI morning brief for DP</span>
+          <span class="phase-item">Convert pilots to paid plans</span>
+        </div>
+        <div class="phase-footer">Target: 10 paying customers
+          <div class="phase-focus" style="color:var(--orange);">Revenue: ₹1.5L/month ARR</div>
+        </div>
+      </div>
+      <div class="mvp-phase">
+        <div class="phase-tag">PHASE 3 · Month 9–12</div>
+        <div class="phase-name">FLEET + EV</div>
+        <div class="phase-items">
+          <span class="phase-item">OBD2/telematics integration</span>
+          <span class="phase-item">Predictive maintenance AI</span>
+          <span class="phase-item">EV battery health scoring</span>
+          <span class="phase-item">Fleet dashboard for operators</span>
+          <span class="phase-item">OEM portal auto-sync</span>
+          <span class="phase-item">Multi-branch consolidation</span>
+          <span class="phase-item">Expand to Tier 2 TN cities</span>
+        </div>
+        <div class="phase-footer">Target: 30–50 customers
+          <div class="phase-focus" style="color:var(--green);">Revenue: ₹6–8L/month ARR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="section" id="pricing">
+    <div class="section-header">
+      <div class="section-tag">07 · Pricing Strategy</div>
+      <div class="section-title">Price for <span class="o">ROI, not features</span></div>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">₹8,000</div>
+        <div class="price-period">per month · 1 branch</div>
+        <ul class="price-features">
+          <li>ServicePulse (Job Cards + WA)</li>
+          <li>Basic CRM + Lead Capture</li>
+          <li>Insurance Expiry Alerts</li>
+          <li>GST Billing</li>
+          <li>KPI Dashboard</li>
+          <li>Up to 5 staff logins</li>
+        </ul>
+        <button class="price-btn">IDEAL FOR NEW DEALERS</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tier">Growth</div>
+        <div class="price-amount">₹18,000</div>
+        <div class="price-period">per month · up to 3 branches</div>
+        <ul class="price-features">
+          <li>Everything in Starter</li>
+          <li>AI Lead Scoring + SalesMind</li>
+          <li>Parts Demand Forecasting AI</li>
+          <li>InsureGuard (renewal intelligence)</li>
+          <li>Finance EMI Calculator (multi-bank)</li>
+          <li>Workforce KPI + Staff Alerts</li>
+          <li>AI Morning Brief (DP)</li>
+          <li>Up to 20 staff logins</li>
+        </ul>
+        <button class="price-btn">START WITH THIS</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Enterprise</div>
+        <div class="price-amount">₹35,000+</div>
+        <div class="price-period">per month · unlimited branches</div>
+        <ul class="price-features">
+          <li>Everything in Growth</li>
+          <li>Fleet AI + OBD2 Integration</li>
+          <li>EV Battery Health Module</li>
+          <li>OEM Portal Auto-Sync</li>
+          <li>Multi-branch Consolidation</li>
+          <li>Custom AI Model Training</li>
+          <li>Dedicated Account Manager</li>
+          <li>Unlimited logins</li>
+        </ul>
+        <button class="price-btn">FOR DEALER GROUPS</button>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;text-align:center;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:5px;">AT 10 CUSTOMERS (GROWTH)</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--green);">₹18L ARR</div>
+        <div style="font-size:11px;color:var(--muted);">breakeven point</div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:5px;">AT 30 CUSTOMERS MIXED</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--orange);">₹60L ARR</div>
+        <div style="font-size:11px;color:var(--muted);">strong seed-fundable</div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:5px;">AT 100 CUSTOMERS</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--cyan);">₹2Cr+ ARR</div>
+        <div style="font-size:11px;color:var(--muted);">Series A territory</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">AUTOERA AI SOLUTIONS</div>
+  <p>Chennai, Tamil Nadu · UDYAM-TN-24-0162449 · Competitor & GTM Strategy Report · April 2025</p>
+</footer>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.mvp-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mvp-content').forEach(c => c.classList.remove('active'));
+  
+  const tabEl = document.querySelector(`.mvp-tab[onclick="switchTab('${tab}')"]`);
+  const contentEl = document.getElementById('tab-' + tab);
+  
+  if (tabEl) tabEl.classList.add('active');
+  if (contentEl) contentEl.classList.add('active');
+}
+</script>
+</body>
+</html>

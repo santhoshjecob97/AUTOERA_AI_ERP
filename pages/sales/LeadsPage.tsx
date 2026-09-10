@@ -1,297 +1,379 @@
-import React, { useState } from 'react';
-import { Users, Search, Filter, Phone, Mail, MessageSquare, Sparkles, ChevronDown, ChevronUp, TrendingUp, Target, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  Users, Search, Filter, Phone, Mail, MessageSquare, Sparkles, 
+  ChevronDown, ChevronUp, TrendingUp, Target, Calendar, Clock,
+  AlertTriangle, Send, CheckCircle2, UserCheck, ArrowRight
+} from 'lucide-react';
 import { Lead } from '../../types';
-import VoiceCallButton from '../../components/voice/VoiceCallButton';
 import VoiceCallModal from '../../components/voice/VoiceCallModal';
-import UniversalVoiceCampaignSection from '../../components/voice/UniversalVoiceCampaignSection';
-import PageNavigation from '../../components/common/PageNavigation';
 
-// Mock data - categorized by AI score
-const mockLeads: Lead[] = [
-  // Hot Leads (85-100)
-  { id: 'L001', name: 'Rajesh Kumar', vehicleInterest: 'BMW X7', budget: '₹90L', aiScore: 94, status: 'Negotiation', lastAction: 'Test drive scheduled', phone: '+91-9876543210', email: 'rajesh@example.com', priority: 'High' },
-  { id: 'L002', name: 'Priya Sharma', vehicleInterest: 'Audi Q5', budget: '₹65L', aiScore: 91, status: 'Contacted', lastAction: 'Pricing sent', phone: '+91-9876543211', email: 'priya@example.com', priority: 'High' },
-  { id: 'L003', name: 'Amit Patel', vehicleInterest: 'Mercedes GLE', budget: '₹85L', aiScore: 88, status: 'Negotiation', lastAction: 'Follow-up call', phone: '+91-9876543212', email: 'amit@example.com', priority: 'High' },
-  
-  // Warm Leads (60-84)
-  { id: 'L004', name: 'Sneha Reddy', vehicleInterest: 'Volvo XC90', budget: '₹95L', aiScore: 78, status: 'Contacted', lastAction: 'Brochure sent', phone: '+91-9876543213', email: 'sneha@example.com', priority: 'Medium' },
-  { id: 'L005', name: 'Vikram Singh', vehicleInterest: 'Land Rover Discovery', budget: '₹1.2Cr', aiScore: 72, status: 'New', lastAction: 'Web inquiry', phone: '+91-9876543214', email: 'vikram@example.com', priority: 'Medium' },
-  { id: 'L006', name: 'Ananya Desai', vehicleInterest: 'Porsche Cayenne', budget: '₹1.5Cr', aiScore: 68, status: 'Contacted', lastAction: 'Email opened', phone: '+91-9876543215', email: 'ananya@example.com', priority: 'Medium' },
-  { id: 'L007', name: 'Karthik Iyer', vehicleInterest: 'Jaguar F-PACE', budget: '₹75L', aiScore: 65, status: 'New', lastAction: 'Form submitted', phone: '+91-9876543216', email: 'karthik@example.com', priority: 'Medium' },
-  
-  // Cool Leads (40-59)
-  { id: 'L008', name: 'Meera Nair', vehicleInterest: 'Lexus RX', budget: '₹80L', aiScore: 52, status: 'New', lastAction: 'Website visit', phone: '+91-9876543217', email: 'meera@example.com', priority: 'Low' },
-  { id: 'L009', name: 'Rohan Gupta', vehicleInterest: 'BMW X5', budget: '₹85L', aiScore: 48, status: 'Contacted', lastAction: 'No response', phone: '+91-9876543218', email: 'rohan@example.com', priority: 'Low' },
-  
-  // Cold Leads (0-39)
-  { id: 'L010', name: 'Sanjay Mehta', vehicleInterest: 'Audi Q7', budget: '₹90L', aiScore: 32, status: 'New', lastAction: 'Inquiry', phone: '+91-9876543219', email: 'sanjay@example.com', priority: 'Low' },
+interface EnhancedLead extends Lead {
+  timeReceivedMinutesAgo: number;
+  slaRemainingMinutes: number;
+  nextBestAction: string;
+  sourceChannel: 'Walk-in QR' | 'WhatsApp Bot' | 'Web Widget' | 'OEM Referral';
+}
+
+const pilotLeads: EnhancedLead[] = [
+  {
+    id: 'LD-101',
+    name: 'Kumaraswamy V.',
+    vehicleInterest: 'Tata Nexon EV Empowered+',
+    budget: '₹17.5 Lakh',
+    aiScore: 94,
+    status: 'New',
+    lastAction: 'Website booking inquiry 14 min ago',
+    phone: '+91-9840123456',
+    email: 'kumar.v@techcorp.in',
+    priority: 'High',
+    timeReceivedMinutesAgo: 14,
+    slaRemainingMinutes: 16,
+    nextBestAction: 'Call immediately: 73% hot conversion, comparing with MG ZS EV. Share Creta vs Nexon EV comparison.',
+    sourceChannel: 'WhatsApp Bot'
+  },
+  {
+    id: 'LD-102',
+    name: 'Dr. Priya Ramachandran',
+    vehicleInterest: 'Mahindra XUV700 AX7 Diesel AT',
+    budget: '₹26.0 Lakh',
+    aiScore: 91,
+    status: 'Contacted',
+    lastAction: 'Completed test drive at OMR branch',
+    phone: '+91-9841987654',
+    email: 'dr.priya@apollohosp.org',
+    priority: 'High',
+    timeReceivedMinutesAgo: 22,
+    slaRemainingMinutes: 8,
+    nextBestAction: 'Send DigiLocker loan pre-approval link + HDFC 8.65% EMI quote. Customer is finance-ready.',
+    sourceChannel: 'Walk-in QR'
+  },
+  {
+    id: 'LD-103',
+    name: 'Senthil Nathan K.',
+    vehicleInterest: 'Hyundai Creta SX(O) DCT',
+    budget: '₹20.0 Lakh',
+    aiScore: 88,
+    status: 'Negotiation',
+    lastAction: 'Quotation sent; requested 3% discount',
+    phone: '+91-9444112233',
+    email: 'senthil@apexlogistics.com',
+    priority: 'High',
+    timeReceivedMinutesAgo: 28,
+    slaRemainingMinutes: 2,
+    nextBestAction: 'Margin Guard: Apply Team Lead 2.5% discount + free ceramic coating to close today.',
+    sourceChannel: 'OEM Referral'
+  },
+  {
+    id: 'LD-104',
+    name: 'Anand Sundaram',
+    vehicleInterest: 'Maruti Grand Vitara Hybrid',
+    budget: '₹19.5 Lakh',
+    aiScore: 78,
+    status: 'Contacted',
+    lastAction: 'Downloaded e-brochure 3 hours ago',
+    phone: '+91-9884556677',
+    email: 'anand.s@cognizant.com',
+    priority: 'Medium',
+    timeReceivedMinutesAgo: 180,
+    slaRemainingMinutes: 60,
+    nextBestAction: 'Trigger Day-3 Nurture WhatsApp video showcasing 27.97 kmpl real-world mileage test.',
+    sourceChannel: 'Web Widget'
+  },
+  {
+    id: 'LD-105',
+    name: 'Meenakshi Sundar',
+    vehicleInterest: 'Tata Punch EV Adventure',
+    budget: '₹12.0 Lakh',
+    aiScore: 72,
+    status: 'New',
+    lastAction: 'Calculated EMI on portal',
+    phone: '+91-9791001122',
+    email: 'meenakshi@gmail.com',
+    priority: 'Medium',
+    timeReceivedMinutesAgo: 120,
+    slaRemainingMinutes: 120,
+    nextBestAction: 'Schedule home test drive at Anna Nagar. High weekend test-drive affinity.',
+    sourceChannel: 'Web Widget'
+  },
+  {
+    id: 'LD-106',
+    name: 'Karthik Raja',
+    vehicleInterest: 'Mahindra Scorpio-N Z8L',
+    budget: '₹24.0 Lakh',
+    aiScore: 48,
+    status: 'Contacted',
+    lastAction: 'No response to WhatsApp message',
+    phone: '+91-9940223344',
+    email: 'karthik.r@zoho.com',
+    priority: 'Low',
+    timeReceivedMinutesAgo: 1440,
+    slaRemainingMinutes: 0,
+    nextBestAction: 'Shift to automated 30-day AI re-engagement sequence with festive exchange bonus hook.',
+    sourceChannel: 'OEM Referral'
+  }
 ];
 
-type LeadCategory = 'hot' | 'warm' | 'cool' | 'cold';
-
-const categorizeLead = (score: number): LeadCategory => {
-  if (score >= 85) return 'hot';
-  if (score >= 60) return 'warm';
-  if (score >= 40) return 'cool';
-  return 'cold';
-};
-
 const LeadsPage: React.FC = () => {
+  const [leads, setLeads] = useState<EnhancedLead[]>(pilotLeads);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [expandedCategory, setExpandedCategory] = useState<LeadCategory | null>('hot');
-  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
+  const [channelFilter, setChannelFilter] = useState('ALL');
+  const [selectedCategory, setSelectedCategory] = useState<'HOT' | 'WARM' | 'COLD' | 'ALL'>('ALL');
+  const [voiceCallLead, setVoiceCallLead] = useState<EnhancedLead | null>(null);
+  const [activeNotification, setActiveNotification] = useState<string | null>(null);
 
-  // Categorize leads
-  const categorizedLeads = {
-    hot: mockLeads.filter(l => categorizeLead(l.aiScore) === 'hot'),
-    warm: mockLeads.filter(l => categorizeLead(l.aiScore) === 'warm'),
-    cool: mockLeads.filter(l => categorizeLead(l.aiScore) === 'cool'),
-    cold: mockLeads.filter(l => categorizeLead(l.aiScore) === 'cold'),
+  const filteredLeads = leads.filter(lead => {
+    const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          lead.vehicleInterest.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          lead.phone?.includes(searchTerm);
+    const matchesChannel = channelFilter === 'ALL' || lead.sourceChannel === channelFilter;
+    
+    let matchesCategory = true;
+    if (selectedCategory === 'HOT') matchesCategory = lead.aiScore >= 85;
+    else if (selectedCategory === 'WARM') matchesCategory = lead.aiScore >= 60 && lead.aiScore < 85;
+    else if (selectedCategory === 'COLD') matchesCategory = lead.aiScore < 60;
+
+    return matchesSearch && matchesChannel && matchesCategory;
+  });
+
+  const handleTriggerWhatsApp = (lead: EnhancedLead) => {
+    setActiveNotification(`Dispatched AI-personalized WhatsApp to ${lead.name} (${lead.phone})`);
+    setTimeout(() => setActiveNotification(null), 4000);
   };
-
-  // Apply filters
-  const filterLeads = (leads: Lead[]) => {
-    return leads.filter(lead => {
-      const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           lead.vehicleInterest.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-  };
-
-  const getCategoryColor = (category: LeadCategory) => {
-    switch (category) {
-      case 'hot': return 'red';
-      case 'warm': return 'orange';
-      case 'cool': return 'blue';
-      case 'cold': return 'gray';
-    }
-  };
-
-  const getCategoryIcon = (category: LeadCategory) => {
-    switch (category) {
-      case 'hot': return '🔥';
-      case 'warm': return '🟠';
-      case 'cool': return '🔵';
-      case 'cold': return '⚪';
-    }
-  };
-
-  const renderLeadCard = (lead: Lead) => (
-    <div key={lead.id} className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-md transition-all">
-      <div className="flex justify-between items-start mb-3">
-        <div className="flex-1">
-          <h4 className="font-bold text-slate-900 text-lg">{lead.name}</h4>
-          <p className="text-sm text-slate-600">{lead.vehicleInterest}</p>
-        </div>
-        <div className="flex flex-col items-end gap-1">
-          <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-            lead.aiScore >= 85 ? 'bg-red-100 text-red-700' :
-            lead.aiScore >= 60 ? 'bg-orange-100 text-orange-700' :
-            lead.aiScore >= 40 ? 'bg-blue-100 text-blue-700' :
-            'bg-gray-100 text-gray-700'
-          }`}>
-            AI Score: {lead.aiScore}
-          </div>
-          <span className={`text-xs px-2 py-0.5 rounded-full ${
-            lead.status === 'Negotiation' ? 'bg-purple-100 text-purple-700' :
-            lead.status === 'Contacted' ? 'bg-blue-100 text-blue-700' :
-            lead.status === 'Closed' ? 'bg-green-100 text-green-700' :
-            'bg-gray-100 text-gray-700'
-          }`}>
-            {lead.status}
-          </span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2 mb-3 text-sm">
-        <div className="flex items-center gap-1 text-slate-600">
-          <Target size={14} />
-          <span>{lead.budget}</span>
-        </div>
-        <div className="flex items-center gap-1 text-slate-600">
-          <Calendar size={14} />
-          <span>{lead.lastAction}</span>
-        </div>
-      </div>
-
-      <div className="flex gap-2">
-        <VoiceCallButton
-          engineType="sales"
-          contextData={lead}
-          customerName={lead.name}
-          customerPhone={lead.phone || '+91-9876543210'}
-          onClick={() => {
-            setSelectedLead(lead);
-            setIsVoiceModalOpen(true);
-          }}
-          variant="outline"
-          size="sm"
-        />
-        <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition-colors">
-          <Mail size={14} />
-          Email
-        </button>
-        <button className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100 transition-colors">
-          <MessageSquare size={14} />
-          WhatsApp
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderCategory = (category: LeadCategory, title: string) => {
-    const leads = filterLeads(categorizedLeads[category]);
-    const isExpanded = expandedCategory === category;
-    const color = getCategoryColor(category);
-
-    return (
-      <div key={category} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-        <button
-          onClick={() => setExpandedCategory(isExpanded ? null : category)}
-          className={`w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors ${
-            category === 'hot' ? 'bg-red-50' :
-            category === 'warm' ? 'bg-orange-50' :
-            category === 'cool' ? 'bg-blue-50' :
-            'bg-gray-50'
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{getCategoryIcon(category)}</span>
-            <div className="text-left">
-              <h3 className="font-bold text-slate-900 text-lg">{title}</h3>
-              <p className="text-sm text-slate-600">{leads.length} leads</p>
-            </div>
-          </div>
-          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-        </button>
-
-        {isExpanded && (
-          <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {leads.length > 0 ? (
-              leads.map(renderLeadCard)
-            ) : (
-              <div className="col-span-full text-center py-8 text-slate-400">
-                No leads match your filters
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // Define tabs for navigation
-  const tabs = [
-    { id: 'overview', label: 'Overview', path: '/sales' },
-    { id: 'leads', label: 'Leads', path: '/sales/leads' },
-    { id: 'showroom', label: 'Virtual Showroom', path: '/sales/showroom' },
-    { id: 'pricing', label: 'Pricing', path: '/sales/pricing' },
-    { id: 'chatbot', label: 'Chatbot', path: '/sales/chatbot' },
-    { id: 'analytics', label: 'Analytics', path: '/sales/analytics' },
-  ];
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Page Navigation */}
-      <PageNavigation
-        tabs={tabs}
-        engineName="Sales AI Engine"
-        enginePath="/sales"
-      />
-
-      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <Users className="text-blue-600" /> Lead Management
-          </h1>
-          <p className="text-slate-500">Advanced lead filtering, AI scoring, and customer insights.</p>
-        </div>
-
-        <div className="flex gap-2">
-          <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-            <Users size={16} />
-            Add Lead
-          </button>
-          <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
-            <TrendingUp size={16} />
-            Import
-          </button>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search size={18} className="absolute left-3 top-2.5 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search leads by name or vehicle..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Title & SLA Header */}
+      <div className="bg-[#0D1117] border border-slate-800/90 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">
+              <Sparkles size={13} className="text-orange-500" />
+              Section 05 &bull; AI Lead Scoring &amp; 30-Min SLA Engine
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-['Outfit'] flex items-center gap-3">
+              Omni-Channel Lead Intelligence &amp; SLA Control
+            </h1>
+            <p className="text-slate-400 text-sm mt-1 max-w-3xl">
+              Gradient Boosted scoring (1-10), 30-minute hot response SLA enforcement with auto-escalation, WhatsApp nurture sequences &amp; Sarvam Voice AI.
+            </p>
           </div>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">All Status</option>
-            <option value="New">New</option>
-            <option value="Contacted">Contacted</option>
-            <option value="Negotiation">Negotiation</option>
-            <option value="Closed">Closed</option>
-          </select>
+
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-right">
+              <p className="text-[10px] text-rose-400 font-bold uppercase">Hot Lead SLA Compliance</p>
+              <p className="text-xl font-black text-rose-300 font-['Outfit']">96.4% &bull; &le; 18 min avg</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-4 text-white">
-          <div className="text-3xl font-bold">{categorizedLeads.hot.length}</div>
-          <div className="text-red-100 text-sm">🔥 Hot Leads</div>
+      {/* SLA Notification Banner */}
+      {activeNotification && (
+        <div className="p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs flex items-center gap-2.5 animate-in fade-in">
+          <CheckCircle2 size={16} />
+          <span>{activeNotification}</span>
         </div>
-        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-4 text-white">
-          <div className="text-3xl font-bold">{categorizedLeads.warm.length}</div>
-          <div className="text-orange-100 text-sm">🟠 Warm Leads</div>
+      )}
+
+      {/* KPI & Category Tabs */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button
+          onClick={() => setSelectedCategory('ALL')}
+          className={`p-3.5 rounded-xl border text-left transition-all ${
+            selectedCategory === 'ALL' 
+              ? 'bg-slate-900 border-orange-500 shadow-md' 
+              : 'bg-[#0D1117] border-slate-800 text-slate-400 hover:border-slate-700'
+          }`}
+        >
+          <p className="text-xs text-slate-400 font-bold uppercase">Total Pipeline</p>
+          <p className="text-xl font-black text-white font-['Outfit'] mt-1">{leads.length} Leads</p>
+          <p className="text-[11px] text-slate-500">₹1.18 Cr Opportunity</p>
+        </button>
+
+        <button
+          onClick={() => setSelectedCategory('HOT')}
+          className={`p-3.5 rounded-xl border text-left transition-all ${
+            selectedCategory === 'HOT' 
+              ? 'bg-rose-500/20 border-rose-500 shadow-md text-white' 
+              : 'bg-[#0D1117] border-slate-800 text-slate-400 hover:border-slate-700'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-rose-400 font-bold uppercase">Hot Leads (85+)</p>
+            <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+          </div>
+          <p className="text-xl font-black text-rose-300 font-['Outfit'] mt-1">
+            {leads.filter(l => l.aiScore >= 85).length} Active
+          </p>
+          <p className="text-[11px] text-rose-400/80">&le; 30-min call SLA</p>
+        </button>
+
+        <button
+          onClick={() => setSelectedCategory('WARM')}
+          className={`p-3.5 rounded-xl border text-left transition-all ${
+            selectedCategory === 'WARM' 
+              ? 'bg-amber-500/20 border-amber-500 shadow-md text-white' 
+              : 'bg-[#0D1117] border-slate-800 text-slate-400 hover:border-slate-700'
+          }`}
+        >
+          <p className="text-xs text-amber-400 font-bold uppercase">Warm Leads (60-84)</p>
+          <p className="text-xl font-black text-amber-300 font-['Outfit'] mt-1">
+            {leads.filter(l => l.aiScore >= 60 && l.aiScore < 85).length} Nurturing
+          </p>
+          <p className="text-[11px] text-amber-400/80">4-hr WhatsApp SLA</p>
+        </button>
+
+        <button
+          onClick={() => setSelectedCategory('COLD')}
+          className={`p-3.5 rounded-xl border text-left transition-all ${
+            selectedCategory === 'COLD' 
+              ? 'bg-slate-800 border-slate-600 shadow-md text-white' 
+              : 'bg-[#0D1117] border-slate-800 text-slate-400 hover:border-slate-700'
+          }`}
+        >
+          <p className="text-xs text-slate-400 font-bold uppercase">Cold Nurture (&lt;60)</p>
+          <p className="text-xl font-black text-slate-300 font-['Outfit'] mt-1">
+            {leads.filter(l => l.aiScore < 60).length} Automated
+          </p>
+          <p className="text-[11px] text-slate-500">30-day AI cycle</p>
+        </button>
+      </div>
+
+      {/* Filter Bar */}
+      <div className="bg-[#0D1117] border border-slate-800/90 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="relative flex-1 w-full">
+          <Search size={15} className="absolute left-3.5 top-3 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search lead by name, model, or phone..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-orange-500"
+          />
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white">
-          <div className="text-3xl font-bold">{categorizedLeads.cool.length}</div>
-          <div className="text-blue-100 text-sm">🔵 Cool Leads</div>
-        </div>
-        <div className="bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl p-4 text-white">
-          <div className="text-3xl font-bold">{categorizedLeads.cold.length}</div>
-          <div className="text-gray-100 text-sm">⚪ Cold Leads</div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-xs text-slate-400 font-medium">Channel:</span>
+          {['ALL', 'WhatsApp Bot', 'Walk-in QR', 'Web Widget', 'OEM Referral'].map(ch => (
+            <button
+              key={ch}
+              onClick={() => setChannelFilter(ch)}
+              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                channelFilter === ch ? 'bg-orange-500 text-white' : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              {ch}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Voice AI Campaign Section */}
-      <UniversalVoiceCampaignSection engineType="sales" />
+      {/* Lead Cards List */}
+      <div className="space-y-3">
+        {filteredLeads.map(lead => {
+          const isHot = lead.aiScore >= 85;
+          const isUrgent = isHot && lead.slaRemainingMinutes <= 15;
 
-      {/* Lead Categories */}
-      <div className="space-y-4">
-        {renderCategory('hot', '🔥 HOT LEADS (85-100)')}
-        {renderCategory('warm', '🟠 WARM LEADS (60-84)')}
-        {renderCategory('cool', '🔵 COOL LEADS (40-59)')}
-        {renderCategory('cold', '⚪ COLD LEADS (0-39)')}
+          return (
+            <div 
+              key={lead.id}
+              className={`p-4 rounded-xl border transition-all ${
+                isUrgent 
+                  ? 'bg-[#0D1117] border-rose-500/60 shadow-lg ring-1 ring-rose-500/20' 
+                  : 'bg-[#0D1117] border-slate-800/90 hover:border-slate-700'
+              }`}
+            >
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                
+                {/* Lead Profile */}
+                <div className="flex items-start gap-3.5">
+                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-bold text-sm ${
+                    isHot ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                    lead.aiScore >= 60 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                    'bg-slate-800 text-slate-400 border border-slate-700'
+                  }`}>
+                    {lead.name.charAt(0)}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold text-white font-['Outfit']">{lead.name}</h4>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-900 text-slate-300 border border-slate-700">
+                        {lead.sourceChannel}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                        isHot ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' :
+                        'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+                      }`}>
+                        AI Score: {lead.aiScore}/100
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-orange-400 font-semibold mt-0.5">
+                      {lead.vehicleInterest} &bull; <span className="text-slate-400">Budget: {lead.budget}</span>
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-1 font-mono">{lead.phone} &bull; {lead.email}</p>
+                  </div>
+                </div>
+
+                {/* SLA Timer Indicator */}
+                <div className="flex items-center gap-4 text-xs">
+                  {isHot && (
+                    <div className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 ${
+                      lead.slaRemainingMinutes <= 10 
+                        ? 'bg-rose-500/20 border-rose-500 text-rose-300 animate-pulse' 
+                        : 'bg-slate-900 border-slate-700 text-slate-300'
+                    }`}>
+                      <Clock size={14} className="text-rose-400" />
+                      <div>
+                        <p className="text-[9px] uppercase font-bold text-slate-400">SLA Remaining</p>
+                        <p className="font-bold">{lead.slaRemainingMinutes} minutes</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Quick Triggers */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleTriggerWhatsApp(lead)}
+                      className="p-2 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 transition-all cursor-pointer"
+                      title="Send AI WhatsApp Quote"
+                    >
+                      <MessageSquare size={16} />
+                    </button>
+
+                    <button
+                      onClick={() => setVoiceCallLead(lead)}
+                      className="px-3 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-orange-500/20 cursor-pointer"
+                    >
+                      <Phone size={14} />
+                      <span>Sarvam Voice AI</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* AI Next Best Action Strip */}
+              <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-start gap-2 text-xs">
+                <Sparkles size={14} className="text-cyan-400 shrink-0 mt-0.5" />
+                <p className="text-slate-300 font-medium">
+                  <span className="text-cyan-400 font-bold uppercase text-[10px] mr-1">AI Recommendation:</span>
+                  {lead.nextBestAction}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Voice Call Modal */}
-      {selectedLead && (
+      {voiceCallLead && (
         <VoiceCallModal
-          isOpen={isVoiceModalOpen}
-          onClose={() => {
-            setIsVoiceModalOpen(false);
-            setSelectedLead(null);
-          }}
-          engineType="sales"
-          contextData={selectedLead}
-          customerName={selectedLead.name}
-          customerPhone={selectedLead.phone || '+91-9876543210'}
+          isOpen={!!voiceCallLead}
+          onClose={() => setVoiceCallLead(null)}
+          customerName={voiceCallLead.name}
+          customerPhone={voiceCallLead.phone || ''}
+          vehicleInterest={voiceCallLead.vehicleInterest}
         />
       )}
     </div>

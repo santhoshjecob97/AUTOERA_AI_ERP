@@ -18,7 +18,9 @@ import {
   Code,
   Cpu,
   Database,
-  Network
+  Network,
+  Calculator,
+  BookOpen
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -47,12 +49,17 @@ const Sidebar: React.FC<SidebarProps> = ({
   const { resolvedTheme } = useTheme();
 
   const allMenuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
+    { id: 'customer-360', label: 'Customer 360', icon: Users },
+    { id: 'vehicle-360', label: 'Vehicle 360', icon: Car },
     { id: 'sales', label: 'Sales Engine', icon: Car },
+    { id: 'desking', label: 'Sales Desking', icon: Calculator },
     { id: 'service', label: 'Service Engine', icon: Wrench },
+    { id: 'workshop-command', label: 'Workshop Command', icon: Wrench },
     { id: 'ai-os', label: 'AI Operating System', icon: Cpu },
     { id: 'service-ai', label: 'AI Copilot Hub', icon: Bot },
     { id: 'finance', label: 'Finance Engine', icon: DollarSign },
+    { id: 'general-ledger', label: 'General Ledger', icon: BookOpen },
     { id: 'insurance', label: 'Insurance Engine', icon: ShieldCheck },
     { id: 'fleet', label: 'Fleet Telemetry', icon: Truck },
     { id: 'ev', label: 'EV Intelligence', icon: Zap },

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import StatCard from '../components/StatCard';
 import { ChartData, ViewState, User } from '../types';
+import ExecutiveActionCommandCenter from '../components/dashboard/ExecutiveActionCommandCenter';
 
 interface DashboardProps {
     onNavigate: (view: ViewState) => void;
@@ -136,6 +137,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
           </div>
         </div>
       )}
+
+      {/* Dealership Command Center: 5 Executive Questions & Signature Action AI */}
+      <ExecutiveActionCommandCenter />
 
       {/* Platform-Wide KPI Overview */}
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl border border-indigo-200 p-6">

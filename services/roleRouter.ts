@@ -57,7 +57,7 @@ export const getDashboardForUser = (user: User | null): string => {
   }
 
   // L5: Insurance
-  if (role === 'Insurance Executive') {
+  if (role === 'Insurance Executive' || (role as string) === 'Insurance Officer') {
     return '/insurance';
   }
 

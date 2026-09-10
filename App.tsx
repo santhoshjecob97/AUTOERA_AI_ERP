@@ -33,6 +33,13 @@ import { WhiteLabelProvider, useWhiteLabel, BrandPreset } from './context/WhiteL
 import { LocaleProvider, useLocale, SupportedLocale } from './context/LocaleContext';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 
+// Import New 2026 Enterprise Workflows
+import Customer360Page from './pages/Customer360Page';
+import Vehicle360Page from './pages/Vehicle360Page';
+import DeskingPage from './pages/sales/DeskingPage';
+import WorkshopCommandPage from './pages/service/WorkshopCommandPage';
+import GeneralLedgerPage from './pages/finance/GeneralLedgerPage';
+
 // Import Service sub-pages
 import ServiceBaysPage from './pages/service/ServiceBaysPage';
 import ServiceMaintenancePage from './pages/service/ServiceMaintenancePage';
@@ -102,6 +109,11 @@ const AppContent: React.FC = () => {
   // Derive current view from location
   const getCurrentView = (): ViewState => {
     const path = location.pathname;
+    if (path.startsWith('/customer-360')) return 'customer-360';
+    if (path.startsWith('/vehicle-360')) return 'vehicle-360';
+    if (path.startsWith('/sales/desking')) return 'desking';
+    if (path.startsWith('/service/workshop-command')) return 'workshop-command';
+    if (path.startsWith('/finance/ledger')) return 'general-ledger';
     if (path.startsWith('/sales')) return 'sales';
     if (path.startsWith('/service')) return 'service';
     if (path.startsWith('/finance')) return 'finance';
@@ -181,6 +193,11 @@ const AppContent: React.FC = () => {
           onChangeView={(view) => {
             const routeMap: Record<ViewState, string> = {
               dashboard: '/',
+              'customer-360': '/customer-360',
+              'vehicle-360': '/vehicle-360',
+              desking: '/sales/desking',
+              'workshop-command': '/service/workshop-command',
+              'general-ledger': '/finance/ledger',
               sales: '/sales',
               service: '/service',
               finance: '/finance',
@@ -188,10 +205,15 @@ const AppContent: React.FC = () => {
               workforce: '/workforce',
               fleet: '/fleet',
               ev: '/ev',
+              oem: '/oem',
+              developer: '/developer',
               plans: '/plans',
               'ai-os': '/ai-os',
               'database-arch': '/database-arch',
               'backend-arch': '/backend-arch',
+              'tech-stack': '/tech-stack',
+              security: '/security',
+              'mobile-app': '/mobile-app',
               'service-ai': '/service-ai',
               'sales-ai': '/sales-ai',
               'finance-ai': '/finance-ai',
@@ -339,6 +361,11 @@ const AppContent: React.FC = () => {
                     onNavigate={(view) => {
                       const routeMap: Record<ViewState, string> = {
                         dashboard: '/',
+                        'customer-360': '/customer-360',
+                        'vehicle-360': '/vehicle-360',
+                        desking: '/sales/desking',
+                        'workshop-command': '/service/workshop-command',
+                        'general-ledger': '/finance/ledger',
                         sales: '/sales',
                         service: '/service',
                         finance: '/finance',
@@ -349,6 +376,12 @@ const AppContent: React.FC = () => {
                         oem: '/oem',
                         developer: '/developer',
                         plans: '/plans',
+                        'ai-os': '/ai-os',
+                        'database-arch': '/database-arch',
+                        'backend-arch': '/backend-arch',
+                        'tech-stack': '/tech-stack',
+                        security: '/security',
+                        'mobile-app': '/mobile-app',
                         'service-ai': '/service-ai',
                         'sales-ai': '/sales-ai',
                         'finance-ai': '/finance-ai',
@@ -364,8 +397,16 @@ const AppContent: React.FC = () => {
                   />
                 }
               />
+
+              {/* Customer 360 & Vehicle 360 Unified Dossiers */}
+              <Route path="/customer-360" element={<RoleProtectedRoute permission="sales"><Customer360Page /></RoleProtectedRoute>} />
+              <Route path="/customer-360/:id" element={<RoleProtectedRoute permission="sales"><Customer360Page /></RoleProtectedRoute>} />
+              <Route path="/vehicle-360" element={<RoleProtectedRoute permission="service"><Vehicle360Page /></RoleProtectedRoute>} />
+              <Route path="/vehicle-360/:vin" element={<RoleProtectedRoute permission="service"><Vehicle360Page /></RoleProtectedRoute>} />
+
               {/* Sales Routes */}
               <Route path="/sales" element={<RoleProtectedRoute permission="sales"><SalesEngine /></RoleProtectedRoute>} />
+              <Route path="/sales/desking" element={<RoleProtectedRoute permission="sales"><DeskingPage /></RoleProtectedRoute>} />
               <Route path="/sales/leads" element={<RoleProtectedRoute permission="sales"><LeadsPage /></RoleProtectedRoute>} />
               <Route path="/sales/showroom" element={<RoleProtectedRoute permission="sales"><VirtualShowroomPage /></RoleProtectedRoute>} />
               <Route path="/sales/pricing" element={<RoleProtectedRoute permission="sales"><PricingPage /></RoleProtectedRoute>} />
@@ -373,6 +414,7 @@ const AppContent: React.FC = () => {
               <Route path="/sales/analytics" element={<RoleProtectedRoute permission="sales"><SalesAnalyticsPage /></RoleProtectedRoute>} />
               
               {/* Service Engine Routes */}
+              <Route path="/service/workshop-command" element={<RoleProtectedRoute permission="service"><WorkshopCommandPage /></RoleProtectedRoute>} />
               <Route path="/service" element={<RoleProtectedRoute permission="service"><ServiceLayout /></RoleProtectedRoute>}>
                 <Route index element={<ServiceOverviewPage />} />
                 <Route path="bays" element={<ServiceBaysPage />} />
@@ -389,6 +431,7 @@ const AppContent: React.FC = () => {
 
               {/* Finance Routes */}
               <Route path="/finance" element={<RoleProtectedRoute permission="finance"><FinanceEngine /></RoleProtectedRoute>} />
+              <Route path="/finance/ledger" element={<RoleProtectedRoute permission="finance"><GeneralLedgerPage /></RoleProtectedRoute>} />
               <Route path="/finance/credit-scoring" element={<RoleProtectedRoute permission="finance"><CreditScoringPage /></RoleProtectedRoute>} />
               <Route path="/finance/loan-approval" element={<RoleProtectedRoute permission="finance"><LoanApprovalPage /></RoleProtectedRoute>} />
               <Route path="/finance/risk-assessment" element={<RoleProtectedRoute permission="finance"><RiskAssessmentPage /></RoleProtectedRoute>} />

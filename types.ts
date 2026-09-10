@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type ViewState = 'dashboard' | 'sales' | 'service' | 'finance' | 'insurance' | 'workforce' | 'fleet' | 'ev' | 'oem' | 'developer' | 'plans' | 'service-ai' | 'sales-ai' | 'finance-ai' | 'insurance-ai' | 'fleet-ai' | 'workforce-ai' | 'ev-ai' | 'voice-ai' | 'ai-os' | 'database-arch' | 'backend-arch' | 'tech-stack' | 'security' | 'mobile-app';
+export type ViewState = 'dashboard' | 'sales' | 'service' | 'finance' | 'insurance' | 'workforce' | 'fleet' | 'ev' | 'oem' | 'developer' | 'plans' | 'service-ai' | 'sales-ai' | 'finance-ai' | 'insurance-ai' | 'fleet-ai' | 'workforce-ai' | 'ev-ai' | 'voice-ai' | 'ai-os' | 'database-arch' | 'backend-arch' | 'tech-stack' | 'security' | 'mobile-app' | 'customer-360' | 'vehicle-360' | 'desking' | 'workshop-command' | 'general-ledger';
 
 export type UserRole = 
   // L0 — Platform

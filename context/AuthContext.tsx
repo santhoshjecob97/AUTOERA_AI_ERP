@@ -7,29 +7,29 @@ import apiService from '../services/api';
  */
 const ROLE_PERMISSIONS_MAP: Record<string, ViewState[]> = {
   // L0 — Platform Super Admin (All modules + Platform Admin + OEM + Developer)
-  SUPER_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
+  SUPER_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai', 'customer-360', 'vehicle-360', 'desking', 'workshop-command', 'general-ledger'],
   // L1 — Enterprise Admin (All dealer modules + OEM + Developer)
-  ENTERPRISE_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai'],
+  ENTERPRISE_ADMIN: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'fleet-ai', 'workforce-ai', 'ev-ai', 'voice-ai', 'customer-360', 'vehicle-360', 'desking', 'workshop-command', 'general-ledger'],
   // L2 — Dealer Principal (All dealer modules + Executive Reports + Developer)
-  DEALER_PRINCIPAL: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
+  DEALER_PRINCIPAL: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'oem', 'developer', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'customer-360', 'vehicle-360', 'desking', 'workshop-command', 'general-ledger'],
   // L3 — General / OEM
-  GENERAL_MANAGER: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai'],
-  OEM_USER: ['dashboard', 'oem', 'sales', 'service', 'fleet', 'ev', 'plans'],
+  GENERAL_MANAGER: ['dashboard', 'sales', 'service', 'finance', 'insurance', 'workforce', 'fleet', 'ev', 'plans', 'service-ai', 'sales-ai', 'finance-ai', 'insurance-ai', 'customer-360', 'vehicle-360', 'desking', 'workshop-command', 'general-ledger'],
+  OEM_USER: ['dashboard', 'oem', 'sales', 'service', 'fleet', 'ev', 'plans', 'vehicle-360'],
   // L4 — Department Managers
-  SALES_MANAGER: ['dashboard', 'sales', 'sales-ai', 'workforce', 'plans'],
-  SERVICE_MANAGER: ['dashboard', 'service', 'service-ai', 'workforce', 'plans'],
-  FLEET_MANAGER: ['dashboard', 'fleet', 'fleet-ai', 'ev', 'plans'],
-  PARTS_MANAGER: ['dashboard', 'service', 'service-ai', 'plans'],
+  SALES_MANAGER: ['dashboard', 'sales', 'sales-ai', 'workforce', 'plans', 'customer-360', 'desking'],
+  SERVICE_MANAGER: ['dashboard', 'service', 'service-ai', 'workforce', 'plans', 'vehicle-360', 'workshop-command'],
+  FLEET_MANAGER: ['dashboard', 'fleet', 'fleet-ai', 'ev', 'plans', 'vehicle-360'],
+  PARTS_MANAGER: ['dashboard', 'service', 'service-ai', 'plans', 'workshop-command'],
   // L5 — Executives / Advisors
-  SALES_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans'],
-  CRM_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans'],
-  SERVICE_ADVISOR: ['dashboard', 'service', 'service-ai', 'plans'],
-  INSURANCE_EXECUTIVE: ['dashboard', 'insurance', 'insurance-ai', 'plans'],
-  FINANCE_OFFICER: ['dashboard', 'finance', 'finance-ai', 'plans'],
+  SALES_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans', 'customer-360', 'desking'],
+  CRM_EXECUTIVE: ['dashboard', 'sales', 'sales-ai', 'plans', 'customer-360'],
+  SERVICE_ADVISOR: ['dashboard', 'service', 'service-ai', 'plans', 'vehicle-360', 'workshop-command'],
+  INSURANCE_EXECUTIVE: ['dashboard', 'insurance', 'insurance-ai', 'plans', 'customer-360'],
+  FINANCE_OFFICER: ['dashboard', 'finance', 'finance-ai', 'plans', 'general-ledger', 'desking'],
   // L6 — Specialists
-  TECHNICIAN: ['dashboard', 'service', 'service-ai'],
+  TECHNICIAN: ['dashboard', 'service', 'service-ai', 'workshop-command', 'vehicle-360'],
   // L7 — External
-  VEHICLE_OWNER: ['dashboard', 'ev', 'plans'],
+  VEHICLE_OWNER: ['dashboard', 'ev', 'plans', 'vehicle-360'],
 };
 
 const ROLE_DISPLAY_MAP: Record<string, UserRole> = {

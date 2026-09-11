@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Bot, BrainCircuit, Cpu, Sparkles, Activity, CheckCircle2, 
   XCircle, AlertTriangle, ArrowRight, ShieldCheck, Search, 

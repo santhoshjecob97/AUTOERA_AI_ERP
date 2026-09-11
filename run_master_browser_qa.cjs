@@ -80,13 +80,10 @@ async function runMasterAudit() {
   if (isLoginPage) {
     console.log('  -> On Login Screen. Testing Quick Demo Login button (General Manager)...');
     // Click quick login for General Manager or enter credentials
-    const gmButton = page.locator('button:has-text("General Manager")').first();
+    const gmButton = page.locator('button:has-text("Launch Dealership as General Manager")').first();
     if (await gmButton.isVisible()) {
       await gmButton.click();
-      await page.waitForTimeout(500);
-      const submitBtn = page.locator('button[type="submit"]').first();
-      await submitBtn.click();
-      await page.waitForNavigation({ waitUntil: 'networkidle', timeout: 10000 }).catch(() => {});
+      await page.waitForTimeout(3000);
     }
   }
 

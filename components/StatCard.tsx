@@ -3,14 +3,15 @@ import React from 'react';
 interface StatCardProps {
   title: string;
   value: string;
-  trend?: string;
+  trend?: string | { value: string | number; isPositive?: boolean };
   trendUp?: boolean;
+  description?: string;
   icon: React.ReactNode;
   color?: string;
   onClick?: () => void;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ title, value, trend, trendUp, icon, color = "blue", onClick }) => {
+const StatCard: React.FC<StatCardProps> = ({ title, value, trend, trendUp, description, icon, color = "blue", onClick }) => {
   const colorClasses: Record<string, string> = {
     blue: "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40",
     green: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40",
@@ -19,6 +20,10 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, trend, trendUp, icon,
     indigo: "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-800/40",
     red: "bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-800/40",
   };
+
+  const isObjectTrend = trend && typeof trend === 'object';
+  const trendText = isObjectTrend ? String(trend.value) : trend;
+  const isUp = isObjectTrend ? (trend.isPositive ?? true) : (trendUp ?? true);
 
   return (
     <div 
@@ -34,13 +39,16 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, trend, trendUp, icon,
           {icon}
         </div>
       </div>
-      {trend && (
+      {trendText && (
         <div className="mt-3.5 flex items-center gap-1.5 text-xs">
-          <span className={`font-bold flex items-center gap-0.5 ${trendUp ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-            {trendUp ? '↑' : '↓'} {trend}
+          <span className={`font-bold flex items-center gap-0.5 ${isUp ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+            {isUp ? '↑' : '↓'} {trendText}
           </span>
-          <span className="text-slate-400 dark:text-slate-500">vs last month</span>
+          <span className="text-slate-400 dark:text-slate-500">{description || 'vs last month'}</span>
         </div>
+      )}
+      {!trendText && description && (
+        <p className="mt-3.5 text-xs text-slate-400 dark:text-slate-500 truncate">{description}</p>
       )}
     </div>
   );

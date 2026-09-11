@@ -3,6 +3,7 @@ AutoEra AI ERP — Production Django Settings
 All secrets loaded from environment variables. Never commit real secrets.
 """
 import os
+import sys
 from pathlib import Path
 from datetime import timedelta
 
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'fleet',
     'ev',
     'developer',
+    'used_cars',
 ]
 
 MIDDLEWARE = [
@@ -92,24 +94,45 @@ WSGI_APPLICATION = 'config.wsgi.application'
 (BASE_DIR / 'logs').mkdir(parents=True, exist_ok=True)
 
 # ──────────────────────────────────────────────
-# DATABASE — PostgreSQL for production (SQLite for local dev if specified)
+# DATABASE — PostgreSQL for production (SQLite for local dev & test suite)
 # ──────────────────────────────────────────────
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3' if DEBUG else 'django.db.backends.postgresql'),
-        'NAME': BASE_DIR / 'db.sqlite3' if os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3' if DEBUG else 'django.db.backends.postgresql') == 'django.db.backends.sqlite3' else os.environ.get('DB_NAME', 'autoera_db'),
-        'USER': os.environ.get('DB_USER', 'autoera_user'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        'CONN_MAX_AGE': 600,
-        'OPTIONS': {
-            'connect_timeout': 10,
-        } if os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3' if DEBUG else 'django.db.backends.postgresql') != 'django.db.backends.sqlite3' else {},
-    }
-}
+is_testing = 'test' in sys.argv or any('test' in arg for arg in sys.argv)
+has_db_url = bool(os.environ.get('DATABASE_URL'))
+explicit_postgres = os.environ.get('DB_ENGINE') == 'django.db.backends.postgresql' or os.environ.get('USE_POSTGRES', '').lower() in ('true', '1')
 
-if os.environ.get('DATABASE_URL'):
+use_sqlite = (
+    is_testing or
+    DEBUG or
+    os.environ.get('DB_ENGINE') == 'django.db.backends.sqlite3' or
+    os.environ.get('USE_SQLITE', '').lower() in ('true', '1') or
+    (not has_db_url and not explicit_postgres)
+)
+
+
+if use_sqlite:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+            'NAME': os.environ.get('DB_NAME', 'autoera_db'),
+            'USER': os.environ.get('DB_USER', 'autoera_user'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+            'CONN_MAX_AGE': 600,
+            'OPTIONS': {
+                'connect_timeout': 10,
+            },
+        }
+    }
+
+if os.environ.get('DATABASE_URL') and not is_testing:
     try:
         import environ
         env = environ.Env()
@@ -117,6 +140,7 @@ if os.environ.get('DATABASE_URL'):
         DATABASES['default']['CONN_MAX_AGE'] = 600
     except Exception as e:
         pass
+
 
 # ──────────────────────────────────────────────
 # PASSWORD VALIDATION

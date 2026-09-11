@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User
+from .models import User, AttendanceRecord, LeaveRequest
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -58,3 +59,36 @@ class PasswordChangeSerializer(serializers.Serializer):
         if not user.check_password(value):
             raise serializers.ValidationError('Current password is incorrect.')
         return value
+
+
+class AttendanceRecordSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+    role = serializers.CharField(source='user.role', read_only=True)
+
+    class Meta:
+        model = AttendanceRecord
+        fields = [
+            'id', 'user', 'username', 'user_name', 'role', 'date',
+            'punch_in', 'punch_out', 'status', 'source', 'late_minutes',
+            'overtime_hours', 'notes', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at']
+
+
+class LeaveRequestSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.get_full_name', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+    approver_name = serializers.CharField(source='approved_by.get_full_name', read_only=True)
+
+    class Meta:
+        model = LeaveRequest
+        fields = [
+            'id', 'user', 'username', 'user_name', 'leave_type',
+            'start_date', 'end_date', 'days_count', 'reason', 'status',
+            'approved_by', 'approver_name', 'approved_at', 'rejection_reason',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'user', 'status', 'created_at', 'updated_at', 'approved_at']
+
+

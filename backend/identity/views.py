@@ -2,11 +2,16 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from core.views import TenantScopedViewSet
 from core.permissions import IsManagerOrAbove, IsSuperAdmin
-from .models import User
-from .serializers import UserSerializer, LoginSerializer, PasswordChangeSerializer
+from .models import User, AttendanceRecord, LeaveRequest
+from .serializers import (
+    UserSerializer, LoginSerializer, PasswordChangeSerializer,
+    AttendanceRecordSerializer, LeaveRequestSerializer
+)
 
 logger = logging.getLogger('autoera.identity')
 
@@ -176,4 +181,154 @@ class MFAValidateView(APIView):
         if mfa_engine.verify_totp(secret, str(code)):
             return Response({'status': 'VALID', 'message': 'MFA challenge passed.'}, status=status.HTTP_200_OK)
         return Response({'status': 'INVALID', 'error': 'Invalid TOTP code.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class SwitchBranchView(APIView):
+    """
+    Switch active dealership branch context for multi-branch managers (L0-L3).
+    POST /api/v1/auth/switch-branch/
+    Body: { "branch_id": "..." }
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        branch_id = request.data.get('branch_id')
+
+        if not branch_id:
+            return Response({'error': 'branch_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Authorized if Super Admin, Enterprise Admin, Dealer Principal, or General Manager
+        if user.hierarchy_level > 3:
+            return Response({'error': 'Only executive managers (L0-L3) can switch branch contexts.'}, status=status.HTTP_403_FORBIDDEN)
+
+        from organization.models import Branch
+        try:
+            branch = Branch.objects.get(id=branch_id)
+        except (Branch.DoesNotExist, ValueError):
+            return Response({'error': 'Branch not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        if user.role != 'SUPER_ADMIN':
+            org_id = user.organization.id if user.organization else None
+            if str(branch.dealer_group.organization_id) != str(org_id):
+                return Response({'error': 'Unauthorized branch in different organization.'}, status=status.HTTP_403_FORBIDDEN)
+
+        user.branch = branch
+        user.save(update_fields=['branch'])
+
+        refresh = RefreshToken.for_user(user)
+        refresh['role'] = user.role
+        refresh['organization_id'] = str(user.organization.id) if user.organization else None
+        refresh['branch_id'] = str(branch.id)
+
+        logger.info(f"User {user.username} switched active branch context to {branch.name} ({branch.code})")
+
+        return Response({
+            'message': f'Switched active branch to {branch.name}',
+            'active_branch': {
+                'id': str(branch.id),
+                'name': branch.name,
+                'code': branch.code,
+            },
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+            'user': UserSerializer(user).data
+        }, status=status.HTTP_200_OK)
+
+
+class AttendanceRecordViewSet(TenantScopedViewSet):
+    """
+    Employee attendance & biometric punch tracking.
+    """
+    queryset = AttendanceRecord.objects.select_related('user').all()
+    serializer_class = AttendanceRecordSerializer
+    permission_classes = [IsAuthenticated]
+    search_fields = ['user__username', 'user__first_name', 'user__last_name']
+    filterset_fields = ['date', 'status', 'source']
+    ordering_fields = ['date', 'punch_in']
+    ordering = ['-date']
+
+    def perform_create(self, serializer):
+        org_id, branch_id = self._get_tenant_context()
+        serializer.save(
+            user=self.request.user,
+            organization_id=org_id,
+            branch_id=branch_id
+        )
+
+    @action(detail=False, methods=['post'])
+    def punch(self, request):
+        """1-click clock in or clock out for current user."""
+        from django.utils import timezone
+        user = request.user
+        org_id, branch_id = self._get_tenant_context()
+        today = timezone.localdate()
+        now = timezone.now()
+
+        record, created = AttendanceRecord.objects.get_or_create(
+            organization_id=org_id,
+            user=user,
+            date=today,
+            defaults={
+                'branch_id': branch_id,
+                'punch_in': now,
+                'status': 'PRESENT',
+                'source': request.data.get('source', 'MOBILE_GEO_FENCE')
+            }
+        )
+
+        if not created and not record.punch_out:
+            record.punch_out = now
+            record.save(update_fields=['punch_out', 'updated_at'])
+            msg = f"Punch-out recorded at {now.strftime('%H:%M:%S')}"
+        else:
+            msg = f"Punch-in recorded at {now.strftime('%H:%M:%S')}"
+
+        return Response({
+            'message': msg,
+            'record': AttendanceRecordSerializer(record).data
+        }, status=status.HTTP_200_OK)
+
+
+class LeaveRequestViewSet(TenantScopedViewSet):
+    """
+    Employee leave application & manager approval.
+    """
+    queryset = LeaveRequest.objects.select_related('user', 'approved_by').all()
+    serializer_class = LeaveRequestSerializer
+    permission_classes = [IsAuthenticated]
+    search_fields = ['user__username', 'user__first_name']
+    filterset_fields = ['status', 'leave_type']
+    ordering = ['-created_at']
+
+    def perform_create(self, serializer):
+        org_id, branch_id = self._get_tenant_context()
+        serializer.save(
+            user=self.request.user,
+            organization_id=org_id,
+            branch_id=branch_id
+        )
+
+    @action(detail=True, methods=['post'], permission_classes=[IsManagerOrAbove])
+    def review(self, request, pk=None):
+        """Approve or reject leave request."""
+        leave = self.get_object()
+        action_decision = request.data.get('decision')
+        from django.utils import timezone
+
+        if action_decision == 'APPROVE':
+            leave.status = 'APPROVED'
+            leave.approved_by = request.user
+            leave.approved_at = timezone.now()
+        elif action_decision == 'REJECT':
+            leave.status = 'REJECTED'
+            leave.rejection_reason = request.data.get('rejection_reason', 'Not approved by manager.')
+            leave.approved_by = request.user
+            leave.approved_at = timezone.now()
+        else:
+            return Response({'error': 'decision must be APPROVE or REJECT'}, status=status.HTTP_400_BAD_REQUEST)
+
+        leave.save()
+        return Response(LeaveRequestSerializer(leave).data, status=status.HTTP_200_OK)
+
 

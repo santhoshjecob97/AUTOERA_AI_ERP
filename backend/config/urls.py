@@ -4,25 +4,36 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
-from core.views import HealthCheckView, ReadinessView, LivenessView, RealtimeEventStreamView
+from core.views import (
+    HealthCheckView, ReadinessView, LivenessView, RealtimeEventStreamView,
+    TodaysTopActionsView, SLASummaryView
+)
 from core.graphql_views import GraphQLAPIView
 from identity.views import (
     LoginView, MeView, PasswordChangeView, UserViewSet,
-    MFASetupView, MFAVerifyView, MFAValidateView
+    MFASetupView, MFAVerifyView, MFAValidateView,
+    SwitchBranchView, AttendanceRecordViewSet, LeaveRequestViewSet
 )
-from organization.views import OrganizationViewSet, DealerGroupViewSet, BranchViewSet, DepartmentViewSet, BusinessSettingsViewSet
+from organization.views import (
+    OrganizationViewSet, DealerGroupViewSet, BranchViewSet,
+    DepartmentViewSet, BusinessSettingsViewSet, DailyBranchChecklistViewSet
+)
 from customers.views import CustomerViewSet, CustomerTimelineViewSet, DPDPExportView, DPDPEraseView
 from vehicles.views import VehicleViewSet, VehicleStockViewSet, VehicleHealthViewSet
 from sales.views import (
     LeadViewSet, LeadFollowUpViewSet, TestDriveViewSet,
-    QuotationViewSet, BookingViewSet, AppointmentViewSet
+    QuotationViewSet, BookingViewSet, AppointmentViewSet,
+    SalesTargetViewSet, IncentiveRuleViewSet, IncentiveCalculationViewSet
 )
 from service.views import (
     JobCardViewSet, ServiceCheckInViewSet, ServiceInspectionViewSet,
     JobCardPartViewSet, JobCardLabourViewSet,
     ServiceAppointmentScheduleViewSet, WarrantyClaimViewSet, QualityChecklistViewSet
 )
-from workshop.views import WorkshopBayViewSet, TechnicianViewSet
+from workshop.views import (
+    WorkshopBayViewSet, TechnicianViewSet,
+    TechnicianTimeLogViewSet, DailyTechnicianMetricsViewSet
+)
 from inventory.views import (
     PartViewSet, SupplierViewSet, StockMovementViewSet,
     PurchaseOrderViewSet, PurchaseOrderItemViewSet
@@ -59,6 +70,10 @@ from ai_platform.views import (
     ModelStackRouterAPIView, VoiceAISimulateAPIView
 )
 from developer.views import ApiKeyViewSet, WebhookViewSet, DeveloperDocsView
+from customers.views import CustomerComplaintViewSet
+from used_cars.views import (
+    UsedCarAppraisalViewSet, UsedCarValuationViewSet, UsedCarInventoryViewSet
+)
 from core.database_views import (
     DatabaseSchemaAPIView, DatabaseTenancyStrategyAPIView,
     TimescaleDBStatusAPIView, DatabaseBenchmarkAPIView
@@ -83,6 +98,8 @@ from core.mobile_app_views import (
 )
 
 router = DefaultRouter()
+router.register(r'attendance', AttendanceRecordViewSet, basename='attendance')
+router.register(r'leave-requests', LeaveRequestViewSet, basename='leave-request')
 router.register(r'developer/keys', ApiKeyViewSet, basename='developer-key')
 router.register(r'developer/webhooks', WebhookViewSet, basename='developer-webhook')
 router.register(r'users', UserViewSet, basename='user')
@@ -90,6 +107,7 @@ router.register(r'organizations', OrganizationViewSet, basename='organization')
 router.register(r'dealer-groups', DealerGroupViewSet, basename='dealer-group')
 router.register(r'branches', BranchViewSet, basename='branch')
 router.register(r'departments', DepartmentViewSet, basename='department')
+router.register(r'daily-checklists', DailyBranchChecklistViewSet, basename='daily-checklist')
 router.register(r'settings', BusinessSettingsViewSet, basename='business-settings')
 router.register(r'customers', CustomerViewSet, basename='customer')
 router.register(r'customer-timeline', CustomerTimelineViewSet, basename='customer-timeline')
@@ -102,6 +120,9 @@ router.register(r'test-drives', TestDriveViewSet, basename='test-drive')
 router.register(r'quotations', QuotationViewSet, basename='quotation')
 router.register(r'bookings', BookingViewSet, basename='booking')
 router.register(r'appointments', AppointmentViewSet, basename='appointment')
+router.register(r'sales-targets', SalesTargetViewSet, basename='sales-target')
+router.register(r'incentive-rules', IncentiveRuleViewSet, basename='incentive-rule')
+router.register(r'incentive-calculations', IncentiveCalculationViewSet, basename='incentive-calculation')
 router.register(r'job-cards', JobCardViewSet, basename='jobcard')
 router.register(r'service-appointments', ServiceAppointmentScheduleViewSet, basename='service-appointment')
 router.register(r'warranty-claims', WarrantyClaimViewSet, basename='warranty-claim')
@@ -112,6 +133,8 @@ router.register(r'job-card-parts', JobCardPartViewSet, basename='job-card-part')
 router.register(r'job-card-labour', JobCardLabourViewSet, basename='job-card-labour')
 router.register(r'bays', WorkshopBayViewSet, basename='bay')
 router.register(r'technicians', TechnicianViewSet, basename='technician')
+router.register(r'technician-time-logs', TechnicianTimeLogViewSet, basename='technician-time-log')
+router.register(r'technician-metrics', DailyTechnicianMetricsViewSet, basename='technician-metric')
 router.register(r'parts', PartViewSet, basename='part')
 router.register(r'suppliers', SupplierViewSet, basename='supplier')
 router.register(r'stock-movements', StockMovementViewSet, basename='stock-movement')
@@ -148,6 +171,14 @@ router.register(r'ai/prompts', PromptTemplateViewSet, basename='ai-prompt')
 router.register(r'voice/sessions', VoiceSessionViewSet, basename='voice-session')
 router.register(r'voice/transcripts', VoiceTranscriptViewSet, basename='voice-transcript')
 
+# Customer Complaint & Grievance Escalation (Area 22)
+router.register(r'customer-complaints', CustomerComplaintViewSet, basename='customer-complaint')
+
+# Used-Car Operating Engine (Area 13)
+router.register(r'used-cars/appraisals', UsedCarAppraisalViewSet, basename='used-car-appraisal')
+router.register(r'used-cars/valuations', UsedCarValuationViewSet, basename='used-car-valuation')
+router.register(r'used-cars/inventory', UsedCarInventoryViewSet, basename='used-car-inventory')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -158,6 +189,8 @@ urlpatterns = [
     path('api/v1/health/live/', LivenessView.as_view(), name='liveness_check'),
     path('api/v1/health/liveness/', LivenessView.as_view(), name='liveness_alias'),
     path('api/v1/events/stream/', RealtimeEventStreamView.as_view(), name='event_stream'),
+    path('api/v1/actions/top/', TodaysTopActionsView.as_view(), name='todays_top_actions'),
+    path('api/v1/actions/sla-summary/', SLASummaryView.as_view(), name='sla_summary'),
 
     # OpenAPI Schema & Interactive Docs
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
@@ -169,6 +202,7 @@ urlpatterns = [
     path('api/v1/auth/refresh/', TokenRefreshView.as_view(), name='auth_refresh'),
     path('api/v1/auth/me/', MeView.as_view(), name='auth_me'),
     path('api/v1/auth/password-change/', PasswordChangeView.as_view(), name='auth_password_change'),
+    path('api/v1/auth/switch-branch/', SwitchBranchView.as_view(), name='auth_switch_branch'),
     path('api/v1/auth/mfa/setup/', MFASetupView.as_view(), name='auth_mfa_setup'),
     path('api/v1/auth/mfa/verify/', MFAVerifyView.as_view(), name='auth_mfa_verify'),
     path('api/v1/auth/mfa/validate/', MFAValidateView.as_view(), name='auth_mfa_validate'),

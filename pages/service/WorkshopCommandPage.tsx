@@ -1,14 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Wrench, Users, Clock, AlertTriangle, CheckCircle2, 
-  Sparkles, Bot, MessageSquare, ArrowRight, Activity, Zap
+  Sparkles, Bot, MessageSquare, ArrowRight, Activity, Zap,
+  RefreshCw, ShieldCheck, CheckCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import aiEngineApi, { ServiceAdvisorRecommendation } from '../../services/aiEngineApi';
 
 export const WorkshopCommandPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'TA' | 'HI'>('EN');
   const [whatsappSent, setWhatsappSent] = useState<string | null>(null);
+  const [complaintText, setComplaintText] = useState('Front brake scraping noise and vibration at 40km/h');
+  const [aiRec, setAiRec] = useState<ServiceAdvisorRecommendation | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  const fetchAiRecommendation = async (complaint: string) => {
+    setIsAiLoading(true);
+    try {
+      const res = await aiEngineApi.getServiceAdvisorRecommendation(complaint);
+      setAiRec(res);
+    } catch (err) {
+      console.warn('AI Advisor query fallback:', err);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAiRecommendation(complaintText);
+  }, []);
 
   const bays = [
     {
@@ -196,13 +217,38 @@ export const WorkshopCommandPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">
-            <span className="text-[10px] font-bold text-orange-500 uppercase tracking-wider">
-              Diagnostic Intake: Job Card #JC-2026-001 (KA-01-MJ-9988)
-            </span>
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-wider">
+                Diagnostic Intake: Job Card #JC-2026-001 (KA-01-MJ-9988)
+              </span>
+              {aiRec?.confidence_score && (
+                <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                  {Math.round(aiRec.confidence_score * 100)}% Confidence &bull; RAG Grounded
+                </span>
+              )}
+            </div>
+
             <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
               {aiExplanations[selectedLanguage]}
             </p>
+
+            {/* Live Recommended Action Checklist from AI Platform */}
+            {aiRec?.recommended_actions && aiRec.recommended_actions.length > 0 && (
+              <div className="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  AI Service Advisor SOP Actions:
+                </span>
+                <ul className="text-[11px] text-slate-600 dark:text-slate-400 space-y-1">
+                  {aiRec.recommended_actions.map((act, i) => (
+                    <li key={i} className="flex items-start gap-1.5">
+                      <CheckCircle2 size={13} className="text-orange-500 shrink-0 mt-0.5" />
+                      <span>{act}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-xs">
@@ -218,7 +264,7 @@ export const WorkshopCommandPage: React.FC = () => {
 
           <button
             onClick={handleSendWhatsApp}
-            className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
+            className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <MessageSquare size={15} />
             <span>Send WhatsApp Customer Explanation ({selectedLanguage})</span>

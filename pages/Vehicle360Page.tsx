@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { apiService } from '../services/api';
 import { 
   Car, BatteryCharging, Wrench, ShieldAlert, 
   TrendingUp, CheckCircle2, AlertCircle, ArrowLeft,
@@ -14,7 +15,7 @@ export const Vehicle360Page: React.FC = () => {
 
   const vehicleVin = vin || 'VIN9988HY001';
 
-  const mockVehicle = {
+  const defaultMockVehicle = {
     vin: vehicleVin,
     reg: 'KA-01-MJ-9988',
     make: 'Hyundai',
@@ -44,6 +45,70 @@ export const Vehicle360Page: React.FC = () => {
     }
   };
 
+  const [currentVehicle, setCurrentVehicle] = useState(defaultMockVehicle);
+  const [vehicleOptions, setVehicleOptions] = useState<Array<{ id: string; vin: string; reg: string; model: string }>>([]);
+
+  useEffect(() => {
+    // 1. Fetch live vehicle fleet from backend
+    apiService.get<any[]>('/api/v1/vehicles/')
+      .then(res => {
+        if (Array.isArray(res) && res.length > 0) {
+          const mapped = res.map(v => ({
+            id: v.id,
+            vin: v.vin,
+            reg: v.registration_number || 'N/A',
+            model: `${v.make || ''} ${v.model || ''}`.trim() || 'Vehicle'
+          }));
+          setVehicleOptions(mapped);
+        }
+      })
+      .catch(err => console.warn('Could not fetch vehicle fleet:', err));
+  }, []);
+
+  useEffect(() => {
+    if (!vin || vin === 'VIN9988HY001') return;
+
+    // Find vehicle by vin
+    const match = vehicleOptions.find(vo => vo.vin === vin);
+    const targetId = match ? match.id : vin;
+
+    apiService.get<any>(`/api/v1/vehicles/${targetId}/360/`)
+      .then(data => {
+        if (data && data.vin) {
+          setCurrentVehicle({
+            vin: data.vin,
+            reg: data.registration_number || 'REG-PENDING',
+            make: data.make || 'Hyundai',
+            model: `${data.model || ''} ${data.variant || ''}`.trim() || 'Vehicle',
+            year: data.year || 2024,
+            color: data.color || 'Polar White',
+            fuel: data.fuel_type || 'Electric',
+            transmission: data.transmission_type || 'Automatic',
+            odometer: data.odometer_reading || 12000,
+            owner: data.owner ? `${data.owner.first_name} ${data.owner.last_name}` : 'Registered Owner',
+            ownerId: data.owner?.id || 'cust-apex-001',
+            deliveryDate: '10 Jan 2024',
+            warrantyExpiry: '09 Jan 2027 (Valid)',
+            insuranceStatus: 'Active Comprehensive',
+            overallHealth: 94,
+            evBattery: {
+              isEV: data.fuel_type?.toUpperCase().includes('EV') || data.fuel_type?.toUpperCase().includes('ELECTRIC') || true,
+              soh: 97.2,
+              capacityKwh: '72.6 kWh',
+              cellChemistry: 'LFP',
+              estimatedRangeKm: 440,
+              chargingCycles: 98,
+              fastChargeRatioPct: 18,
+              cellMaxDeltaMv: 10,
+              packTempC: 26.8,
+              predictedRulYears: 8.2
+            }
+          });
+        }
+      })
+      .catch(err => console.warn('Using default vehicle mock:', err));
+  }, [vin, vehicleOptions]);
+
   const handleGenerateEstimate = () => {
     setEstimateSuccess("Pre-service estimate generated with OEM labor times and genuine parts pricing (RO #EST-8819).");
     setTimeout(() => setEstimateSuccess(null), 5000);
@@ -63,6 +128,28 @@ export const Vehicle360Page: React.FC = () => {
         <span className="text-xs font-mono text-slate-400">Digital VIN Passport System</span>
       </div>
 
+      {/* Vehicle Fleet Selector */}
+      {vehicleOptions.length > 0 && (
+        <div className="flex items-center justify-between bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 rounded-xl p-3 shadow-sm">
+          <span className="text-xs font-semibold text-slate-500 flex items-center gap-2">
+            <Car size={14} className="text-blue-500" />
+            Inspect Registered Vehicle Passport:
+          </span>
+          <select
+            value={currentVehicle.vin}
+            onChange={(e) => navigate(`/vehicle-360/${e.target.value}`)}
+            className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-lg px-3 py-1.5 outline-none cursor-pointer"
+          >
+            <option value="VIN9988HY001">KA-01-MJ-9988 &bull; Hyundai Creta 1.5 DCT (Demo)</option>
+            {vehicleOptions.map(vo => (
+              <option key={vo.id} value={vo.vin}>
+                {vo.reg} &bull; {vo.model} (VIN: {vo.vin})
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       {/* Vehicle Identity Header Banner */}
       <div className="bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -73,22 +160,22 @@ export const Vehicle360Page: React.FC = () => {
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white font-['Outfit']">
-                  {mockVehicle.make} {mockVehicle.model}
+                  {currentVehicle.make} {currentVehicle.model}
                 </h1>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
-                  {mockVehicle.reg}
+                  {currentVehicle.reg}
                 </span>
                 <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1">
                   <CheckCircle2 size={12} /> Clean Title
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-slate-500 dark:text-slate-400">
-                <span className="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">VIN: {mockVehicle.vin}</span>
-                <span>{mockVehicle.year} • {mockVehicle.color} • {mockVehicle.transmission}</span>
+                <span className="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">VIN: {currentVehicle.vin}</span>
+                <span>{currentVehicle.year} • {currentVehicle.color} • {currentVehicle.transmission}</span>
                 <span>Owner: <strong 
                   onClick={() => navigate('/customer-360')}
                   className="text-orange-500 hover:underline cursor-pointer"
-                >{mockVehicle.owner}</strong></span>
+                >{currentVehicle.owner}</strong></span>
               </div>
             </div>
           </div>
@@ -120,15 +207,15 @@ export const Vehicle360Page: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/80">
           <div className="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
             <span className="text-[11px] text-slate-400 uppercase font-semibold">Current Odometer</span>
-            <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">{mockVehicle.odometer.toLocaleString()} km</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">{currentVehicle.odometer.toLocaleString()} km</p>
           </div>
           <div className="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
             <span className="text-[11px] text-slate-400 uppercase font-semibold">AI Health Score</span>
-            <p className="text-lg font-bold text-emerald-500 mt-0.5">{mockVehicle.overallHealth} / 100</p>
+            <p className="text-lg font-bold text-emerald-500 mt-0.5">{currentVehicle.overallHealth} / 100</p>
           </div>
           <div className="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
             <span className="text-[11px] text-slate-400 uppercase font-semibold">OEM Warranty</span>
-            <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5 text-xs truncate">{mockVehicle.warrantyExpiry}</p>
+            <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5 text-xs truncate">{currentVehicle.warrantyExpiry}</p>
           </div>
           <div className="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
             <span className="text-[11px] text-slate-400 uppercase font-semibold">Trade-in Equity</span>
@@ -138,7 +225,7 @@ export const Vehicle360Page: React.FC = () => {
       </div>
 
       {/* EV Intelligence Highlights Card */}
-      {mockVehicle.evBattery.isEV && (
+      {currentVehicle.evBattery.isEV && (
         <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/20 rounded-2xl p-5">
           <div className="flex items-start gap-3.5">
             <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-500">
@@ -149,24 +236,24 @@ export const Vehicle360Page: React.FC = () => {
                 <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
                   EV Battery Health (SOH) & High-Voltage Telemetry
                 </span>
-                <span className="text-xs font-bold text-emerald-500">{mockVehicle.evBattery.soh}% SOH</span>
+                <span className="text-xs font-bold text-emerald-500">{currentVehicle.evBattery.soh}% SOH</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-2 text-xs">
                 <div>
                   <span className="text-[10px] text-slate-400">Pack Capacity</span>
-                  <p className="font-semibold text-slate-800 dark:text-slate-200">{mockVehicle.evBattery.capacityKwh}</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{currentVehicle.evBattery.capacityKwh}</p>
                 </div>
                 <div>
                   <span className="text-[10px] text-slate-400">Real-World Range</span>
-                  <p className="font-semibold text-slate-800 dark:text-slate-200">{mockVehicle.evBattery.estimatedRangeKm} km</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{currentVehicle.evBattery.estimatedRangeKm} km</p>
                 </div>
                 <div>
                   <span className="text-[10px] text-slate-400">Cell Imbalance</span>
-                  <p className="font-semibold text-emerald-500">{mockVehicle.evBattery.cellMaxDeltaMv} mV (Normal)</p>
+                  <p className="font-semibold text-emerald-500">{currentVehicle.evBattery.cellMaxDeltaMv} mV (Normal)</p>
                 </div>
                 <div>
                   <span className="text-[10px] text-slate-400">Remaining Useful Life</span>
-                  <p className="font-semibold text-slate-800 dark:text-slate-200">{mockVehicle.evBattery.predictedRulYears} Years</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{currentVehicle.evBattery.predictedRulYears} Years</p>
                 </div>
               </div>
             </div>

@@ -39,6 +39,9 @@ import Vehicle360Page from './pages/Vehicle360Page';
 import DeskingPage from './pages/sales/DeskingPage';
 import WorkshopCommandPage from './pages/service/WorkshopCommandPage';
 import GeneralLedgerPage from './pages/finance/GeneralLedgerPage';
+import UsedCarEngine from './pages/UsedCarEngine';
+import DailyOperationsChecklistPage from './pages/DailyOperationsChecklist';
+import CustomerComplaintsPage from './pages/CustomerComplaintsPage';
 
 // Import Service sub-pages
 import ServiceBaysPage from './pages/service/ServiceBaysPage';
@@ -61,6 +64,7 @@ import VirtualShowroomPage from './pages/sales/VirtualShowroomPage';
 import PricingPage from './pages/sales/PricingPage';
 import ChatbotPage from './pages/sales/ChatbotPage';
 import SalesAnalyticsPage from './pages/sales/AnalyticsPage';
+import SalesTargetsIncentivesPage from './pages/sales/SalesTargetsIncentivesPage';
 
 // Import Finance sub-pages
 import CreditScoringPage from './pages/finance/CreditScoringPage';
@@ -110,7 +114,9 @@ const AppContent: React.FC = () => {
   const getCurrentView = (): ViewState => {
     const path = location.pathname;
     if (path.startsWith('/customer-360')) return 'customer-360';
+    if (path.startsWith('/complaints')) return 'complaints';
     if (path.startsWith('/vehicle-360')) return 'vehicle-360';
+    if (path.startsWith('/sales/targets-incentives')) return 'sales-targets';
     if (path.startsWith('/sales/desking')) return 'desking';
     if (path.startsWith('/service/workshop-command')) return 'workshop-command';
     if (path.startsWith('/finance/ledger')) return 'general-ledger';
@@ -124,6 +130,8 @@ const AppContent: React.FC = () => {
     if (path.startsWith('/oem')) return 'oem';
     if (path.startsWith('/developer')) return 'developer';
     if (path.startsWith('/plans')) return 'plans';
+    if (path.startsWith('/used-cars')) return 'used-cars';
+    if (path.startsWith('/daily-checklists') || path.startsWith('/operations/daily-checklist')) return 'daily-checklists';
     if (path.startsWith('/ai-os')) return 'ai-os';
     if (path.startsWith('/database-arch')) return 'database-arch';
     if (path.startsWith('/backend-arch')) return 'backend-arch';
@@ -214,6 +222,9 @@ const AppContent: React.FC = () => {
               'tech-stack': '/tech-stack',
               security: '/security',
               'mobile-app': '/mobile-app',
+              'used-cars': '/used-cars',
+              'daily-checklists': '/operations/daily-checklist',
+              'sales-targets': '/sales/targets-incentives',
               'service-ai': '/service-ai',
               'sales-ai': '/sales-ai',
               'finance-ai': '/finance-ai',
@@ -362,6 +373,7 @@ const AppContent: React.FC = () => {
                       const routeMap: Record<ViewState, string> = {
                         dashboard: '/',
                         'customer-360': '/customer-360',
+                        complaints: '/complaints',
                         'vehicle-360': '/vehicle-360',
                         desking: '/sales/desking',
                         'workshop-command': '/service/workshop-command',
@@ -398,15 +410,17 @@ const AppContent: React.FC = () => {
                 }
               />
 
-              {/* Customer 360 & Vehicle 360 Unified Dossiers */}
+              {/* Customer 360 & Vehicle 360 Unified Dossiers & Complaints */}
               <Route path="/customer-360" element={<RoleProtectedRoute permission="sales"><Customer360Page /></RoleProtectedRoute>} />
               <Route path="/customer-360/:id" element={<RoleProtectedRoute permission="sales"><Customer360Page /></RoleProtectedRoute>} />
+              <Route path="/complaints" element={<RoleProtectedRoute permission="service"><CustomerComplaintsPage /></RoleProtectedRoute>} />
               <Route path="/vehicle-360" element={<RoleProtectedRoute permission="service"><Vehicle360Page /></RoleProtectedRoute>} />
               <Route path="/vehicle-360/:vin" element={<RoleProtectedRoute permission="service"><Vehicle360Page /></RoleProtectedRoute>} />
 
               {/* Sales Routes */}
               <Route path="/sales" element={<RoleProtectedRoute permission="sales"><SalesEngine /></RoleProtectedRoute>} />
               <Route path="/sales/desking" element={<RoleProtectedRoute permission="sales"><DeskingPage /></RoleProtectedRoute>} />
+              <Route path="/sales/targets-incentives" element={<RoleProtectedRoute permission="sales"><SalesTargetsIncentivesPage /></RoleProtectedRoute>} />
               <Route path="/sales/leads" element={<RoleProtectedRoute permission="sales"><LeadsPage /></RoleProtectedRoute>} />
               <Route path="/sales/showroom" element={<RoleProtectedRoute permission="sales"><VirtualShowroomPage /></RoleProtectedRoute>} />
               <Route path="/sales/pricing" element={<RoleProtectedRoute permission="sales"><PricingPage /></RoleProtectedRoute>} />
@@ -453,6 +467,9 @@ const AppContent: React.FC = () => {
 
               {/* Operations & AI Routes */}
               <Route path="/workforce" element={<RoleProtectedRoute permission="workforce"><WorkforceEngine /></RoleProtectedRoute>} />
+              <Route path="/used-cars" element={<RoleProtectedRoute permission="sales"><UsedCarEngine /></RoleProtectedRoute>} />
+              <Route path="/daily-checklists" element={<DailyOperationsChecklistPage />} />
+              <Route path="/operations/daily-checklist" element={<DailyOperationsChecklistPage />} />
               <Route path="/fleet" element={<RoleProtectedRoute permission="fleet"><FleetEngine /></RoleProtectedRoute>} />
               <Route path="/ev" element={<RoleProtectedRoute permission="ev"><EVIntelligencePage /></RoleProtectedRoute>} />
               <Route path="/oem" element={<RoleProtectedRoute permission="oem"><OEMDashboardPage /></RoleProtectedRoute>} />

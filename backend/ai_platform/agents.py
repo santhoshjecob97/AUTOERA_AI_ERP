@@ -222,18 +222,21 @@ class IntentRouter:
         (['insurance', 'claim', 'surveyor', 'policy renewal', 'renewal', 'ncb', 'cashless', 'deductible', 'underwriting', 'zero-dep', 'zero-depreciation', 're-inspection', 'insurance policy', 'own damage', 'third party'], 'Insurance Agent'),
 
         # 5. Finance Agent
-        (['emi', 'loan', 'bank comparison', 'hdfc', 'icici', 'sbi', 'axis', 'kotak', 'interest rate', 'cibil', 'credit score', 'down payment', 'digilocker', 'nach', 'finance application', 'subvention'], 'Finance Agent'),
+        (['emi', 'loan', 'bank comparison', 'hdfc', 'icici', 'sbi', 'axis', 'kotak', 'interest rate', 'cibil', 'credit score', 'down payment', 'digilocker', 'nach', 'finance application', 'subvention', 'invoice outstanding', 'outstanding balance', 'invoice balance', 'customer invoice'], 'Finance Agent'),
 
-        # 6. Sales Agent
+        # 6. Parts Agent
+        (['parts below reorder', 'low stock inventory', 'parts below', 'spare parts', 'part availability', 'parts inventory', 'stockout', 'reorder level'], 'Parts Agent'),
+
+        # 7. Sales Agent
         (['showroom vehicle stock', 'vehicle stock inventory', 'sales lead', 'new car booking', 'vehicle booking', 'test drive', 'test-drive', 'showroom', 'booking', 'quotation', 'price list', 'margin guard', 'discount approval', 'brochure', 'on-road price'], 'Sales Agent'),
 
-        # 7. Service Agent
-        (['engine overheating', 'warning light', 'suspension', 'brake noise', 'job card', 'service check-in', 'inspection', 'diagnostic', 'diagnose', 'repair', 'ac cooling', 'oil change', 'periodic service', 'vibration', 'symptom', 'service appointment', 'technician'], 'Service Agent'),
+        # 8. Service Agent
+        (['engine overheating', 'warning light', 'suspension', 'brake noise', 'job card', 'service check-in', 'inspection', 'diagnostic', 'diagnose', 'repair', 'ac cooling', 'oil change', 'periodic service', 'vibration', 'symptom', 'service appointment', 'technician', 'brake replacement'], 'Service Agent'),
 
-        # 8. CRM Agent
-        (['crm', 'customer retention', 're-engagement', 'lifecycle', 'churn', 'customer timeline', 'follow-up', 'followup', 'callback', 'nps', 'feedback call', 'post-service feedback', 'campaign'], 'CRM Agent'),
+        # 9. CRM Agent
+        (['crm', 'customer retention', 're-engagement', 'lifecycle', 'churn', 'customer timeline', 'follow-up', 'follow up', 'followup', 'callback', 'nps', 'feedback call', 'post-service feedback', 'campaign'], 'CRM Agent'),
 
-        # 9. Customer Support Agent
+        # 10. Customer Support Agent
         (['complaint', 'grievance', 'support ticket', 'escalation', 'faq', 'customer service', 'helpdesk', 'resolution', 'document request', 'invoice copy'], 'Customer Support Agent'),
     ]
 
@@ -264,13 +267,15 @@ class IntentRouter:
             intent = f"{best_match.upper().replace(' ', '_')}_{best_keyword.upper().replace(' ', '_')}"
             return (best_match, intent, confidence)
 
-        # Fallback to Supervisor Agent or Service/Sales based on role
+        # Fallback to Supervisor Agent or Service/Sales/Finance based on role
         if 'SERVICE' in user_role:
             return ('Service Agent', 'SERVICE_GENERAL_QUERY', 0.75)
         elif 'SALES' in user_role:
             return ('Sales Agent', 'SALES_GENERAL_QUERY', 0.75)
         elif 'FLEET' in user_role:
             return ('Fleet Agent', 'FLEET_GENERAL_QUERY', 0.75)
+        elif 'FINANCE' in user_role:
+            return ('Finance Agent', 'FINANCE_GENERAL_QUERY', 0.75)
         return ('Supervisor Agent', 'GENERAL_DISPATCH', 0.80)
 
     @classmethod
@@ -286,7 +291,7 @@ class IntentRouter:
 class AgentSupervisor:
     """
     AutoEra AI Supervisor Agent Orchestrator (Section 11).
-    Orchestrates the 9 specialist sub-agents, manages tool execution, grounded RAG context,
+    Orchestrates the specialist sub-agents, manages tool execution, grounded RAG context,
     Customer Knowledge Graph lookups, and conversational state.
     """
 
@@ -320,6 +325,30 @@ class AgentSupervisor:
         # 5. Knowledge search
         if any(w in prompt_lower for w in ['how to', 'procedure', 'sop', 'policy', 'warranty', 'guideline', 'rule', 'manual']):
             tools_to_run.append({'tool': 'search_knowledge', 'args': {'query': prompt}})
+
+        # 6. High-risk write actions (Refund, Estimate Approval)
+        if any(w in prompt_lower for w in ['refund', 'money back', 'credit note']):
+            amount_match = re.search(r'(?:rs\.?|inr)\s*(\d+)', prompt_lower)
+            inv_match = re.search(r'inv-?\w+', prompt_lower)
+            amount = amount_match.group(1) if amount_match else '5000'
+            invoice_id = inv_match.group(0).upper() if inv_match else 'INV-1001'
+            tools_to_run.append({
+                'tool': 'issue_refund',
+                'args': {
+                    'invoice_id': invoice_id,
+                    'amount': amount,
+                    'reason': prompt
+                }
+            })
+
+        if any(w in prompt_lower for w in ['approve estimate', 'accept estimate', 'approve quote']):
+            tools_to_run.append({
+                'tool': 'approve_estimate',
+                'args': {
+                    'job_card_id': 'JC-01',
+                    'amount': '15000'
+                }
+            })
 
         return tools_to_run[:5]
 

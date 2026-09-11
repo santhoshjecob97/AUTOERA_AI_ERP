@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractUser
 from organization.models import Organization, Branch
 
 
+from core.models import TenantScopedModel
+
+
 class User(AbstractUser):
     """
     AutoEra AI User model — 16 roles per Master Architecture L0–L7 hierarchy.
@@ -78,3 +81,81 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
+
+
+class AttendanceRecord(TenantScopedModel):
+    """
+    Dealership Employee Daily Attendance & Biometric Punch Record (Area 15).
+    """
+    STATUS_CHOICES = [
+        ('PRESENT', 'Present'),
+        ('LATE', 'Late Arrival (> 15m)'),
+        ('HALF_DAY', 'Half Day'),
+        ('ABSENT', 'Absent'),
+        ('ON_LEAVE', 'Approved Leave'),
+    ]
+    BIOMETRIC_SOURCES = [
+        ('BIOMETRIC_SCANNER', 'Main Gate Biometric Device'),
+        ('MOBILE_GEO_FENCE', 'Employee Mobile App Geofence Check-In'),
+        ('MANUAL_SUPERVISOR', 'Supervisor Manual Attendance'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attendance_records')
+    date = models.DateField(db_index=True)
+    punch_in = models.DateTimeField(null=True, blank=True)
+    punch_out = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='PRESENT')
+    source = models.CharField(max_length=30, choices=BIOMETRIC_SOURCES, default='BIOMETRIC_SCANNER')
+    late_minutes = models.IntegerField(default=0)
+    overtime_hours = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    notes = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['organization_id', 'date']),
+            models.Index(fields=['organization_id', 'user', 'date']),
+        ]
+        unique_together = ('organization_id', 'user', 'date')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date} [{self.status}]"
+
+
+class LeaveRequest(TenantScopedModel):
+    """
+    Dealership Employee Leave Application & Approval Workflow (Area 15).
+    """
+    LEAVE_TYPES = [
+        ('CASUAL', 'Casual Leave (CL)'),
+        ('SICK', 'Sick Leave (SL)'),
+        ('EARNED', 'Earned / Privilege Leave (EL)'),
+        ('COMP_OFF', 'Compensatory Off'),
+        ('UNPAID', 'Leave Without Pay (LWP)'),
+    ]
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending Approval'),
+        ('APPROVED', 'Approved by Manager'),
+        ('REJECTED', 'Rejected'),
+        ('CANCELLED', 'Cancelled by Employee'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='leave_requests')
+    leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES, default='CASUAL')
+    start_date = models.DateField()
+    end_date = models.DateField()
+    days_count = models.DecimalField(max_digits=4, decimal_places=1, default=1.0)
+    reason = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_leaves')
+    approved_at = models.DateTimeField(null=True, blank=True)
+    rejection_reason = models.TextField(blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['organization_id', 'status']),
+            models.Index(fields=['organization_id', 'user', 'start_date']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.leave_type} ({self.start_date} to {self.end_date}) [{self.status}]"
+

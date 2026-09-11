@@ -379,13 +379,15 @@ def tool_create_followup(user_context: Dict[str, Any], customer_id: str = None, 
         organization_id=org_id,
         branch_id=user_context.get('branch_id'),
         lead=lead,
-        follow_up_date=timezone.now().date(),
+        scheduled_at=timezone.now(),
+        follow_up_type='CALL',
+        status='PENDING',
         notes=notes or 'Automated follow-up created by AI Assistant'
     )
     return {
         'status': 'SUCCESS',
         'followup_id': str(followup.id),
-        'message': f"Follow-up scheduled for Lead #{lead.id} on {followup.follow_up_date}."
+        'message': f"Follow-up scheduled for Lead #{lead.id} on {followup.scheduled_at}."
     }
 
 

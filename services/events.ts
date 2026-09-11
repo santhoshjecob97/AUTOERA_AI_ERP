@@ -41,23 +41,51 @@ class EventStreamService {
         }
       };
 
-      this.eventSource.onmessage = (messageEvent) => {
+      const handleDomainEvent = (messageEvent: MessageEvent, defaultType: RealtimeEvent['type'] = 'system_alert') => {
         try {
           const data = JSON.parse(messageEvent.data);
+          const eventType = data.event_type || defaultType;
+          let severity: RealtimeEvent['severity'] = 'info';
+          if (eventType.includes('Failed') || eventType.includes('Unavailable') || eventType.includes('Delayed') || eventType.includes('Escalated')) {
+            severity = 'critical';
+          } else if (eventType.includes('Stale') || eventType.includes('Aging') || eventType.includes('Pending')) {
+            severity = 'warning';
+          } else if (eventType.includes('Created') || eventType.includes('Completed') || eventType.includes('Approved') || eventType.includes('Closed')) {
+            severity = 'success';
+          }
+
           const event: RealtimeEvent = {
-            id: data.id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
-            type: data.type || 'system_alert',
-            title: data.title || 'System Notification',
-            message: data.message || (typeof data === 'string' ? data : JSON.stringify(data)),
-            severity: data.severity || 'info',
-            timestamp: data.timestamp || new Date().toLocaleTimeString(),
-            metadata: data.metadata || data
+            id: data.event_id || data.id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+            type: (data.type || defaultType) as RealtimeEvent['type'],
+            title: data.event_type ? `${data.event_type.replace(/([A-Z])/g, ' $1').trim()}` : (data.title || 'System Notification'),
+            message: data.message || (data.payload ? JSON.stringify(data.payload) : (typeof data === 'string' ? data : JSON.stringify(data))),
+            severity: data.severity || severity,
+            timestamp: data.timestamp ? new Date(data.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString(),
+            metadata: data.payload || data.metadata || data
           };
           this.notify(event);
         } catch (err) {
           console.warn('Failed to parse SSE event data:', err);
         }
       };
+
+      this.eventSource.onmessage = (e) => handleDomainEvent(e, 'system_alert');
+
+      // Register specific automotive event types
+      const domainEvents = [
+        'LeadCreated', 'LeadUpdated', 'LeadAssigned', 'BookingCreated', 'BookingCancelled',
+        'JobCardCreated', 'JobStarted', 'JobDelayed', 'ROClosed', 'PartsUnavailable',
+        'PaymentReceived', 'ComplaintCreated', 'ComplaintEscalated', 'dashboard_sync'
+      ];
+      domainEvents.forEach(evt => {
+        this.eventSource?.addEventListener(evt, (e: any) => {
+          let mappedType: RealtimeEvent['type'] = 'system_alert';
+          if (evt.includes('Lead')) mappedType = 'hot_lead';
+          else if (evt.includes('Job') || evt.includes('RO')) mappedType = 'bay_status';
+          else if (evt.includes('sync')) mappedType = 'bay_status';
+          handleDomainEvent(e, mappedType);
+        });
+      });
 
       this.eventSource.onerror = () => {
         this.isConnected = false;

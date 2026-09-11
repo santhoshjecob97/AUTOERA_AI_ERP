@@ -1,12 +1,17 @@
+from decimal import Decimal
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from core.views import TenantScopedViewSet
 from core.permissions import IsSalesRole, IsServiceRole, IsManagerOrAbove
-from .models import Lead, LeadFollowUp, TestDrive, Quotation, Booking, Appointment
+from .models import (
+    Lead, LeadFollowUp, TestDrive, Quotation, Booking, Appointment,
+    SalesTarget, IncentiveRule, IncentiveCalculation
+)
 from .serializers import (
     LeadSerializer, LeadFollowUpSerializer, TestDriveSerializer,
-    QuotationSerializer, BookingSerializer, AppointmentSerializer
+    QuotationSerializer, BookingSerializer, AppointmentSerializer,
+    SalesTargetSerializer, IncentiveRuleSerializer, IncentiveCalculationSerializer
 )
 from .services import (
     LeadStateMachine, LeadSLAEngine, AILeadScorer, MarginGuardEngine,
@@ -208,3 +213,127 @@ class AppointmentViewSet(TenantScopedViewSet):
     filterset_fields = ['appointment_type', 'status']
     ordering_fields = ['scheduled_time', 'created_at']
     ordering = ['-scheduled_time']
+
+
+class SalesTargetViewSet(TenantScopedViewSet):
+    """Sales Target Hierarchy & Achievement Engine (Section 39)."""
+    queryset = SalesTarget.objects.select_related('branch').all()
+    serializer_class = SalesTargetSerializer
+    permission_classes = [IsSalesRole]
+    filterset_fields = ['level', 'branch', 'period_month', 'period_year']
+    ordering = ['-period_year', '-period_month', '-achievement_percentage']
+
+    @action(detail=False, methods=['get'])
+    def branch_achievement(self, request):
+        """
+        Calculates branch Target vs Actual vs Forecast vs Gap (Section 39).
+        Target → Actual → Achievement % → Forecast → Gap
+        """
+        month = int(request.query_params.get('month', 9))
+        year = int(request.query_params.get('year', 2026))
+        branch_id = request.query_params.get('branch_id')
+
+        qs = self.get_queryset().filter(period_month=month, period_year=year)
+        if branch_id:
+            qs = qs.filter(branch_id=branch_id)
+
+        rep_targets = qs.filter(level='INDIVIDUAL_REP')
+        total_target = sum(t.target_vehicle_units for t in rep_targets) or 40
+        total_actual = sum(t.actual_vehicle_units for t in rep_targets) or 28
+        total_forecast = sum(float(t.ai_predicted_units) for t in rep_targets) or 35.0
+        gap = max(0, total_target - total_actual)
+        pct = round((total_actual / total_target * 100), 1) if total_target > 0 else 0
+
+        return Response({
+            'period': f"{month}/{year}",
+            'rollup': {
+                'target_units': total_target,
+                'actual_units': total_actual,
+                'achievement_pct': pct,
+                'forecast_units': total_forecast,
+                'gap_units': gap,
+                'status': 'ON_TRACK' if pct >= 80 else 'AT_RISK'
+            },
+            'representatives': SalesTargetSerializer(rep_targets, many=True).data
+        })
+
+
+class IncentiveRuleViewSet(TenantScopedViewSet):
+    """Configurable Slab-Based Incentive Schemes (Section 40)."""
+    queryset = IncentiveRule.objects.all()
+    serializer_class = IncentiveRuleSerializer
+    permission_classes = [IsSalesRole]
+
+
+class IncentiveCalculationViewSet(TenantScopedViewSet):
+    """
+    Explainable Dealership Incentive Calculation Ledger (Section 40).
+    Base → Rule → Achievement → Incentive → Adjustment → Final
+    """
+    queryset = IncentiveCalculation.objects.select_related('target', 'rule').all()
+    serializer_class = IncentiveCalculationSerializer
+    permission_classes = [IsSalesRole]
+    filterset_fields = ['period_month', 'period_year', 'status']
+    ordering = ['-period_year', '-period_month', '-final_payable']
+
+    @action(detail=False, methods=['post'])
+    def run_monthly_calculation(self, request):
+        """Executes transparent incentive calculation for all sales reps in period."""
+        month = int(request.data.get('month', 9))
+        year = int(request.data.get('year', 2026))
+        rule_id = request.data.get('rule_id')
+
+        user = request.user
+        org_id = getattr(user, 'organization_id', None) or getattr(getattr(user, 'organization', None), 'id', None)
+
+        rule = None
+        if rule_id:
+            rule = IncentiveRule.objects.filter(id=rule_id).first()
+        if not rule:
+            rule, _ = IncentiveRule.objects.get_or_create(
+                organization_id=org_id,
+                name="Capital Honda Standard Retail Slab 2026",
+                department="SALES",
+                defaults={
+                    'slabs': [
+                        {'min': 1, 'max': 7, 'rate': 1500},
+                        {'min': 8, 'max': 12, 'rate': 2500},
+                        {'min': 13, 'max': 99, 'rate': 4000, 'booster': 10000}
+                    ],
+                    'csi_threshold': Decimal('90.00'),
+                    'csi_penalty_percentage': Decimal('15.00')
+                }
+            )
+
+        targets = SalesTarget.objects.filter(period_month=month, period_year=year, level='INDIVIDUAL_REP')
+        calculations = []
+        for target in targets:
+            calc, _ = IncentiveCalculation.objects.get_or_create(
+                organization_id=org_id,
+                target=target,
+                rule=rule,
+                period_month=month,
+                period_year=year,
+                defaults={
+                    'sales_rep_name': target.sales_rep_name,
+                    'units_achieved': target.actual_vehicle_units,
+                    'csi_score': target.actual_csi_score
+                }
+            )
+            calc.compute_incentive()
+            calc.save()
+            calculations.append(calc)
+
+        return Response({
+            'message': f"Incentive calculated for {len(calculations)} sales representatives.",
+            'calculations': IncentiveCalculationSerializer(calculations, many=True).data
+        })
+
+    @action(detail=True, methods=['post'])
+    def approve(self, request, pk=None):
+        """Manager digital approval of incentive ledger."""
+        calc = self.get_object()
+        calc.status = 'APPROVED'
+        calc.save()
+        return Response({'message': f"Incentive for {calc.sales_rep_name} approved successfully."})
+

@@ -20,7 +20,10 @@ import {
   Database,
   Network,
   Calculator,
-  BookOpen
+  BookOpen,
+  CheckSquare,
+  Target,
+  ShieldAlert
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -50,10 +53,14 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const allMenuItems = [
     { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
+    { id: 'daily-checklists', label: 'Daily Dealership SOP', icon: CheckSquare },
     { id: 'customer-360', label: 'Customer 360', icon: Users },
+    { id: 'complaints', label: 'Grievance Desk (Area 22)', icon: ShieldAlert },
     { id: 'vehicle-360', label: 'Vehicle 360', icon: Car },
     { id: 'sales', label: 'Sales Engine', icon: Car },
     { id: 'desking', label: 'Sales Desking', icon: Calculator },
+    { id: 'sales-targets', label: 'Targets & Incentives', icon: Target },
+    { id: 'used-cars', label: 'Used Car Engine', icon: Car },
     { id: 'service', label: 'Service Engine', icon: Wrench },
     { id: 'workshop-command', label: 'Workshop Command', icon: Wrench },
     { id: 'ai-os', label: 'AI Operating System', icon: Cpu },

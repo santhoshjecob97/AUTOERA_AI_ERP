@@ -20,3 +20,13 @@ class CustomerSerializer(TenantScopedSerializer):
     def get_full_name(self, obj) -> str:
         return f"{obj.first_name} {obj.last_name}".strip()
 
+
+class CustomerComplaintSerializer(TenantScopedSerializer):
+    customer_name = serializers.ReadOnlyField(source='customer.__str__')
+
+    class Meta(TenantScopedSerializer.Meta):
+        from .models import CustomerComplaint
+        model = CustomerComplaint
+        fields = '__all__'
+
+

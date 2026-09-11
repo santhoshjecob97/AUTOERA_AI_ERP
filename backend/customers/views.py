@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from core.views import TenantScopedViewSet
 from core.permissions import IsSalesRole, IsServiceRole
-from .models import Customer, CustomerTimeline
-from .serializers import CustomerSerializer, CustomerTimelineSerializer
+from .models import Customer, CustomerTimeline, CustomerComplaint
+from .serializers import CustomerSerializer, CustomerTimelineSerializer, CustomerComplaintSerializer
 
 
 class CustomerViewSet(TenantScopedViewSet):
@@ -222,4 +222,43 @@ class DPDPEraseView(APIView):
             reason=reason
         )
         return Response(result, status=status.HTTP_200_OK)
+
+
+class CustomerComplaintViewSet(TenantScopedViewSet):
+    """
+    Area 22 — Customer Complaint & Grievance Escalation ViewSet.
+    Provides ticket creation, severity assignment, SLA monitoring, and resolution actions.
+    """
+    queryset = CustomerComplaint.objects.select_related('customer').all()
+    serializer_class = CustomerComplaintSerializer
+    permission_classes = [IsSalesRole | IsServiceRole]
+    search_fields = ['complaint_number', 'subject', 'customer__first_name', 'customer__last_name', 'vehicle_registration']
+    filterset_fields = ['department', 'severity', 'status', 'sla_breached']
+    ordering_fields = ['created_at', 'sla_deadline', 'severity']
+    ordering = ['-created_at']
+
+    @action(detail=True, methods=['post'], url_path='resolve')
+    def resolve_complaint(self, request, pk=None):
+        """Offers resolution to customer with RCA and corrective action."""
+        complaint = self.get_object()
+        from django.utils import timezone
+        complaint.status = 'RESOLVED'
+        complaint.root_cause_analysis = request.data.get('root_cause_analysis', complaint.root_cause_analysis)
+        complaint.corrective_action = request.data.get('corrective_action', complaint.corrective_action)
+        complaint.resolved_at = timezone.now()
+        complaint.save()
+        return Response(CustomerComplaintSerializer(complaint).data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='close')
+    def close_complaint(self, request, pk=None):
+        """Records customer confirmation and closes dispute."""
+        complaint = self.get_object()
+        from django.utils import timezone
+        complaint.status = 'CLOSED'
+        complaint.csi_recovery_score = request.data.get('csi_recovery_score', 5)
+        complaint.customer_feedback = request.data.get('customer_feedback', '')
+        complaint.closed_at = timezone.now()
+        complaint.save()
+        return Response(CustomerComplaintSerializer(complaint).data, status=status.HTTP_200_OK)
+
 

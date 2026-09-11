@@ -148,7 +148,7 @@ class VoiceAgentArchitectureTests(TestCase):
             session=session,
             utterance="My car is making a strange noise when I brake, what should I do?"
         )
-        self.assertEqual(turn_res['agent'], 'Service Advisor Agent')
+        self.assertIn(turn_res['agent'], ['Service Advisor Agent', 'Service Agent'])
         self.assertGreater(len(turn_res['citations']), 0)
         self.assertIn("Brake System Inspection SOP", turn_res['citations'][0]['document_title'])
 

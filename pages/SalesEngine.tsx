@@ -14,6 +14,7 @@ import VoiceCallButton from '../components/voice/VoiceCallButton';
 import VoiceCallModal from '../components/voice/VoiceCallModal';
 import UniversalVoiceCampaignSection from '../components/voice/UniversalVoiceCampaignSection';
 import PageNavigation from '../components/common/PageNavigation';
+import { apiService } from '../services/api';
 
 type SalesView = 'overview' | 'leads' | 'showroom' | 'pricing' | 'chatbot' | 'analytics';
 
@@ -92,6 +93,27 @@ const SalesEngine: React.FC = () => {
   const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
   const [selectedLeadForCall, setSelectedLeadForCall] = useState<Lead | null>(null);
 
+  // Fetch live CRM leads from backend
+  useEffect(() => {
+    apiService.get<any[]>('/api/v1/leads/')
+      .then(res => {
+        if (Array.isArray(res) && res.length > 0) {
+          const mapped: Lead[] = res.map((d: any, idx: number) => ({
+            id: String(d.id),
+            name: d.customer_name || `Prospect #${idx + 1}`,
+            vehicleInterest: d.interested_vehicle_model || 'SUV',
+            vehicleDetails: d.interested_vehicle_model || 'Hyundai Creta 1.5 SX',
+            budget: d.budget ? `₹${Number(d.budget).toLocaleString('en-IN')}` : '₹18L',
+            aiScore: d.ai_score ? Math.round(d.ai_score) : 85,
+            status: (d.status === 'NEW' ? 'New' : d.status === 'QUALIFIED' ? 'Contacted' : d.status === 'BOOKED' ? 'Negotiation' : 'Contacted') as any,
+            lastAction: d.sla_breached ? 'SLA Follow-up Required' : 'Inbound Inquiry'
+          }));
+          setLeads(mapped);
+        }
+      })
+      .catch(err => console.warn('Using initial fallback leads in SalesEngine:', err));
+  }, []);
+
   // Simulate Real-time Notifications
   useEffect(() => {
     const interval = setInterval(() => {
@@ -115,7 +137,17 @@ const SalesEngine: React.FC = () => {
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
-  const handleAddLead = (newLeadData: Omit<Lead, 'id' | 'aiScore' | 'lastAction'>) => {
+  const handleAddLead = async (newLeadData: Omit<Lead, 'id' | 'aiScore' | 'lastAction'>) => {
+    try {
+      await apiService.post('/api/v1/leads/', {
+        interested_vehicle_model: newLeadData.vehicleDetails || newLeadData.vehicleInterest,
+        budget: parseFloat(newLeadData.budget.replace(/[^0-9.]/g, '')) * 100000 || 1800000,
+        source: 'WEBSITE',
+        status: 'NEW'
+      });
+    } catch (err) {
+      console.warn('Saved lead locally in frontend:', err);
+    }
     const newLead: Lead = {
       ...newLeadData,
       id: (leads.length + 1).toString(),

@@ -49,6 +49,7 @@ const LoginScreen: React.FC = () => {
     const targetUser = roleUsernames[role];
     if (targetUser) {
       setIdentifier(targetUser);
+      setPassword('AutoEra2026!');
       setErrorMessage(null);
     }
   };

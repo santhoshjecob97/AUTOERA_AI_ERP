@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.serializers import TenantScopedSerializer
-from .models import Organization, DealerGroup, Branch, Department, BusinessSettings
+from .models import Organization, DealerGroup, Branch, Department, BusinessSettings, DailyBranchChecklist
 
 
 class BranchSerializer(serializers.ModelSerializer):
@@ -35,3 +35,16 @@ class BusinessSettingsSerializer(TenantScopedSerializer):
     class Meta(TenantScopedSerializer.Meta):
         model = BusinessSettings
         fields = '__all__'
+
+
+class DailyBranchChecklistSerializer(TenantScopedSerializer):
+    branch_name = serializers.CharField(source='branch.name', read_only=True)
+
+    class Meta(TenantScopedSerializer.Meta):
+        model = DailyBranchChecklist
+        fields = '__all__'
+        read_only_fields = [
+            'id', 'organization_id', 'branch_id', 'created_at', 'updated_at',
+            'completion_percentage', 'critical_issues_count'
+        ]
+

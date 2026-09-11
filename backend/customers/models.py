@@ -106,3 +106,87 @@ class CustomerConsent(TenantScopedModel):
         status = "Active" if self.is_consented else "Withdrawn"
         return f"{self.customer.first_name} - {self.get_purpose_display()} [{status}]"
 
+
+class CustomerComplaint(TenantScopedModel):
+    """
+    Area 22 — Customer Complaint & Grievance Escalation Engine.
+    Enforces end-to-end dealership dispute resolution lifecycle:
+    Received -> Investigation -> Corrective Action -> Manager Review -> Resolution -> Customer Confirmation -> Closed.
+    """
+    DEPARTMENT_CHOICES = [
+        ('SALES', 'Sales & Vehicle Delivery'),
+        ('SERVICE', 'Workshop & Repairs'),
+        ('PARTS', 'Spare Parts & Accessories'),
+        ('FINANCE', 'Finance & Loan Processing'),
+        ('INSURANCE', 'Insurance Claim / Renewal'),
+        ('MANAGEMENT', 'Dealership Management & Facility'),
+    ]
+
+    SEVERITY_CHOICES = [
+        ('P1_CRITICAL', 'P1 — Critical (Executive Escalation, 4h SLA)'),
+        ('P2_MAJOR', 'P2 — Major (Department Manager, 24h SLA)'),
+        ('P3_MINOR', 'P3 — Minor (Team Lead, 48h SLA)'),
+    ]
+
+    STATUS_CHOICES = [
+        ('RECEIVED', 'Complaint Received'),
+        ('UNDER_INVESTIGATION', 'Under Investigation'),
+        ('ACTION_REQUIRED', 'Corrective Action Required'),
+        ('MANAGER_REVIEW', 'Pending Manager Review'),
+        ('RESOLVED', 'Resolution Offered to Customer'),
+        ('CLOSED', 'Customer Confirmed & Closed'),
+    ]
+
+    complaint_number = models.CharField(max_length=50, unique=True, db_index=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='complaints')
+    vehicle_registration = models.CharField(max_length=50, blank=True)
+    department = models.CharField(max_length=30, choices=DEPARTMENT_CHOICES, default='SERVICE')
+    severity = models.CharField(max_length=20, choices=SEVERITY_CHOICES, default='P2_MAJOR')
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='RECEIVED')
+    
+    category = models.CharField(max_length=100, default='SERVICE_QUALITY')
+    subject = models.CharField(max_length=255)
+    description = models.TextField()
+    
+    assigned_manager = models.CharField(max_length=150, blank=True)
+    sla_deadline = models.DateTimeField(null=True, blank=True)
+    sla_breached = models.BooleanField(default=False)
+    
+    root_cause_analysis = models.TextField(blank=True)
+    corrective_action = models.TextField(blank=True)
+    
+    csi_recovery_score = models.IntegerField(null=True, blank=True, help_text="Customer rating 1-5 after resolution")
+    customer_feedback = models.TextField(blank=True)
+    
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    closed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['organization_id', 'status']),
+            models.Index(fields=['organization_id', 'severity']),
+            models.Index(fields=['organization_id', 'department']),
+            models.Index(fields=['organization_id', 'sla_breached']),
+        ]
+        ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        from django.utils import timezone
+        from datetime import timedelta
+        if not self.complaint_number:
+            import random
+            self.complaint_number = f"CMP-{timezone.now().strftime('%Y%m')}-{random.randint(1000, 9999)}"
+        if not self.sla_deadline and self.status == 'RECEIVED':
+            now = timezone.now()
+            if self.severity == 'P1_CRITICAL':
+                self.sla_deadline = now + timedelta(hours=4)
+            elif self.severity == 'P2_MAJOR':
+                self.sla_deadline = now + timedelta(hours=24)
+            else:
+                self.sla_deadline = now + timedelta(hours=48)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.complaint_number} - {self.customer.first_name} [{self.get_severity_display()}] ({self.status})"
+
+

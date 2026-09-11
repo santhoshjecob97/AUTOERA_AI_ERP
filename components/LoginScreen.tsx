@@ -21,15 +21,18 @@ const LoginScreen: React.FC = () => {
     setIsLoading(true);
     setErrorMessage(null);
 
+    const enteredPwd = password.trim();
+    const effectivePwd = (enteredPwd === 'AutoEra2026!') ? 'AutoEra2026!Secure' : enteredPwd;
+
     try {
-      const authUser = await login(identifier.trim(), password);
+      const authUser = await login(identifier.trim(), effectivePwd);
       const targetDashboard = getDashboardForUser(authUser);
       navigate(targetDashboard);
     } catch (error: any) {
       setErrorMessage(
         error?.message ||
         error?.details?.error ||
-        'Authentication failed. Please verify your credentials.'
+        'Authentication failed. Please verify your credentials or use 1-Click Instant Demo Access.'
       );
     } finally {
       setIsLoading(false);
@@ -49,11 +52,11 @@ const LoginScreen: React.FC = () => {
     const targetUser = roleUsernames[role];
     if (targetUser) {
       setIdentifier(targetUser);
-      setPassword('AutoEra2026!');
+      setPassword('AutoEra2026!Secure');
       setErrorMessage(null);
       setIsLoading(true);
       try {
-        const authUser = await login(targetUser, 'AutoEra2026!');
+        const authUser = await login(targetUser, 'AutoEra2026!Secure');
         const targetDashboard = getDashboardForUser(authUser);
         navigate(targetDashboard);
       } catch (error: any) {
@@ -182,6 +185,37 @@ const LoginScreen: React.FC = () => {
             </div>
           )}
 
+          {/* Instant 1-Click Demo Login Banner */}
+          <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border border-orange-500/30">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-orange-400 flex items-center gap-1.5 font-mono uppercase tracking-wider">
+                <Sparkles size={14} className="text-orange-400" />
+                Instant Demo Access
+              </span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">
+                1-Click Active
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 mb-3 leading-relaxed">
+              Experience the full AutoEra AI Dealership ERP with General Manager operational permissions:
+            </p>
+            <button
+              type="button"
+              onClick={() => handleQuickFill('gm')}
+              disabled={isLoading}
+              className="w-full py-2.5 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-[0.99] text-white font-bold text-xs rounded-lg shadow-md shadow-orange-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <UserCheck size={16} />
+              <span>Launch Dealership as General Manager (Instant)</span>
+            </button>
+            <div className="mt-2.5 text-[11px] text-slate-400 font-mono text-center flex items-center justify-center gap-2">
+              <span>Demo Login:</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 font-semibold border border-slate-700">gm_apex</span>
+              <span>/</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 font-semibold border border-slate-700">AutoEra2026!Secure</span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-5">
             
             {/* Email / Username Input */}
@@ -226,7 +260,7 @@ const LoginScreen: React.FC = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  placeholder="Enter your secure password"
+                  placeholder="Enter AutoEra2026!Secure (or click instant access)"
                   className="w-full pl-10 pr-12 py-3 bg-slate-900/90 border border-slate-800 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all text-sm text-white placeholder-slate-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

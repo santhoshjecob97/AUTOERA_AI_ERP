@@ -36,24 +36,24 @@ const PageNavigation: React.FC<PageNavigationProps> = ({
   const isOnOverview = location.pathname === enginePath;
 
   return (
-    <div className={`flex items-center justify-between bg-white rounded-xl shadow-sm border border-slate-100 p-4 ${className}`}>
+    <div className={`flex items-center justify-between bg-white dark:bg-[#0c121e] rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800/80 p-3 transition-colors ${className}`}>
       {/* Left Navigation */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         {/* Home Button - Always visible */}
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all text-sm font-medium"
-          title="Go to Dashboard"
+          className="flex items-center gap-2 px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 rounded-xl transition-all text-xs font-semibold cursor-pointer"
+          title="Go to Dealership Command Center"
         >
-          <Home size={16} />
-          <span className="hidden sm:inline">Dashboard</span>
+          <Home size={15} />
+          <span className="hidden sm:inline font-['Outfit']">Command Center</span>
         </button>
 
         {/* Engine Home Button - Show when not on overview */}
         {!isOnOverview && (
           <button
             onClick={() => navigate(enginePath)}
-            className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all text-sm font-medium"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 rounded-xl transition-all text-xs font-semibold cursor-pointer"
             title={`Go to ${engineName} Overview`}
           >
             <span className="hidden sm:inline">{engineName}</span>
@@ -65,44 +65,42 @@ const PageNavigation: React.FC<PageNavigationProps> = ({
         {previousTab && (
           <button
             onClick={() => navigate(previousTab.path)}
-            className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all text-sm font-medium"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 rounded-xl transition-all text-xs font-medium cursor-pointer"
             title={`Previous: ${previousTab.label}`}
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={14} />
             <span className="hidden md:inline">{previousTab.label}</span>
-            <span className="md:hidden">Previous</span>
           </button>
         )}
       </div>
 
       {/* Current Page Indicator */}
-      <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg">
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-        <span className="text-sm font-semibold text-slate-700">
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-xl">
+        <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+        <span className="text-xs font-bold text-slate-800 dark:text-white font-['Outfit']">
           {currentTab ? currentTab.label : engineName}
         </span>
-        <span className="text-xs text-slate-500 hidden sm:inline">
-          ({currentTabIndex + 1} of {tabs.length})
+        <span className="text-[10px] text-slate-400 font-mono hidden sm:inline">
+          ({currentTabIndex + 1}/{tabs.length})
         </span>
       </div>
 
       {/* Right Navigation */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         {/* Next Page Button */}
         {nextTab && (
           <button
             onClick={() => navigate(nextTab.path)}
-            className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all text-sm font-medium"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10 rounded-xl transition-all text-xs font-medium cursor-pointer"
             title={`Next: ${nextTab.label}`}
           >
             <span className="hidden md:inline">{nextTab.label}</span>
-            <span className="md:hidden">Next</span>
-            <ChevronRight size={16} />
+            <ChevronRight size={14} />
           </button>
         )}
 
         {/* Page Counter - Mobile */}
-        <div className="sm:hidden flex items-center gap-1 text-xs text-slate-500">
+        <div className="sm:hidden flex items-center gap-1 text-[10px] font-mono text-slate-500">
           <span>{currentTabIndex + 1}</span>
           <span>/</span>
           <span>{tabs.length}</span>

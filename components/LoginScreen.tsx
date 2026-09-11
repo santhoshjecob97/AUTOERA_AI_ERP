@@ -36,7 +36,7 @@ const LoginScreen: React.FC = () => {
     }
   };
 
-  const handleQuickFill = (role: 'gm' | 'sa' | 'tech' | 'sales' | 'fin' | 'ins') => {
+  const handleQuickFill = async (role: 'gm' | 'sa' | 'tech' | 'sales' | 'fin' | 'ins') => {
     const roleUsernames: Record<string, string> = {
       gm: 'gm_apex',
       sa: 'sa_apex',
@@ -51,6 +51,16 @@ const LoginScreen: React.FC = () => {
       setIdentifier(targetUser);
       setPassword('AutoEra2026!');
       setErrorMessage(null);
+      setIsLoading(true);
+      try {
+        const authUser = await login(targetUser, 'AutoEra2026!');
+        const targetDashboard = getDashboardForUser(authUser);
+        navigate(targetDashboard);
+      } catch (error: any) {
+        setErrorMessage(error?.message || 'Authentication error.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

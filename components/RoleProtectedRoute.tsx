@@ -4,7 +4,7 @@ import { ViewState } from '../types';
 import AccessDenied from './AccessDenied';
 
 interface RoleProtectedRouteProps {
-  permission: ViewState;
+  permission: ViewState | ViewState[];
   children: React.ReactNode;
 }
 
@@ -18,23 +18,30 @@ export const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
     return null;
   }
 
-  // Super Admin / General Manager / Enterprise Admin have universal access
+  // Corporate Leadership / Super Admin / General Manager have universal operational access
   if (
     user.role === 'Super Admin' ||
     user.role === 'General Manager' ||
+    user.role === 'Branch Manager' ||
     user.role === 'Enterprise Admin' ||
     user.role === 'Dealer Principal' ||
-    (user.role === 'OEM User' && permission === 'oem') ||
-    permission === 'developer'
+    user.role === 'CEO' ||
+    user.role === 'COO' ||
+    user.role === 'CTO' ||
+    user.role === 'Admin' ||
+    (user.role === 'OEM User' && (permission === 'oem' || (Array.isArray(permission) && permission.includes('oem')))) ||
+    permission === 'developer' ||
+    (Array.isArray(permission) && permission.includes('developer'))
   ) {
     return <>{children}</>;
   }
 
   // Check specific permission in user context
-  const hasPermission = user.permissions?.includes(permission);
+  const perms = Array.isArray(permission) ? permission : [permission];
+  const hasPermission = perms.some(p => user.permissions?.includes(p));
 
   if (!hasPermission) {
-    return <AccessDenied requiredPermission={permission} />;
+    return <AccessDenied requiredPermission={perms[0]} />;
   }
 
   return <>{children}</>;

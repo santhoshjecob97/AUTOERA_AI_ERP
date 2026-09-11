@@ -192,13 +192,13 @@ const FinanceEngine: React.FC = () => {
 
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <DollarSign className="text-emerald-600" /> Finance AI Engine
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 font-['Outfit'] tracking-tight">
+            <DollarSign className="text-emerald-500" size={28} /> Finance AI Engine
           </h1>
-          <p className="text-slate-500">Credit Scoring, Loan Approvals & Fraud Detection.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Credit Scoring, Loan Approvals &amp; Fraud Detection.</p>
         </div>
         
-        <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-full xl:w-auto overflow-x-auto no-scrollbar">
+        <div className="flex bg-slate-100/90 dark:bg-[#0c121e] p-1 rounded-2xl border border-slate-200 dark:border-slate-800 w-full xl:w-auto overflow-x-auto no-scrollbar shadow-xs">
           {[
             { id: 'overview', label: 'Overview', icon: DollarSign, route: '/finance' },
             { id: 'credit-scoring', label: 'Credit Scoring', icon: CreditCard, route: '/finance/credit-scoring' },
@@ -213,13 +213,13 @@ const FinanceEngine: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => navigate(tab.route)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeView === tab.id 
-                  ? 'bg-purple-600 text-white shadow-md' 
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20 font-bold' 
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-800/60'
               }`}
             >
-              <tab.icon size={16} /> {tab.label}
+              <tab.icon size={15} /> {tab.label}
             </button>
           ))}
         </div>
@@ -227,21 +227,21 @@ const FinanceEngine: React.FC = () => {
 
       {/* Action Buttons - Only show on overview */}
       {activeView === 'overview' && (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2.5">
           <button 
             onClick={() => setIsImportOpen(true)}
-            className="bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors flex items-center gap-2"
+            className="bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold hover:border-orange-500/50 transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
           >
-            <Download size={16} /> Import
+            <Download size={14} /> Import
           </button>
-          <button className="bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors flex items-center gap-2">
-            <FileText size={16} /> Reports
+          <button className="bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold hover:border-orange-500/50 transition-all cursor-pointer shadow-xs flex items-center gap-1.5">
+            <FileText size={14} /> Reports
           </button>
           <button 
             onClick={() => setIsLoanModalOpen(true)}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 shadow-sm shadow-emerald-200"
+            className="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md shadow-emerald-600/20 cursor-pointer"
           >
-            <Plus size={16} /> New Application
+            <Plus size={15} /> New Application
           </button>
         </div>
       )}

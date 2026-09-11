@@ -3,30 +3,102 @@ import React from 'react';
 export type ViewState = 'dashboard' | 'sales' | 'service' | 'finance' | 'insurance' | 'workforce' | 'fleet' | 'ev' | 'oem' | 'developer' | 'plans' | 'service-ai' | 'sales-ai' | 'finance-ai' | 'insurance-ai' | 'fleet-ai' | 'workforce-ai' | 'ev-ai' | 'voice-ai' | 'ai-os' | 'database-arch' | 'backend-arch' | 'tech-stack' | 'security' | 'mobile-app' | 'customer-360' | 'vehicle-360' | 'desking' | 'workshop-command' | 'general-ledger' | 'used-cars' | 'daily-checklists' | 'sales-targets' | 'complaints';
 
 export type UserRole = 
-  // L0 — Platform
-  | 'Super Admin' 
-  // L1 — Enterprise
-  | 'Enterprise Admin' 
-  // L2 — Dealer
-  | 'Dealer Principal' 
-  // L3 — General / OEM
-  | 'General Manager' 
+  // Corporate Roles
+  | 'Dealer Principal'
+  | 'CEO'
+  | 'COO'
+  | 'CFO'
+  | 'CTO'
+  | 'Group HR Head'
+  | 'Group Sales Head'
+  | 'Group Service Head'
+  | 'Super Admin'
+  | 'Enterprise Admin'
   | 'OEM User'
-  // L4 — Department Managers
-  | 'Sales Manager' 
-  | 'Service Manager' 
-  | 'Fleet Manager'
+  // Branch Management Roles
+  | 'Branch Manager'
+  | 'General Manager'
+  | 'Sales Manager'
+  | 'Service Manager'
+  | 'Workshop Manager'
   | 'Parts Manager'
-  // L5 — Executives / Advisors
-  | 'Sales Executive' 
+  | 'Finance Manager'
+  | 'Insurance Manager'
+  | 'Used Car Manager'
+  | 'CRM Manager'
+  | 'HR Manager'
+  | 'Fleet Manager'
+  // Operational Roles
+  | 'Sales Executive'
+  | 'Telecaller'
   | 'CRM Executive'
-  | 'Service Advisor' 
+  | 'Service Advisor'
+  | 'Technician'
+  | 'Warranty Executive'
+  | 'Parts Executive'
+  | 'Storekeeper'
   | 'Insurance Executive'
-  | 'Finance Officer' 
-  // L6 — Specialists
-  | 'Technician' 
-  // L7 — External
+  | 'Finance Executive'
+  | 'Finance Officer'
+  | 'Used Car Executive'
+  | 'EV Technician'
+  | 'Driver'
+  | 'Admin'
   | 'Vehicle Owner';
+
+// ── 7-Tier Organizational Hierarchy Types ──
+export interface OrganizationHierarchyNode {
+  id: string;
+  name: string;
+  code?: string;
+  level: 'DEALER_GROUP' | 'REGION' | 'CITY' | 'BRANCH' | 'DEPARTMENT' | 'TEAM' | 'EMPLOYEE';
+}
+
+export interface DealerGroupNode extends OrganizationHierarchyNode {
+  level: 'DEALER_GROUP';
+  oemBrands: string[];
+  regions: RegionNode[];
+}
+
+export interface RegionNode extends OrganizationHierarchyNode {
+  level: 'REGION';
+  regionalHeadId?: string;
+  cities: CityNode[];
+}
+
+export interface CityNode extends OrganizationHierarchyNode {
+  level: 'CITY';
+  state: string;
+  branches: BranchNode[];
+}
+
+export interface BranchNode extends OrganizationHierarchyNode {
+  level: 'BRANCH';
+  branchManagerId?: string;
+  facilityType: '3S' | '2S' | '1S' | 'WORKSHOP_ONLY' | 'BODYSHOP';
+  departments: DepartmentNode[];
+}
+
+export interface DepartmentNode extends OrganizationHierarchyNode {
+  level: 'DEPARTMENT';
+  departmentType: 'SALES' | 'SERVICE' | 'PARTS' | 'FINANCE' | 'INSURANCE' | 'USED_CARS' | 'EV' | 'CRM' | 'HR' | 'HQ';
+  teams: TeamNode[];
+}
+
+export interface TeamNode extends OrganizationHierarchyNode {
+  level: 'TEAM';
+  teamLeadId?: string;
+  employees: EmployeeNode[];
+}
+
+export interface EmployeeNode extends OrganizationHierarchyNode {
+  level: 'EMPLOYEE';
+  role: UserRole;
+  email: string;
+  phone: string;
+  efficiencyScore?: number;
+  status: 'ACTIVE' | 'ON_LEAVE' | 'TRAINING';
+}
 
 export interface User {
   id: string;
@@ -38,10 +110,20 @@ export interface User {
   email: string;
   organizationId?: string;
   organizationName?: string;
+  groupId?: string;
+  groupName?: string;
+  regionId?: string;
+  regionName?: string;
+  cityId?: string;
+  cityName?: string;
   branchId?: string;
   branchName?: string;
+  departmentId?: string;
   department?: string;
+  teamId?: string;
+  teamName?: string;
 }
+
 
 export interface StatCardProps {
   title: string;

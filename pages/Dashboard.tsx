@@ -57,13 +57,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
             </span>
 
             {/* Multi-Branch Selector */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs">
               {['Indiranagar Main (BLR)', 'Anna Nagar (Chennai)', 'OMR Tech Hub', 'Porur Workshop'].map(br => (
                 <button
                   key={br}
                   onClick={() => setActiveBranch(br)}
-                  className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold transition-all ${
-                    activeBranch === br ? 'bg-white shadow-xs text-orange-600' : 'text-slate-500 hover:text-slate-800'
+                  className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                    activeBranch === br ? 'bg-white dark:bg-slate-800 shadow-xs text-orange-600 dark:text-orange-400' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                   }`}
                 >
                   {br}
@@ -72,25 +72,25 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
             </div>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-3 font-['Outfit'] tracking-tight">
-            <BrainCircuit className="text-orange-600" size={30} />
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3 font-['Outfit'] tracking-tight">
+            <BrainCircuit className="text-orange-500" size={30} />
             AutoEra AI ERP Operations Center
           </h1>
-          <p className="text-slate-500 mt-1 text-sm">
+          <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">
             Welcome back, {user?.name || 'Dealership Executive'} &bull; Real-time Multi-Branch AI Operations, Workshop &amp; Lead Telemetry
           </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Assigned Role</p>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100 border border-orange-200 text-orange-800 text-xs font-bold shadow-xs">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800/60 text-orange-800 dark:text-orange-300 text-xs font-bold shadow-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
               {user?.role || 'General Manager'}
             </span>
           </div>
           <div className="text-right hidden sm:block">
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">AutoEra AI-OS</p>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold">
               <Sparkles size={13} className="text-orange-500" />
               10 Agents Active
             </span>
@@ -396,46 +396,58 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
       </div>
 
       {/* Quick Access Tools */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-        <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <Zap size={20} className="text-yellow-600" />
+      <div className="bg-white dark:bg-[#0c121e] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <Zap size={20} className="text-amber-500" />
           Quick Access Tools
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 transition-all group">
-            <div className="p-3 bg-indigo-100 rounded-lg group-hover:bg-indigo-200 transition-colors">
-              <Server size={24} className="text-indigo-600" />
+          <button 
+            onClick={() => onNavigate('developer')}
+            className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition-all group cursor-pointer"
+          >
+            <div className="p-3 bg-indigo-100 dark:bg-indigo-950/60 rounded-lg group-hover:bg-indigo-200 dark:group-hover:bg-indigo-900/60 transition-colors">
+              <Server size={24} className="text-indigo-600 dark:text-indigo-400" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-slate-900">API Integration</p>
-              <p className="text-xs text-slate-500">Framework</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">API Integration</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Developer Portal</p>
             </div>
           </button>
-          <button className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all group">
-            <div className="p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-              <Smartphone size={24} className="text-blue-600" />
+          <button 
+            onClick={() => onNavigate('mobile-app')}
+            className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all group cursor-pointer"
+          >
+            <div className="p-3 bg-blue-100 dark:bg-blue-950/60 rounded-lg group-hover:bg-blue-200 dark:group-hover:bg-blue-900/60 transition-colors">
+              <Smartphone size={24} className="text-blue-600 dark:text-blue-400" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-slate-900">Mobile App</p>
-              <p className="text-xs text-slate-500">Status</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Mobile App</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Dealership Apps</p>
             </div>
           </button>
-          <button className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 hover:border-green-400 hover:bg-green-50 transition-all group">
-            <div className="p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
-              <HeadphonesIcon size={24} className="text-green-600" />
+          <button 
+            onClick={() => onNavigate('complaints')}
+            className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-800 hover:border-green-400 dark:hover:border-green-500 hover:bg-green-50/50 dark:hover:bg-green-950/20 transition-all group cursor-pointer"
+          >
+            <div className="p-3 bg-green-100 dark:bg-green-950/60 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-900/60 transition-colors">
+              <HeadphonesIcon size={24} className="text-green-600 dark:text-green-400" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-slate-900">Support</p>
-              <p className="text-xs text-slate-500">Customer Success</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Support Desk</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Customer Grievance</p>
             </div>
           </button>
-          <button className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 hover:border-purple-400 hover:bg-purple-50 transition-all group">
-            <div className="p-3 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
-              <Settings size={24} className="text-purple-600" />
+          <button 
+            onClick={() => onNavigate('daily-checklists')}
+            className="flex flex-col items-center gap-3 p-4 rounded-lg border-2 border-slate-200 dark:border-slate-800 hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-950/20 transition-all group cursor-pointer"
+          >
+            <div className="p-3 bg-purple-100 dark:bg-purple-950/60 rounded-lg group-hover:bg-purple-200 dark:group-hover:bg-purple-900/60 transition-colors">
+              <Settings size={24} className="text-purple-600 dark:text-purple-400" />
             </div>
             <div className="text-center">
-              <p className="text-sm font-bold text-slate-900">Settings</p>
-              <p className="text-xs text-slate-500">Configuration</p>
+              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Daily Operations</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Dealership SOPs</p>
             </div>
           </button>
         </div>
@@ -443,10 +455,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
 
       {/* Analytics and AI Model Status */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+        <div className="lg:col-span-2 bg-white dark:bg-[#0c121e] p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-slate-900">Platform Revenue Trend</h3>
-            <select className="text-sm border-none bg-slate-50 rounded-lg px-3 py-1 focus:ring-2 focus:ring-indigo-500 text-slate-600">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Platform Revenue Trend</h3>
+            <select className="text-sm border-none bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 rounded-lg px-3 py-1 focus:ring-2 focus:ring-orange-500">
               <option>This Week</option>
               <option>This Month</option>
             </select>
@@ -456,25 +468,25 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
               <AreaChart data={revenueData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.2}/>
+                    <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.3} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 12}} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  itemStyle={{ color: '#1e293b' }}
+                  contentStyle={{ backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #334155', color: '#f8fafc', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.3)' }}
+                  itemStyle={{ color: '#f97316' }}
                 />
-                <Area type="monotone" dataKey="value" stroke="#4f46e5" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" name="Revenue" />
+                <Area type="monotone" dataKey="value" stroke="#f97316" strokeWidth={2.5} fillOpacity={1} fill="url(#colorValue)" name="Revenue" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-          <h3 className="text-lg font-bold text-slate-900 mb-6">AI Model Status</h3>
+        <div className="bg-white dark:bg-[#0c121e] p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">AI Model Status</h3>
           <div className="flex items-center justify-center mb-6">
             <div className="relative w-48 h-48">
               <ResponsiveContainer width="100%" height="100%">
@@ -495,52 +507,52 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate, user }) => {
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <p className="text-3xl font-bold text-slate-900">{platformKPIs.totalModels}</p>
-                <p className="text-xs text-slate-500">Total Models</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-white">{platformKPIs.totalModels}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Total Models</p>
               </div>
             </div>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg border border-emerald-100 dark:border-emerald-900/40">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-sm font-medium text-slate-700">Active Engines</span>
+                <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Active Engines</span>
               </div>
-              <span className="text-sm font-bold text-slate-900">6</span>
+              <span className="text-sm font-bold text-slate-900 dark:text-white">6</span>
             </div>
-            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-100 dark:border-blue-900/40">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="text-sm font-medium text-slate-700">Optimal Models</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Optimal Models</span>
               </div>
-              <span className="text-sm font-bold text-slate-900">58</span>
+              <span className="text-sm font-bold text-slate-900 dark:text-white">58</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-        <h3 className="text-lg font-bold text-slate-900 mb-4">Recent AI Actions</h3>
-        <div className="space-y-4">
+      <div className="bg-white dark:bg-[#0c121e] p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Recent AI Autonomous Operations</h3>
+        <div className="space-y-3">
           {[
-            { engine: 'Sales AI', action: 'Lead Scored', detail: 'Rajesh Kumar marked as High Priority (98%)', time: '2m ago', color: 'bg-blue-100 text-blue-700', show: user?.permissions.includes('sales') },
-            { engine: 'Service AI', action: 'Predictive Maint', detail: 'Battery failure predicted for Vehicle MH-02-DN-4321', time: '15m ago', color: 'bg-orange-100 text-orange-700', show: user?.permissions.includes('service') },
-            { engine: 'Finance AI', action: 'Loan Approved', detail: 'Auto-approved loan for application #LN-9922', time: '32m ago', color: 'bg-green-100 text-green-700', show: user?.permissions.includes('finance') },
-            { engine: 'Fleet AI', action: 'Route Optimized', detail: 'Saved 14% energy on Logistics Route B', time: '1h ago', color: 'bg-purple-100 text-purple-700', show: user?.permissions.includes('fleet') },
+            { engine: 'Sales AI Copilot', action: 'Lead Scored & VIP Flagged', detail: 'Rajesh Kumar marked as High Priority (98%) - Auto-assigned to Priya Sharma', time: '2m ago', badge: 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800', show: user?.permissions.includes('sales') },
+            { engine: 'Service AI Engine', action: 'Predictive Diagnostic Alert', detail: 'Battery failure risk predicted for Vehicle MH-02-DN-4321 - Bay 3 notified', time: '15m ago', badge: 'bg-orange-100 text-orange-800 dark:bg-orange-950/60 dark:text-orange-300 border border-orange-200 dark:border-orange-800', show: user?.permissions.includes('service') },
+            { engine: 'Finance AI Copilot', action: 'Instant Approval Generated', detail: 'Auto-approved loan for application #LN-9922 (HDFC Bank API)', time: '32m ago', badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800', show: user?.permissions.includes('finance') },
+            { engine: 'Fleet AI Engine', action: 'Route Telemetry Optimized', detail: 'Saved 14% energy on Logistics Route B - Battery thermal balanced', time: '1h ago', badge: 'bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800', show: user?.permissions.includes('fleet') },
           ].filter(item => item.show).map((item, idx) => (
-            <div key={idx} className="flex items-start p-3 hover:bg-slate-50 rounded-lg transition-colors border-b border-slate-50 last:border-0">
-              <span className={`px-2 py-1 rounded text-xs font-semibold mr-3 ${item.color} whitespace-nowrap`}>
+            <div key={idx} className="flex items-start p-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-lg transition-colors border-b border-slate-100 dark:border-slate-800/60 last:border-0">
+              <span className={`px-2.5 py-1 rounded-md text-xs font-semibold mr-3 whitespace-nowrap ${item.badge}`}>
                 {item.engine}
               </span>
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900">{item.action}</p>
-                <p className="text-sm text-slate-500">{item.detail}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{item.action}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{item.detail}</p>
               </div>
-              <span className="text-xs text-slate-400 whitespace-nowrap">{item.time}</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">{item.time}</span>
             </div>
           ))}
           {user?.role === 'Technician' && (
-             <p className="text-center text-sm text-slate-400 italic">View Service Engine for technical details.</p>
+             <p className="text-center text-sm text-slate-400 italic py-2">Service Workshop Copilot active. Monitoring Bay & Diagnostic Telemetry.</p>
           )}
         </div>
       </div>

@@ -145,6 +145,22 @@ class TenantScopedViewSet(viewsets.ModelViewSet):
         if branch_id:
             save_kwargs['branch_id'] = branch_id
 
+        # Auto-inject audit and tenant context fields if present on model
+        try:
+            model_fields = {f.name for f in serializer.Meta.model._meta.get_fields()}
+            if 'user_id' in model_fields and hasattr(self.request, 'user') and self.request.user.is_authenticated:
+                save_kwargs['user_id'] = self.request.user.id
+            if 'source_system' in model_fields:
+                save_kwargs['source_system'] = self.request.headers.get('X-Source-System', 'AUTOERA_CLOUD')
+            if 'audit_metadata' in model_fields:
+                save_kwargs['audit_metadata'] = {
+                    'request_id': getattr(self.request, 'request_id', ''),
+                    'client_ip': getattr(self.request, 'META', {}).get('REMOTE_ADDR', ''),
+                    'user_agent': getattr(self.request, 'META', {}).get('HTTP_USER_AGENT', '')
+                }
+        except Exception as e:
+            logger.debug(f"Audit field injection skipped: {e}")
+
         serializer.save(**save_kwargs)
         logger.info(
             f"Record created in {self.queryset.model.__name__}",
@@ -205,13 +221,15 @@ class TenantScopedReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
         return qs.filter(organization_id=org_id)
 
 
-class RealtimeEventStreamView(APIView):
+from django.views import View
+
+
+class RealtimeEventStreamView(View):
     """
     Real-Time Server-Sent Events (SSE) Stream Endpoint (Section 03 & Section 07).
     Streams live automotive events from the AutomotiveEventBus and live workshop telemetry.
     GET /api/v1/events/stream/
     """
-    permission_classes = []
 
     def get(self, request):
         import time
@@ -221,7 +239,7 @@ class RealtimeEventStreamView(APIView):
         from django.utils import timezone
         from .automotive_event_bus import automotive_event_bus
 
-        org_id = request.query_params.get('organization_id') or 'all'
+        org_id = request.GET.get('organization_id') or 'all'
         event_queue = automotive_event_bus.register_sse_queue(org_id)
 
         def event_stream():

@@ -43,26 +43,27 @@ const ServiceLayout: React.FC = () => {
     ];
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 h-full flex flex-col p-6">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 h-full flex flex-col p-4 md:p-6">
             <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-4 shrink-0">
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                        <Wrench className="text-orange-600" /> Service AI Engine
+                    <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 font-['Outfit'] tracking-tight">
+                        <Wrench className="text-orange-500" size={28} /> Service AI Engine
                     </h1>
-                    <p className="text-slate-500">Unified Operations: Predictive Maintenance, Scheduling & Quality.</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Unified Operations: Predictive Maintenance, Scheduling &amp; Bay Management.</p>
                 </div>
 
-                <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-full xl:w-auto overflow-x-auto no-scrollbar">
+                <div className="flex bg-slate-100/90 dark:bg-[#0c121e] p-1 rounded-2xl border border-slate-200 dark:border-slate-800 w-full xl:w-auto overflow-x-auto no-scrollbar shadow-xs">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => navigate(tab.path)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${activeTab === tab.id
-                                    ? 'bg-orange-600 text-white shadow-md'
-                                    : 'text-slate-600 hover:bg-slate-50'
-                                }`}
+                            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                                activeTab === tab.id
+                                    ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20 font-bold'
+                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-800/60'
+                            }`}
                         >
-                            <tab.icon size={16} /> {tab.label}
+                            <tab.icon size={15} /> {tab.label}
                         </button>
                     ))}
                 </div>

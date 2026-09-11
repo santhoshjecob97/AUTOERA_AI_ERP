@@ -179,6 +179,15 @@ router.register(r'used-cars/appraisals', UsedCarAppraisalViewSet, basename='used
 router.register(r'used-cars/valuations', UsedCarValuationViewSet, basename='used-car-valuation')
 router.register(r'used-cars/inventory', UsedCarInventoryViewSet, basename='used-car-inventory')
 
+# Dual URL aliases for seamless frontend compatibility
+router.register(r'vehicles/vehicles', VehicleViewSet, basename='vehicles-vehicles-alias')
+router.register(r'sales/leads', LeadViewSet, basename='sales-leads-alias')
+router.register(r'service/job-cards', JobCardViewSet, basename='service-jobcards-alias')
+router.register(r'inventory/parts', PartViewSet, basename='inventory-parts-alias')
+router.register(r'finance/invoices', InvoiceViewSet, basename='finance-invoices-alias')
+router.register(r'organization/branches', BranchViewSet, basename='organization-branches-alias')
+router.register(r'organization/organizations', OrganizationViewSet, basename='organization-organizations-alias')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -191,6 +200,8 @@ urlpatterns = [
     path('api/v1/events/stream/', RealtimeEventStreamView.as_view(), name='event_stream'),
     path('api/v1/actions/top/', TodaysTopActionsView.as_view(), name='todays_top_actions'),
     path('api/v1/actions/sla-summary/', SLASummaryView.as_view(), name='sla_summary'),
+    path('api/v1/ai/top-actions/', TodaysTopActionsView.as_view(), name='ai_top_actions_alias'),
+    path('api/v1/ai/sla-summary/', SLASummaryView.as_view(), name='ai_sla_summary_alias'),
 
     # OpenAPI Schema & Interactive Docs
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

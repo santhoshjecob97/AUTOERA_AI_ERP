@@ -88,7 +88,7 @@ import InsuranceAnalyticsPage from './pages/insurance/AnalyticsPage';
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isLoading, logout, retryInit } = useAuth();
+  const { user, isLoading, logout, retryInit, switchRole } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
   const { preset, setPreset, availablePresets } = useWhiteLabel();
   const { locale, setLocale, availableLocales } = useLocale();
@@ -120,6 +120,13 @@ const AppContent: React.FC = () => {
     if (path.startsWith('/sales/desking')) return 'desking';
     if (path.startsWith('/service/workshop-command')) return 'workshop-command';
     if (path.startsWith('/finance/ledger')) return 'general-ledger';
+    if (path.startsWith('/sales-ai')) return 'sales-ai';
+    if (path.startsWith('/finance-ai')) return 'finance-ai';
+    if (path.startsWith('/insurance-ai')) return 'insurance-ai';
+    if (path.startsWith('/fleet-ai')) return 'fleet-ai';
+    if (path.startsWith('/workforce-ai')) return 'workforce-ai';
+    if (path.startsWith('/ev-ai')) return 'ev-ai';
+    if (path.startsWith('/voice-ai')) return 'voice-ai';
     if (path.startsWith('/sales')) return 'sales';
     if (path.startsWith('/service')) return 'service';
     if (path.startsWith('/finance')) return 'finance';
@@ -203,6 +210,7 @@ const AppContent: React.FC = () => {
               dashboard: '/',
               'customer-360': '/customer-360',
               'vehicle-360': '/vehicle-360',
+              complaints: '/complaints',
               desking: '/sales/desking',
               'workshop-command': '/service/workshop-command',
               'general-ledger': '/finance/ledger',
@@ -252,13 +260,59 @@ const AppContent: React.FC = () => {
                 <Menu size={22} />
               </button>
 
-              <div className="hidden md:flex flex-col">
-                <span className="text-[11px] text-orange-600 dark:text-orange-400 font-bold uppercase tracking-wider">
-                  {user.role} &bull; {user.organizationName || 'Apex Mobility Group'}
-                </span>
-                <span className="text-sm font-bold text-slate-900 dark:text-white capitalize font-['Outfit']">
-                  {currentView === 'dashboard' ? 'Overview & Live Operations' : `${currentView} Management`}
-                </span>
+              <div className="hidden md:flex items-center gap-3">
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-orange-600 dark:text-orange-400 font-extrabold uppercase tracking-wider font-mono">
+                      {user.organizationName || 'Apex Mobility Group'}
+                    </span>
+                    <span className="text-slate-400">&bull;</span>
+                    {/* Live Role Switcher Dropdown */}
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 bg-orange-500/10 border border-orange-500/30 rounded-md">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <select
+                        value={user.role}
+                        onChange={(e) => switchRole(e.target.value as any)}
+                        className="bg-transparent text-[11px] font-bold text-orange-600 dark:text-orange-400 outline-none cursor-pointer"
+                        title="Switch Active Dealership Role"
+                      >
+                        <optgroup label="── Corporate ──" className="bg-slate-900 text-amber-400 font-bold">
+                          <option value="Dealer Principal" className="bg-slate-900 text-white">Dealer Principal (Group Board)</option>
+                          <option value="CEO" className="bg-slate-900 text-white">CEO (Chief Executive Officer)</option>
+                          <option value="CFO" className="bg-slate-900 text-white">CFO (Financial Governance)</option>
+                          <option value="Group Sales Head" className="bg-slate-900 text-white">Group Sales Head</option>
+                          <option value="Group Service Head" className="bg-slate-900 text-white">Group Service Head</option>
+                          <option value="Super Admin" className="bg-slate-900 text-white">Super Admin</option>
+                        </optgroup>
+                        <optgroup label="── Branch Leadership ──" className="bg-slate-900 text-blue-400 font-bold">
+                          <option value="General Manager" className="bg-slate-900 text-white">General Manager (All Access)</option>
+                          <option value="Branch Manager" className="bg-slate-900 text-white">Branch Manager</option>
+                          <option value="Sales Manager" className="bg-slate-900 text-white">Sales Manager</option>
+                          <option value="Service Manager" className="bg-slate-900 text-white">Service Manager</option>
+                          <option value="Workshop Manager" className="bg-slate-900 text-white">Workshop Manager</option>
+                          <option value="Parts Manager" className="bg-slate-900 text-white">Parts Manager</option>
+                          <option value="Finance Manager" className="bg-slate-900 text-white">Finance Manager</option>
+                          <option value="Insurance Manager" className="bg-slate-900 text-white">Insurance Manager</option>
+                          <option value="HR Manager" className="bg-slate-900 text-white">HR Manager</option>
+                        </optgroup>
+                        <optgroup label="── Operational ──" className="bg-slate-900 text-emerald-400 font-bold">
+                          <option value="Sales Executive" className="bg-slate-900 text-white">Sales Executive</option>
+                          <option value="Telecaller" className="bg-slate-900 text-white">Telecaller / BDC</option>
+                          <option value="CRM Executive" className="bg-slate-900 text-white">CRM Executive</option>
+                          <option value="Service Advisor" className="bg-slate-900 text-white">Service Advisor</option>
+                          <option value="Technician" className="bg-slate-900 text-white">Technician</option>
+                          <option value="EV Technician" className="bg-slate-900 text-white">EV Technician</option>
+                          <option value="Warranty Executive" className="bg-slate-900 text-white">Warranty Executive</option>
+                          <option value="Finance Officer" className="bg-slate-900 text-white">Finance Officer</option>
+                          <option value="Insurance Executive" className="bg-slate-900 text-white">Insurance Executive</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white capitalize font-['Outfit']">
+                    {currentView === 'dashboard' ? 'Overview & Live Operations' : `${currentView.replace(/-/g, ' ')} Management`}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -411,16 +465,16 @@ const AppContent: React.FC = () => {
               />
 
               {/* Customer 360 & Vehicle 360 Unified Dossiers & Complaints */}
-              <Route path="/customer-360" element={<RoleProtectedRoute permission="sales"><Customer360Page /></RoleProtectedRoute>} />
-              <Route path="/customer-360/:id" element={<RoleProtectedRoute permission="sales"><Customer360Page /></RoleProtectedRoute>} />
-              <Route path="/complaints" element={<RoleProtectedRoute permission="service"><CustomerComplaintsPage /></RoleProtectedRoute>} />
-              <Route path="/vehicle-360" element={<RoleProtectedRoute permission="service"><Vehicle360Page /></RoleProtectedRoute>} />
-              <Route path="/vehicle-360/:vin" element={<RoleProtectedRoute permission="service"><Vehicle360Page /></RoleProtectedRoute>} />
+              <Route path="/customer-360" element={<RoleProtectedRoute permission={['customer-360', 'sales', 'service']}><Customer360Page /></RoleProtectedRoute>} />
+              <Route path="/customer-360/:id" element={<RoleProtectedRoute permission={['customer-360', 'sales', 'service']}><Customer360Page /></RoleProtectedRoute>} />
+              <Route path="/complaints" element={<RoleProtectedRoute permission={['complaints', 'service', 'customer-360']}><CustomerComplaintsPage /></RoleProtectedRoute>} />
+              <Route path="/vehicle-360" element={<RoleProtectedRoute permission={['vehicle-360', 'service', 'fleet', 'ev']}><Vehicle360Page /></RoleProtectedRoute>} />
+              <Route path="/vehicle-360/:vin" element={<RoleProtectedRoute permission={['vehicle-360', 'service', 'fleet', 'ev']}><Vehicle360Page /></RoleProtectedRoute>} />
 
               {/* Sales Routes */}
               <Route path="/sales" element={<RoleProtectedRoute permission="sales"><SalesEngine /></RoleProtectedRoute>} />
-              <Route path="/sales/desking" element={<RoleProtectedRoute permission="sales"><DeskingPage /></RoleProtectedRoute>} />
-              <Route path="/sales/targets-incentives" element={<RoleProtectedRoute permission="sales"><SalesTargetsIncentivesPage /></RoleProtectedRoute>} />
+              <Route path="/sales/desking" element={<RoleProtectedRoute permission={['sales', 'desking']}><DeskingPage /></RoleProtectedRoute>} />
+              <Route path="/sales/targets-incentives" element={<RoleProtectedRoute permission={['sales', 'sales-targets']}><SalesTargetsIncentivesPage /></RoleProtectedRoute>} />
               <Route path="/sales/leads" element={<RoleProtectedRoute permission="sales"><LeadsPage /></RoleProtectedRoute>} />
               <Route path="/sales/showroom" element={<RoleProtectedRoute permission="sales"><VirtualShowroomPage /></RoleProtectedRoute>} />
               <Route path="/sales/pricing" element={<RoleProtectedRoute permission="sales"><PricingPage /></RoleProtectedRoute>} />
@@ -428,7 +482,7 @@ const AppContent: React.FC = () => {
               <Route path="/sales/analytics" element={<RoleProtectedRoute permission="sales"><SalesAnalyticsPage /></RoleProtectedRoute>} />
               
               {/* Service Engine Routes */}
-              <Route path="/service/workshop-command" element={<RoleProtectedRoute permission="service"><WorkshopCommandPage /></RoleProtectedRoute>} />
+              <Route path="/service/workshop-command" element={<RoleProtectedRoute permission={['service', 'workshop-command']}><WorkshopCommandPage /></RoleProtectedRoute>} />
               <Route path="/service" element={<RoleProtectedRoute permission="service"><ServiceLayout /></RoleProtectedRoute>}>
                 <Route index element={<ServiceOverviewPage />} />
                 <Route path="bays" element={<ServiceBaysPage />} />
@@ -445,7 +499,7 @@ const AppContent: React.FC = () => {
 
               {/* Finance Routes */}
               <Route path="/finance" element={<RoleProtectedRoute permission="finance"><FinanceEngine /></RoleProtectedRoute>} />
-              <Route path="/finance/ledger" element={<RoleProtectedRoute permission="finance"><GeneralLedgerPage /></RoleProtectedRoute>} />
+              <Route path="/finance/ledger" element={<RoleProtectedRoute permission={['finance', 'general-ledger']}><GeneralLedgerPage /></RoleProtectedRoute>} />
               <Route path="/finance/credit-scoring" element={<RoleProtectedRoute permission="finance"><CreditScoringPage /></RoleProtectedRoute>} />
               <Route path="/finance/loan-approval" element={<RoleProtectedRoute permission="finance"><LoanApprovalPage /></RoleProtectedRoute>} />
               <Route path="/finance/risk-assessment" element={<RoleProtectedRoute permission="finance"><RiskAssessmentPage /></RoleProtectedRoute>} />
@@ -467,7 +521,7 @@ const AppContent: React.FC = () => {
 
               {/* Operations & AI Routes */}
               <Route path="/workforce" element={<RoleProtectedRoute permission="workforce"><WorkforceEngine /></RoleProtectedRoute>} />
-              <Route path="/used-cars" element={<RoleProtectedRoute permission="sales"><UsedCarEngine /></RoleProtectedRoute>} />
+              <Route path="/used-cars" element={<RoleProtectedRoute permission={['sales', 'used-cars']}><UsedCarEngine /></RoleProtectedRoute>} />
               <Route path="/daily-checklists" element={<DailyOperationsChecklistPage />} />
               <Route path="/operations/daily-checklist" element={<DailyOperationsChecklistPage />} />
               <Route path="/fleet" element={<RoleProtectedRoute permission="fleet"><FleetEngine /></RoleProtectedRoute>} />
@@ -481,7 +535,14 @@ const AppContent: React.FC = () => {
               <Route path="/tech-stack" element={<TechnologyStackPage />} />
               <Route path="/security" element={<SecurityCompliancePage />} />
               <Route path="/mobile-app" element={<MobileAppDesignPage />} />
-              <Route path="/service-ai" element={<RoleProtectedRoute permission="service-ai"><ServiceAIDashboard /></RoleProtectedRoute>} />
+              <Route path="/service-ai" element={<RoleProtectedRoute permission="service-ai"><ServiceAIDashboard activeCopilotRole="SERVICE" /></RoleProtectedRoute>} />
+              <Route path="/sales-ai" element={<RoleProtectedRoute permission="sales-ai"><ServiceAIDashboard activeCopilotRole="SALES" /></RoleProtectedRoute>} />
+              <Route path="/finance-ai" element={<RoleProtectedRoute permission="finance-ai"><ServiceAIDashboard activeCopilotRole="FINANCE" /></RoleProtectedRoute>} />
+              <Route path="/insurance-ai" element={<RoleProtectedRoute permission="insurance-ai"><ServiceAIDashboard activeCopilotRole="INSURANCE" /></RoleProtectedRoute>} />
+              <Route path="/fleet-ai" element={<RoleProtectedRoute permission="fleet-ai"><ServiceAIDashboard activeCopilotRole="FLEET_EV" /></RoleProtectedRoute>} />
+              <Route path="/workforce-ai" element={<RoleProtectedRoute permission="workforce-ai"><ServiceAIDashboard activeCopilotRole="WORKFORCE" /></RoleProtectedRoute>} />
+              <Route path="/ev-ai" element={<RoleProtectedRoute permission="ev-ai"><ServiceAIDashboard activeCopilotRole="FLEET_EV" /></RoleProtectedRoute>} />
+              <Route path="/voice-ai" element={<ServiceAIDashboard activeCopilotRole="ALL" />} />
             </Routes>
           </main>
         </div>

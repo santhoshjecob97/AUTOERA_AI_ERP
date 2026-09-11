@@ -27,31 +27,35 @@ interface ActionProposal {
   timestamp: string;
 }
 
+interface ServiceAIDashboardProps {
+  activeCopilotRole?: string;
+}
+
 const specialistAgents: AIAgent[] = [
   {
     id: 'agent-01',
-    name: 'Supervisor Agent',
-    role: 'Master Intent Router & Multi-Turn Context Manager',
+    name: 'Master Supervisor Agent',
+    role: 'Central Intent Router, Context Orchestrator & Event Bus Dispatcher',
     model: 'GPT-4o (Reasoning)',
     status: 'ONLINE',
     tasksProcessed24h: 3410,
     confidenceAvg: 98.4,
-    domainTools: ['All Agent APIs', 'Customer Knowledge Graph', 'Session Memory']
+    domainTools: ['All Agent APIs', 'Customer Knowledge Graph', 'Session Memory', 'Event Bus']
   },
   {
     id: 'agent-02',
-    name: 'Sales Agent',
-    role: 'Lead Qualification, Objection Handling & 30-min SLA',
+    name: 'Sales Executive Copilot',
+    role: 'Real-time Lead Scoring, Margin Guard Floor & WhatsApp Booking Automation',
     model: 'GPT-4o + Sarvam Voice',
     status: 'ACTIVE_PROCESSING',
     tasksProcessed24h: 420,
     confidenceAvg: 94.2,
-    domainTools: ['CRM API', 'Inventory Catalog', 'WhatsApp Business', 'Calendar API']
+    domainTools: ['CRM API', 'Inventory Catalog', 'WhatsApp Business', 'Desking Calculator']
   },
   {
     id: 'agent-03',
-    name: 'Service Advisor Agent',
-    role: '24/7 Digital Booking, 90-Sec Job Cards & Multilingual WhatsApp',
+    name: 'Service Advisor Copilot',
+    role: '24/7 Digital Intake, 90-Sec Automated Job Cards & Bay Dispatcher',
     model: 'Claude 3.5 Sonnet',
     status: 'ONLINE',
     tasksProcessed24h: 680,
@@ -60,8 +64,8 @@ const specialistAgents: AIAgent[] = [
   },
   {
     id: 'agent-04',
-    name: 'Technician Assistant Agent',
-    role: 'Diagnostic DTC Root-Cause Analysis & OEM Manual RAG',
+    name: 'Technician Diagnostic Copilot',
+    role: 'Diagnostic DTC Root-Cause Analysis, Wiring Schematics & OEM Technical Bulletins',
     model: 'Claude 3.5 Sonnet',
     status: 'ONLINE',
     tasksProcessed24h: 310,
@@ -70,28 +74,18 @@ const specialistAgents: AIAgent[] = [
   },
   {
     id: 'agent-05',
-    name: 'Insurance Renewal Agent',
-    role: '90/60/30-Day Renewal Automation & Multi-Insurer Quotes',
-    model: 'Gemini 1.5 Flash',
+    name: 'Insurance Renewal & Claims Copilot',
+    role: '90/60/30-Day Renewal Automation, Crash Computer Vision & Payout Estimator',
+    model: 'Gemini 1.5 Flash + Vision',
     status: 'ONLINE',
     tasksProcessed24h: 890,
     confidenceAvg: 95.1,
-    domainTools: ['Insurer APIs', 'DigiLocker RC', 'NCB Calculator', 'Payment Gateway']
+    domainTools: ['Insurer APIs', 'DigiLocker RC', 'NCB Calculator', 'Surveyor API']
   },
   {
     id: 'agent-06',
-    name: 'Claim Assessment Agent',
-    role: '6-Angle Computer Vision Crash Damage & Repair Estimator',
-    model: 'GPT-4o Vision',
-    status: 'ACTIVE_PROCESSING',
-    tasksProcessed24h: 114,
-    confidenceAvg: 91.8,
-    domainTools: ['Vision ML Pipeline', 'IRDAI Depreciation DB', 'Surveyor API']
-  },
-  {
-    id: 'agent-07',
-    name: 'Finance Advisor Agent',
-    role: '20-Sec Eligibility Pre-Screening & DigiLocker Paperless KYC',
+    name: 'Finance & Credit Advisor Copilot',
+    role: '20-Sec Eligibility Pre-Screening, Multi-Bank EMI Optimizer & DigiLocker KYC',
     model: 'Claude 3.5 Sonnet',
     status: 'ONLINE',
     tasksProcessed24h: 245,
@@ -99,19 +93,29 @@ const specialistAgents: AIAgent[] = [
     domainTools: ['10+ Bank APIs', 'DigiLocker Gateway', 'CIBIL Bureau', 'NACH Mandate']
   },
   {
-    id: 'agent-08',
-    name: 'Fleet Optimization Agent',
-    role: 'OBD-II Real-time Anomaly Detection & Fuel Theft Alerts',
-    model: 'Custom LSTM + GPT-4o',
+    id: 'agent-07',
+    name: 'Parts Demand & Reorder Copilot',
+    role: 'Workshop Parts Demand Forecast, Min/Max Stock Level Guard & Stockout Mitigation',
+    model: 'GPT-4o',
     status: 'ONLINE',
-    tasksProcessed24h: 28800,
-    confidenceAvg: 93.6,
-    domainTools: ['TimescaleDB Hypertable', 'AWS IoT Core', 'GPS Geo-fence Engine']
+    tasksProcessed24h: 530,
+    confidenceAvg: 96.4,
+    domainTools: ['DMS Inventory API', 'OEM Replenishment Hub', 'Lead Time Calculator']
+  },
+  {
+    id: 'agent-08',
+    name: 'Used-Car Valuation & Aging Copilot',
+    role: 'Refurbishment Overrun Detection, Algorithmic Pricing & Aging Stock Action Queue',
+    model: 'Gemini 1.5 Flash',
+    status: 'ONLINE',
+    tasksProcessed24h: 180,
+    confidenceAvg: 93.8,
+    domainTools: ['Market Comps API', 'Appraisal Engine', 'Holding Cost Calculator']
   },
   {
     id: 'agent-09',
-    name: 'EV Intelligence Agent',
-    role: 'Daily Battery SOH Scoring, Cell Delta & Thermal Runaway Early Warning',
+    name: 'EV Battery & Diagnostics Copilot',
+    role: 'Daily Battery SOH Scoring, Cell Delta Balancing & Thermal Early Warning',
     model: 'Custom BMS Model + GPT-4o',
     status: 'ONLINE',
     tasksProcessed24h: 240,
@@ -120,11 +124,31 @@ const specialistAgents: AIAgent[] = [
   },
   {
     id: 'agent-10',
-    name: 'Executive Analytics Agent',
-    role: 'Dealer Principal 8:00 AM WhatsApp Brief & Anomaly Synthesis',
+    name: 'Fleet Telemetry & IoT Copilot',
+    role: 'OBD-II Real-time Anomaly Detection, Fuel Theft Alerts & CAN-Bus Telemetry',
+    model: 'Custom LSTM + GPT-4o',
+    status: 'ONLINE',
+    tasksProcessed24h: 28800,
+    confidenceAvg: 93.6,
+    domainTools: ['TimescaleDB Hypertable', 'AWS IoT Core', 'GPS Geo-fence Engine']
+  },
+  {
+    id: 'agent-11',
+    name: 'Workforce Productivity Copilot',
+    role: 'Technician Efficiency/Productivity/Utilization Tracking & Skill-Based Job Routing',
     model: 'GPT-4o',
     status: 'ONLINE',
-    tasksProcessed24h: 48,
+    tasksProcessed24h: 310,
+    confidenceAvg: 94.7,
+    domainTools: ['Biometric Attendance', 'Skill Matrix API', 'Bay Clocking Engine']
+  },
+  {
+    id: 'agent-12',
+    name: 'Executive Forecasting & MIS Copilot',
+    role: '8:00 AM Dealer Principal Brief, Revenue Run-Rate Forecasting & Anomaly Synthesis',
+    model: 'GPT-4o (Reasoning)',
+    status: 'ONLINE',
+    tasksProcessed24h: 72,
     confidenceAvg: 99.2,
     domainTools: ['Analytics Service', 'P&L Warehouse', 'WhatsApp Broadcast Engine']
   }
@@ -133,7 +157,7 @@ const specialistAgents: AIAgent[] = [
 const initialProposals: ActionProposal[] = [
   {
     id: 'PROP-101',
-    agentName: 'Sales Agent',
+    agentName: 'Sales Executive Copilot',
     targetEntity: 'Lead #LD-103 (Senthil Nathan)',
     actionTitle: 'Apply 2.8% Discount Exception on Creta SX(O)',
     reasoning: 'Customer has alternative quote from competing dealer with 2% discount. Margin Guard confirms net dealer gross remains healthy at 8.4%. Closing probability elevates to 89%.',
@@ -143,7 +167,7 @@ const initialProposals: ActionProposal[] = [
   },
   {
     id: 'PROP-102',
-    agentName: 'Service Advisor Agent',
+    agentName: 'Service Advisor Copilot',
     targetEntity: 'Inventory SKU #TP-BRK-401',
     actionTitle: 'Autonomous Purchase Order: 40x Front Ceramic Brake Pads',
     reasoning: 'Stock level is at 6 units (Min reorder level: 15). 7 job cards scheduled over the next 4 days require this SKU. Economic Order Quantity is 40 units from Brakes India.',
@@ -153,7 +177,7 @@ const initialProposals: ActionProposal[] = [
   },
   {
     id: 'PROP-103',
-    agentName: 'Insurance Renewal Agent',
+    agentName: 'Insurance Renewal & Claims Copilot',
     targetEntity: 'Policy #HDFC-ERGO-MOT-2026-9901',
     actionTitle: 'Dispatch 30-Day Expiry WhatsApp with 35% NCB Lock',
     reasoning: 'Policy expires in 28 days. Vehicle has zero claims this cycle. Auto-generated comparative quote shows HDFC Ergo provides optimal renewal at ₹14,200 with Zero-Dep.',
@@ -163,12 +187,19 @@ const initialProposals: ActionProposal[] = [
   }
 ];
 
-const ServiceAIDashboard: React.FC = () => {
+const ServiceAIDashboard: React.FC<ServiceAIDashboardProps> = ({ activeCopilotRole }) => {
   const [agents] = useState<AIAgent[]>(specialistAgents);
+  const [selectedFilter, setSelectedFilter] = useState<string>(activeCopilotRole || 'ALL');
   const [proposals, setProposals] = useState<ActionProposal[]>(initialProposals);
   const [ragQuery, setRagQuery] = useState('');
   const [ragResult, setRagResult] = useState<string | null>(null);
   const [isSearchingRag, setIsSearchingRag] = useState(false);
+
+  useEffect(() => {
+    if (activeCopilotRole) {
+      setSelectedFilter(activeCopilotRole);
+    }
+  }, [activeCopilotRole]);
 
   const handleAction = (proposalId: string, status: 'APPROVED' | 'REJECTED') => {
     setProposals(prev => prev.map(p => p.id === proposalId ? { ...p, status } : p));
@@ -291,15 +322,58 @@ const ServiceAIDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 10 Specialist Agents Grid */}
-      <div className="space-y-3">
-        <h3 className="text-base font-bold text-white font-['Outfit'] flex items-center gap-2">
-          <BrainCircuit size={18} className="text-cyan-400" />
-          The 10 Domain Specialist Agents
-        </h3>
+      {/* 12 Specialist Agents Grid with Category Filters */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="text-base font-bold text-white font-['Outfit'] flex items-center gap-2">
+              <BrainCircuit size={18} className="text-cyan-400" />
+              12 Specialized Dealership AI Copilots & Engines
+            </h3>
+            <p className="text-xs text-slate-400">Autonomous multi-agent architecture synchronized with Dealership Event Bus</p>
+          </div>
+
+          {/* Interactive Role Filters */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full no-scrollbar">
+            {[
+              { id: 'ALL', label: 'All Copilots (12)' },
+              { id: 'EXECUTIVE', label: 'Executive & MIS' },
+              { id: 'SALES', label: 'Sales & Used Cars' },
+              { id: 'SERVICE', label: 'Service & Parts' },
+              { id: 'FINANCE', label: 'Finance' },
+              { id: 'INSURANCE', label: 'Insurance' },
+              { id: 'FLEET_EV', label: 'EV & Fleet' },
+              { id: 'WORKFORCE', label: 'Workforce' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedFilter(tab.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  selectedFilter === tab.id || (tab.id === 'ALL' && selectedFilter === '')
+                    ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
+                    : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {agents.map(agent => (
+          {agents
+            .filter(agent => {
+              if (selectedFilter === 'ALL' || !selectedFilter) return true;
+              if (selectedFilter === 'EXECUTIVE') return agent.name.includes('Supervisor') || agent.name.includes('Executive');
+              if (selectedFilter === 'SALES' || selectedFilter === 'sales') return agent.name.includes('Sales') || agent.name.includes('Used-Car');
+              if (selectedFilter === 'SERVICE' || selectedFilter === 'service') return agent.name.includes('Service') || agent.name.includes('Technician') || agent.name.includes('Parts');
+              if (selectedFilter === 'FINANCE' || selectedFilter === 'finance') return agent.name.includes('Finance');
+              if (selectedFilter === 'INSURANCE' || selectedFilter === 'insurance') return agent.name.includes('Insurance');
+              if (selectedFilter === 'FLEET_EV' || selectedFilter === 'fleet' || selectedFilter === 'ev') return agent.name.includes('EV') || agent.name.includes('Fleet');
+              if (selectedFilter === 'WORKFORCE' || selectedFilter === 'workforce') return agent.name.includes('Workforce');
+              return true;
+            })
+            .map(agent => (
             <div 
               key={agent.id}
               className="bg-[#0D1117] border border-slate-800/90 rounded-xl p-5 shadow-lg flex flex-col justify-between hover:border-slate-700 transition-all"

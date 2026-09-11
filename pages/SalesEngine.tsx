@@ -197,13 +197,13 @@ const SalesEngine: React.FC = () => {
 
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            <Target className="text-blue-600" /> Sales AI Engine
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2.5 font-['Outfit'] tracking-tight">
+            <Target className="text-orange-500" size={28} /> Sales AI Engine
           </h1>
-          <p className="text-slate-500">Automated Lead Qualification, Scoring & Conversion Predictions.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Automated Lead Qualification, Scoring &amp; Conversion Predictions.</p>
         </div>
         
-        <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200 w-full xl:w-auto overflow-x-auto no-scrollbar">
+        <div className="flex bg-slate-100/90 dark:bg-[#0c121e] p-1 rounded-2xl border border-slate-200 dark:border-slate-800 w-full xl:w-auto overflow-x-auto no-scrollbar shadow-xs">
           {[
             { id: 'overview', label: 'Overview', icon: Target },
             { id: 'leads', label: 'Leads', icon: Users },
@@ -215,7 +215,6 @@ const SalesEngine: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => {
-                // Navigate to dedicated page
                 const routeMap: Record<string, string> = {
                   'overview': '/sales',
                   'leads': '/sales/leads',
@@ -226,35 +225,35 @@ const SalesEngine: React.FC = () => {
                 };
                 navigate(routeMap[tab.id]);
               }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
                 activeView === tab.id 
-                  ? 'bg-blue-600 text-white shadow-md' 
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20 font-bold' 
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-800/60'
               }`}
             >
-              <tab.icon size={16} /> {tab.label}
+              <tab.icon size={15} /> {tab.label}
             </button>
           ))}
         </div>
       </div>
 
       {/* Overview Tab Content - Only show on /sales route */}
-      <div className="flex flex-wrap gap-2 w-full xl:w-auto mb-4">
+      <div className="flex flex-wrap gap-2.5 w-full xl:w-auto mb-4">
             {/* OCR Trigger */}
             <button 
               onClick={() => setIsOCRModalOpen(true)}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold hover:border-orange-500/50 transition-all cursor-pointer shadow-xs"
             >
-              <Scan size={16} className="text-indigo-500"/>
+              <Scan size={15} className="text-orange-500"/>
               Scan Docs
             </button>
             
             {/* Virtual Showroom Trigger */}
             <button 
               onClick={() => setIsShowroomModalOpen(true)}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-[#0c121e] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold hover:border-orange-500/50 transition-all cursor-pointer shadow-xs"
             >
-              <Cuboid size={16} className="text-purple-500"/>
+              <Cuboid size={15} className="text-purple-400"/>
               Virtual Showroom
             </button>
 
